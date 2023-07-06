@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import css from "../phones.module.scss";
 
 const { NEXT_APP_BASE_URL } = process.env;
 async function getData() {
@@ -24,7 +25,11 @@ export default async function Phone() {
             ? data
                 .filter((item) => item.category === "phone")[0]
                 .services.map((item) => {
-                  return <li key={item.id}>{item.name}</li>;
+                  return (
+                    <li className={css.list_item} key={item.id}>
+                      {item.name}
+                    </li>
+                  );
                 })
             : "loading"}
         </ul>
