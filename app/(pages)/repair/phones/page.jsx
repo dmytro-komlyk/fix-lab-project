@@ -3,7 +3,7 @@ import axios from "axios";
 
 const { NEXT_APP_BASE_URL } = process.env;
 async function getData() {
-  const res = await axios.get(`${NEXT_APP_BASE_URL}/api`);
+  const res = await axios.get(`${NEXT_APP_BASE_URL}/api/service`);
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
   // Recommendation: handle errors
@@ -24,7 +24,7 @@ export default async function Phone() {
             ? data
                 .filter((item) => item.category === "phone")[0]
                 .services.map((item) => {
-                  return <li>{item.name}</li>;
+                  return <li key={item.id}>{item.name}</li>;
                 })
             : "loading"}
         </ul>
