@@ -2,6 +2,7 @@ import React from 'react'
 
 export const ColaborationSection = () => {
   return (
-    <div>ColaborationSection</div>
+    <section><div className='container'>ColaborationSection</div>
+      </section>
   )
 }

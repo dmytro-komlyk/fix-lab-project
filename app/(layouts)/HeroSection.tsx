@@ -2,6 +2,8 @@ import React from 'react'
 
 export const HeroSection = () => {
   return (
-    <div>HeroSection</div>
+    <section>
+      <div className='container'>HeroSection</div>
+      </section>
   )
 }

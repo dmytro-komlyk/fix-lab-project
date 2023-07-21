@@ -2,6 +2,8 @@ import React from 'react'
 
 export const CallCourierSection = () => {
   return (
-    <div>CallCourierSection</div>
+    <section>
+      <div className='container'>CallCourierSection</div>
+      </section>
   )
 }
