@@ -1,24 +1,31 @@
-@import url(./reset.css);
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --max-width: 1100px;
-  --font-mono: "Inter", sans-serif;
-  --base-bg-blue: #06278b;
-  --white-primary-color: #f8fcff;
-  --base-text-blue: #1b37aa;
-  --base-text-black: #0b122f;
-  --accent-vivid-blue-gradient: linear-gradient(
-    97deg,
-    #20b9f4 0%,
-    #31e081 100%
-  );
-  /* gradient for icons and dots on співпраця */
-  --accent-vivid-blue: rgba(23, 245, 245, 0.96); /* phones color */
-  --section-padding: 102px;
+@layer base {
+  html {
+    font-family: Inter, sans-serif;
+  }
+  h2 {
+    @apply text-2xl;
+  }
+  /* ... */
 }
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+@layer components {
+  .container {
+    @apply px-4 my-0 mx-auto;
+    @apply sm:max-w-screen-sm;
+    @apply md:max-w-screen-md;
+    @apply lg:max-w-5xl;
+    @apply xl:max-w-7xl;
+  }
+  .is-hiddden {
+    @apply opacity-0 pointer-events-none invisible;
+  }
+  .visually-hidden {
+    @apply absolute whitespace-nowrap w-0 h-0 overflow-hidden border-0 p-0 m-0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+  }
+  /* ... */
 }
