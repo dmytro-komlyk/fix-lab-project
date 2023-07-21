@@ -2,7 +2,7 @@ import React from 'react'
 
 export const CallCourierSection = () => {
   return (
-    <section>
+    <section className='section'>
       <div className='container'>CallCourierSection</div>
       </section>
   )

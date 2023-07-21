@@ -2,7 +2,8 @@ import React from 'react'
 
 export const BrokenSection = () => {
   return (
-    <section><div className='container'>BrokenSection</div>
+    <section className='section'>
+      <div className='container'>BrokenSection</div>
       </section>
   )
 }

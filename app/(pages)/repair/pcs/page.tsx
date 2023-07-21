@@ -14,7 +14,7 @@ async function getData() {
   }
   return res.data;
 }
-export default async function Joysticks() {
+export default async function Pcs() {
   const data = await getData();
   return (
     <>

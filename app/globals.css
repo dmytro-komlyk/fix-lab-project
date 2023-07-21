@@ -19,6 +19,13 @@
     @apply lg:max-w-5xl;
     @apply xl:max-w-7xl;
   }
+  .section {
+    @apply py-14 my-0 mx-auto;
+    @apply lg:py-lg;
+  }
+  .button {
+    @apply cursor-pointer;
+  }
   .is-hiddden {
     @apply opacity-0 pointer-events-none invisible;
   }

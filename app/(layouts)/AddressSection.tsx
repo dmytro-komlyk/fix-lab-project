@@ -2,7 +2,7 @@ import React from 'react'
 
 export const AddressSection = () => {
   return (
-    <section>
+    <section className='section'>
       <div className='container'>AddressSection</div>
       </section>
   )
