@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
    <html
       lang="uk"
-      className={`${inter.className}''${manrope.className}''${exo_2.className}''${gugi.className}`}
+      className={`${inter.className}`}
     >
       <body>
         <Header />
