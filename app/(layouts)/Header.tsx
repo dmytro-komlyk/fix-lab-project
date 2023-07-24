@@ -1,6 +1,15 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  number: Yup.string().required('Number is required'),
+  address: Yup.string().required('Address is required'),
+})
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { FaBars } from 'react-icons/fa'
@@ -10,16 +19,19 @@ import { TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti'
 
 export const Header: React.FC = () => {
   const mobileMenuRef = useRef<HTMLDivElement>(null)
+  const modalRef = useRef<HTMLDivElement>(null)
   const toggleDropdownRegionRef = useRef<HTMLDivElement>(null)
   const toggleDropdownPhoneRef = useRef<HTMLUListElement>(null)
-  const itemsRegion = ['Голосіївський', 'Оболонський']
+  const itemsRegion: Array<string> = ['Голосіївський', 'Оболонський']
 
+  const [showModal, setShowModal] = useState<boolean>(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
   const [isOpenItem, setIsOpenItem] = useState<boolean>(false)
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
   const [selectedRegionItem, setSelectedRegionItem] =
     useState<string>('Голосіївський')
 
+  // Save to LocalStorage
   useEffect(() => {
     const storedScrollState = window.localStorage.getItem('isScrolled')
     if (storedScrollState) {
@@ -32,7 +44,9 @@ export const Header: React.FC = () => {
       setSelectedRegionItem(storedRegionItemState)
     }
   }, [])
+  //
 
+  // DropDown
   const handleItemClick = useCallback((item: string) => {
     setSelectedRegionItem(item)
     window.localStorage.setItem('selectedRegionItem', item)
@@ -42,14 +56,31 @@ export const Header: React.FC = () => {
     setIsOpenItem(prev => !prev)
   }, [])
 
-  const toggleMobileMenu = useCallback(() => {
-    setMobileMenuOpen(prev => !prev)
+  const handleClickOutsideDropdown = useCallback((event: { target: any }) => {
+    if (
+      toggleDropdownRegionRef.current &&
+      !toggleDropdownRegionRef.current.contains(event.target) &&
+      toggleDropdownPhoneRef.current &&
+      !toggleDropdownPhoneRef.current.contains(event.target) &&
+      toggleDropdownRegionRef.current &&
+      !toggleDropdownRegionRef.current.contains(event.target)
+    ) {
+      setIsOpenItem(false)
+    }
   }, [])
 
-  const handleEscKeyPress = useCallback((event: { code: string }) => {
-    if (event.code === 'Escape') {
-      setMobileMenuOpen(false)
+  useEffect(() => {
+    window.addEventListener('mousedown', handleClickOutsideDropdown)
+
+    return () => {
+      window.removeEventListener('mousedown', handleClickOutsideDropdown)
     }
+  }, [handleClickOutsideDropdown])
+  //
+
+  // Mobile Menu
+  const toggleMobileMenu = useCallback(() => {
+    setMobileMenuOpen(prev => !prev)
   }, [])
 
   const onBackdropCloseMobileMenu = useCallback(
@@ -61,48 +92,70 @@ export const Header: React.FC = () => {
     [],
   )
 
-  const handleClickOutsideDropdown = useCallback((event: { target: any }) => {
-    if (
-      toggleDropdownRegionRef.current &&
-      !toggleDropdownRegionRef.current.contains(event.target) &&
-      toggleDropdownPhoneRef.current &&
-      !toggleDropdownPhoneRef.current.contains(event.target)
-    ) {
-      setIsOpenItem(false)
+  const handleEscKeyPressMenu = useCallback((event: { code: string }) => {
+    if (event.code === 'Escape') {
+      setMobileMenuOpen(false)
     }
   }, [])
 
   useEffect(() => {
-    const options = { passive: true }
+    window.addEventListener('keydown', handleEscKeyPressMenu)
 
-    const scroll = () => {
-      setIsScrolled(window.scrollY > 0)
+    return () => {
+      window.removeEventListener('keydown', handleEscKeyPressMenu)
     }
+  }, [handleEscKeyPressMenu])
+  //
 
-    document.addEventListener('scroll', scroll, options)
-
-    return () => document.removeEventListener('scroll', scroll)
+  // Modal
+  const toggleModal = useCallback(() => {
+    setShowModal(prev => !prev)
   }, [])
 
-  useEffect(() => {
-    window.localStorage.setItem('isScrolled', JSON.stringify(isScrolled))
-  }, [isScrolled])
+  const handleEscKeyPressModal = useCallback((event: { code: string }) => {
+    if (event.code === 'Escape') {
+      setShowModal(false)
+    }
+  }, [])
+
+  const onBackdropCloseModal = useCallback(
+    (event: { target: any; currentTarget: any }) => {
+      if (event.target === event.currentTarget) {
+        setShowModal(false)
+      }
+    },
+    [],
+  )
 
   useEffect(() => {
-    window.addEventListener('keydown', handleEscKeyPress)
+    window.addEventListener('keydown', handleEscKeyPressModal)
 
     return () => {
-      window.removeEventListener('keydown', handleEscKeyPress)
+      window.removeEventListener('keydown', handleEscKeyPressModal)
     }
-  }, [handleEscKeyPress])
+  }, [handleEscKeyPressModal])
+  //
 
+  // Scroll
   useEffect(() => {
-    window.addEventListener('mousedown', handleClickOutsideDropdown)
-
-    return () => {
-      window.removeEventListener('mousedown', handleClickOutsideDropdown)
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 0
+      setIsScrolled(isScrolled)
+      window.localStorage.setItem('isScrolled', JSON.stringify(isScrolled))
     }
-  }, [handleClickOutsideDropdown])
+
+    // Add the scroll event listener directly on the window
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    // Cleanup: Remove the event listener on component unmount
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  //
+
+  const handleSubmit = (event: { target: any; currentTarget: any }) => {}
 
   return (
     <header
@@ -110,6 +163,8 @@ export const Header: React.FC = () => {
         isScrolled ? ' bg-[#04268B]' : ''
       }`}
     >
+      {/* Navigation */}
+
       <nav
         className='container lg:px-0 mx-auto justify-between max-md:justify-between  max-md:pt-10 max-md:pb-[10px] flex w-full items-center py-6'
         aria-label='Global'
@@ -137,7 +192,7 @@ export const Header: React.FC = () => {
         </Link>
 
         <div className='hidden items-center md:flex md:gap-12'>
-          {/* Toggle Desktop */}
+          {/* Phone Toggle Desktop */}
 
           <div
             ref={toggleDropdownRegionRef}
@@ -262,16 +317,19 @@ export const Header: React.FC = () => {
             </Link>
           </div>
 
-          {/* Modal Button */}
+          {/* Modal Open Button */}
 
-          <button className='hidden lg:flex bg-[#00cc73] justify-center items-center min-w-[256px] rounded-[12px] hover:bg-mid-blue focus:bg-mid-blue'>
+          <button
+            onClick={toggleModal}
+            className='hidden lg:flex bg-[#00cc73] justify-center items-center min-w-[256px] rounded-[12px] hover:bg-mid-blue focus:bg-mid-blue'
+          >
             <p className='font-semibold text-base text-[#04268b]  pt-[23px] pb-[20px] tracking-wide'>
               Викликати курʼєра
             </p>
           </button>
         </div>
 
-        {/* Menu Button */}
+        {/* Phone Toggle Mobile */}
 
         <div className='flex xl:hidden items-center'>
           <ul
@@ -327,7 +385,7 @@ export const Header: React.FC = () => {
         </div>
       </nav>
 
-      {/* Menu */}
+      {/* Mobile Menu */}
 
       {mobileMenuOpen && (
         <div
@@ -361,7 +419,6 @@ export const Header: React.FC = () => {
                   className='text-center white-dis-700'
                   onClick={toggleMobileMenu}
                 >
-                  <span className='sr-only'>Close menu</span>
                   <MdOutlineClose
                     className='h-8 w-8 hover:opacity-80  focus:opacity-80 fill-white-dis'
                     aria-hidden='true'
@@ -408,13 +465,103 @@ export const Header: React.FC = () => {
               </ul>
             </div>
             <button
-              onClick={toggleMobileMenu}
+              onClick={() => {
+                toggleMobileMenu()
+                toggleModal()
+              }}
               className='bg-[#00cc73] flex justify-center items-center rounded-lg m-4 hover:bg-mid-blue focus:bg-mid-blue'
             >
               <p className='whitespace-nowrap  font-semibold tracking-[0.64] text-[#04268b] px-[48px] py-[23px] '>
                 Викликати курʼєра
               </p>
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal */}
+
+      {showModal && (
+        <div
+          ref={modalRef}
+          onClick={onBackdropCloseModal}
+          className='fixed top-0 left-0  z-50 w-full flex justify-center items-center bg-modal-overlay  h-full'
+        >
+          <div className='relative max-w-[414px]  bg-[#00cc73] rounded-2xl flex-col justify-start items-center p-14 max-sm:px-4'>
+            <button
+              type='button'
+              className=' absolute top-4 right-4 text-center white-dis-700'
+              onClick={toggleModal}
+            >
+              <MdOutlineClose
+                className='h-8 w-8 hover:opacity-80  focus:opacity-80 fill-white-dis'
+                aria-hidden='true'
+              />
+            </button>
+            <h3 className='font-semibold text-white-dis text-center mb-8 text-xl '>
+              Потрібен курʼєр!
+            </h3>
+            <Formik
+              initialValues={{
+                name: '',
+                number: '',
+                address: '',
+              }}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+            >
+              <Form className='flex flex-col justify-center items-center gap-4'>
+                <div className=''>
+                  <Field
+                    type='text'
+                    id='name'
+                    name='name'
+                    className='w-[302px] max-md:w-[280px] h-[58px] rounded-xl px-6 py-2'
+                    autoComplete='off'
+                    placeholder='Імʼя'
+                  />
+                </div>
+
+                <div className=''>
+                  <Field
+                    type='text'
+                    id='number'
+                    name='number'
+                    className='w-[302px] max-md:w-[280px] h-[58px] rounded-xl px-6 py-2'
+                    autoComplete='off'
+                    placeholder='Номер телефону'
+                  />
+                </div>
+
+                <div className=''>
+                  <Field
+                    as='textarea'
+                    id='address'
+                    name='address'
+                    className='w-[302px] max-md:w-[280px] h-[144px] rounded-xl px-6 py-2'
+                    autoComplete='off'
+                    placeholder='Адреса'
+                  />
+                  {/* <ErrorMessage
+                        name='address'
+                        component='div'
+                        className='text-red-600 text-sm'
+                      /> */}
+                </div>
+
+                <button
+                  type='submit'
+                  onClick={() => {
+                    toggleModal()
+                  }}
+                  className=' bg-dark-blue flex justify-center items-center rounded-lg  hover:bg-[#0B122F] focus:bg-[#0B122F]  w-full mt-4'
+                >
+                  <p className='whitespace-nowrap text-base  font-semibold tracking-[0.64] text-white-dis  pt-[23px] pb-[20px]'>
+                    Потрібен курʼєр
+                  </p>
+                </button>
+              </Form>
+            </Formik>
           </div>
         </div>
       )}
