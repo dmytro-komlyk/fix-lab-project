@@ -6,18 +6,26 @@ import { Header, Footer } from "./(layouts)";
 const inter = Inter({
   weight: ["300", "400", "700", "500", "600"],
   subsets: ["cyrillic"],
+  display: 'swap',
+  variable: '--font-inter',
 });
 const manrope = Manrope({
   weight: ["300", "400", "700", "500", "600"],
   subsets: ["cyrillic"],
+  display: 'swap',
+  variable: '--font-manrope',
 });
 const exo_2 = Exo_2({
   weight: ["300", "400", "700", "500", "600"],
   subsets: ["cyrillic"],
+  display: 'swap',
+  variable: '--font-exo-2',
 });
 const gugi = Gugi({
   weight: ["400"],
   subsets: ["latin"],
+  display: 'swap',
+  variable: '--font-gugi',
 });
 
 export const metadata: Metadata = {
@@ -33,9 +41,9 @@ export default function RootLayout({
   return (
    <html
       lang="uk"
-      className={`${inter.className}''${manrope.className}''${exo_2.className}''${gugi.className}`}
+      className={`${inter.variable} ${manrope.variable} ${exo_2.variable} ${gugi.variable}`}
     >
-      <body className={`${inter.className}`}>
+      <body className='font-inter'>
         <Header />
         {children}
         <Footer />
