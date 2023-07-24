@@ -19,12 +19,7 @@ module.exports = {
       xl: '1440px',
       // => @media (min-width: 1440px) { ... }
     },
-    fontFamily: {
-      inter: ['Inter', 'sans-serif'],
-      manrope: ['Manrope', 'Inter', 'sans-serif'],
-      exo_2: ['Exo_2', 'Inter', 'sans-serif'],
-      gugi: ['Gugi', 'Inter', 'sans-serif'],
-    },
+
     fontSize: {
       sm: '0.875rem' /* 14px */,
       base: '1rem' /* 16px */,
@@ -36,17 +31,25 @@ module.exports = {
       '4xl': '5.25rem' /* 84px */,
     },
     colors: {
-      'text-white': '#F8FCFF',
-      'text-dark-blue': '#04268B',
-      'text-light-blue': '#1B37AA',
-      'text-black': '#0B122F',
-      'bg-light-green': '#4BE0AA',
-      'bg-mid-green': '#00CC73',
+      'white-dis': '#F8FCFF',
+      'dark-blue': '#04268B',
+      'light-blue': '#1B37AA',
+      'mid-blue': '#3EC9FF',
+      'black-dis': '#0B122F',
+      'light-green': '#4BE0AA',
+      'mid-green': '#00CC73',
+      'mid-grey': '#92999C',
       'modal-overlay': 'rgba(0, 0, 0, 0.25)',
     },
     extend: {
       padding: {
         lg: '102px',
+      },
+      fontFamily: {
+        inter: ['var(--font-inter)'],
+        manrope: ['var(--font-manrope)'],
+        exo_2: ['var(--font-exo-2)'],
+        gugi: ['var(--font-gugi)'],
       },
     },
     // extend: {
