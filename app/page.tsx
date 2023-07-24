@@ -2,7 +2,7 @@ import { AddressSection, BrokenSection, CallCourierSection, ColaborationSection,
 
 export default function Home() {
   return (
-    <main className="flex h-max flex-col items-center justify-between">
+    <main className="h-max w-full">
         <HeroSection />
         <BrokenSection />
         <CallCourierSection />

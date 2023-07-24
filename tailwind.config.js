@@ -50,6 +50,12 @@ module.exports = {
         exo_2: ['var(--font-exo-2)'],
         gugi: ['var(--font-gugi)'],
       },
+      backgroundImage: {
+        'gradient-radial-blue':
+          'radial-gradient(240.65% 83.67% at 48.21% 48.61%, #37122B 0%, #04248B 55.98%, #264CC7 100%)',
+        'gradient-linear-green':
+          'linear-gradient(99deg, #20B9F4 0%, #00CC73 100%)',
+      },
     },
     // extend: {
     //   backgroundImage: {
