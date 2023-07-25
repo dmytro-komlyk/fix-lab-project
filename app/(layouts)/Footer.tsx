@@ -1,7 +1,5 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { BsInstagram } from 'react-icons/bs'
-import { FaViber, FaTelegram } from 'react-icons/fa'
 
 export const Footer = () => {
   return (
@@ -84,22 +82,34 @@ export const Footer = () => {
               className='flex justify-center items-center uppercase bg-white-dis rounded-[50%] w-12 h-12 '
               href={'#'}
             >
-              <BsInstagram className='w-[25px] h-[25px]' />
-              {/* <Image src={'#'} width='0' height='0' alt='alt' /> */}
+              <Image
+                src={'/icons/skill-icons_instagram.svg'}
+                width={25}
+                height={25}
+                alt='Instagram icon'
+              />
             </Link>
             <Link
               className='flex justify-center items-center  uppercase bg-white-dis rounded-[50%] w-12 h-12 '
               href={'#'}
             >
-              <FaTelegram className='w-[25px] h-[25px]' />
-              {/* <Image src={'#'} width='0' height='0' alt='alt' /> */}
+              <Image
+                src={'/icons/logos_telegram.svg'}
+                width={25}
+                height={25}
+                alt='Telegram icon'
+              />
             </Link>
             <Link
               className='flex justify-center items-center  uppercase bg-white-dis rounded-[50%] w-12 h-12 '
               href={'#'}
             >
-              <FaViber className='w-[25px] h-[25px]' />
-              {/* <Image src={'#'} width='0' height='0' alt='alt' /> */}
+              <Image
+                src={'/icons/Viber_logo_2018.png'}
+                width={25}
+                height={25}
+                alt='Viber icon'
+              />
             </Link>
           </ul>
         </div>
@@ -189,22 +199,34 @@ export const Footer = () => {
                 className='flex justify-center items-center uppercase bg-white-dis rounded-[50%] w-12 h-12 hover:opacity-80  focus:opacity-80 '
                 href={'#'}
               >
-                <BsInstagram className='w-[25px] h-[25px]' />
-                {/* <Image src={'#'} width='0' height='0' alt='alt' /> */}
+                <Image
+                  src={'/icons/skill-icons_instagram.svg'}
+                  width={25}
+                  height={25}
+                  alt='Instagram icon'
+                />
               </Link>
               <Link
                 className='flex justify-center items-center  uppercase bg-white-dis rounded-[50%] w-12 h-12 hover:opacity-80  focus:opacity-80 '
                 href={'#'}
               >
-                <FaTelegram className='w-[25px] h-[25px]' />
-                {/* <Image src={'#'} width='0' height='0' alt='alt' /> */}
+                <Image
+                  src={'/icons/logos_telegram.svg'}
+                  width={25}
+                  height={25}
+                  alt='Telegram icon'
+                />
               </Link>
               <Link
                 className='flex justify-center items-center  uppercase bg-white-dis rounded-[50%] w-12 h-12 hover:opacity-80  focus:opacity-80 '
                 href={'#'}
               >
-                <FaViber className='w-[25px] h-[25px] hover:opacity-80  focus:opacity-80' />
-                {/* <Image src={'#'} width='0' height='0' alt='alt' /> */}
+                <Image
+                  src={'/icons/Viber_logo_2018.png'}
+                  width={25}
+                  height={25}
+                  alt='Viber icon'
+                />
               </Link>
             </ul>
           </div>
