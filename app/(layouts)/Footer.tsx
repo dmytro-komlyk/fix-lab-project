@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { LiaViber } from 'react-icons/lia'
 
 export const Footer = () => {
   return (
@@ -83,9 +84,10 @@ export const Footer = () => {
               href={'#'}
             >
               <Image
+                className='w-[25px] h-[25px]'
                 src={'/icons/skill-icons_instagram.svg'}
-                width={25}
-                height={25}
+                width='0'
+                height='0'
                 alt='Instagram icon'
               />
             </Link>
@@ -94,9 +96,10 @@ export const Footer = () => {
               href={'#'}
             >
               <Image
+                className='w-[25px] h-[25px]'
                 src={'/icons/logos_telegram.svg'}
-                width={25}
-                height={25}
+                width='0'
+                height='0'
                 alt='Telegram icon'
               />
             </Link>
@@ -104,12 +107,7 @@ export const Footer = () => {
               className='flex justify-center items-center  uppercase bg-white-dis rounded-[50%] w-12 h-12 '
               href={'#'}
             >
-              <Image
-                src={'/icons/Viber_logo_2018.png'}
-                width={25}
-                height={25}
-                alt='Viber icon'
-              />
+              <LiaViber size={28} fill='#8c5da7' />
             </Link>
           </ul>
         </div>
@@ -200,9 +198,10 @@ export const Footer = () => {
                 href={'#'}
               >
                 <Image
+                  className='w-[25px] h-[25px]'
                   src={'/icons/skill-icons_instagram.svg'}
-                  width={25}
-                  height={25}
+                  width='0'
+                  height='0'
                   alt='Instagram icon'
                 />
               </Link>
@@ -211,9 +210,10 @@ export const Footer = () => {
                 href={'#'}
               >
                 <Image
+                  className='w-[25px] h-[25px]'
                   src={'/icons/logos_telegram.svg'}
-                  width={25}
-                  height={25}
+                  width='0'
+                  height='0'
                   alt='Telegram icon'
                 />
               </Link>
@@ -221,12 +221,7 @@ export const Footer = () => {
                 className='flex justify-center items-center  uppercase bg-white-dis rounded-[50%] w-12 h-12 hover:opacity-80  focus:opacity-80 '
                 href={'#'}
               >
-                <Image
-                  src={'/icons/Viber_logo_2018.png'}
-                  width={25}
-                  height={25}
-                  alt='Viber icon'
-                />
+                <LiaViber size={28} fill='#8c5da7' />
               </Link>
             </ul>
           </div>
