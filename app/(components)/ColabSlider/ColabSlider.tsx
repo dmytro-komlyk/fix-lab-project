@@ -9,6 +9,7 @@ import 'swiper/css/keyboard';
 import 'swiper/css/mousewheel';
 
 import Image from 'next/image';
+import { useWindowSize } from '../../(hooks)/useWindowResize';
 // import { BsPeople } from 'react-icons/bs';
 // import { HiMiniArrowTrendingUp } from 'react-icons/hi';
 // import { MdScreenSearchDesktop } from 'react-icons/md';
@@ -45,10 +46,10 @@ const colabData = [
         icon: 'icon-computer-search.svg'
     }
 ]
-const windowWidth:number = window.innerWidth;
 export const ColabSlider = () => {
+  const size = useWindowSize();
   return (
-    windowWidth > 1439 ?
+    size.width > 1439 ?
       <div>
         <ul className='flex gap-6 mb-11 border-b-[#20B9F4] border-b-2'>
           {colabData.map(item => (<li className='w-[302px] h-[98px] relative' key={item.id}>
@@ -68,7 +69,7 @@ export const ColabSlider = () => {
       // install Swiper modules
       modules={[A11y, Scrollbar,Keyboard,Mousewheel]}
       spaceBetween={16}
-      slidesPerView={windowWidth <768 ?1.175: windowWidth >767 && windowWidth <1100 ? 2.2: 3.1}
+      slidesPerView={size.width <768 ?1.175: size.width >767 && size.width <1100 ? 2.2: 3.1}
         scrollbar={{ draggable: true, hide: true }}
 
       onSwiper={(swiper) => console.log(swiper)}

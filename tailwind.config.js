@@ -55,6 +55,8 @@ module.exports = {
           'radial-gradient(240.65% 83.67% at 48.21% 48.61%, #37122B 0%, #04248B 55.98%, #264CC7 100%)',
         'gradient-linear-green':
           'linear-gradient(99deg, #20B9F4 0%, #00CC73 100%)',
+        'card-gradient-blue':
+          'linear-gradient(123deg, #121C37 0%, #04248B 55.98%, #264CC7 100%)',
       },
     },
     // extend: {

@@ -1,6 +1,5 @@
 import React from 'react'
-import ColabSlider from '../(components)/slider'
-
+import ColabSlider from '../(components)/ColabSlider/slider'
 
 export const ColaborationSection = () => {
   return (
