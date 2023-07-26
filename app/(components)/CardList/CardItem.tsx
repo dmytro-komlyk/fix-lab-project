@@ -15,7 +15,8 @@ export const CardItem: React.FC<Location> = (item) => {
               </div>
         <a href={item.mapLink} className='cursor-pointer font-semibold tracking-wider border-b-[2px] w-fit border-b-white-dis lg:hidden'>Подивитися на мапі</a>
       </div>
-  <Link className='hidden md:block cursor-pointer rounded-xl w-full overflow-hidden' href={item.mapLink} target='_blank'><Image className='bg-cover bg-center aspect-square lg:aspect-[1/1.05]' src={item.imageLink} alt={item.title} width={600} height={546}/></Link>
+      <Link className='hidden md:block cursor-pointer rounded-xl w-full overflow-hidden' href={item.mapLink} target='_blank'>
+        <Image className='bg-cover bg-center aspect-square lg:aspect-[1/1.05]' src={item.imageLink} alt={item.title} width={600} height={546} /></Link>
       </li>
   )
 }
