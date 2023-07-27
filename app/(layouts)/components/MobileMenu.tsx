@@ -42,19 +42,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
       <div className='fixed overflow-y-auto flex flex-col justify-between inset-y-0 right-0 z-10 w-full bg-[#09338F] pt-10 pb-[10px] px-4 sm:max-w-[400px] sm:ring-1 sm:ring-gray-900/10'>
         <div className='flex flex-col'>
           <div className='flex items-center justify-between'>
-            <Link href='/' className=' flex gap-3'>
+            <Link href='/' onClick={toggleMobileMenu} className=' flex gap-3'>
               <Image
-                className='h-auto w-[42px]'
-                src='logo/fix.svg'
-                alt='Next.js Logo'
-                width='0'
-                height='0'
-                priority
-              />
-              <Image
-                className='h-auto w-[42px]'
-                src='logo/lab.svg'
-                alt='Next.js Logo'
+                className='h-auto w-[85px]'
+                src='logo/logo.svg'
+                alt='FixLab logo'
                 width='0'
                 height='0'
                 priority
@@ -74,7 +66,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           <ul className='space-y-2 py-6'>
             <li>
               <Link
-                href='#'
+                href='/repair'
                 onClick={toggleMobileMenu}
                 className='text-base font-semibold text-white-dis hover:opacity-80  focus:opacity-80'
               >
@@ -83,7 +75,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             </li>
             <li>
               <Link
-                href='#'
+                href='/contacts'
                 onClick={toggleMobileMenu}
                 className='text-base font-semibold text-white-dis hover:opacity-80  focus:opacity-80'
               >
@@ -92,7 +84,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             </li>
             <li>
               <Link
-                href='#'
+                href='/blog'
                 onClick={toggleMobileMenu}
                 className='text-base font-semibold text-white-dis hover:opacity-80  focus:opacity-80'
               >
@@ -101,7 +93,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             </li>
             <li>
               <Link
-                href='#'
+                href='/corporate'
                 onClick={toggleMobileMenu}
                 className='text-base font-semibold text-white-dis hover:opacity-80  focus:opacity-80 capitalize '
               >

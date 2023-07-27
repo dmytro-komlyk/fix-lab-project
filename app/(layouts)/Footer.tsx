@@ -11,17 +11,9 @@ export const Footer = () => {
           className='mr-12 max-md:m-0 flex gap-3 lg:m-0 lg:flex md:hidden hover:opacity-80  focus:opacity-80'
         >
           <Image
-            className='h-auto w-[81px]'
-            src='logo/fix.svg'
-            alt='Next.js Logo'
-            width='0'
-            height='0'
-            priority
-          />
-          <Image
-            className='h-auto w-[81px]'
-            src='logo/lab.svg'
-            alt='Next.js Logo'
+            className='h-auto w-[167px] max-md:w-[129px]'
+            src='logo/logo.svg'
+            alt='FixLab logo'
             width='0'
             height='0'
             priority
@@ -152,17 +144,9 @@ export const Footer = () => {
               className=' flex gap-3  max-md:hidden lg:hidden hover:opacity-80  focus:opacity-80'
             >
               <Image
-                className='h-auto w-[95px]'
-                src='logo/fix.svg'
-                alt='Next.js Logo'
-                width='0'
-                height='0'
-                priority
-              />
-              <Image
-                className='h-auto w-[95px]'
-                src='logo/lab.svg'
-                alt='Next.js Logo'
+                className='h-auto w-[129px]'
+                src='logo/logo.svg'
+                alt='FixLab logo'
                 width='0'
                 height='0'
                 priority

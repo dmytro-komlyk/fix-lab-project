@@ -99,17 +99,9 @@ export const Header: React.FC = () => {
           className='xl:mr-12 max-md:m-0 flex gap-1 hover:opacity-80  focus:opacity-80'
         >
           <Image
-            className='h-auto w-[40px]'
-            src='logo/fix.svg'
-            alt='Next.js Logo'
-            width='0'
-            height='0'
-            priority
-          />
-          <Image
-            className='h-auto w-[40px]'
-            src='logo/lab.svg'
-            alt='Next.js Logo'
+            className='h-auto w-[85px]'
+            src='logo/logo.svg'
+            alt='FixLab logo'
             width='0'
             height='0'
             priority
@@ -259,7 +251,7 @@ export const Header: React.FC = () => {
         <div className='flex xl:hidden items-center'>
           <ul
             ref={toggleDropdownPhoneRef}
-            className={`relative hidden max-md:flex select-text-none cursor-pointer mr-10 `}
+            className={` relative hidden max-md:flex select-text-none cursor-pointer mr-10 `}
           >
             {isOpenItem ? (
               <TiArrowSortedUp
@@ -289,7 +281,7 @@ export const Header: React.FC = () => {
               </Link>
             </li>
             {isOpenItem && (
-              <li className='absolute top-[17px] left-[0px]'>
+              <li className='absolute top-[27px] left-[0px]'>
                 <Link
                   href='tel:380632272730'
                   className='text-white-dis text-sm font-normal whitespace-nowrap leading-tight max-[330px]:text-[12px] tracking-wide hover:opacity-80  focus:opacity-80 '
