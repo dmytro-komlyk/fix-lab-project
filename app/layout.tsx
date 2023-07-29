@@ -41,12 +41,14 @@ export default function RootLayout({
   return (
     <html
       lang='uk'
-      className={`${inter.variable} ${manrope.variable} ${exo_2.variable} ${gugi.variable}`}
+      className={`${inter.variable} ${manrope.variable} ${exo_2.variable} ${gugi.variable} h-full`}
     >
-      <body className='font-inter'>
-        <Header />
-        {children}
-        <Footer />
+      <body className='font-inter h-full'>
+        <div className='min-h-full flex flex-col'>
+          <Header />
+          {children}
+          <Footer />
+        </div>
       </body>
     </html>
   )

@@ -100,7 +100,7 @@ export const Header: React.FC = () => {
         >
           <Image
             className='h-auto w-[85px]'
-            src='logo/logo.svg'
+            src='/logo/logo.svg'
             alt='FixLab logo'
             width='0'
             height='0'
@@ -174,7 +174,7 @@ export const Header: React.FC = () => {
           <ul className='hidden xl:flex gap-6  max-md:m-0'>
             <li>
               <Link
-                href='#'
+                href='/repair'
                 className='text-base font-semibold tracking-[0.64px] text-white-dis hover:opacity-80  focus:opacity-80'
               >
                 Ремонт
@@ -182,7 +182,7 @@ export const Header: React.FC = () => {
             </li>
             <li>
               <Link
-                href='#'
+                href='/contacts'
                 className='text-base font-semibold tracking-[0.64px] text-white-dis hover:opacity-80  focus:opacity-80'
               >
                 Контакти
@@ -190,7 +190,7 @@ export const Header: React.FC = () => {
             </li>
             <li>
               <Link
-                href='#'
+                href='/blog'
                 className='text-base font-semibold tracking-[0.64px] text-white-dis hover:opacity-80  focus:opacity-80'
               >
                 Блог
@@ -198,7 +198,7 @@ export const Header: React.FC = () => {
             </li>
             <li>
               <Link
-                href='#'
+                href='/corporate'
                 className='text-base font-semibold tracking-[0.64px] text-white-dis hover:opacity-80  focus:opacity-80'
               >
                 Для бізнесу

@@ -45,7 +45,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             <Link href='/' onClick={toggleMobileMenu} className=' flex gap-3'>
               <Image
                 className='h-auto w-[85px]'
-                src='logo/logo.svg'
+                src='/logo/logo.svg'
                 alt='FixLab logo'
                 width='0'
                 height='0'
