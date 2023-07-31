@@ -7,7 +7,6 @@ import { MdOutlineClose } from 'react-icons/md'
 interface MyFormValues {
   name: string
   number: string
-  address: string
 }
 
 const validationSchema = Yup.object().shape({
@@ -16,29 +15,29 @@ const validationSchema = Yup.object().shape({
     .required('Не введенно номер телефону')
     .matches(/^\+380\d{9}$/, 'Невірний номер')
     .min(13, 'Невірний номер'),
-  address: Yup.string().required('Не введенна адреса').min(3),
 })
-interface CourierModalProps {
-  toggleCourierModal: () => void
+interface InstantAdviceModalProps {
+  toggleInstantAdviceModal: () => void
 }
-const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
+const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
+  toggleInstantAdviceModal,
+}) => {
   const initialValues: MyFormValues = {
     name: '',
     number: '+380',
-    address: '',
   }
   const modalRef = useRef<HTMLDivElement>(null)
 
   const handleEscKeyPressModal = useCallback((event: { code: string }) => {
     if (event.code === 'Escape') {
-      toggleCourierModal()
+      toggleInstantAdviceModal()
     }
   }, [])
 
   const onBackdropCloseModal = useCallback(
     (event: { target: any; currentTarget: any }) => {
       if (event.target === event.currentTarget) {
-        toggleCourierModal()
+        toggleInstantAdviceModal()
       }
     },
     [],
@@ -58,18 +57,17 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
       const CHAT_ID = '-1001952047976'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
-      let message = `<b>Потрібен курєр!</b>\n`
+      let message = `<b>Миттєва консультація</b>\n`
 
       message += `<b>Ім'я:</b>\n${values.name}\n`
       message += `<b>Номер телефону:</b>\n${values.number}\n`
-      message += `<b>Адреса:</b>\n${values.address}\n`
 
       await axios.post(URL_API, {
         chat_id: CHAT_ID,
         parse_mode: 'html',
         text: message,
       })
-      toggleCourierModal()
+      toggleInstantAdviceModal()
     } catch (error) {
       console.log('Помилка при відправленні.')
     }
@@ -84,7 +82,7 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
         <button
           type='button'
           className=' absolute top-4 right-4 text-center white-dis-700'
-          onClick={toggleCourierModal}
+          onClick={toggleInstantAdviceModal}
         >
           <MdOutlineClose
             className='h-8 w-8 hover:opacity-80  focus:opacity-80 fill-white-dis'
@@ -92,7 +90,7 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
           />
         </button>
         <h3 className='font-semibold text-white-dis text-center mb-8 text-xl '>
-          Потрібен курʼєр!
+          Миттєва консультація
         </h3>
         <Formik
           initialValues={initialValues}
@@ -141,21 +139,6 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
                 />
               </div>
 
-              <div className='relative'>
-                <Field
-                  as='textarea'
-                  id='address'
-                  name='address'
-                  className='w-[302px] max-md:w-[280px] h-[144px] rounded-xl px-6 py-2'
-                  autoComplete='off'
-                  placeholder='Адреса'
-                />
-                <ErrorMessage
-                  name='address'
-                  component='div'
-                  className=' absolute bottom-[-22px] left-[24px] text-[#A80000] text-sm font-normal tracking-wide'
-                />
-              </div>
               <button
                 type='submit'
                 disabled={isSubmitting || !isValid || !dirty || isValidating}
@@ -166,7 +149,7 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
                 } bg-dark-blue flex justify-center items-center rounded-lg hover:bg-[#0B122F] focus:bg-[#0B122F] w-full mt-4`}
               >
                 <p className='whitespace-nowrap text-base font-semibold tracking-[0.64] text-white-dis pt-[23px] pb-[20px]'>
-                  Потрібен курʼєр
+                  Миттєва консультація
                 </p>
               </button>
             </Form>
@@ -177,4 +160,4 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
   )
 }
 
-export default CourierModal
+export default InstantAdviceModal

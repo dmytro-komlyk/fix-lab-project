@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
 export default function Repair() {
-  return <div>Repair</div>;
+  return <main className='flex-auto'>Repair</main>
 }

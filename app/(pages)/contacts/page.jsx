@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
 export default function Contacts() {
-  return <div>Contacts</div>;
+  return <main className=' flex-auto'>Contacts</main>
 }
