@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
 export default function Blog() {
-  return <div>Blog</div>;
+  return <main className=' flex-auto'>Blog</main>
 }

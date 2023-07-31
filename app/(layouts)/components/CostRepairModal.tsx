@@ -7,6 +7,7 @@ import { MdOutlineClose } from 'react-icons/md'
 interface MyFormValues {
   name: string
   number: string
+  gadget: string
   address: string
 }
 
@@ -16,29 +17,33 @@ const validationSchema = Yup.object().shape({
     .required('Не введенно номер телефону')
     .matches(/^\+380\d{9}$/, 'Невірний номер')
     .min(13, 'Невірний номер'),
+  gadget: Yup.string().required('Не введенно назву пристрою').min(3),
   address: Yup.string().required('Не введенна адреса').min(3),
 })
-interface CourierModalProps {
-  toggleCourierModal: () => void
+interface CostRepairModalProps {
+  toggleCostRepairModal: () => void
 }
-const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
+const CostRepairModal: React.FC<CostRepairModalProps> = ({
+  toggleCostRepairModal,
+}) => {
   const initialValues: MyFormValues = {
     name: '',
     number: '+380',
+    gadget: '',
     address: '',
   }
   const modalRef = useRef<HTMLDivElement>(null)
 
   const handleEscKeyPressModal = useCallback((event: { code: string }) => {
     if (event.code === 'Escape') {
-      toggleCourierModal()
+      toggleCostRepairModal()
     }
   }, [])
 
   const onBackdropCloseModal = useCallback(
     (event: { target: any; currentTarget: any }) => {
       if (event.target === event.currentTarget) {
-        toggleCourierModal()
+        toggleCostRepairModal()
       }
     },
     [],
@@ -58,10 +63,11 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
       const CHAT_ID = '-1001952047976'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
-      let message = `<b>Потрібен курєр!</b>\n`
+      let message = `<b>Скільки коштуватиме ремонт?</b>\n`
 
       message += `<b>Ім'я:</b>\n${values.name}\n`
       message += `<b>Номер телефону:</b>\n${values.number}\n`
+      message += `<b>Пристрій:</b>\n${values.gadget}\n`
       message += `<b>Адреса:</b>\n${values.address}\n`
 
       await axios.post(URL_API, {
@@ -69,7 +75,7 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
         parse_mode: 'html',
         text: message,
       })
-      toggleCourierModal()
+      toggleCostRepairModal()
     } catch (error) {
       console.log('Помилка при відправленні.')
     }
@@ -84,7 +90,7 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
         <button
           type='button'
           className=' absolute top-4 right-4 text-center white-dis-700'
-          onClick={toggleCourierModal}
+          onClick={toggleCostRepairModal}
         >
           <MdOutlineClose
             className='h-8 w-8 hover:opacity-80  focus:opacity-80 fill-white-dis'
@@ -92,7 +98,7 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
           />
         </button>
         <h3 className='font-semibold text-white-dis text-center mb-8 text-xl '>
-          Потрібен курʼєр!
+          Скільки коштуватиме ремонт?
         </h3>
         <Formik
           initialValues={initialValues}
@@ -140,6 +146,21 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
                   className=' absolute bottom-[-22px] left-[24px] text-[#A80000] text-sm font-normal tracking-wide'
                 />
               </div>
+              <div className='relative'>
+                <Field
+                  type='text'
+                  id='gadget'
+                  name='gadget'
+                  className='w-[302px] max-md:w-[280px] h-[58px] rounded-xl px-6 py-2'
+                  autoComplete='off'
+                  placeholder='Пристрій'
+                />
+                <ErrorMessage
+                  name='gadget'
+                  component='div'
+                  className=' absolute bottom-[-22px] left-[24px] text-[#A80000] text-sm font-normal tracking-wide'
+                />
+              </div>
 
               <div className='relative'>
                 <Field
@@ -166,7 +187,7 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
                 } bg-dark-blue flex justify-center items-center rounded-lg hover:bg-[#0B122F] focus:bg-[#0B122F] w-full mt-4`}
               >
                 <p className='whitespace-nowrap text-base font-semibold tracking-[0.64] text-white-dis pt-[23px] pb-[20px]'>
-                  Потрібен курʼєр
+                  Вартість ремонту
                 </p>
               </button>
             </Form>
@@ -177,4 +198,4 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
   )
 }
 
-export default CourierModal
+export default CostRepairModal
