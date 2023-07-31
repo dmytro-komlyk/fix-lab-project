@@ -19,9 +19,18 @@
     @apply lg:max-w-5xl;
     @apply xl:max-w-7xl;
   }
+  .outline-text {
+    color: white; /* Unfortunately you can't use transparent here … */
+    text-shadow:
+      -1px -1px 0 #fff,
+      1px -1px 0 #fff,
+      -1px 1px 0 #fff,
+      1px 2px 0 #fff;
+  }
+
   .section {
     @apply py-14 my-0 mx-auto;
-    @apply lg:py-lg;
+    /* @apply lg:py-lg; !!! Помилка webpack.cache !!!  */ 
   }
   .button {
     @apply cursor-pointer;
