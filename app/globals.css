@@ -21,16 +21,13 @@
   }
   .outline-text {
     color: white; /* Unfortunately you can't use transparent here … */
-    text-shadow:
-      -1px -1px 0 #fff,
-      1px -1px 0 #fff,
-      -1px 1px 0 #fff,
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff,
       1px 2px 0 #fff;
   }
 
   .section {
     @apply py-14 my-0 mx-auto;
-    /* @apply lg:py-lg; !!! Помилка webpack.cache !!!  */ 
+    /* @apply lg:py-lg; !!! Помилка webpack.cache !!!  */
   }
   .button {
     @apply cursor-pointer;

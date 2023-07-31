@@ -1,20 +1,9 @@
 'use client'
-import React from 'react'
-import { A11y, Keyboard, Mousewheel, Scrollbar } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import React, { useEffect, useState } from 'react'
+import { useKeenSlider } from "keen-slider/react"
+import "keen-slider/keen-slider.min.css"
 
-import 'swiper/css';
-import 'swiper/css/scrollbar';
-import 'swiper/css/keyboard';
-import 'swiper/css/mousewheel';
-
-import Image from 'next/image';
 import { useWindowSize } from '../../(hooks)/useWindowResize';
-// import { BsPeople } from 'react-icons/bs';
-// import { HiMiniArrowTrendingUp } from 'react-icons/hi';
-// import { MdScreenSearchDesktop } from 'react-icons/md';
-
-
 
 const colabData = [
     {
@@ -46,9 +35,26 @@ const colabData = [
         icon: 'icon-computer-search.svg'
     }
 ]
+
 export const ColabSlider = () => {
+  const [ref] = useKeenSlider<HTMLDivElement>({
+    breakpoints: {
+      "(min-width: 768px)": {
+        slides: { perView: 2.175, spacing: 16 },
+      },
+      "(min-width: 1100px)": {
+        slides: { perView: 3.175, spacing: 16 },
+      },
+      "(min-width: 1400px)": {
+        slides: { perView: 4, spacing: 16 },
+      },
+    },
+    slides: { perView: 1.13, spacing: 16 },
+  })
   const size = useWindowSize();
-  return (
+
+  
+    return (
     size.width > 1439 ?
       <div>
         <ul className='flex gap-6 mb-11 border-b-[#20B9F4] border-b-2'>
@@ -56,35 +62,28 @@ export const ColabSlider = () => {
             <h3 className='w-[191px] font-exo_2 text-xl leading-tight font-semibold text-white-dis'>{item.title}</h3>
             <div className='w-6 h-6 bg-gradient-linear-green absolute -bottom-3 left-0 rounded-full'></div>
           </li>))} </ul>
-      <ul className='flex gap-6'>
-       {colabData.map(item => (<li key={item.id} className='p-8 h-full w-[302px] text-white-dis font-inter border border-l-light-green rounded-xl' style={{width: '302px', height: '490px'}}>
-                <div className='h-[86px] mb-6'>
-                    <img src={`/${item.icon}`} className='block' alt={item.title} />
-                    </div>
-                <p className='mb-6 text-base text-white-dis leading-normal'>{item.text}</p>
-                <p className='text-base text-white-dis leading-normal'>{item.subtext}</p>
+        <ul className='flex gap-6'>
+          {colabData.map(item => (<li key={item.id} className='p-8 h-full w-[302px] text-white-dis font-inter border border-l-light-green rounded-xl' style={{width: '302px',height: '500px'}}>
+            <div className='h-[86px] mb-6'>
+              <img src={`/${item.icon}`} className='block' alt={item.title} />
+            </div>
+            <p className='mb-6 text-base text-white-dis leading-normal'>{item.text}</p>
+            <p className='text-base text-white-dis leading-normal'>{item.subtext}</p>
                 
-       </li>))} </ul>
-        </div>: <Swiper
-      // install Swiper modules
-      modules={[A11y, Scrollbar,Keyboard,Mousewheel]}
-      spaceBetween={16}
-      slidesPerView={size.width <768 ?1.175: size.width >767 && size.width <1100 ? 2.2: 3.1}
-        scrollbar={{ draggable: true, hide: true }}
-
-      onSwiper={(swiper) => console.log(swiper)}
-      onSlideChange={() => console.log('slide change')}
-      >
-        {colabData.map(item => (<SwiperSlide key={item.id} className='p-8 h-full w-[302px] text-white-dis font-inter border border-l-light-green rounded-xl' style={{width: '302px', height: '490px'}}>
-            
+          </li>))} </ul>
+        </div> : <div className="navigation-wrapper">
+          <div ref={ref} className="keen-slider">
+        {colabData.map(item => (<div key={item.id} className='keen-slider__slide p-8 w-[302px] h-[490px] text-white-dis font-inter border-[1px] border-l-light-green rounded-xl' style={{width: '302px',height: '500px'}} > 
                 <div className='h-[86px] mb-6'>
                     <img src={`/${item.icon}`} className='block' alt={item.title} />
                     </div>
-                  <h3 className='font-exo_2 text-xl leading-tight font-semibold mb-6'>{item.title}</h3>
-                <p className='mb-6 text-base text-white-dis leading-normal'>{item.text}</p>
-                <p className='text-base text-white-dis leading-normal'>{item.subtext}</p>
-            
-          </SwiperSlide>))}  
-    </Swiper>
+                  <h3 className='font-exo_2 text-xl  text-white-dis leading-tight font-semibold mb-6'>{item.title}</h3>
+                <p className='mb-6 text-base text-white-dis font-inter leading-normal'>{item.text}</p>
+                <p className='text-base text-white-dis font-inter leading-normal'>{item.subtext}</p>
+        </div>
+        ))} 
+             </div>
+          </div>
+
   )
 }
