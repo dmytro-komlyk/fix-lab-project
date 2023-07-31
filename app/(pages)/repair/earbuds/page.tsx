@@ -25,7 +25,7 @@ export default async function Earbuds() {
         <ul>
           {data.length>0&&
              data
-              .filter((item:GadgetData) => item.category === "phone")[0]
+              .find((item:GadgetData) => item.category === "phone")
                 .services.map((item:GadgetDataItem) => {
                   return (
                     <li className='' key={item.id}>

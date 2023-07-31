@@ -22,7 +22,7 @@ export default async function Powerbanks() {
         <ul>
           {data.length>0 &&
            data
-                .filter((item:GadgetData) => item.category === "powerbank")[0]
+                .find((item:GadgetData) => item.category === "powerbank")
                 .services.map((item:GadgetDataItem) => {
                   return (
                     <li className='' key={item.id}>

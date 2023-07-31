@@ -22,7 +22,7 @@ export default async function Laptops() {
         <ul>
           {data.length>0
             && data
-                .filter((item:GadgetData) => item.category === "laptop")[0]
+                .find((item:GadgetData) => item.category === "laptop")
                 .services.map((item:GadgetDataItem) => {
                   return (
                     <li className='' key={item.id}>
