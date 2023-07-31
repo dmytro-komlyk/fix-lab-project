@@ -17,6 +17,7 @@
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.11",
     "formik": "^2.4.2",
+    "keen-slider": "^6.8.6",
     "nanoid": "^4.0.2",
     "next": "13.4.11",
     "postcss": "8.4.26",
