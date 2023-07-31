@@ -2,11 +2,16 @@ import axios from 'axios';
 import React from 'react'
 import { Location } from '@/app/(utils)/types';
 import { CardItem } from './CardItem';
-const { NEXT_APP_BASE_URL } = process.env;
+import { headers } from "next/headers";
 
+// Inside the page component
 
 async function getData() {
-  const response = await fetch(`${NEXT_APP_BASE_URL}/api/locations`)
+  const headersData = headers();
+const protocol = headersData.get("x-forwarded-proto");
+const host = headersData.get("host");
+const response = await fetch(`${protocol}://${host}/api/locations`);
+
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc
   if (response.status !== 200) {
