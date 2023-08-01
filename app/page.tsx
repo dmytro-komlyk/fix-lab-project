@@ -8,7 +8,7 @@ import {
 
 export default function Home() {
   return (
-    <main className='flex flex-auto h-max flex-col items-center justify-between'>
+    <main className='flex-auto h-max'>
       <HeroSection />
       <BrokenSection />
       <CallCourierSection />
