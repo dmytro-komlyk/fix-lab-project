@@ -1,8 +1,15 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { MdKeyboardArrowRight } from 'react-icons/md'
+import { CategoriesList } from './CategoriesList'
 
-interface CategoryItem {
+
+
+export interface CategoriesSectionProps {
+  categoryData: {
+    data: CategoryItem[]
+  }
+}
+export interface CategoryItem {
   id: number
   attributes: {
     slug: string
@@ -16,12 +23,6 @@ interface CategoryItem {
         }
       }
     }
-  }
-}
-
-interface CategoriesSectionProps {
-  categoryData: {
-    data: CategoryItem[]
   }
 }
 
@@ -57,34 +58,7 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
             </div>
           </div>
         </div>
-        <ul className='flex flex-wrap gap-6'>
-          {categoryData.data.map(item => {
-            const categoryPath = item.attributes.slug
-            const img = item.attributes.img.data.attributes.url
-            const width = item.attributes.img.data.attributes.width
-            const height = item.attributes.img.data.attributes.height
-
-            console.log(item.attributes.img.data.attributes)
-            return (
-              <li key={item.id}>
-                <Link href={`/repair/${categoryPath}`}>
-                  <div className='w-[302px] h-[261px] relative bg-dark-blue  flex rounded-2xl'>
-                    <Image
-                      className=' absolute top-8 right-8'
-                      src={img}
-                      width={width}
-                      height={height}
-                      alt={item.attributes.title}
-                    />
-                    <h3 className=' absolute  bottom-8 left-8 text-white-dis font-semibold text-xl max-w-[151px]'>
-                      {item.attributes.title}
-                    </h3>
-                  </div>
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
+        <CategoriesList categoryData={ categoryData} />
       </div>
     </div>
   )
