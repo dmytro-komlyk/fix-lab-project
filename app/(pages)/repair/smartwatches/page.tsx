@@ -1,18 +1,23 @@
 import React from "react";
-import axios from "axios";
 import { GadgetData, GadgetDataItem } from "@/app/(utils)/types";
+import { headers } from "next/headers";
 
-const { NEXT_APP_BASE_URL } = process.env;
+// Inside the page component
+
 async function getData() {
-  const res = await axios.get(`${NEXT_APP_BASE_URL}/api/service`);
+  const headersData = headers();
+const protocol = headersData.get("x-forwarded-proto");
+const host = headersData.get("host");
+const response = await fetch(`${protocol}://${host}/api/service`);
+
   // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
-  // Recommendation: handle errors
-  if (res.status !== 200) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+  // You can return Date, Map, Set, etc
+  if (response.status !== 200) {
+  //   // This will activate the closest `error.js` Error Boundary
+    throw new Error('Failed to fetch data')
   }
-  return res.data;
+ 
+  return response.json();
 }
 export default async function Smartwatches() {
   const data = await getData();
@@ -21,9 +26,9 @@ export default async function Smartwatches() {
       <main>
         <h1>Послуги</h1>
         <ul>
-          {data.length
-            ? data
-                .filter((item:GadgetData) => item.category === "smartwatch")[0]
+          {data.length>0&&
+             data
+                .find((item:GadgetData) => item.category === "phone")
                 .services.map((item:GadgetDataItem) => {
                   return (
                     <li className='' key={item.id}>
@@ -31,7 +36,7 @@ export default async function Smartwatches() {
                     </li>
                   );
                 })
-            : "loading"}
+            }
         </ul>
       </main>
     </>
