@@ -59,6 +59,7 @@ module.exports = {
           'linear-gradient(123deg, #121C37 0%, #04248B 55.98%, #264CC7 100%)',
         'bg-footer-img-sm': "url('/images/background-footer-mobile.jpg')",
         'bg-footer-img-lg': "url('/images/background-footer-pc.jpg')",
+        'bg-courier-img-lg': "url('/images/courier-background-pc.png')",
       },
     },
   },

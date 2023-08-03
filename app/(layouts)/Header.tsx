@@ -7,7 +7,7 @@ import { FaBars } from 'react-icons/fa'
 import { FiMapPin } from 'react-icons/fi'
 
 import { TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti'
-import Modal from './components/CourierModal'
+import CourierModal from './components/CourierModal'
 import MobileMenu from './components/MobileMenu'
 
 export const Header: React.FC = () => {
@@ -310,7 +310,7 @@ export const Header: React.FC = () => {
           toggleMobileMenu={toggleMobileMenu}
         />
       )}
-      {showModal && <Modal toggleCourierModal={toggleCourierModal} />}
+      {showModal && <CourierModal toggleCourierModal={toggleCourierModal} />}
     </header>
   )
 }
