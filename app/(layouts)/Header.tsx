@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FaBars } from 'react-icons/fa'
@@ -8,7 +9,9 @@ import { FiMapPin } from 'react-icons/fi'
 import { TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti'
 import Modal from './components/CourierModal'
 import MobileMenu from './components/MobileMenu'
+
 export const Header: React.FC = () => {
+  const pathname = usePathname()
   const toggleDropdownRegionRef = useRef<HTMLDivElement>(null)
   const toggleDropdownPhoneRef = useRef<HTMLUListElement>(null)
   const itemsRegion: Array<string> = ['Голосіївський', 'Оболонський']
@@ -87,7 +90,7 @@ export const Header: React.FC = () => {
   return (
     <header
       className={`fixed left-0 top-0 flex w-full items-center max-md z-10 transition-colors ${
-        isScrolled ? ' bg-[#04268B]' : ''
+        isScrolled || pathname === '/repair' ? ' bg-[#04268B]' : ''
       }`}
     >
       <nav
