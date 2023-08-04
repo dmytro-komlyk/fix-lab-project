@@ -1,15 +1,4 @@
 import React from 'react'
-import { Exo_2, Inter } from 'next/font/google'
-
-const exo2 = Exo_2({
-  weight: ['700'],
-  subsets: ['cyrillic'],
-})
-
-const inter = Inter({
-  weight: ['400'],
-  subsets: ['cyrillic'],
-})
 
 const ITEMS = [
   {
@@ -65,65 +54,49 @@ const PROS = [
 export const HeroSection = () => {
   const renderList = () =>
     ITEMS.map((item, index) => (
-      <li key={index}>
+      <li
+        className='bg-white-dis p-5 rounded-2xl mr-4 w-[120px] h-[148px]'
+        key={index}
+      >
         <img src={item.src} alt={item.alt} />
-        <h4>{item.title}</h4>
+        <h4 className='text-center text-dark-blue'>{item.title}</h4>
       </li>
     ))
 
-  const renderPros = () =>
-    PROS.map((item, index) => (
-      <li key={index}>
-        <img src={item.src} alt={item.alt} />
-        <p>{item.title}</p>
-      </li>
-    ))
+  // const renderPros = () =>
+  //   PROS.map((item, index) => (
+  //     <li className='bg-white-dis p-5 rounded-2xl' key={index}>
+  //       <img src={item.src} alt={item.alt} />
+  //       <p className='text-dark-blue'>{item.title}</p>
+  //     </li>
+  //   ))
 
   return (
-    <section className='section w-full bg-text-dark-blue '>
+    <section className='section w-full bg-dark-blue pt-36'>
       <div className='container relative flex flex-col'>
-        <div className='flex flex-col items-center'>
-          <h2
-            className={`text-text-white text-3xl font-bold ${exo2.className}`}
-          >
-            Бачимо гаджети
-          </h2>
-          <svg viewBox='0 0 10 2'>
-            <text
-              x='5'
-              y='1.5'
-              text-anchor='middle'
-              font-size='2.4'
-              fill='none'
-              stroke-width='.015'
-              stroke='#fff'
-              // font-family='sans-serif'
-              className={`font-bold ${exo2.className}`}
-            >
-              наскрізь
-            </text>
-          </svg>
-          <p className={`mb-14 text-text-white text-md ${inter.className}`}>
-            Мережа студій ремонту твоєї техніки
-          </p>
-          <button className='rounded-xl bg-bg-mid-green px-12 py-6'>
-            <span
-              className={`text-text-dark-blue ${inter.className} text-base`}
-            >
+        <div className='flex flex-col items-center text-white-dis font-exo_2'>
+          <h2 className='text-3xl font-bold'>Бачимо гаджети</h2>
+          <h3 className='text-4xl font-bold'>наскрізь</h3>
+
+          <p className='mb-14 text-md'>Мережа студій ремонту твоєї техніки</p>
+          <button className='rounded-xl bg-mid-green px-12 py-6'>
+            <span className='font-inter text-dark-blue font-semibold text-base'>
               Розрахувати вартість ремонту
             </span>
           </button>
         </div>
 
-        {/* <div className='border'>
-          <h3 className='border'>Найчастіші звернення</h3>
-          <ul className='flex'>{renderList()}</ul>
+        <div className='pt-36'>
+          <h3 className='text-white-dis font-exo_2 text-xl'>
+            Найчастіші звернення
+          </h3>
+          <ul className='flex py-8 overflow-x-scroll'>{renderList()}</ul>
           <div className='border'>progress bar</div>
-        </div> */}
-
-        <div className='border absolute right-0 top-0 hidden md:flex'>
-          <ul>{renderPros()}</ul>
         </div>
+
+        {/* <div className='border absolute right-0 top-0 hidden md:flex'>
+          <ul>{renderPros()}</ul>
+        </div> */}
       </div>
     </section>
   )
