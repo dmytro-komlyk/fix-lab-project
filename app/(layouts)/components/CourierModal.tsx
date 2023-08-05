@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import { useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
 
 interface MyFormValues {
@@ -22,6 +22,7 @@ interface CourierModalProps {
   toggleCourierModal: () => void
 }
 const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
+  const [isHovering, setIsHovering] = useState<boolean>(false)
   const initialValues: MyFormValues = {
     name: '',
     number: '+380',
@@ -159,13 +160,19 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
               <button
                 type='submit'
                 disabled={isSubmitting || !isValid || !dirty || isValidating}
+                onMouseEnter={() => setIsHovering(false)}
+                onMouseLeave={() => setIsHovering(true)}
                 className={`${
                   !isValid || !dirty || isValidating
                     ? 'opacity-70 pointer-events-none'
                     : ''
-                } bg-dark-blue flex justify-center items-center rounded-lg hover:bg-[#0B122F] focus:bg-[#0B122F] w-full mt-4`}
+                } group bg-dark-blue flex justify-center items-center rounded-lg hover:bg-[#0B122F] focus:bg-[#0B122F] w-full mt-4`}
               >
-                <p className='whitespace-nowrap text-base font-semibold tracking-[0.64] text-white-dis pt-[23px] pb-[20px]'>
+                <p
+                  className={`whitespace-nowrap text-base font-semibold tracking-[0.64] text-white-dis pt-[23px] pb-[20px] ${
+                    isHovering ? 'animate-hoverBtnOut' : ''
+                  } group-hover:animate-hoverBtnIn`}
+                >
                   Потрібен курʼєр
                 </p>
               </button>

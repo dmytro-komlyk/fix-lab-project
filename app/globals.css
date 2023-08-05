@@ -46,127 +46,112 @@
   /* ... */
 }
 
-@keyframes spinHorizontal {
+@keyframes slide-out-top {
   0% {
-    opacity: 0;
-    transform: rotateY(0deg);
-  }
-  100% {
+    transform: translateY(0);
     opacity: 1;
-    transform: rotateY(360deg);
   }
-}
-
-/* Apply the horizontal spin animation with the delay to the circle */
-.animate-horizontal-spin {
-  animation-name: spinHorizontal;
-  animation-duration: 2s; /* Adjust the animation speed as needed */
-  animation-timing-function: linear;
-  animation-iteration-count: both; /* To keep the animation running indefinitely */
-  animation-delay: 2s; /* Add a 1.5-second delay before the animation starts */
-}
-
-@keyframes flicker-in-1 {
-  0% {
-    opacity: 0;
+  5% {
+    transform: translateY(-6px);
+    opacity: 0.9;
   }
   10% {
-    opacity: 0;
-  }
-  10.1% {
-    opacity: 1;
-  }
-  10.2% {
-    opacity: 0;
+    transform: translateY(-12px);
+    opacity: 0.8;
   }
   20% {
-    opacity: 0;
-  }
-  20.1% {
-    opacity: 1;
-  }
-  20.6% {
-    opacity: 0;
+    transform: translateY(-20px);
+    opacity: 0.7;
   }
   30% {
-    opacity: 0;
+    transform: translateY(-26px);
+    opacity: 0.6;
   }
-  30.1% {
-    opacity: 1;
-  }
-  30.5% {
-    opacity: 1;
-  }
-  30.6% {
-    opacity: 0;
-  }
-  45% {
-    opacity: 0;
-  }
-  45.1% {
-    opacity: 1;
+  40% {
+    transform: translateY(-30px);
+    opacity: 0.5;
   }
   50% {
-    opacity: 1;
-  }
-  55% {
-    opacity: 1;
-  }
-  55.1% {
-    opacity: 0;
-  }
-  57% {
-    opacity: 0;
-  }
-  57.1% {
-    opacity: 1;
+    transform: translateY(-30px);
+    opacity: 0.4;
   }
   60% {
-    opacity: 1;
-  }
-  60.1% {
+    transform: translateY(-30px);
     opacity: 0;
   }
-  65% {
+  70% {
+    transform: translateY(30px);
     opacity: 0;
   }
-  65.1% {
-    opacity: 1;
+  80% {
+    transform: translateY(20px);
+    opacity: 0.3;
   }
-  75% {
-    opacity: 1;
+  90% {
+    transform: translateY(10px);
+    opacity: 0.6;
   }
-  75.1% {
-    opacity: 0;
-  }
-  77% {
-    opacity: 0;
-  }
-  77.1% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 1;
-  }
-  85.1% {
-    opacity: 0;
-  }
-  86% {
-    opacity: 0;
-  }
-  86.1% {
-    opacity: 1;
+  95% {
+    transform: translateY(6px);
+    opacity: 0.8;
   }
   100% {
+    transform: translateY(0);
     opacity: 1;
   }
 }
 
-.animate-bottom {
-  animation: flicker-in-1 1.5s linear both;
-}
-
-.animate-top {
-  animation: flicker-in-1 4s linear both;
-  animation-delay: 2s;
+@keyframes slide-out-bottom {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  5% {
+    transform: translateY(-6px);
+    opacity: 0.9;
+  }
+  10% {
+    transform: translateY(-12px);
+    opacity: 0.8;
+  }
+  20% {
+    transform: translateY(-20px);
+    opacity: 0.7;
+  }
+  30% {
+    transform: translateY(-26px);
+    opacity: 0.6;
+  }
+  40% {
+    transform: translateY(-30px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-30px);
+    opacity: 0.4;
+  }
+  60% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  70% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  80% {
+    transform: translateY(20px);
+    opacity: 0.3;
+  }
+  90% {
+    transform: translateY(10px);
+    opacity: 0.6;
+  }
+  95% {
+    transform: translateY(6px);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

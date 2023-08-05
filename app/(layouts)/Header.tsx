@@ -16,6 +16,7 @@ export const Header: React.FC = () => {
   const toggleDropdownPhoneRef = useRef<HTMLUListElement>(null)
   const itemsRegion: Array<string> = ['Голосіївський', 'Оболонський']
 
+  const [isHovering, setIsHovering] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
   const [isOpenItem, setIsOpenItem] = useState<boolean>(false)
@@ -241,9 +242,15 @@ export const Header: React.FC = () => {
 
           <button
             onClick={toggleCourierModal}
-            className='hidden lg:flex bg-[#00cc73] justify-center items-center min-w-[256px] rounded-[12px] hover:bg-mid-blue focus:bg-mid-blue'
+            onMouseEnter={() => setIsHovering(false)}
+            onMouseLeave={() => setIsHovering(true)}
+            className='group hidden lg:flex bg-mid-green justify-center items-center min-w-[256px] rounded-[12px] ease-in-out duration-200 hover:bg-mid-blue   focus:bg-mid-blue'
           >
-            <p className='font-semibold text-base text-[#04268b]  pt-[23px] pb-[20px] tracking-wide'>
+            <p
+              className={`font-semibold text-base text-[#04268b]  pt-[23px] pb-[20px] tracking-wide ${
+                isHovering ? 'animate-hoverBtnOut' : ''
+              } group-hover:animate-hoverBtnIn`}
+            >
               Викликати курʼєра
             </p>
           </button>
@@ -299,7 +306,6 @@ export const Header: React.FC = () => {
             className='-m-2.5 items-center justify-center rounded-md p-2.5 text-gray-700 md:pl-8 hover:opacity-80  focus:opacity-80'
             onClick={toggleMobileMenu}
           >
-            <span className='sr-only'>Open main menu</span>
             <FaBars className='h-8 w-8' aria-hidden='true' color='#F8F8F8' />
           </button>
         </div>

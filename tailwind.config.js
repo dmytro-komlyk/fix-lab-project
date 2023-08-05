@@ -61,6 +61,10 @@ module.exports = {
         'bg-footer-img-lg': "url('/images/background-footer-pc.jpg')",
         'bg-courier-img-lg': "url('/images/courier-background-pc.png')",
       },
+      animation: {
+        hoverBtnIn: 'slide-out-top 0.2s ease-in-out both;',
+        hoverBtnOut: 'slide-out-bottom 0.2s ease-in-out both;',
+      },
     },
   },
 

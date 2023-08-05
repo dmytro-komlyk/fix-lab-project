@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { MdOutlineClose } from 'react-icons/md'
@@ -10,6 +10,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   toggleMobileMenu,
   toggleCourierModal,
 }) => {
+  const [isHovering, setIsHovering] = useState<boolean>(false)
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const onBackdropCloseMobileMenu = useCallback(
     (event: { target: any; currentTarget: any }) => {
@@ -107,9 +108,15 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             toggleMobileMenu()
             toggleCourierModal()
           }}
-          className='bg-[#00cc73] flex justify-center items-center rounded-lg m-4 hover:bg-mid-blue focus:bg-mid-blue'
+          onMouseEnter={() => setIsHovering(false)}
+          onMouseLeave={() => setIsHovering(true)}
+          className='group bg-[#00cc73] flex justify-center items-center rounded-lg m-4 hover:bg-mid-blue focus:bg-mid-blue'
         >
-          <p className='whitespace-nowrap  font-semibold tracking-[0.64] text-[#04268b] px-[48px] py-[23px] '>
+          <p
+            className={`whitespace-nowrap  font-semibold tracking-[0.64] text-[#04268b] px-[48px] py-[23px] ${
+              isHovering ? 'animate-hoverBtnOut' : ''
+            } group-hover:animate-hoverBtnIn`}
+          >
             Викликати курʼєра
           </p>
         </button>
