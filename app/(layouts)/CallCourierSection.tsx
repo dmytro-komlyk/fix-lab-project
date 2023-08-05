@@ -52,8 +52,8 @@ export const CallCourierSection: React.FC = () => {
             priority
           />
         </div>
-        <div className=' max-lg:flex max-lg:flex-col justify-between gap-8 max-md:gap-[264px] z-[1]'>
-          <div className='flex flex-col gap-4'>
+        <div className=' max-lg:flex max-lg:flex-col justify-between max-md:gap-[264px] z-[1]'>
+          <div className='flex flex-col gap-4  md:mb-8 '>
             <p className='text-2xl text-dark-blue font-[400] max-md:text-xl max-sm:text-lg'>
               Нетреба ламати плани!
             </p>
