@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
+import ModalButton from './ModalButton'
 
 interface MyFormValues {
   name: string
@@ -22,7 +23,6 @@ interface InstantAdviceModalProps {
 const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
   toggleInstantAdviceModal,
 }) => {
-  const [isHovering, setIsHovering] = useState<boolean>(false)
   const initialValues: MyFormValues = {
     name: '',
     number: '+380',
@@ -139,26 +139,10 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
                   className=' absolute bottom-[-22px] left-[24px] text-[#A80000] text-sm font-normal tracking-wide'
                 />
               </div>
-
-              <button
-                type='submit'
-                disabled={isSubmitting || !isValid || !dirty || isValidating}
-                onMouseEnter={() => setIsHovering(false)}
-                onMouseLeave={() => setIsHovering(true)}
-                className={`${
-                  !isValid || !dirty || isValidating
-                    ? 'opacity-70 pointer-events-none'
-                    : ''
-                } group bg-dark-blue flex justify-center items-center rounded-lg hover:bg-[#0B122F] focus:bg-[#0B122F] w-full mt-4`}
-              >
-                <p
-                  className={`whitespace-nowrap text-base font-semibold tracking-[0.64] text-white-dis pt-[23px] pb-[20px] ${
-                    isHovering ? 'animate-hoverBtnOut' : ''
-                  } group-hover:animate-hoverBtnIn`}
-                >
-                  Миттєва консультація
-                </p>
-              </button>
+              <ModalButton
+                validationArr={[isSubmitting, isValid, dirty, isValidating]}
+                textButton={'Миттєва консультація'}
+              />
             </Form>
           )}
         </Formik>

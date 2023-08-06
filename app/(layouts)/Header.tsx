@@ -9,6 +9,7 @@ import { FiMapPin } from 'react-icons/fi'
 import { TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti'
 import CourierModal from './components/CourierModal'
 import MobileMenu from './components/MobileMenu'
+import Button from './components/Button'
 
 export const Header: React.FC = () => {
   const pathname = usePathname()
@@ -16,7 +17,6 @@ export const Header: React.FC = () => {
   const toggleDropdownPhoneRef = useRef<HTMLUListElement>(null)
   const itemsRegion: Array<string> = ['Голосіївський', 'Оболонський']
 
-  const [isHovering, setIsHovering] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
   const [isOpenItem, setIsOpenItem] = useState<boolean>(false)
@@ -240,20 +240,10 @@ export const Header: React.FC = () => {
 
           {/* Modal Open Button */}
 
-          <button
-            onClick={toggleCourierModal}
-            onMouseEnter={() => setIsHovering(false)}
-            onMouseLeave={() => setIsHovering(true)}
-            className='group hidden lg:flex bg-mid-green justify-center items-center min-w-[256px] rounded-[12px] ease-in-out duration-200 hover:bg-mid-blue   focus:bg-mid-blue'
-          >
-            <p
-              className={`font-semibold text-base text-[#04268b]  pt-[23px] pb-[20px] tracking-wide ${
-                isHovering ? 'animate-hoverBtnOut' : ''
-              } group-hover:animate-hoverBtnIn`}
-            >
-              Викликати курʼєра
-            </p>
-          </button>
+          <Button
+            toggleCourierModal={toggleCourierModal}
+            textButton={'Викликати курʼєра'}
+          />
         </div>
 
         {/* Phone Toggle Mobile */}
