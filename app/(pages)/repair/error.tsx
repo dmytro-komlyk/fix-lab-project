@@ -1,7 +1,9 @@
-'use client' // Error components must be Client Components
- 
+'use client'
+
+// Error components must be Client Components
+
 import { useEffect } from 'react'
- 
+
 export default function Error({
   error,
   reset,
@@ -11,13 +13,16 @@ export default function Error({
 }) {
   useEffect(() => {
     // Log the error to an error reporting service
+    /* eslint-disable no-console */
     console.error(error)
+    /* eslint-enable no-console */
   }, [error])
- 
+
   return (
     <div>
       <h2>Something went wrong!</h2>
       <button
+        type='button'
         onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()

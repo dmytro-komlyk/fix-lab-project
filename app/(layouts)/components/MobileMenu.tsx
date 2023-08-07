@@ -1,7 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useRef, useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
+
 import Button from './Button'
 
 interface MobileMenuProps {
@@ -39,9 +40,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
     <div
       ref={mobileMenuRef}
       onClick={onBackdropCloseMobileMenu}
-      className='bg-modal-overlay w-full h-[100vh] z-10 absolute top-0 left-0'
+      className='absolute left-0 top-0 z-10 h-[100vh] w-full bg-modal-overlay'
     >
-      <div className='fixed overflow-y-auto flex flex-col justify-between inset-y-0 right-0 z-10 w-full bg-[#09338F] pt-10 pb-[10px] px-4 sm:max-w-[400px] sm:ring-1 sm:ring-gray-900/10'>
+      <div className='sm:ring-gray-900/10 fixed inset-y-0 right-0 z-10 flex w-full flex-col justify-between overflow-y-auto bg-[#09338F] px-4 pb-[10px] pt-10 sm:max-w-[400px] sm:ring-1'>
         <div className='flex flex-col'>
           <div className='flex items-center justify-between'>
             <Link href='/' onClick={toggleMobileMenu} className=' flex gap-3'>
@@ -56,11 +57,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             </Link>
             <button
               type='button'
-              className='text-center white-dis-700'
+              className='white-dis-700 text-center'
               onClick={toggleMobileMenu}
             >
               <MdOutlineClose
-                className='h-8 w-8 hover:opacity-80  focus:opacity-80 fill-white-dis'
+                className='h-8 w-8 fill-white-dis  hover:opacity-80 focus:opacity-80'
                 aria-hidden='true'
               />
             </button>
@@ -97,7 +98,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               <Link
                 href='/corporate'
                 onClick={toggleMobileMenu}
-                className='text-base font-semibold text-white-dis hover:opacity-80  focus:opacity-80 capitalize '
+                className='text-base font-semibold capitalize text-white-dis  hover:opacity-80 focus:opacity-80 '
               >
                 Для бізнесу
               </Link>
@@ -106,7 +107,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
         </div>
         <Button
           toggleCourierModal={toggleCourierModal}
-          textButton={'Викликати курʼєра'}
+          textButton='Викликати курʼєра'
         />
       </div>
     </div>

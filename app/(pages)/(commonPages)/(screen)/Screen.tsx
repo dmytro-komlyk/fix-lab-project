@@ -1,6 +1,5 @@
-import React from "react";
-
+import React from 'react'
 
 export const Screen = () => {
-  return <div>Screen</div>;
-};
+  return <div>Screen</div>
+}
