@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useEffect, useRef, useCallback } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
+import ModalButton from './ModalButton'
 
 interface MyFormValues {
   name: string
@@ -156,19 +157,10 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
                   className=' absolute bottom-[-22px] left-[24px] text-[#A80000] text-sm font-normal tracking-wide'
                 />
               </div>
-              <button
-                type='submit'
-                disabled={isSubmitting || !isValid || !dirty || isValidating}
-                className={`${
-                  !isValid || !dirty || isValidating
-                    ? 'opacity-70 pointer-events-none'
-                    : ''
-                } bg-dark-blue flex justify-center items-center rounded-lg hover:bg-[#0B122F] focus:bg-[#0B122F] w-full mt-4`}
-              >
-                <p className='whitespace-nowrap text-base font-semibold tracking-[0.64] text-white-dis pt-[23px] pb-[20px]'>
-                  Потрібен курʼєр
-                </p>
-              </button>
+              <ModalButton
+                validationArr={[isSubmitting, isValid, dirty, isValidating]}
+                textButton={'Потрібен курʼєр'}
+              />
             </Form>
           )}
         </Formik>

@@ -7,8 +7,9 @@ import { FaBars } from 'react-icons/fa'
 import { FiMapPin } from 'react-icons/fi'
 
 import { TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti'
-import Modal from './components/CourierModal'
+import CourierModal from './components/CourierModal'
 import MobileMenu from './components/MobileMenu'
+import Button from './components/Button'
 
 export const Header: React.FC = () => {
   const pathname = usePathname()
@@ -239,14 +240,10 @@ export const Header: React.FC = () => {
 
           {/* Modal Open Button */}
 
-          <button
-            onClick={toggleCourierModal}
-            className='hidden lg:flex bg-[#00cc73] justify-center items-center min-w-[256px] rounded-[12px] hover:bg-mid-blue focus:bg-mid-blue'
-          >
-            <p className='font-semibold text-base text-[#04268b]  pt-[23px] pb-[20px] tracking-wide'>
-              Викликати курʼєра
-            </p>
-          </button>
+          <Button
+            toggleCourierModal={toggleCourierModal}
+            textButton={'Викликати курʼєра'}
+          />
         </div>
 
         {/* Phone Toggle Mobile */}
@@ -299,7 +296,6 @@ export const Header: React.FC = () => {
             className='-m-2.5 items-center justify-center rounded-md p-2.5 text-gray-700 md:pl-8 hover:opacity-80  focus:opacity-80'
             onClick={toggleMobileMenu}
           >
-            <span className='sr-only'>Open main menu</span>
             <FaBars className='h-8 w-8' aria-hidden='true' color='#F8F8F8' />
           </button>
         </div>
@@ -310,7 +306,7 @@ export const Header: React.FC = () => {
           toggleMobileMenu={toggleMobileMenu}
         />
       )}
-      {showModal && <Modal toggleCourierModal={toggleCourierModal} />}
+      {showModal && <CourierModal toggleCourierModal={toggleCourierModal} />}
     </header>
   )
 }
