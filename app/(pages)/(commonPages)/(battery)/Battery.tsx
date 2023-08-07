@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
 export const Battery = () => {
-  return <div>Battery</div>;
-};
+  return <div>Battery</div>
+}

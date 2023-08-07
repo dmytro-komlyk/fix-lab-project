@@ -1,8 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getAllLocations } from "./data";
+import { NextResponse } from 'next/server'
+
+import { getAllLocations } from './data'
 
 // Notice the function definition:
-export async function GET(req:NextRequest, res:NextResponse) {
+export async function GET() {
   // ...
-  return NextResponse.json(getAllLocations());
+  return NextResponse.json(getAllLocations())
 }

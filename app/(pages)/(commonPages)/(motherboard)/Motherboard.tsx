@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
 export const Motherboard = () => {
-  return <div>Motherboard</div>;
-};
+  return <div>Motherboard</div>
+}

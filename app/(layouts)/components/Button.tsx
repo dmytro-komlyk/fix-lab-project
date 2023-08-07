@@ -1,4 +1,5 @@
-import { useState, MouseEventHandler } from 'react'
+import type { MouseEventHandler } from 'react'
+import { useState } from 'react'
 
 interface ButtonProps {
   toggleCourierModal: MouseEventHandler<HTMLButtonElement>
@@ -13,10 +14,10 @@ const Button: React.FC<ButtonProps> = ({ toggleCourierModal, textButton }) => {
       onClick={toggleCourierModal}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
-      className='group flex bg-mid-green justify-center items-center min-w-[256px] rounded-[12px] ease-in-out duration-200 hover:bg-mid-blue   focus:bg-mid-blue'
+      className='group flex min-w-[256px] items-center justify-center rounded-[12px] bg-mid-green duration-200 ease-in-out hover:bg-mid-blue   focus:bg-mid-blue'
     >
       <p
-        className={`font-semibold text-base text-[#04268b]  pt-[23px] pb-[20px] tracking-wide ${
+        className={`pb-[20px] pt-[23px] text-base  font-semibold tracking-wide text-[#04268b] ${
           isHovering ? 'animate-hoverBtnOut' : ''
         } group-hover:animate-hoverBtnIn`}
       >

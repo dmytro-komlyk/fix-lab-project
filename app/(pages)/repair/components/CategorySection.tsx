@@ -1,6 +1,6 @@
-import React from 'react'
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 interface CategorySectionProps {
@@ -49,27 +49,27 @@ const CategorySection: React.FC<CategorySectionProps> = ({
         {categoryData.data.map(item => {
           const categoryTitle = item.attributes.title
           return (
-            <div className='flex gap-1 items-center' key={item.id}>
+            <div className='flex items-center gap-1' key={item.id}>
               <Link
-                className='flex gap-1 items-center text-base text-[#3EB9F0] font-[400]'
-                href={'/'}
+                className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0]'
+                href='/'
               >
                 <p> Головна</p> <MdKeyboardArrowRight size={30} />
               </Link>
               <Link
-                className='flex gap-1 items-center text-base text-[#3EB9F0] font-[400]'
-                href={'/repair'}
+                className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0]'
+                href='/repair'
               >
                 <p> Ремонт</p> <MdKeyboardArrowRight size={30} />
               </Link>
 
-              <p className='text-base text-[#3EB9F0] font-[400] opacity-70'>
+              <p className='text-base font-[400] text-[#3EB9F0] opacity-70'>
                 {categoryTitle}
               </p>
             </div>
           )
         })}
-        <div className='flex justify-between gap-[141px] pt-[26px] pb-[153px]'>
+        <div className='flex justify-between gap-[141px] pb-[153px] pt-[26px]'>
           <div className='w-[522px]'>
             {categoryData.data.map(item => {
               const img = item.attributes.img.data.attributes.url
@@ -97,7 +97,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                 return (
                   <li key={item.id}>
                     <Link
-                      className='flex justify-between items-center border-b-[1px] border-[#fff] border-opacity-50'
+                      className='flex items-center justify-between border-b-[1px] border-[#fff]/50'
                       href={`/repair/${categoryPath}/${subcategoryPath}`}
                     >
                       <h2 className='text-lg font-[700] text-white-dis '>
@@ -111,8 +111,8 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                 )
               })}
             </ul>
-            <button className='mt-[156px] w-full bg-mid-green rounded-xl'>
-              <p className='text-start text-lg font-exo_2 font-[700] text-dark-blue px-6 py-4'>
+            <button className='mt-[156px] w-full rounded-xl bg-mid-green'>
+              <p className='px-6 py-4 text-start font-exo_2 text-lg font-[700] text-dark-blue'>
                 Розрахувати вартість ремонту
               </p>
             </button>

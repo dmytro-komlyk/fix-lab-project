@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
+
 import { CategoriesList } from './CategoriesList'
-
-
 
 export interface CategoriesSectionProps {
   categoryData: {
@@ -31,17 +30,17 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
 }) => {
   return (
     <div className=' container flex flex-col pt-[151px]'>
-      <div className='flex gap-1 items-center'>
+      <div className='flex items-center gap-1'>
         <Link
-          className='flex gap-1 items-center text-base text-[#3EB9F0] font-[400]'
-          href={'/'}
+          className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0]'
+          href='/'
         >
           <p> Головна</p> <MdKeyboardArrowRight size={30} />
         </Link>
 
-        <p className='text-base text-[#3EB9F0] font-[400] opacity-70'>Ремонт</p>
+        <p className='text-base font-[400] text-[#3EB9F0] opacity-70'>Ремонт</p>
       </div>
-      <div className='flex justify-between pt-[28px] pb-[102px]'>
+      <div className='flex justify-between pb-[102px] pt-[28px]'>
         <div className='flex flex-col'>
           <div className='flex flex-col'>
             <h3>Що зламалося?</h3>
@@ -58,7 +57,7 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
             </div>
           </div>
         </div>
-        <CategoriesList categoryData={ categoryData} />
+        <CategoriesList categoryData={categoryData} />
       </div>
     </div>
   )
