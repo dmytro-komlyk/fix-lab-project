@@ -1,35 +1,63 @@
 import React from 'react'
+import Image from 'next/image'
+
+import ArrowImage from '../../public/icons/arrow-down-right.svg'
+import BoomboxImage from '../../public/icons/pop-boombox.svg'
+import ChargingImage from '../../public/icons/pop-charging.svg'
+import EbookImage from '../../public/icons/pop-e-book.svg'
+import JoystickImage from '../../public/icons/pop-joystick.svg'
+import KeyboardImage from '../../public/icons/pop-keyboard.svg'
+import LaptopImage from '../../public/icons/pop-laptop.svg'
+import MatrixImage from '../../public/icons/pop-matrix.svg'
+import PowerImage from '../../public/icons/pop-power.svg'
+import SmartphoneImage from '../../public/icons/pop-smartphone.svg'
+import BannerImage from '../../public/images/microscope-main.svg'
 
 const ITEMS = [
   {
-    src: '',
+    src: SmartphoneImage,
     alt: 'Замінити дисплей',
     title: 'Замінити дисплей',
   },
   {
-    src: '',
+    src: ChargingImage,
     alt: 'Замінити розʼєм',
     title: 'Замінити розʼєм',
   },
   {
-    src: '',
+    src: PowerImage,
     alt: 'Замінити батарею',
     title: 'Замінити батарею',
   },
   {
-    src: '',
-    alt: 'Замінити дисплей',
-    title: 'Замінити дисплей',
+    src: KeyboardImage,
+    alt: 'Замінити клавіатуру',
+    title: 'Замінити клавіатуру',
   },
   {
-    src: '',
-    alt: 'Замінити дисплей',
-    title: 'Замінити дисплей',
+    src: MatrixImage,
+    alt: 'Замінити матрицю',
+    title: 'Замінити матрицю',
   },
   {
-    src: '',
-    alt: 'Замінити дисплей',
-    title: 'Замінити дисплей',
+    src: LaptopImage,
+    alt: 'Апгрейд ноутбуку',
+    title: 'Апгрейд ноутбуку',
+  },
+  {
+    src: JoystickImage,
+    alt: 'Ремонт джойстиків',
+    title: 'Ремонт джойстиків',
+  },
+  {
+    src: BoomboxImage,
+    alt: 'Ремонт колонок',
+    title: 'Ремонт колонок',
+  },
+  {
+    src: EbookImage,
+    alt: 'Ремонт читалок',
+    title: 'Ремонт читалок',
   },
 ]
 
@@ -55,11 +83,13 @@ export const HeroSection = () => {
   const renderList = () =>
     ITEMS.map((item, index) => (
       <li
-        className='bg-white-dis p-5 rounded-2xl mr-4 w-[120px] h-[148px]'
+        className='bg-white-dis px-5 py-[18px] rounded-2xl mr-4 min-w-[120px] w-[120px] h-[148px] flex flex-col justify-between items-center'
         key={index}
       >
-        <img src={item.src} alt={item.alt} />
-        <h4 className='text-center text-dark-blue'>{item.title}</h4>
+        <Image src={item.src} height={60} alt={item.alt} className='border' />
+        <h4 className='text-center text-dark-blue text-base font-inter leading-5'>
+          {item.title}
+        </h4>
       </li>
     ))
 
@@ -72,26 +102,43 @@ export const HeroSection = () => {
   //   ))
 
   return (
-    <section className='section w-full bg-dark-blue pt-36'>
-      <div className='container relative flex flex-col'>
-        <div className='flex flex-col items-center text-white-dis font-exo_2'>
-          <h2 className='text-3xl font-bold'>Бачимо гаджети</h2>
-          <h3 className='text-4xl font-bold'>наскрізь</h3>
+    <section className='section w-full bg-dark-blue pt-36 bg-contain bg-banner bg-center bg-no-repeat bg-img-banner'>
+      <div className='relative flex flex-col'>
+        <div className='flex flex-col items-center text-white-dis font-exo_2 px-4'>
+          <h2 className='text-3xl font-bold leading-none'>Бачимо гаджети</h2>
+          <h3
+            className='text-4xl font-bold leading-none'
+            style={{
+              WebkitTextStrokeWidth: 1,
+              WebkitTextStrokeColor: 'white',
+              color: 'transparent',
+            }}
+          >
+            наскрізь
+          </h3>
 
-          <p className='mb-14 text-md'>Мережа студій ремонту твоєї техніки</p>
-          <button className='rounded-xl bg-mid-green px-12 py-6'>
+          <p className='mt-5 text-md leading-none tracking-wide'>
+            Мережа студій ремонту твоєї техніки
+          </p>
+          <button className='rounded-xl mt-14 bg-mid-green px-12 py-4 w-full'>
             <span className='font-inter text-dark-blue font-semibold text-base'>
               Розрахувати вартість ремонту
             </span>
           </button>
         </div>
 
-        <div className='pt-36'>
-          <h3 className='text-white-dis font-exo_2 text-xl'>
+        <div className='pt-[426px]'>
+          <h3 className='text-white-dis font-exo_2 text-xl relative mx-4'>
             Найчастіші звернення
+            <Image
+              className='text-white-dis absolute top-1/2 right-0 -translate-y-1/2'
+              width={24}
+              height={24}
+              src={ArrowImage}
+              alt='arrow'
+            />
           </h3>
-          <ul className='flex py-8 overflow-x-scroll'>{renderList()}</ul>
-          <div className='border'>progress bar</div>
+          <ul className='flex ml-4 py-8 overflow-x-scroll'>{renderList()}</ul>
         </div>
 
         {/* <div className='border absolute right-0 top-0 hidden md:flex'>
