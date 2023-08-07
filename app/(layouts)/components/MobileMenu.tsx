@@ -1,7 +1,9 @@
-import { useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useRef, useCallback } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
+import Button from './Button'
+
 interface MobileMenuProps {
   toggleMobileMenu: () => void
   toggleCourierModal: () => void
@@ -102,17 +104,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             </li>
           </ul>
         </div>
-        <button
-          onClick={() => {
-            toggleMobileMenu()
-            toggleCourierModal()
-          }}
-          className='bg-[#00cc73] flex justify-center items-center rounded-lg m-4 hover:bg-mid-blue focus:bg-mid-blue'
-        >
-          <p className='whitespace-nowrap  font-semibold tracking-[0.64] text-[#04268b] px-[48px] py-[23px] '>
-            Викликати курʼєра
-          </p>
-        </button>
+        <Button
+          toggleCourierModal={toggleCourierModal}
+          textButton={'Викликати курʼєра'}
+        />
       </div>
     </div>
   )
