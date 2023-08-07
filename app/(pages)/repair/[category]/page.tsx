@@ -9,7 +9,6 @@ interface IndexProps {
     category: string
   }
 }
-/* @ts-expect-error Async Server Component */
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const categorySlug = params.category
   const categoriesUrl = `/api/categories?populate=*&[filters][slug]=${encodeURIComponent(

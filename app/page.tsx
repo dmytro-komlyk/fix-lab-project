@@ -8,7 +8,7 @@ import {
 
 export default function Home() {
   return (
-    <main className='flex-auto h-max'>
+    <main className='h-max flex-auto'>
       <HeroSection />
       <BrokenSection />
       <CallCourierSection />

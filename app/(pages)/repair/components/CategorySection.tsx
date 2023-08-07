@@ -83,7 +83,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                   />
                   <h2>{item.attributes.title}</h2>
                   <p>{item.attributes.description}</p>
-                  <button>Заявка на ремонт</button>
+                  <button type='button'>Заявка на ремонт</button>
                 </div>
               )
             })}
@@ -111,8 +111,11 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                 )
               })}
             </ul>
-            <button className='mt-[156px] w-full rounded-xl bg-mid-green'>
-              <p className='px-6 py-4 text-start font-exo_2 text-lg font-[700] text-dark-blue'>
+            <button
+              type='button'
+              className='mt-[156px] w-full rounded-xl bg-mid-green'
+            >
+              <p className='px-6 py-4 text-start font-exo_2 text-lg font-bold text-dark-blue'>
                 Розрахувати вартість ремонту
               </p>
             </button>

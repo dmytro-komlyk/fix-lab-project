@@ -59,6 +59,8 @@
         "simple-import-sort/imports": "error", // Import configuration for `eslint-plugin-simple-import-sort`
         "simple-import-sort/exports": "error", // Export configuration for `eslint-plugin-simple-import-sort`
         "tailwindcss/no-custom-classname": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-static-element-interactions": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [

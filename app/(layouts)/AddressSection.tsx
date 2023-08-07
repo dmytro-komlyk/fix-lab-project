@@ -9,7 +9,7 @@ export const AddressSection = () => {
         <h2 className='mb-8 font-exo_2 font-bold text-dark-blue'>
           Як нас знайти
         </h2>
-        {/* @ts-expect-error Async Server Component */}
+
         <CardList />
       </div>
     </section>

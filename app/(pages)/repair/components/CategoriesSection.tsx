@@ -45,7 +45,7 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
           <div className='flex flex-col'>
             <h3>Що зламалося?</h3>
             <p>Наша місія - давати життя гаджетам!</p>
-            <button>Миттєва консультація</button>
+            <button type='button'>Миттєва консультація</button>
           </div>
           <div className='flex flex-col'>
             <h3>Швидкий звʼязок</h3>

@@ -11,6 +11,7 @@ const Button: React.FC<ButtonProps> = ({ toggleCourierModal, textButton }) => {
 
   return (
     <button
+      type='button'
       onClick={toggleCourierModal}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}

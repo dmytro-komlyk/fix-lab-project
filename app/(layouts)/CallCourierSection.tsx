@@ -25,7 +25,7 @@ export const CallCourierSection: React.FC = () => {
               height={187}
               priority
             />
-            <p className='absolute left-[373px] top-[112px] font-gugi text-xl  font-[400] text-white-dis max-xl:left-[295px] max-xl:top-[89px] max-xl:text-lg max-lg:left-[295px] max-lg:top-[89px] max-md:left-[185px]  max-md:top-[56px] max-md:text-sm'>
+            <p className='absolute left-[373px] top-[112px] font-gugi text-xl  font-normal text-white-dis max-xl:left-[295px] max-xl:top-[89px] max-xl:text-lg max-lg:left-[295px] max-lg:top-[89px] max-md:left-[185px]  max-md:top-[56px] max-md:text-sm'>
               FixLab
             </p>
           </div>

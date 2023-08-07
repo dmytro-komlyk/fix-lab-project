@@ -95,7 +95,10 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       }}
                       className='mb-[52px] text-base font-[400] text-white-dis'
                     />
-                    <button className='mb-[52px]  h-[58px] w-[304px] rounded-xl bg-mid-blue font-mono text-base text-white-dis'>
+                    <button
+                      type='button'
+                      className='mb-[52px]  h-[58px] w-[304px] rounded-xl bg-mid-blue font-mono text-base text-white-dis'
+                    >
                       Безкоштовна діагностика
                     </button>
 
@@ -140,7 +143,10 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       className=' mb-14 text-base font-[400] text-white-dis'
                     />
                     <div className='flex gap-5'>
-                      <button className=' relative h-[116px] w-[356px] rounded-2xl bg-light-green'>
+                      <button
+                        type='button'
+                        className=' relative h-[116px] w-[356px] rounded-2xl bg-light-green'
+                      >
                         <p className=' absolute bottom-[25px] left-[34px] w-[175px] text-start font-exo_2 text-lg font-semibold text-[#FDFEFF]'>
                           Розрахувати вартість ремонту
                         </p>
@@ -148,8 +154,11 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                           <FiArrowUpRight size={56} color='#fff' />
                         </div>
                       </button>
-                      <button className=' relative h-[116px] w-[356px] rounded-2xl bg-light-green'>
-                        <p className=' absolute bottom-[25px] left-[34px] font-exo_2 text-lg font-semibold text-[#FDFEFF]'>
+                      <button
+                        type='button'
+                        className='relative h-[116px] w-[356px] rounded-2xl bg-light-green'
+                      >
+                        <p className='absolute bottom-[25px] left-[34px] font-exo_2 text-lg font-semibold text-[#FDFEFF]'>
                           Викликати курʼєра
                         </p>
                         <div className=' absolute right-[2px] top-[2px]'>

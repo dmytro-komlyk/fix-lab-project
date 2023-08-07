@@ -70,8 +70,8 @@ export const Header: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 0
-      setIsScrolled(isScrolled)
+      const isScroll = window.scrollY > 0
+      setIsScrolled(isScroll)
       window.localStorage.setItem('isScrolled', JSON.stringify(isScrolled))
     }
 
@@ -80,8 +80,7 @@ export const Header: React.FC = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [])
-
+  }, [isScrolled])
   const toggleMobileMenu = useCallback(() => {
     setMobileMenuOpen(prev => !prev)
   }, [])
@@ -123,7 +122,10 @@ export const Header: React.FC = () => {
               isOpenItem ? 'rounded-t-xl' : 'rounded-xl'
             } `}
           >
-            <button className='relative text-base font-semibold text-white-dis'>
+            <button
+              type='button'
+              className='relative text-base font-semibold text-white-dis'
+            >
               {selectedRegionItem}
             </button>
             <FiMapPin
@@ -163,6 +165,7 @@ export const Header: React.FC = () => {
                       className='absolute bottom-[-48px] left-[-2px] flex w-[196px] flex-col items-center  justify-center gap-2 rounded-b-xl  bg-mid-green  hover:bg-mid-blue  focus:bg-mid-blue'
                     >
                       <button
+                        type='button'
                         onClick={toggleDropDown}
                         key={item}
                         className='select-none py-3 text-base font-semibold text-dark-blue'

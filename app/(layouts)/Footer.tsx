@@ -24,7 +24,7 @@ export const Footer = () => {
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis hover:opacity-80  focus:opacity-80'
-                href='#'
+                href='/#'
               >
                 Ремонт iphone
               </Link>
@@ -32,7 +32,7 @@ export const Footer = () => {
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis hover:opacity-80  focus:opacity-80'
-                href='#'
+                href='/#'
               >
                 Ремонт xiaomi
               </Link>
@@ -40,7 +40,7 @@ export const Footer = () => {
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis hover:opacity-80  focus:opacity-80'
-                href='#'
+                href='/#'
               >
                 Ремонт huawei
               </Link>
@@ -48,7 +48,7 @@ export const Footer = () => {
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis hover:opacity-80  focus:opacity-80'
-                href='#'
+                href='/#'
               >
                 Ремонт samsung
               </Link>
@@ -56,7 +56,7 @@ export const Footer = () => {
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis hover:opacity-80  focus:opacity-80'
-                href='#'
+                href='/#'
               >
                 Ремонт ноутбуків
               </Link>
@@ -64,7 +64,7 @@ export const Footer = () => {
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis hover:opacity-80  focus:opacity-80'
-                href='#'
+                href='/#'
               >
                 Ремонт dualsense
               </Link>
@@ -73,7 +73,7 @@ export const Footer = () => {
           <ul className='flex flex-col justify-between md:hidden'>
             <Link
               className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase '
-              href='#'
+              href='/#'
             >
               <Image
                 className='h-[25px] w-[25px]'
@@ -85,7 +85,7 @@ export const Footer = () => {
             </Link>
             <Link
               className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase '
-              href='#'
+              href='/#'
             >
               <Image
                 className='h-[25px] w-[25px]'
@@ -97,7 +97,7 @@ export const Footer = () => {
             </Link>
             <Link
               className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase '
-              href='#'
+              href='/#'
             >
               <LiaViber size={28} fill='#8c5da7' />
             </Link>
@@ -179,7 +179,7 @@ export const Footer = () => {
             <ul className='flex  max-md:hidden md:flex md:gap-3'>
               <Link
                 className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase hover:opacity-80  focus:opacity-80 '
-                href='#'
+                href='/#'
               >
                 <Image
                   className='h-[25px] w-[25px]'
@@ -191,7 +191,7 @@ export const Footer = () => {
               </Link>
               <Link
                 className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase hover:opacity-80  focus:opacity-80 '
-                href='#'
+                href='/#'
               >
                 <Image
                   className='h-[25px] w-[25px]'
@@ -203,7 +203,7 @@ export const Footer = () => {
               </Link>
               <Link
                 className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase hover:opacity-80  focus:opacity-80 '
-                href='#'
+                href='/#'
               >
                 <LiaViber size={28} fill='#8c5da7' />
               </Link>

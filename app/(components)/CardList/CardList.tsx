@@ -23,7 +23,7 @@ async function getData() {
   return response.json()
 }
 
-export const CardList = async () => {
+export const CardList = async (): Promise<JSX.Element> => {
   const locations: Location[] = await getData()
   return (
     <ul className='w-full lg:flex lg:gap-6'>
