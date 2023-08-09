@@ -4,11 +4,27 @@ import { LiaViber } from 'react-icons/lia'
 
 export const Footer = () => {
   return (
-    <footer className=' w-full bg-dark-blue bg-cover bg-no-repeat max-md:bg-bg-footer-img-sm md:bg-bg-footer-img-lg'>
-      <div className='container items-start pb-[92px] pt-14 md:flex  md:flex-row-reverse md:justify-between md:gap-[80px] lg:flex-row lg:px-0'>
+    <footer className='w-full  bg-footer-gradient-linear-blue '>
+      <div className=' container relative z-[1] items-start pb-[92px] pt-14 md:flex  md:flex-row-reverse md:justify-between md:gap-[80px] lg:flex-row lg:px-0'>
+        <div className='absolute left-[261px] top-[55px] z-0 hidden md:flex'>
+          <Image
+            src='/background-flicker-footer-pc.svg'
+            width={1008}
+            height={328}
+            alt='flicker'
+          />
+        </div>
+        <div className='absolute right-[69px] top-[0] z-0 hidden max-md:flex'>
+          <Image
+            src='/background-flicker-footer-mobile.svg'
+            width={637}
+            height={321}
+            alt='flicker'
+          />
+        </div>
         <Link
           href='/'
-          className='mr-12 flex gap-3 hover:opacity-80 focus:opacity-80 max-md:m-0 md:hidden lg:m-0  lg:flex'
+          className='mr-12 flex gap-3  transition-opacity hover:opacity-80 focus:opacity-80 max-md:m-0 md:hidden lg:m-0  lg:flex'
         >
           <Image
             className='h-auto w-[167px] max-md:w-[129px]'
@@ -19,11 +35,11 @@ export const Footer = () => {
             priority
           />
         </Link>
-        <div className='mt-14 flex justify-between md:m-0    '>
+        <div className='z-[1] mt-14 flex justify-between   md:m-0 '>
           <ul className='flex flex-col gap-6'>
             <li>
               <Link
-                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/#'
               >
                 Ремонт iphone
@@ -31,7 +47,7 @@ export const Footer = () => {
             </li>
             <li>
               <Link
-                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/#'
               >
                 Ремонт xiaomi
@@ -39,7 +55,7 @@ export const Footer = () => {
             </li>
             <li>
               <Link
-                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/#'
               >
                 Ремонт huawei
@@ -47,7 +63,7 @@ export const Footer = () => {
             </li>
             <li>
               <Link
-                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/#'
               >
                 Ремонт samsung
@@ -55,7 +71,7 @@ export const Footer = () => {
             </li>
             <li>
               <Link
-                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/#'
               >
                 Ремонт ноутбуків
@@ -63,7 +79,7 @@ export const Footer = () => {
             </li>
             <li>
               <Link
-                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/#'
               >
                 Ремонт dualsense
@@ -103,12 +119,12 @@ export const Footer = () => {
             </Link>
           </ul>
         </div>
-        <div className='mt-14 flex justify-between md:m-0 md:flex-row-reverse md:gap-[120px] lg:flex-row xl:gap-[200px] '>
+        <div className='z-[1] mt-14 flex justify-between md:m-0 md:flex-row-reverse md:gap-[120px] lg:flex-row xl:gap-[200px]'>
           <ul className='flex flex-col gap-6'>
             <li>
               <Link
                 href='/repair'
-                className='text-base font-semibold text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Ремонт
               </Link>
@@ -116,7 +132,7 @@ export const Footer = () => {
             <li>
               <Link
                 href='/contacts'
-                className='text-base font-semibold text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Контакти
               </Link>
@@ -124,7 +140,7 @@ export const Footer = () => {
             <li>
               <Link
                 href='/blog'
-                className='text-base font-semibold text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Блог
               </Link>
@@ -132,7 +148,7 @@ export const Footer = () => {
             <li>
               <Link
                 href='/corporate'
-                className='text-base font-semibold capitalize text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold capitalize text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Для бізнесу
               </Link>
@@ -141,7 +157,7 @@ export const Footer = () => {
           <div className='flex flex-col items-end justify-between md:flex-col md:items-start md:gap-[30px] lg:flex lg:items-end lg:gap-[50px]'>
             <Link
               href='/'
-              className=' flex gap-3  hover:opacity-80 focus:opacity-80 max-md:hidden  lg:hidden'
+              className=' flex gap-3   transition-opacity hover:opacity-80 focus:opacity-80 max-md:hidden  lg:hidden'
             >
               <Image
                 className='h-auto w-[129px]'
@@ -154,20 +170,20 @@ export const Footer = () => {
             </Link>
             <ul>
               <li>
-                <Link
+                <a
                   href='tel:380632272730'
-                  className='text-base font-medium leading-7 tracking-wide text-mid-green hover:text-white-dis  focus:text-white-dis'
+                  className='text-base font-medium leading-7 tracking-wide text-mid-green transition-colors hover:text-white-dis  focus:text-white-dis'
                 >
                   +38 063 227 27 30
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
+                <a
                   href='tel:380632272728'
-                  className='text-base font-medium leading-7 tracking-wide text-mid-green hover:text-white-dis  focus:text-white-dis'
+                  className='text-base font-medium leading-7 tracking-wide text-mid-green transition-colors hover:text-white-dis  focus:text-white-dis'
                 >
                   +38 063 227 27 28
-                </Link>
+                </a>
               </li>
             </ul>
 
@@ -178,7 +194,7 @@ export const Footer = () => {
             </p>
             <ul className='flex  max-md:hidden md:flex md:gap-3'>
               <Link
-                className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase hover:opacity-80  focus:opacity-80 '
+                className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
                 href='/#'
               >
                 <Image
@@ -190,7 +206,7 @@ export const Footer = () => {
                 />
               </Link>
               <Link
-                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase hover:opacity-80  focus:opacity-80 '
+                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
                 href='/#'
               >
                 <Image
@@ -202,7 +218,7 @@ export const Footer = () => {
                 />
               </Link>
               <Link
-                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase hover:opacity-80  focus:opacity-80 '
+                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
                 href='/#'
               >
                 <LiaViber size={28} fill='#8c5da7' />
