@@ -85,20 +85,22 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
               return (
                 <div className=' flex justify-between gap-[27px]' key={item.id}>
                   <div className='flex w-[516px] flex-col'>
-                    <h2 className='mb-8 font-exo_2 text-2xl font-[700] text-white-dis'>
+                    <h2 className='mb-8 font-exo_2 text-2xl font-bold text-white-dis'>
                       {item.attributes.title}
                     </h2>
                     <div
-
+                      // eslint-disable-next-line react/no-danger
                       dangerouslySetInnerHTML={{
                         __html: markdown.render(item.attributes.description),
                       }}
                       className='mb-[52px] text-base font-[400] text-white-dis'
                     />
-                    <button className='mb-[52px]  h-[58px] w-[304px] rounded-xl bg-mid-blue font-mono text-base text-white-dis'>
+                    <button
+                      type='button'
+                      className='mb-[52px]  h-[58px] w-[304px] rounded-xl bg-mid-blue font-mono text-base text-white-dis'
+                    >
                       Безкоштовна діагностика
                     </button>
-
                     <h3>Швидкий звʼязок</h3>
                     <p>Подзвонити нам</p>
                     <div className='mb-[23px]'>
@@ -106,17 +108,17 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       <p>10:00 - 19:00</p>
                       <p>нд - вихідний</p>
                     </div>
-                    <div className='mb-[52px] flex w-[409px] items-center gap-[30px] rounded-xl bg-[#fff] bg-opacity-70 py-[20px] pl-[30px] text-center text-base  font-[500] text-light-blue'>
+                    <div className='mb-[52px] flex w-[409px] items-center gap-[30px] rounded-xl bg-[#fff] bg-opacity-[70] py-[20px] pl-[30px] text-center text-base  font-[500] text-light-blue'>
                       <CiSearch size={58} color='#1B37AA' />
                       <p> Безкоштовна діагностика</p>
                     </div>
                     {item.attributes.guarantee && (
-                      <div className='mb-[52px] flex w-[409px] items-center gap-[30px] rounded-xl bg-[#fff] bg-opacity-70 py-[20px] pl-[30px] text-center text-base  font-[500] text-light-blue'>
+                      <div className='mb-[52px] flex w-[409px] items-center gap-[30px] rounded-xl bg-[#fff] bg-opacity-[70] py-[20px] pl-[30px] text-center text-base  font-[500] text-light-blue'>
                         <BsShield size={58} color='#1B37AA' />
                         Гарантія до {item.attributes.guarantee}
                       </div>
                     )}
-                    <div className='mb-[52px] flex w-[409px] items-center gap-[30px] rounded-xl bg-[#fff] bg-opacity-70 py-[20px] pl-[30px] text-center text-base  font-[500] text-light-blue'>
+                    <div className='mb-[52px] flex w-[409px] items-center gap-[30px] rounded-xl bg-[#fff] bg-opacity-[70] py-[20px] pl-[30px] text-center text-base  font-[500] text-light-blue'>
                       <BiTimeFive size={58} color='#1B37AA' />
                       Час ремонту від {item.attributes.repair_time}
                     </div>
@@ -134,13 +136,17 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       {item.attributes.top_text_content}
                     </h3>
                     <div
+                      // eslint-disable-next-line react/no-danger
                       dangerouslySetInnerHTML={{
                         __html: markdown.render(item.attributes.text_content),
                       }}
                       className='mb-14 text-base font-[400] text-white-dis'
                     />
                     <div className='flex gap-5'>
-                      <button className=' relative h-[116px] w-[356px] rounded-2xl bg-light-green'>
+                      <button
+                        type='button'
+                        className=' relative h-[116px] w-[356px] rounded-2xl bg-light-green'
+                      >
                         <p className=' absolute bottom-[25px] left-[34px] w-[175px] text-start font-exo_2 text-lg font-semibold text-[#FDFEFF]'>
                           Розрахувати вартість ремонту
                         </p>
@@ -148,7 +154,10 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                           <FiArrowUpRight size={56} color='#fff' />
                         </div>
                       </button>
-                      <button className=' relative h-[116px] w-[356px] rounded-2xl bg-light-green'>
+                      <button
+                        type='button'
+                        className=' relative h-[116px] w-[356px] rounded-2xl bg-light-green'
+                      >
                         <p className=' absolute bottom-[25px] left-[34px] font-exo_2 text-lg font-semibold text-[#FDFEFF]'>
                           Викликати курʼєра
                         </p>
