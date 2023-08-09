@@ -320,13 +320,12 @@ export const Header: React.FC = () => {
               </li>
             )}
           </ul>
-          <button
-            type='button'
-            className='text-gray-700 -m-2.5 items-center justify-center rounded-md p-2.5 transition-opacity hover:opacity-80 focus:opacity-80  md:pl-8'
+          <div
+            className=' text-gray-700 -m-2.5 cursor-pointer items-center justify-center rounded-md p-2.5 transition-opacity hover:opacity-80 focus:opacity-80  md:pl-8'
             onClick={toggleMobileMenu}
           >
             <FaBars className='h-8 w-8' aria-hidden='true' color='#F8F8F8' />
-          </button>
+          </div>
         </div>
       </nav>
       {mobileMenuOpen && (

@@ -25,6 +25,7 @@ export const Footer = () => {
         <Link
           href='/'
           className='mr-12 flex gap-3  transition-opacity hover:opacity-80 focus:opacity-80 max-md:m-0 md:hidden lg:m-0  lg:flex'
+          aria-label='Логотип'
         >
           <Image
             className='h-auto w-[167px] max-md:w-[129px]'
@@ -87,36 +88,42 @@ export const Footer = () => {
             </li>
           </ul>
           <ul className='flex flex-col justify-between md:hidden'>
-            <Link
-              className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase '
-              href='/#'
-            >
-              <Image
-                className='h-[25px] w-[25px]'
-                src='/icons/skill-icons_instagram.svg'
-                width='0'
-                height='0'
-                alt='Instagram icon'
-              />
-            </Link>
-            <Link
-              className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase '
-              href='/#'
-            >
-              <Image
-                className='h-[25px] w-[25px]'
-                src='/icons/logos_telegram.svg'
-                width='0'
-                height='0'
-                alt='Telegram icon'
-              />
-            </Link>
-            <Link
-              className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase '
-              href='/#'
-            >
-              <LiaViber size={28} fill='#8c5da7' />
-            </Link>
+            <li>
+              <Link
+                className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase '
+                href='/#'
+              >
+                <Image
+                  className='h-[25px] w-[25px]'
+                  src='/icons/skill-icons_instagram.svg'
+                  width='0'
+                  height='0'
+                  alt='Instagram icon'
+                />
+              </Link>
+            </li>
+            <li>
+              <Link
+                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase '
+                href='/#'
+              >
+                <Image
+                  className='h-[25px] w-[25px]'
+                  src='/icons/logos_telegram.svg'
+                  width='0'
+                  height='0'
+                  alt='Telegram icon'
+                />
+              </Link>
+            </li>
+            <li>
+              <Link
+                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase '
+                href='/#'
+              >
+                <LiaViber size={28} fill='#8c5da7' />
+              </Link>
+            </li>
           </ul>
         </div>
         <div className='z-[1] mt-14 flex justify-between md:m-0 md:flex-row-reverse md:gap-[120px] lg:flex-row xl:gap-[200px]'>
@@ -193,36 +200,45 @@ export const Footer = () => {
               <span className='text-sm  text-white-dis '>нд - вихідний</span>
             </p>
             <ul className='flex  max-md:hidden md:flex md:gap-3'>
-              <Link
-                className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
-                href='/#'
-              >
-                <Image
-                  className='h-[25px] w-[25px]'
-                  src='/icons/skill-icons_instagram.svg'
-                  width='0'
-                  height='0'
-                  alt='Instagram icon'
-                />
-              </Link>
-              <Link
-                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
-                href='/#'
-              >
-                <Image
-                  className='h-[25px] w-[25px]'
-                  src='/icons/logos_telegram.svg'
-                  width='0'
-                  height='0'
-                  alt='Telegram icon'
-                />
-              </Link>
-              <Link
-                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
-                href='/#'
-              >
-                <LiaViber size={28} fill='#8c5da7' />
-              </Link>
+              <li>
+                <Link
+                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
+                  href='/#'
+                  aria-label='Соціальні мережі'
+                >
+                  <Image
+                    className='h-[25px] w-[25px]'
+                    src='/icons/skill-icons_instagram.svg'
+                    width='0'
+                    height='0'
+                    alt='Instagram icon'
+                  />
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
+                  href='/#'
+                  aria-label='Соціальні мережі'
+                >
+                  <Image
+                    className='h-[25px] w-[25px]'
+                    src='/icons/logos_telegram.svg'
+                    width='0'
+                    height='0'
+                    alt='Telegram icon'
+                  />
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
+                  href='/#'
+                  aria-label='Соціальні мережі'
+                >
+                  <LiaViber size={28} fill='#8c5da7' />
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

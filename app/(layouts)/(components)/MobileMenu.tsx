@@ -36,12 +36,26 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   )
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden'
+    document.body.style.overflowY = 'hidden'
+    document.body.style.paddingRight = '17px'
+
+    const paddingLock = document.getElementsByClassName('padding-lock')
+    for (let i = 0; i < paddingLock.length; i += 1) {
+      const element = paddingLock[i] as HTMLElement
+      element.style.paddingRight = '17px'
+    }
 
     window.addEventListener('keydown', handleEscKeyPressMenu)
 
     return () => {
-      document.body.style.overflow = 'auto'
+      document.body.style.overflowY = 'auto'
+      document.body.style.paddingRight = '0'
+
+      for (let i = 0; i < paddingLock.length; i += 1) {
+        const element = paddingLock[i] as HTMLElement
+        element.style.paddingRight = '0'
+      }
+
       window.removeEventListener('keydown', handleEscKeyPressMenu)
     }
   }, [handleEscKeyPressMenu])
@@ -55,7 +69,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           exit={{ opacity: 1, transition: { duration: 0.3 } }}
           ref={mobileMenuRef}
           onClick={onBackdropCloseMobileMenu}
-          className='absolute left-0 top-0 z-10 h-[100vh] w-full overflow-y-auto bg-modal-overlay'
+          className='absolute left-0 top-0 z-10 h-[100vh] w-full overflow-y-auto overflow-x-hidden bg-modal-overlay'
         >
           <motion.div
             initial={{ x: 500 }}
