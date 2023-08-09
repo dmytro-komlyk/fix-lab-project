@@ -50,12 +50,26 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
   )
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden'
+    document.body.style.overflowY = 'hidden'
+    document.body.style.paddingRight = '17px'
+
+    const paddingLock = document.getElementsByClassName('padding-lock')
+    for (let i = 0; i < paddingLock.length; i += 1) {
+      const element = paddingLock[i] as HTMLElement
+      element.style.paddingRight = '17px'
+    }
 
     window.addEventListener('keydown', handleEscKeyPressModal)
 
     return () => {
-      document.body.style.overflow = 'auto'
+      document.body.style.overflowY = 'auto'
+      document.body.style.paddingRight = '0'
+
+      for (let i = 0; i < paddingLock.length; i += 1) {
+        const element = paddingLock[i] as HTMLElement
+        element.style.paddingRight = '0'
+      }
+
       window.removeEventListener('keydown', handleEscKeyPressModal)
     }
   }, [handleEscKeyPressModal])
@@ -88,16 +102,14 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, transition: { duration: 0.3 } }}
         exit={{ opacity: 1, transition: { duration: 0.3 } }}
-        transition={{ duration: 0.3 }}
         ref={modalRef}
         onClick={onBackdropCloseModal}
-        className='fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center overflow-y-auto  bg-modal-overlay'
+        className='fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center  overflow-y-auto overflow-x-hidden  bg-modal-overlay'
       >
         <motion.div
-          initial={{ opacity: 0, y: 500 }}
-          animate={{ opacity: 1, y: 0, transition: { duration: 0.5 } }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, transition: { duration: 0.5 } }}
           exit={{ opacity: 0, transition: { duration: 0.5 } }}
-          transition={{ duration: 0.3 }}
           className='relative max-w-[414px]  flex-col items-center justify-start rounded-2xl bg-[#00cc73] p-14 max-sm:px-4'
         >
           <button

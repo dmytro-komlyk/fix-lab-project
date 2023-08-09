@@ -91,7 +91,7 @@ export const Header: React.FC = () => {
 
   return (
     <header
-      className={`max-md fixed left-0 top-0 z-10 flex w-full items-center transition-colors ${
+      className={`padding-lock max-md fixed left-0 top-0 z-10 flex w-full items-center transition-colors ${
         isScrolled || pathname === '/repair' ? ' bg-[#04268B]' : ''
       }`}
     >
@@ -168,7 +168,7 @@ export const Header: React.FC = () => {
                         exit={{
                           y: -5,
                           opacity: 0,
-                          transition: { duration: 0.2 },
+                          transition: { duration: 0.1 },
                         }}
                         key={item}
                         onClick={() => {
