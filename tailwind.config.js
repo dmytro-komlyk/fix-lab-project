@@ -28,7 +28,7 @@ module.exports = {
     fontSize: {
       sm: '0.875rem' /* 14px */,
       base: '1rem' /* 16px */,
-      md: '1.21rem' /* 19.41px */,
+      md: '1.125rem' /* 18px */,
       lg: '1.25rem' /* 20px */,
       xl: '1.5rem' /* 24px */,
       '2xl': '2rem' /* 32px */,
@@ -68,14 +68,16 @@ module.exports = {
           'linear-gradient(99deg, #20B9F4 0%, #00CC73 100%)',
         'card-gradient-blue':
           'linear-gradient(123deg, #121C37 0%, #04248B 55.98%, #264CC7 100%)',
-        'bg-footer-img-sm': "url('/images/background-footer-mobile.jpg')",
-        'bg-footer-img-lg': "url('/images/background-footer-pc.jpg')",
+        'gradient-linear-blue':
+          'linear-gradient(109deg, #121C37 0%, #0D225E 8%, #04248B 16%, #264CC7 100%)',
+        'footer-gradient-linear-blue':
+          'linear-gradient(134deg, #121C37 0%, #04248B 55.98%, #264CC7 100%)',
         'bg-courier-img-lg': "url('/images/courier-background-pc.png')",
         'banner-img': "url('/images/microscope-main.svg')",
       },
       animation: {
-        hoverBtnIn: 'slide-out-top 0.2s ease-in-out both;',
-        hoverBtnOut: 'slide-out-bottom 0.2s ease-in-out both;',
+        hoverBtnIn: 'slide-out-top 0.2s ease-in-out both',
+        hoverBtnOut: 'slide-out-bottom 0.2s ease-in-out both',
       },
     },
   },

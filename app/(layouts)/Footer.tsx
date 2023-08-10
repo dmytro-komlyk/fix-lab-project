@@ -4,111 +4,134 @@ import { LiaViber } from 'react-icons/lia'
 
 export const Footer = () => {
   return (
-    <footer className=' bg-dark-blue max-md:bg-bg-footer-img-sm w-full md:bg-bg-footer-img-lg bg-no-repeat bg-cover'>
-      <div className='lg:px-0 container pt-14 pb-[92px] md:flex  md:gap-[80px] items-start md:justify-between md:flex-row-reverse lg:flex-row'>
+    <footer className='w-full  bg-footer-gradient-linear-blue '>
+      <div className=' container relative z-[1] items-start pb-[92px] pt-14 md:flex  md:flex-row-reverse md:justify-between md:gap-[80px] lg:flex-row lg:px-0'>
+        <div className='absolute left-[261px] top-[55px] z-0 hidden md:flex'>
+          <Image
+            src='/background-flicker-footer-pc.svg'
+            width={1008}
+            height={328}
+            alt='flicker'
+          />
+        </div>
+        <div className='absolute right-[69px] top-[0] z-0 hidden max-md:flex'>
+          <Image
+            src='/background-flicker-footer-mobile.svg'
+            width={637}
+            height={321}
+            alt='flicker'
+          />
+        </div>
         <Link
           href='/'
-          className='mr-12 max-md:m-0 flex gap-3 lg:m-0 lg:flex md:hidden hover:opacity-80  focus:opacity-80'
+          className='mr-12 flex gap-3  transition-opacity hover:opacity-80 focus:opacity-80 max-md:m-0 md:hidden lg:m-0  lg:flex'
+          aria-label='Логотип'
         >
           <Image
             className='h-auto w-[167px] max-md:w-[129px]'
-            src='/logo/logo.svg'
+            src='/logo.svg'
             alt='FixLab logo'
             width='0'
             height='0'
             priority
           />
         </Link>
-        <div className='flex justify-between mt-14 md:m-0    '>
+        <div className='z-[1] mt-14 flex justify-between   md:m-0 '>
           <ul className='flex flex-col gap-6'>
             <li>
               <Link
-                className='text-center text-white-dis text-base font-semibold uppercase tracking-wide hover:opacity-80  focus:opacity-80'
-                href={'#'}
+                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                href='/#'
               >
                 Ремонт iphone
               </Link>
             </li>
             <li>
               <Link
-                className='text-center text-white-dis text-base font-semibold uppercase tracking-wide hover:opacity-80  focus:opacity-80'
-                href={'#'}
+                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                href='/#'
               >
                 Ремонт xiaomi
               </Link>
             </li>
             <li>
               <Link
-                className='text-center text-white-dis text-base font-semibold uppercase tracking-wide hover:opacity-80  focus:opacity-80'
-                href={'#'}
+                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                href='/#'
               >
                 Ремонт huawei
               </Link>
             </li>
             <li>
               <Link
-                className='text-center text-white-dis text-base font-semibold uppercase tracking-wide hover:opacity-80  focus:opacity-80'
-                href={'#'}
+                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                href='/#'
               >
                 Ремонт samsung
               </Link>
             </li>
             <li>
               <Link
-                className='text-center text-white-dis text-base font-semibold uppercase tracking-wide hover:opacity-80  focus:opacity-80'
-                href={'#'}
+                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                href='/#'
               >
                 Ремонт ноутбуків
               </Link>
             </li>
             <li>
               <Link
-                className='text-center text-white-dis text-base font-semibold uppercase tracking-wide hover:opacity-80  focus:opacity-80'
-                href={'#'}
+                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                href='/#'
               >
                 Ремонт dualsense
               </Link>
             </li>
           </ul>
           <ul className='flex flex-col justify-between md:hidden'>
-            <Link
-              className='flex justify-center items-center uppercase bg-white-dis rounded-[50%] w-12 h-12 '
-              href={'#'}
-            >
-              <Image
-                className='w-[25px] h-[25px]'
-                src={'/icons/skill-icons_instagram.svg'}
-                width='0'
-                height='0'
-                alt='Instagram icon'
-              />
-            </Link>
-            <Link
-              className='flex justify-center items-center  uppercase bg-white-dis rounded-[50%] w-12 h-12 '
-              href={'#'}
-            >
-              <Image
-                className='w-[25px] h-[25px]'
-                src={'/icons/logos_telegram.svg'}
-                width='0'
-                height='0'
-                alt='Telegram icon'
-              />
-            </Link>
-            <Link
-              className='flex justify-center items-center  uppercase bg-white-dis rounded-[50%] w-12 h-12 '
-              href={'#'}
-            >
-              <LiaViber size={28} fill='#8c5da7' />
-            </Link>
+            <li>
+              <Link
+                className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase '
+                href='/#'
+              >
+                <Image
+                  className='h-[25px] w-[25px]'
+                  src='/icons/skill-icons_instagram.svg'
+                  width='0'
+                  height='0'
+                  alt='Instagram icon'
+                />
+              </Link>
+            </li>
+            <li>
+              <Link
+                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase '
+                href='/#'
+              >
+                <Image
+                  className='h-[25px] w-[25px]'
+                  src='/icons/logos_telegram.svg'
+                  width='0'
+                  height='0'
+                  alt='Telegram icon'
+                />
+              </Link>
+            </li>
+            <li>
+              <Link
+                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase '
+                href='/#'
+              >
+                <LiaViber size={28} fill='#8c5da7' />
+              </Link>
+            </li>
           </ul>
         </div>
-        <div className='flex justify-between mt-14 md:m-0 md:flex-row-reverse lg:flex-row md:gap-[120px] xl:gap-[200px] '>
+        <div className='z-[1] mt-14 flex justify-between md:m-0 md:flex-row-reverse md:gap-[120px] lg:flex-row xl:gap-[200px]'>
           <ul className='flex flex-col gap-6'>
             <li>
               <Link
                 href='/repair'
-                className='text-base font-semibold text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Ремонт
               </Link>
@@ -116,7 +139,7 @@ export const Footer = () => {
             <li>
               <Link
                 href='/contacts'
-                className='text-base font-semibold text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Контакти
               </Link>
@@ -124,7 +147,7 @@ export const Footer = () => {
             <li>
               <Link
                 href='/blog'
-                className='text-base font-semibold text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Блог
               </Link>
@@ -132,20 +155,20 @@ export const Footer = () => {
             <li>
               <Link
                 href='/corporate'
-                className='capitalize text-base font-semibold text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold capitalize text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Для бізнесу
               </Link>
             </li>
           </ul>
-          <div className='flex flex-col md:gap-[30px] lg:gap-[50px] items-end md:items-start lg:items-end justify-between md:flex-col lg:flex'>
+          <div className='flex flex-col items-end justify-between md:flex-col md:items-start md:gap-[30px] lg:flex lg:items-end lg:gap-[50px]'>
             <Link
               href='/'
-              className=' flex gap-3  max-md:hidden lg:hidden hover:opacity-80  focus:opacity-80'
+              className=' flex gap-3   transition-opacity hover:opacity-80 focus:opacity-80 max-md:hidden  lg:hidden'
             >
               <Image
                 className='h-auto w-[129px]'
-                src='/logo/logo.svg'
+                src='/logo.svg'
                 alt='FixLab logo'
                 width='0'
                 height='0'
@@ -154,59 +177,68 @@ export const Footer = () => {
             </Link>
             <ul>
               <li>
-                <Link
+                <a
                   href='tel:380632272730'
-                  className='text-mid-green text-base font-medium leading-7 tracking-wide hover:text-white-dis  focus:text-white-dis'
+                  className='text-base font-medium leading-7 tracking-wide text-mid-green transition-colors hover:text-white-dis  focus:text-white-dis'
                 >
                   +38 063 227 27 30
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
+                <a
                   href='tel:380632272728'
-                  className='text-mid-green text-base font-medium leading-7 tracking-wide hover:text-white-dis  focus:text-white-dis'
+                  className='text-base font-medium leading-7 tracking-wide text-mid-green transition-colors hover:text-white-dis  focus:text-white-dis'
                 >
                   +38 063 227 27 28
-                </Link>
+                </a>
               </li>
             </ul>
 
-            <p className='flex flex-col gap-1 items-start '>
+            <p className='flex flex-col items-start gap-1 '>
               <span className='text-sm  text-white-dis'>10:00 - 19:30</span>
 
               <span className='text-sm  text-white-dis '>нд - вихідний</span>
             </p>
-            <ul className='flex  md:flex md:gap-3 max-md:hidden'>
-              <Link
-                className='flex justify-center items-center uppercase bg-white-dis rounded-[50%] w-12 h-12 hover:opacity-80  focus:opacity-80 '
-                href={'#'}
-              >
-                <Image
-                  className='w-[25px] h-[25px]'
-                  src={'/icons/skill-icons_instagram.svg'}
-                  width='0'
-                  height='0'
-                  alt='Instagram icon'
-                />
-              </Link>
-              <Link
-                className='flex justify-center items-center  uppercase bg-white-dis rounded-[50%] w-12 h-12 hover:opacity-80  focus:opacity-80 '
-                href={'#'}
-              >
-                <Image
-                  className='w-[25px] h-[25px]'
-                  src={'/icons/logos_telegram.svg'}
-                  width='0'
-                  height='0'
-                  alt='Telegram icon'
-                />
-              </Link>
-              <Link
-                className='flex justify-center items-center  uppercase bg-white-dis rounded-[50%] w-12 h-12 hover:opacity-80  focus:opacity-80 '
-                href={'#'}
-              >
-                <LiaViber size={28} fill='#8c5da7' />
-              </Link>
+            <ul className='flex  max-md:hidden md:flex md:gap-3'>
+              <li>
+                <Link
+                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
+                  href='/#'
+                  aria-label='Соціальні мережі'
+                >
+                  <Image
+                    className='h-[25px] w-[25px]'
+                    src='/icons/skill-icons_instagram.svg'
+                    width='0'
+                    height='0'
+                    alt='Instagram icon'
+                  />
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
+                  href='/#'
+                  aria-label='Соціальні мережі'
+                >
+                  <Image
+                    className='h-[25px] w-[25px]'
+                    src='/icons/logos_telegram.svg'
+                    width='0'
+                    height='0'
+                    alt='Telegram icon'
+                  />
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
+                  href='/#'
+                  aria-label='Соціальні мережі'
+                >
+                  <LiaViber size={28} fill='#8c5da7' />
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
