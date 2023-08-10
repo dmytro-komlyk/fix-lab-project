@@ -1,6 +1,6 @@
 import React from 'react'
 
-import CategoriesSlider from '../(pages)/repair/components/slider'
+import CategoriesSlider from '../(pages)/repair/(components)/slider'
 import getData from '../(server)/api/service/getData'
 
 export const BrokenSection = async () => {

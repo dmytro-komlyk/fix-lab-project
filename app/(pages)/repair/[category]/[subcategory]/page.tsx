@@ -2,7 +2,7 @@ import React from 'react'
 
 import getData from '@/app/(server)/api/service/getData'
 
-import SubcategorySection from '../../components/SubcategorySection'
+import SubcategorySection from '../../(components)/SubcategorySection'
 
 interface IndexProps {
   params: {

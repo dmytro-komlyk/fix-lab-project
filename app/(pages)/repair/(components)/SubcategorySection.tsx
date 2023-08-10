@@ -73,7 +73,6 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                 <p> {categoryTitle}</p> <MdKeyboardArrowRight size={30} />
               </Link>
               <p className='text-base font-[400] text-[#3EB9F0] opacity-70'>
-                {' '}
                 {item.attributes.title}
               </p>
             </div>
@@ -90,6 +89,7 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       {item.attributes.title}
                     </h2>
                     <div
+                      // eslint-disable-next-line react/no-danger
                       dangerouslySetInnerHTML={{
                         __html: markdown.render(item.attributes.description),
                       }}
@@ -101,7 +101,6 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                     >
                       Безкоштовна діагностика
                     </button>
-
                     <h3>Швидкий звʼязок</h3>
                     <p>Подзвонити нам</p>
                     <div className='mb-[23px]'>
@@ -109,17 +108,17 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       <p>10:00 - 19:00</p>
                       <p>нд - вихідний</p>
                     </div>
-                    <div className='mb-[52px] flex w-[409px] items-center gap-[30px] rounded-xl bg-[#fff]/70 py-[20px] pl-[30px] text-center text-base  font-[500] text-light-blue'>
+                    <div className='mb-[52px] flex w-[409px] items-center gap-[30px] rounded-xl bg-[#fff] bg-opacity-[70] py-[20px] pl-[30px] text-center text-base  font-[500] text-light-blue'>
                       <CiSearch size={58} color='#1B37AA' />
                       <p> Безкоштовна діагностика</p>
                     </div>
                     {item.attributes.guarantee && (
-                      <div className='mb-[52px] flex w-[409px] items-center gap-[30px] rounded-xl bg-[#fff]/70 py-[20px] pl-[30px] text-center text-base  font-[500] text-light-blue'>
+                      <div className='mb-[52px] flex w-[409px] items-center gap-[30px] rounded-xl bg-[#fff] bg-opacity-[70] py-[20px] pl-[30px] text-center text-base  font-[500] text-light-blue'>
                         <BsShield size={58} color='#1B37AA' />
                         Гарантія до {item.attributes.guarantee}
                       </div>
                     )}
-                    <div className='mb-[52px] flex w-[409px] items-center gap-[30px] rounded-xl bg-[#fff]/70 py-[20px] pl-[30px] text-center text-base  font-[500] text-light-blue'>
+                    <div className='mb-[52px] flex w-[409px] items-center gap-[30px] rounded-xl bg-[#fff] bg-opacity-[70] py-[20px] pl-[30px] text-center text-base  font-[500] text-light-blue'>
                       <BiTimeFive size={58} color='#1B37AA' />
                       Час ремонту від {item.attributes.repair_time}
                     </div>
@@ -137,10 +136,11 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       {item.attributes.top_text_content}
                     </h3>
                     <div
+                      // eslint-disable-next-line react/no-danger
                       dangerouslySetInnerHTML={{
                         __html: markdown.render(item.attributes.text_content),
                       }}
-                      className=' mb-14 text-base font-[400] text-white-dis'
+                      className='mb-14 text-base font-[400] text-white-dis'
                     />
                     <div className='flex gap-5'>
                       <button
@@ -156,9 +156,9 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       </button>
                       <button
                         type='button'
-                        className='relative h-[116px] w-[356px] rounded-2xl bg-light-green'
+                        className=' relative h-[116px] w-[356px] rounded-2xl bg-light-green'
                       >
-                        <p className='absolute bottom-[25px] left-[34px] font-exo_2 text-lg font-semibold text-[#FDFEFF]'>
+                        <p className=' absolute bottom-[25px] left-[34px] font-exo_2 text-lg font-semibold text-[#FDFEFF]'>
                           Викликати курʼєра
                         </p>
                         <div className=' absolute right-[2px] top-[2px]'>

@@ -1,5 +1,6 @@
 'use client'
 
+import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -8,9 +9,8 @@ import { FaBars } from 'react-icons/fa'
 import { FiMapPin } from 'react-icons/fi'
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
 
-import Button from './components/Button'
-import CourierModal from './components/CourierModal'
-import MobileMenu from './components/MobileMenu'
+import CourierModal from './(components)/CourierModal'
+import MobileMenu from './(components)/MobileMenu'
 
 export const Header: React.FC = () => {
   const pathname = usePathname()
@@ -19,6 +19,7 @@ export const Header: React.FC = () => {
   const itemsRegion: Array<string> = ['Голосіївський', 'Оболонський']
 
   const [showModal, setShowModal] = useState<boolean>(false)
+  const [isHovering, setIsHovering] = useState<boolean>(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
   const [isOpenItem, setIsOpenItem] = useState<boolean>(false)
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
@@ -90,7 +91,7 @@ export const Header: React.FC = () => {
 
   return (
     <header
-      className={`max-md fixed left-0 top-0 z-10 flex w-full items-center transition-colors ${
+      className={`padding-lock max-md fixed left-0 top-0 z-10 flex w-full items-center transition-colors ${
         isScrolled || pathname === '/repair' ? ' bg-[#04268B]' : ''
       }`}
     >
@@ -100,11 +101,11 @@ export const Header: React.FC = () => {
       >
         <Link
           href='/'
-          className='flex gap-1 hover:opacity-80 focus:opacity-80 max-md:m-0  xl:mr-12'
+          className='flex gap-1 transition-opacity hover:opacity-80 focus:opacity-80 max-md:m-0  xl:mr-12'
         >
           <Image
             className='h-auto w-[85px]'
-            src='/logo/logo.svg'
+            src='/logo.svg'
             alt='FixLab logo'
             width='0'
             height='0'
@@ -152,29 +153,42 @@ export const Header: React.FC = () => {
                 height={14}
               />
             )}
-            {isOpenItem &&
-              itemsRegion.map(
-                item =>
-                  selectedRegionItem !== item && (
-                    <div
-                      key={item}
-                      onClick={() => {
-                        handleItemClick(item)
-                        toggleDropDown()
-                      }}
-                      className='absolute bottom-[-48px] left-[-2px] flex w-[196px] flex-col items-center  justify-center gap-2 rounded-b-xl  bg-mid-green  hover:bg-mid-blue  focus:bg-mid-blue'
-                    >
-                      <button
-                        type='button'
-                        onClick={toggleDropDown}
+            <AnimatePresence>
+              {isOpenItem &&
+                itemsRegion.map(
+                  item =>
+                    selectedRegionItem !== item && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.1 },
+                        }}
+                        exit={{
+                          y: -5,
+                          opacity: 0,
+                          transition: { duration: 0.1 },
+                        }}
                         key={item}
-                        className='select-none py-3 text-base font-semibold text-dark-blue'
+                        onClick={() => {
+                          handleItemClick(item)
+                          toggleDropDown()
+                        }}
+                        className='absolute bottom-[-48px] left-[-2px] flex w-[196px] flex-col items-center  justify-center gap-2 rounded-b-xl  bg-mid-green  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
                       >
-                        {item}
-                      </button>
-                    </div>
-                  ),
-              )}
+                        <button
+                          type='button'
+                          onClick={toggleDropDown}
+                          key={item}
+                          className='select-none py-3 text-base font-semibold text-dark-blue'
+                        >
+                          {item}
+                        </button>
+                      </motion.div>
+                    ),
+                )}
+            </AnimatePresence>
           </div>
 
           {/* Nav List */}
@@ -183,7 +197,7 @@ export const Header: React.FC = () => {
             <li>
               <Link
                 href='/repair'
-                className='text-base font-semibold tracking-[0.64px] text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold tracking-[0.64px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Ремонт
               </Link>
@@ -191,7 +205,7 @@ export const Header: React.FC = () => {
             <li>
               <Link
                 href='/contacts'
-                className='text-base font-semibold tracking-[0.64px] text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold tracking-[0.64px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Контакти
               </Link>
@@ -199,7 +213,7 @@ export const Header: React.FC = () => {
             <li>
               <Link
                 href='/blog'
-                className='text-base font-semibold tracking-[0.64px] text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold tracking-[0.64px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Блог
               </Link>
@@ -207,7 +221,7 @@ export const Header: React.FC = () => {
             <li>
               <Link
                 href='/corporate'
-                className='text-base font-semibold tracking-[0.64px] text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold tracking-[0.64px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Для бізнесу
               </Link>
@@ -228,26 +242,37 @@ export const Header: React.FC = () => {
                 нд - вихідний
               </span>
             </p>
-            <Link
+            <a
               href={`tel:${
                 selectedRegionItem === 'Голосіївський'
                   ? '380632272728'
                   : '380632272730'
               }`}
-              className='whitespace-nowrap text-lg text-white-dis hover:opacity-80  focus:opacity-80'
+              className='whitespace-nowrap text-lg text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
             >
               {selectedRegionItem === 'Голосіївський'
                 ? '+38 063 227 27 28'
                 : '+38 063 227 27 30'}
-            </Link>
+            </a>
           </div>
 
           {/* Modal Open Button */}
 
-          <Button
-            toggleCourierModal={toggleCourierModal}
-            textButton='Викликати курʼєра'
-          />
+          <button
+            type='button'
+            onClick={toggleCourierModal}
+            onMouseEnter={() => setIsHovering(false)}
+            onMouseLeave={() => setIsHovering(true)}
+            className='group flex min-w-[256px] items-center justify-center rounded-[12px] bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue   max-lg:hidden'
+          >
+            <p
+              className={` pb-[20px] pt-[23px] text-base  font-semibold tracking-wide text-[#04268b] ${
+                isHovering ? 'animate-hoverBtnOut' : ''
+              } group-hover:animate-hoverBtnIn`}
+            >
+              Викликати курʼєра
+            </p>
+          </button>
         </div>
 
         {/* Phone Toggle Mobile */}
@@ -277,35 +302,35 @@ export const Header: React.FC = () => {
               />
             )}
             <li>
-              <Link
+              <a
                 href='tel:380632272728'
-                className='text-sm font-normal leading-tight tracking-wide text-white-dis hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px]'
+                className='text-sm font-normal leading-tight tracking-wide text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px]'
               >
                 +38 063 227 27 28
-              </Link>
+              </a>
             </li>
             {isOpenItem && (
               <li className='absolute left-[0px] top-[27px]'>
-                <Link
+                <a
                   href='tel:380632272730'
-                  className='whitespace-nowrap text-sm font-normal leading-tight tracking-wide text-white-dis hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px] '
+                  className='whitespace-nowrap text-sm font-normal leading-tight tracking-wide text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px] '
                 >
                   +38 063 227 27 30
-                </Link>
+                </a>
               </li>
             )}
           </ul>
-          <button
-            type='button'
-            className='text-gray-700 -m-2.5 items-center justify-center rounded-md p-2.5 hover:opacity-80 focus:opacity-80  md:pl-8'
+          <div
+            className=' text-gray-700 -m-2.5 cursor-pointer items-center justify-center rounded-md p-2.5 transition-opacity hover:opacity-80 focus:opacity-80  md:pl-8'
             onClick={toggleMobileMenu}
           >
             <FaBars className='h-8 w-8' aria-hidden='true' color='#F8F8F8' />
-          </button>
+          </div>
         </div>
       </nav>
       {mobileMenuOpen && (
         <MobileMenu
+          mobileMenuOpen={mobileMenuOpen}
           toggleCourierModal={toggleCourierModal}
           toggleMobileMenu={toggleMobileMenu}
         />
