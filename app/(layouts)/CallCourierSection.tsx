@@ -13,7 +13,7 @@ export const CallCourierSection: React.FC = () => {
   }, [])
 
   return (
-    <section className='w-full bg-mid-green'>
+    <section className='w-full translate-y-[-100px] bg-mid-green'>
       <div className='container relative flex justify-end pb-[102px]  pt-[213px] max-lg:justify-center max-md:pt-[102px]'>
         <div>
           <div className='z-2 absolute bottom-[255px] left-[16px] max-xl:bottom-[235px] max-lg:bottom-[442px] max-lg:left-[0] max-md:bottom-[440px] max-md:left-[50%] max-md:translate-x-[-50%] max-sm:bottom-[400px]'>

@@ -30,7 +30,7 @@ export const CategoriesSlider: React.FC<CategoriesSectionProps> = ({
             <Link
               key={item.id}
               href={`/repair/${categoryPath}`}
-              className='keen-slider__slide flex h-[261px] flex-col justify-between rounded-2xl bg-dark-blue p-8'
+              className='keen-slider__slide hover-gadget-link flex h-[261px] flex-col justify-between rounded-2xl bg-dark-blue p-8'
             >
               <Image
                 className='ml-auto'
@@ -39,9 +39,14 @@ export const CategoriesSlider: React.FC<CategoriesSectionProps> = ({
                 height={height}
                 alt={item.attributes.title}
               />
-              <h3 className='mr-auto font-exo_2 text-xl font-semibold text-white-dis'>
-                {item.attributes.title}
-              </h3>
+              <div className='text-white-dis'>
+                <h3 className='mr-auto font-semibold leading-tight md:text-base xl:text-xl'>
+                  {item.attributes.title}
+                </h3>
+                <p className='hidden font-inter text-[12px] xl:text-sm'>
+                  Подивитися поломки
+                </p>
+              </div>
             </Link>
           )
         })}
