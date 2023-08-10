@@ -78,6 +78,14 @@ module.exports = {
           'linear-gradient(134deg, #121C37 0%, #04248B 55.98%, #264CC7 100%)',
         'bg-courier-img-lg': "url('/images/courier-background-pc.png')",
         'banner-img': "url('/images/microscope-main.svg')",
+        'banner-conic-blue-sm':
+          'conic-gradient(from 147deg at 36.21% 54.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
+        'banner-conic-blue-md':
+          'conic-gradient(from 147deg at 36.21% 54.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
+        'banner-conic-blue-lg':
+          'conic-gradient(from 147deg at 36.21% 54.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
+        'banner-conic-blue-xl':
+          'conic-gradient(from 147deg at 46.21% 56.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
       },
       animation: {
         hoverBtnIn: 'slide-out-top 0.2s ease-in-out both',
