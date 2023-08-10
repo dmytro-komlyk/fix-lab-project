@@ -11,7 +11,9 @@ import LaptopImage from '../../public/icons/pop-laptop.svg'
 import MatrixImage from '../../public/icons/pop-matrix.svg'
 import PowerImage from '../../public/icons/pop-power.svg'
 import SmartphoneImage from '../../public/icons/pop-smartphone.svg'
-import BannerImage from '../../public/images/microscope-main.svg'
+import IconZoom from '../../public/icons/icon-zoom.svg'
+import IconGuard from '../../public/icons/icon-guard.svg'
+import IconScredriver from '../../public/icons/icon-screwdriver.svg'
 
 const ITEMS = [
   {
@@ -63,17 +65,17 @@ const ITEMS = [
 
 const PROS = [
   {
-    src: '',
+    src: IconZoom,
     alt: 'Безкоштовна діагностика',
     title: 'Безкоштовна діагностика',
   },
   {
-    src: '',
+    src: IconGuard,
     alt: 'Гарантія до 6 місяців',
     title: 'Гарантія до 6 місяців',
   },
   {
-    src: '',
+    src: IconScredriver,
     alt: 'Швидкий ремонт',
     title: 'Швидкий ремонт',
   },
@@ -95,27 +97,23 @@ export const HeroSection = () => {
 
   const renderPros = () =>
     PROS.map((item, index) => (
-      <li className='bg-white-dis p-5 rounded-2xl' key={index}>
-        <img src={item.src} alt={item.alt} />
-        <p className='text-dark-blue'>{item.title}</p>
+      <li
+        className='bg-pros-bg px-[18px] py-6 rounded-2xl w-[156px] mb-8 flex flex-col drop-shadow-pros items-center'
+        key={index}
+      >
+        <Image src={item.src} alt={item.alt} width={68} height={68} />
+        <p className='text-dark-blue text-center mt-6 font-base leading-5 tracking-tight'>{item.title}</p>
       </li>
     ))
 
   return (
-    <section className='section w-full bg-dark-blue pt-36 bg-banner-img bg-banner xl:bg-center bg-no-repeat'>
-      <div className='relative flex flex-col xl:px-20'>
+    <section className='section w-full bg-dark-blue pt-36 bg-banner-img bg-banner xl:bg-desktop bg-no-repeat'>
+      <div className='xl:container relative flex flex-col'>
         <div className='flex flex-col items-center xl:items-start text-white-dis font-exo_2 px-4 xl:w-[500px]'>
           <h2 className='text-3xl font-bold leading-none xl:text-title'>
             Бачимо гаджети
           </h2>
-          <h3
-            className='text-4xl xl:text-9xl font-bold leading-none text-mid-blue drop-shadow-banner'
-            // style={{
-            //   WebkitTextStrokeWidth: 1,
-            //   WebkitTextStrokeColor: 'white',
-            //   color: 'transparent',
-            // }}
-          >
+          <h3 className='text-4xl xl:text-9xl font-bold leading-none text-mid-blue drop-shadow-banner'>
             наскрізь
           </h3>
 
@@ -129,7 +127,7 @@ export const HeroSection = () => {
           </button>
         </div>
 
-        <div className='pt-[426px]'>
+        <div className='pt-[426px] xl:pt-[58px] xl:max-w-[411px]'>
           <h3 className='text-white-dis font-exo_2 text-xl relative mx-4'>
             Найчастіші звернення
             <Image
@@ -143,7 +141,7 @@ export const HeroSection = () => {
           <ul className='flex ml-4 py-8 overflow-x-scroll'>{renderList()}</ul>
         </div>
 
-        <div className='border absolute right-0 top-0 hidden md:flex'>
+        <div className='absolute right-0 top-0 hidden md:flex'>
           <ul>{renderPros()}</ul>
         </div>
       </div>

@@ -21,9 +21,11 @@ module.exports = {
     },
     backgroundSize: {
       banner: '150%',
+      desktop: '52%',
     },
     backgroundPosition: {
       banner: 'center',
+      desktop: 'center',
     },
     fontSize: {
       sm: '0.875rem' /* 14px */,
@@ -47,12 +49,14 @@ module.exports = {
       'mid-green': '#00CC73',
       'mid-grey': '#92999C',
       'modal-overlay': 'rgba(0, 0, 0, 0.25)',
+      'pros-bg': 'rgba(248, 252, 255, 0.76)',
     },
     extend: {
       padding: {
         lg: '102px',
       },
       dropShadow: {
+        pros: '0px 4px 24px 0px rgba(0, 0, 0, 0.10)',
         banner: '0px 0px 2px #FFFFFF',
       },
       fontFamily: {
