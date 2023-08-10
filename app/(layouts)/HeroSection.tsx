@@ -109,8 +109,8 @@ export const HeroSection = () => {
     ))
 
   return (
-    <section className='section w-full bg-dark-blue bg-banner-img bg-banner bg-no-repeat pt-36 md:bg-desktop'>
-      <div className='relative flex flex-col md:container'>
+    <section className='section bg-banner-conic-blue-sm md:bg-banner-conic-blue-md lg:bg-banner-conic-blue-lg xl:bg-banner-conic-blue-xl w-full bg-dark-blue pt-36 '>
+      <div className='relative flex flex-col bg-banner-img bg-banner bg-no-repeat md:container md:bg-desktop'>
         <div className='flex flex-col items-center px-4 font-exo_2 text-white-dis md:items-start xl:w-[500px]'>
           <h2 className='text-3xl font-bold leading-none xl:text-title'>
             Бачимо гаджети
