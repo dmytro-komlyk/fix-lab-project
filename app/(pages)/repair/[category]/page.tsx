@@ -1,8 +1,13 @@
 import React from 'react'
 
+import {
+  AddressSection,
+  CallCourierSection,
+  ColaborationSection,
+} from '@/app/(layouts)'
 import getData from '@/app/(server)/api/service/getData'
 
-import CategorySection from '../components/CategorySection'
+import CategorySection from '../(components)/CategorySection'
 
 interface IndexProps {
   params: {
@@ -17,14 +22,19 @@ const Index: React.FC<IndexProps> = async ({ params }) => {
   const categoryData = await getData(categoriesUrl)
   const subcategoryUrl = `/api/subcategories?populate=*&[filters][category][slug]=${encodeURIComponent(
     categorySlug,
-  )}`
+  )}&sort=id:asc`
   const subcategoriesData = await getData(subcategoryUrl)
 
   return (
-    <CategorySection
-      subcategoriesData={subcategoriesData}
-      categoryData={categoryData}
-    />
+    <main className='h-full flex-auto'>
+      <CategorySection
+        subcategoriesData={subcategoriesData}
+        categoryData={categoryData}
+      />
+      <CallCourierSection />
+      <ColaborationSection />
+      <AddressSection />
+    </main>
   )
 }
 
