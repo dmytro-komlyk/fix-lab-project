@@ -1,7 +1,10 @@
-import React from 'react'
 import Image from 'next/image'
+import React from 'react'
 
 import ArrowImage from '../../public/icons/arrow-down-right.svg'
+import IconGuard from '../../public/icons/icon-guard.svg'
+import IconScredriver from '../../public/icons/icon-screwdriver.svg'
+import IconZoom from '../../public/icons/icon-zoom.svg'
 import BoomboxImage from '../../public/icons/pop-boombox.svg'
 import ChargingImage from '../../public/icons/pop-charging.svg'
 import EbookImage from '../../public/icons/pop-e-book.svg'
@@ -11,9 +14,6 @@ import LaptopImage from '../../public/icons/pop-laptop.svg'
 import MatrixImage from '../../public/icons/pop-matrix.svg'
 import PowerImage from '../../public/icons/pop-power.svg'
 import SmartphoneImage from '../../public/icons/pop-smartphone.svg'
-import IconZoom from '../../public/icons/icon-zoom.svg'
-import IconGuard from '../../public/icons/icon-guard.svg'
-import IconScredriver from '../../public/icons/icon-screwdriver.svg'
 
 const ITEMS = [
   {
@@ -83,62 +83,67 @@ const PROS = [
 
 export const HeroSection = () => {
   const renderList = () =>
-    ITEMS.map((item, index) => (
+    ITEMS.map(item => (
       <li
-        className='bg-white-dis px-5 py-[18px] rounded-2xl mr-4 min-w-[120px] w-[120px] h-[148px] flex flex-col justify-between items-center'
-        key={index}
+        className='mr-4 flex h-[148px] w-[120px] min-w-[120px] flex-col items-center justify-between rounded-2xl bg-white-dis px-5 py-[18px]'
+        key={item.alt}
       >
         <Image src={item.src} height={60} alt={item.alt} className='border' />
-        <h4 className='text-center text-dark-blue text-base font-inter leading-5'>
+        <h4 className='text-center font-inter text-base leading-5 text-dark-blue'>
           {item.title}
         </h4>
       </li>
     ))
 
   const renderPros = () =>
-    PROS.map((item, index) => (
+    PROS.map(item => (
       <li
-        className='bg-pros-bg px-[18px] py-6 rounded-2xl w-[156px] mb-8 flex flex-col drop-shadow-pros items-center'
-        key={index}
+        className='mb-8 flex w-[156px] flex-col items-center rounded-2xl bg-pros-bg px-[18px] py-6 drop-shadow-pros'
+        key={item.alt}
       >
         <Image src={item.src} alt={item.alt} width={68} height={68} />
-        <p className='text-dark-blue text-center mt-6 font-base leading-5 tracking-tight'>{item.title}</p>
+        <p className='font-base mt-6 text-center leading-5 tracking-tight text-dark-blue'>
+          {item.title}
+        </p>
       </li>
     ))
 
   return (
-    <section className='section w-full bg-dark-blue pt-36 bg-banner-img bg-banner xl:bg-desktop bg-no-repeat'>
-      <div className='xl:container relative flex flex-col'>
-        <div className='flex flex-col items-center xl:items-start text-white-dis font-exo_2 px-4 xl:w-[500px]'>
+    <section className='section w-full bg-dark-blue bg-banner-img bg-banner bg-no-repeat pt-36 md:bg-desktop'>
+      <div className='relative flex flex-col md:container'>
+        <div className='flex flex-col items-center px-4 font-exo_2 text-white-dis md:items-start xl:w-[500px]'>
           <h2 className='text-3xl font-bold leading-none xl:text-title'>
             Бачимо гаджети
           </h2>
-          <h3 className='text-4xl xl:text-9xl font-bold leading-none text-mid-blue drop-shadow-banner'>
+          <h3 className='text-4xl font-bold leading-none text-mid-blue drop-shadow-banner xl:text-9xl'>
             наскрізь
           </h3>
 
-          <p className='mt-5 text-md xl:text-xl leading-none tracking-wide'>
+          <p className='mt-5 text-md leading-none tracking-wide md:text-xl'>
             Мережа студій ремонту твоєї техніки
           </p>
-          <button className='rounded-xl mt-14 bg-mid-green px-12 xl:px-2 py-4 w-full xl:w-[336px]'>
-            <span className='font-inter text-dark-blue font-semibold text-base'>
+          <button
+            type='button'
+            className='mt-14 w-full rounded-xl bg-mid-green px-12 py-4 xl:w-[336px] xl:px-2'
+          >
+            <span className='font-inter text-base font-semibold text-dark-blue'>
               Розрахувати вартість ремонту
             </span>
           </button>
         </div>
 
-        <div className='pt-[426px] xl:pt-[58px] xl:max-w-[411px]'>
-          <h3 className='text-white-dis font-exo_2 text-xl relative mx-4'>
+        <div className='pt-[426px] xl:max-w-[411px] xl:pt-[58px]'>
+          <h3 className='relative mx-4 font-exo_2 text-xl text-white-dis'>
             Найчастіші звернення
             <Image
-              className='text-white-dis absolute top-1/2 right-0 -translate-y-1/2'
+              className='absolute right-0 top-1/2 -translate-y-1/2 text-white-dis'
               width={24}
               height={24}
               src={ArrowImage}
               alt='arrow'
             />
           </h3>
-          <ul className='flex ml-4 py-8 overflow-x-scroll'>{renderList()}</ul>
+          <ul className='ml-4 flex overflow-x-scroll py-8'>{renderList()}</ul>
         </div>
 
         <div className='absolute right-0 top-0 hidden md:flex'>
