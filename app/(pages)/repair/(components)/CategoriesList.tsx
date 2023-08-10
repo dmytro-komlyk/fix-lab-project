@@ -17,7 +17,7 @@ export const CategoriesList: React.FC<CategoriesSectionProps> = ({
         return (
           <li
             key={item.id}
-            className='h-[180px] md:h-[200px] md:w-[calc((100%-32px)/3)]  xl:h-[261px] xl:w-[calc((100%-48px)/3)]'
+            className='h-[150px] md:w-[calc((100%-32px)/3)] xl:h-[261px] xl:w-[calc((100%-48px)/3)]'
           >
             <Link
               href={`/repair/${categoryPath}`}

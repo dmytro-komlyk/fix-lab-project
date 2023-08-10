@@ -12,14 +12,14 @@ export const CategoriesSlider: React.FC<CategoriesSectionProps> = ({
   categoryData,
 }) => {
   const [ref] = useKeenSlider<HTMLDivElement>({
-    slides: { perView: 1.13, spacing: 16 },
+    slides: { perView: 1.15, spacing: 16 },
   })
   const size = useWindowSize()
 
   return size.width > 767 ? (
     <CategoriesList categoryData={categoryData} />
   ) : (
-    <div className='navigation-wrapper'>
+    <div className='navigation-wrapper relative z-10 mr-[-16px] md:mr-auto'>
       <div ref={ref} className='keen-slider'>
         {categoryData.data.map((item: CategoryItem) => {
           const categoryPath = item.attributes.slug
@@ -40,7 +40,7 @@ export const CategoriesSlider: React.FC<CategoriesSectionProps> = ({
                 alt={item.attributes.title}
               />
               <div className='text-white-dis'>
-                <h3 className='mr-auto font-semibold leading-tight md:text-base xl:text-xl'>
+                <h3 className='mr-auto font-semibold leading-tight max-md:text-xl md:text-base xl:text-xl'>
                   {item.attributes.title}
                 </h3>
                 <p className='hidden font-inter text-[12px] xl:text-sm'>
