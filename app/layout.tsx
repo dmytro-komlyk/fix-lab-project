@@ -1,7 +1,9 @@
 import './globals.css'
+
 import type { Metadata } from 'next'
-import { Inter, Manrope, Exo_2, Gugi } from 'next/font/google'
-import { Header, Footer } from './(layouts)'
+import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
+
+import { Footer, Header } from './(layouts)'
 
 const inter = Inter({
   weight: ['300', '400', '700', '500', '600'],
@@ -15,7 +17,7 @@ const manrope = Manrope({
   display: 'swap',
   variable: '--font-manrope',
 })
-const exo_2 = Exo_2({
+const exo2 = Exo_2({
   weight: ['300', '400', '700', '500', '600'],
   subsets: ['cyrillic'],
   display: 'swap',
@@ -41,10 +43,10 @@ export default function RootLayout({
   return (
     <html
       lang='uk'
-      className={`${inter.variable} ${manrope.variable} ${exo_2.variable} ${gugi.variable} h-full`}
+      className={`${inter.variable} ${manrope.variable} ${exo2.variable} ${gugi.variable} h-full`}
     >
-      <body className='font-inter h-full'>
-        <div className='min-h-full flex flex-col'>
+      <body className='h-full font-inter'>
+        <div className='flex min-h-full flex-col'>
           <Header />
           {children}
           <Footer />

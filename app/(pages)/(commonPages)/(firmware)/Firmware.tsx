@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
 export const Firmware = () => {
-  return <div>Firmware</div>;
-};
+  return <div>Firmware</div>
+}

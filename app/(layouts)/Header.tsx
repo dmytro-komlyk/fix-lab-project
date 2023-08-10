@@ -1,15 +1,16 @@
 'use client'
-import { useState, useEffect, useRef, useCallback } from 'react'
-import { usePathname } from 'next/navigation'
+
+import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { FaBars } from 'react-icons/fa'
 import { FiMapPin } from 'react-icons/fi'
+import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
 
-import { TiArrowSortedUp, TiArrowSortedDown } from 'react-icons/ti'
-import CourierModal from './components/CourierModal'
-import MobileMenu from './components/MobileMenu'
-import Button from './components/Button'
+import CourierModal from './(components)/CourierModal'
+import MobileMenu from './(components)/MobileMenu'
 
 export const Header: React.FC = () => {
   const pathname = usePathname()
@@ -18,6 +19,7 @@ export const Header: React.FC = () => {
   const itemsRegion: Array<string> = ['Голосіївський', 'Оболонський']
 
   const [showModal, setShowModal] = useState<boolean>(false)
+  const [isHovering, setIsHovering] = useState<boolean>(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
   const [isOpenItem, setIsOpenItem] = useState<boolean>(false)
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
@@ -69,8 +71,8 @@ export const Header: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 0
-      setIsScrolled(isScrolled)
+      const isScroll = window.scrollY > 0
+      setIsScrolled(isScroll)
       window.localStorage.setItem('isScrolled', JSON.stringify(isScrolled))
     }
 
@@ -79,8 +81,7 @@ export const Header: React.FC = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [])
-
+  }, [isScrolled])
   const toggleMobileMenu = useCallback(() => {
     setMobileMenuOpen(prev => !prev)
   }, [])
@@ -90,21 +91,21 @@ export const Header: React.FC = () => {
 
   return (
     <header
-      className={`fixed left-0 top-0 flex w-full items-center max-md z-10 transition-colors ${
+      className={`padding-lock max-md fixed left-0 top-0 z-10 flex w-full items-center transition-colors ${
         isScrolled || pathname === '/repair' ? ' bg-[#04268B]' : ''
       }`}
     >
       <nav
-        className='container lg:px-0 mx-auto justify-between max-md:justify-between  max-md:pt-10 max-md:pb-[10px] flex w-full items-center py-6'
+        className='container mx-auto flex w-full items-center  justify-between py-6 max-md:justify-between max-md:pb-[10px] max-md:pt-10 lg:px-0'
         aria-label='Global'
       >
         <Link
           href='/'
-          className='xl:mr-12 max-md:m-0 flex gap-1 hover:opacity-80  focus:opacity-80'
+          className='flex gap-1 transition-opacity hover:opacity-80 focus:opacity-80 max-md:m-0  xl:mr-12'
         >
           <Image
             className='h-auto w-[85px]'
-            src='/logo/logo.svg'
+            src='/logo.svg'
             alt='FixLab logo'
             width='0'
             height='0'
@@ -118,15 +119,18 @@ export const Header: React.FC = () => {
           <div
             ref={toggleDropdownRegionRef}
             onClick={toggleDropDown}
-            className={` select-text-none cursor-pointer relative min-w-[196px] py-3 border-[2px] border-mid-green flex justify-center items-center  ${
-              isOpenItem ? 'rounded-tl-xl rounded-tr-xl' : 'rounded-xl'
+            className={` select-text-none relative flex min-w-[196px] cursor-pointer items-center justify-center border-[2px] border-mid-green py-3  ${
+              isOpenItem ? 'rounded-t-xl' : 'rounded-xl'
             } `}
           >
-            <button className='relative text-base font-semibold text-white-dis'>
+            <button
+              type='button'
+              className='relative text-base font-semibold text-white-dis'
+            >
               {selectedRegionItem}
             </button>
             <FiMapPin
-              className='absolute top-[15px] left-[20px]'
+              className='absolute left-[20px] top-[15px]'
               aria-hidden='true'
               color='#F8F8F8'
               width={19}
@@ -134,7 +138,7 @@ export const Header: React.FC = () => {
             />
             {isOpenItem ? (
               <TiArrowSortedUp
-                className='absolute top-[17px] right-[12px]'
+                className='absolute right-[12px] top-[17px]'
                 aria-hidden='true'
                 color='#F8F8F8'
                 width={24}
@@ -142,44 +146,58 @@ export const Header: React.FC = () => {
               />
             ) : (
               <TiArrowSortedDown
-                className='absolute z-2 top-[17px] right-[12px]'
+                className='z-2 absolute right-[12px] top-[17px]'
                 aria-hidden='true'
                 color='#F8F8F8'
                 width={24}
                 height={14}
               />
             )}
-            {isOpenItem &&
-              itemsRegion.map(
-                item =>
-                  selectedRegionItem !== item && (
-                    <div
-                      key={item}
-                      onClick={() => {
-                        handleItemClick(item)
-                        toggleDropDown()
-                      }}
-                      className='absolute bottom-[-48px] left-[-2px] flex justify-center flex-col items-center  rounded-bl-xl rounded-br-xl gap-2  w-[196px]  bg-mid-green  hover:bg-mid-blue focus:bg-mid-blue'
-                    >
-                      <button
-                        onClick={toggleDropDown}
+            <AnimatePresence>
+              {isOpenItem &&
+                itemsRegion.map(
+                  item =>
+                    selectedRegionItem !== item && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.1 },
+                        }}
+                        exit={{
+                          y: -5,
+                          opacity: 0,
+                          transition: { duration: 0.1 },
+                        }}
                         key={item}
-                        className='select-none py-3 text-base font-semibold text-dark-blue'
+                        onClick={() => {
+                          handleItemClick(item)
+                          toggleDropDown()
+                        }}
+                        className='absolute bottom-[-48px] left-[-2px] flex w-[196px] flex-col items-center  justify-center gap-2 rounded-b-xl  bg-mid-green  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
                       >
-                        {item}
-                      </button>
-                    </div>
-                  ),
-              )}
+                        <button
+                          type='button'
+                          onClick={toggleDropDown}
+                          key={item}
+                          className='select-none py-3 text-base font-semibold text-dark-blue'
+                        >
+                          {item}
+                        </button>
+                      </motion.div>
+                    ),
+                )}
+            </AnimatePresence>
           </div>
 
           {/* Nav List */}
 
-          <ul className='hidden xl:flex gap-6  max-md:m-0'>
+          <ul className='hidden gap-6 max-md:m-0  xl:flex'>
             <li>
               <Link
                 href='/repair'
-                className='text-base font-semibold tracking-[0.64px] text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold tracking-[0.64px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Ремонт
               </Link>
@@ -187,7 +205,7 @@ export const Header: React.FC = () => {
             <li>
               <Link
                 href='/contacts'
-                className='text-base font-semibold tracking-[0.64px] text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold tracking-[0.64px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Контакти
               </Link>
@@ -195,7 +213,7 @@ export const Header: React.FC = () => {
             <li>
               <Link
                 href='/blog'
-                className='text-base font-semibold tracking-[0.64px] text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold tracking-[0.64px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Блог
               </Link>
@@ -203,7 +221,7 @@ export const Header: React.FC = () => {
             <li>
               <Link
                 href='/corporate'
-                className='text-base font-semibold tracking-[0.64px] text-white-dis hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold tracking-[0.64px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Для бізнесу
               </Link>
@@ -212,51 +230,62 @@ export const Header: React.FC = () => {
 
           {/* Phone Box */}
 
-          <div className='flex flex-col gap-2  max-md:m-0 items-center'>
-            <p className='flex flex-row gap-1 items-end'>
+          <div className='flex flex-col items-center  gap-2 max-md:m-0'>
+            <p className='flex flex-row items-end gap-1'>
               <span className='whitespace-nowrap text-sm  text-[rgba(248,_252,_255,_0.56)]'>
                 10:00 - 19:30
               </span>
               <span className='whitespace-nowrap text-sm  text-[rgba(248,_252,_255,_0.56)]'>
                 |
               </span>
-              <span className='whitespace-nowrap text-sm  text-[rgba(248,_252,_255,_0.56)] w-1/2'>
+              <span className='w-1/2 whitespace-nowrap  text-sm text-[rgba(248,_252,_255,_0.56)]'>
                 нд - вихідний
               </span>
             </p>
-            <Link
+            <a
               href={`tel:${
                 selectedRegionItem === 'Голосіївський'
                   ? '380632272728'
                   : '380632272730'
               }`}
-              className='whitespace-nowrap text-lg text-white-dis hover:opacity-80  focus:opacity-80'
+              className='whitespace-nowrap text-lg text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
             >
               {selectedRegionItem === 'Голосіївський'
                 ? '+38 063 227 27 28'
                 : '+38 063 227 27 30'}
-            </Link>
+            </a>
           </div>
 
           {/* Modal Open Button */}
 
-          <Button
-            toggleCourierModal={toggleCourierModal}
-            textButton={'Викликати курʼєра'}
-          />
+          <button
+            type='button'
+            onClick={toggleCourierModal}
+            onMouseEnter={() => setIsHovering(false)}
+            onMouseLeave={() => setIsHovering(true)}
+            className='group flex min-w-[256px] items-center justify-center rounded-[12px] bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue   max-lg:hidden'
+          >
+            <p
+              className={` pb-[20px] pt-[23px] text-base  font-semibold tracking-wide text-[#04268b] ${
+                isHovering ? 'animate-hoverBtnOut' : ''
+              } group-hover:animate-hoverBtnIn`}
+            >
+              Викликати курʼєра
+            </p>
+          </button>
         </div>
 
         {/* Phone Toggle Mobile */}
 
-        <div className='flex xl:hidden items-center'>
+        <div className='flex items-center xl:hidden'>
           <ul
             ref={toggleDropdownPhoneRef}
-            className={` relative hidden max-md:flex select-text-none cursor-pointer mr-10 `}
+            className={` select-text-none relative mr-10 hidden cursor-pointer max-md:flex `}
           >
             {isOpenItem ? (
               <TiArrowSortedUp
                 onClick={toggleDropDown}
-                className='absolute top-[5px] right-[-24px]'
+                className='absolute right-[-24px] top-[5px]'
                 aria-hidden='true'
                 color='#F8F8F8'
                 width={24}
@@ -265,7 +294,7 @@ export const Header: React.FC = () => {
             ) : (
               <TiArrowSortedDown
                 onClick={toggleDropDown}
-                className='absolute top-[5px] right-[-24px]'
+                className='absolute right-[-24px] top-[5px]'
                 aria-hidden='true'
                 color='#F8F8F8'
                 width={24}
@@ -273,35 +302,35 @@ export const Header: React.FC = () => {
               />
             )}
             <li>
-              <Link
+              <a
                 href='tel:380632272728'
-                className='text-white-dis text-sm font-normal leading-tight max-[330px]:text-[12px] tracking-wide hover:opacity-80  focus:opacity-80'
+                className='text-sm font-normal leading-tight tracking-wide text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px]'
               >
                 +38 063 227 27 28
-              </Link>
+              </a>
             </li>
             {isOpenItem && (
-              <li className='absolute top-[27px] left-[0px]'>
-                <Link
+              <li className='absolute left-[0px] top-[27px]'>
+                <a
                   href='tel:380632272730'
-                  className='text-white-dis text-sm font-normal whitespace-nowrap leading-tight max-[330px]:text-[12px] tracking-wide hover:opacity-80  focus:opacity-80 '
+                  className='whitespace-nowrap text-sm font-normal leading-tight tracking-wide text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px] '
                 >
                   +38 063 227 27 30
-                </Link>
+                </a>
               </li>
             )}
           </ul>
-          <button
-            type='button'
-            className='-m-2.5 items-center justify-center rounded-md p-2.5 text-gray-700 md:pl-8 hover:opacity-80  focus:opacity-80'
+          <div
+            className=' text-gray-700 -m-2.5 cursor-pointer items-center justify-center rounded-md p-2.5 transition-opacity hover:opacity-80 focus:opacity-80  md:pl-8'
             onClick={toggleMobileMenu}
           >
             <FaBars className='h-8 w-8' aria-hidden='true' color='#F8F8F8' />
-          </button>
+          </div>
         </div>
       </nav>
       {mobileMenuOpen && (
         <MobileMenu
+          mobileMenuOpen={mobileMenuOpen}
           toggleCourierModal={toggleCourierModal}
           toggleMobileMenu={toggleMobileMenu}
         />

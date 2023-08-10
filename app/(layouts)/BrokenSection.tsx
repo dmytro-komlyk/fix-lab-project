@@ -1,10 +1,7 @@
 import React from 'react'
+
+import CategoriesSlider from '../(pages)/repair/(components)/slider'
 import getData from '../(server)/api/service/getData'
-import Link from 'next/link'
-import { MdKeyboardArrowRight } from 'react-icons/md'
-import { CategoriesList } from '../(pages)/repair/components/CategoriesList'
-import { useWindowSize } from '../(hooks)/useWindowResize'
-import CategoriesSlider from '../(pages)/repair/components/slider'
 
 export const BrokenSection = async () => {
   const categoriesUrl = `/api/categories?populate=*&sort=id:asc`
@@ -12,9 +9,9 @@ export const BrokenSection = async () => {
   return (
     <section className='section'>
       <div className='container'>
-        <div className='md:flex justify-between gap-8'>
-          <div className='mb-8 md:mb-0 max-w-[270px]'>
-            <h3 className='font-exo_2 text-2xl text-light-blue font-bold leading-normal mb-8'>
+        <div className='justify-between gap-8 md:flex'>
+          <div className='mb-8 max-w-[270px] md:mb-0'>
+            <h3 className='mb-8 font-exo_2 text-2xl font-bold leading-normal text-light-blue'>
               Що зламалося?
             </h3>
             <p className='mb-4'>
@@ -26,7 +23,7 @@ export const BrokenSection = async () => {
             </p>
             <button
               type='button'
-              className='bg-[#00cc73] px-8 py-5 rounded-[12px] hover:bg-mid-blue focus:bg-mid-blue text-inter text-base font-semibold text-dark-blue'
+              className='text-inter rounded-[12px] bg-[#00cc73] px-8 py-5 text-base font-semibold text-dark-blue hover:bg-mid-blue focus:bg-mid-blue'
             >
               Миттєва консультація
             </button>

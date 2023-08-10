@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
 export const Camera = () => {
-  return <div>Camera</div>;
-};
+  return <div>Camera</div>
+}
