@@ -125,7 +125,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
             </div>
           )
         })}
-        <div className='z-[1] flex justify-between pt-[24px] max-xl:gap-8 max-lg:flex-col max-lg:gap-0  max-[425px]:gap-0 '>
+        <div className='z-[1] flex justify-between pt-[24px] max-xl:gap-8 max-lg:flex-col max-lg:gap-0  max-md:gap-0 '>
           <div className='max-xl:w-[350px] max-lg:w-full xl:max-w-[411px] '>
             {categoryData.data.map(item => {
               const img = item.attributes.img.data.attributes.url

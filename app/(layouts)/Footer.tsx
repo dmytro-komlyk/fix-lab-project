@@ -29,7 +29,7 @@ export const Footer = () => {
         >
           <Image
             className='h-auto w-[167px] max-md:w-[129px]'
-            src='/logo/logo.svg'
+            src='/logo.svg'
             alt='FixLab logo'
             width='0'
             height='0'
@@ -168,7 +168,7 @@ export const Footer = () => {
             >
               <Image
                 className='h-auto w-[129px]'
-                src='/logo/logo.svg'
+                src='/logo.svg'
                 alt='FixLab logo'
                 width='0'
                 height='0'

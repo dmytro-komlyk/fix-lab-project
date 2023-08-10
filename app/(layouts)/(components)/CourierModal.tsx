@@ -3,9 +3,11 @@
 import axios from 'axios'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
 import * as Yup from 'yup'
+
+import useCustomScrollbarLock from '@/app/(hooks)/useCustomScrollbarLock'
 
 import ModalButton from './ModalButton'
 
@@ -34,7 +36,7 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
   }
   const modalRef = useRef<HTMLDivElement>(null)
 
-  const handleEscKeyPressModal = useCallback(
+  const handleEscKeyPressContent = useCallback(
     (event: { code: string }) => {
       if (event.code === 'Escape') {
         toggleCourierModal()
@@ -52,30 +54,7 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
     [toggleCourierModal],
   )
 
-  useEffect(() => {
-    document.body.style.overflowY = 'hidden'
-    document.body.style.paddingRight = '17px'
-
-    const paddingLock = document.getElementsByClassName('padding-lock')
-    for (let i = 0; i < paddingLock.length; i += 1) {
-      const element = paddingLock[i] as HTMLElement
-      element.style.paddingRight = '17px'
-    }
-
-    window.addEventListener('keydown', handleEscKeyPressModal)
-
-    return () => {
-      document.body.style.overflowY = 'auto'
-      document.body.style.paddingRight = '0'
-
-      for (let i = 0; i < paddingLock.length; i += 1) {
-        const element = paddingLock[i] as HTMLElement
-        element.style.paddingRight = '0'
-      }
-
-      window.removeEventListener('keydown', handleEscKeyPressModal)
-    }
-  }, [handleEscKeyPressModal])
+  useCustomScrollbarLock({ handleEscKeyPressContent })
 
   const handleSubmit = async (values: MyFormValues) => {
     try {
@@ -104,16 +83,16 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { duration: 0.5 } }}
-        exit={{ opacity: 1, transition: { duration: 0.5 } }}
+        animate={{ opacity: 1, transition: { duration: 0.1 } }}
+        exit={{ opacity: 1, transition: { duration: 0.1 } }}
         ref={modalRef}
         onClick={onBackdropCloseModal}
         className='fixed left-0 top-0 z-50 flex h-full w-full items-center  justify-center overflow-y-auto overflow-x-hidden bg-modal-overlay '
       >
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 0.5 } }}
-          exit={{ opacity: 0, transition: { duration: 0.5 } }}
+          animate={{ opacity: 1, transition: { duration: 0.3 } }}
+          exit={{ opacity: 0, transition: { duration: 0.3 } }}
           className='relative max-w-[414px] flex-col items-center justify-start rounded-2xl bg-[#00cc73] p-14 max-sm:px-4'
         >
           <button

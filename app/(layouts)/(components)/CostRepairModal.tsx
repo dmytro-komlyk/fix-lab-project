@@ -5,6 +5,8 @@ import { useCallback, useEffect, useRef } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
 import * as Yup from 'yup'
 
+import useCustomScrollbarLock from '@/app/(hooks)/useCustomScrollbarLock'
+
 import ModalButton from './ModalButton'
 
 interface MyFormValues {
@@ -37,7 +39,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
   }
   const modalRef = useRef<HTMLDivElement>(null)
 
-  const handleEscKeyPressModal = useCallback(
+  const handleEscKeyPressContent = useCallback(
     (event: { code: string }) => {
       if (event.code === 'Escape') {
         toggleCostRepairModal()
@@ -54,6 +56,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
     },
     [toggleCostRepairModal],
   )
+  useCustomScrollbarLock({ handleEscKeyPressContent })
   useEffect(() => {
     document.body.style.overflowY = 'hidden'
     document.body.style.paddingRight = '17px'
@@ -64,7 +67,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
       element.style.paddingRight = '17px'
     }
 
-    window.addEventListener('keydown', handleEscKeyPressModal)
+    window.addEventListener('keydown', handleEscKeyPressContent)
 
     return () => {
       document.body.style.overflowY = 'auto'
@@ -75,9 +78,9 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
         element.style.paddingRight = '0'
       }
 
-      window.removeEventListener('keydown', handleEscKeyPressModal)
+      window.removeEventListener('keydown', handleEscKeyPressContent)
     }
-  }, [handleEscKeyPressModal])
+  }, [handleEscKeyPressContent])
 
   const handleSubmit = async (values: MyFormValues) => {
     try {
@@ -107,16 +110,16 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
     <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { duration: 0.3 } }}
-        exit={{ opacity: 1, transition: { duration: 0.3 } }}
+        animate={{ opacity: 1, transition: { duration: 0.1 } }}
+        exit={{ opacity: 1, transition: { duration: 0.1 } }}
         ref={modalRef}
         onClick={onBackdropCloseModal}
         className='fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center  overflow-y-auto overflow-x-hidden bg-modal-overlay'
       >
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 0.5 } }}
-          exit={{ opacity: 0, transition: { duration: 0.5 } }}
+          animate={{ opacity: 1, transition: { duration: 0.3 } }}
+          exit={{ opacity: 0, transition: { duration: 0.3 } }}
           className='relative max-w-[414px]  flex-col items-center justify-start rounded-2xl bg-[#00cc73] p-14 max-sm:px-4'
         >
           <button

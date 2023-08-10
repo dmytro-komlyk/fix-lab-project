@@ -1,8 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
+
+import useCustomScrollbarLock from '@/app/(hooks)/useCustomScrollbarLock'
 
 import Button from './Button'
 
@@ -26,7 +28,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
     [toggleMobileMenu],
   )
 
-  const handleEscKeyPressMenu = useCallback(
+  const handleEscKeyPressContent = useCallback(
     (event: { code: string }) => {
       if (event.code === 'Escape') {
         toggleMobileMenu()
@@ -35,46 +37,23 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
     [toggleMobileMenu],
   )
 
-  useEffect(() => {
-    document.body.style.overflowY = 'hidden'
-    document.body.style.paddingRight = '17px'
-
-    const paddingLock = document.getElementsByClassName('padding-lock')
-    for (let i = 0; i < paddingLock.length; i += 1) {
-      const element = paddingLock[i] as HTMLElement
-      element.style.paddingRight = '17px'
-    }
-
-    window.addEventListener('keydown', handleEscKeyPressMenu)
-
-    return () => {
-      document.body.style.overflowY = 'auto'
-      document.body.style.paddingRight = '0'
-
-      for (let i = 0; i < paddingLock.length; i += 1) {
-        const element = paddingLock[i] as HTMLElement
-        element.style.paddingRight = '0'
-      }
-
-      window.removeEventListener('keydown', handleEscKeyPressMenu)
-    }
-  }, [handleEscKeyPressMenu])
+  useCustomScrollbarLock({ handleEscKeyPressContent })
 
   return (
     <AnimatePresence>
       {mobileMenuOpen && (
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 0.3 } }}
-          exit={{ opacity: 1, transition: { duration: 0.3 } }}
+          animate={{ opacity: 1, transition: { duration: 0.1 } }}
+          exit={{ opacity: 1, transition: { duration: 0.1 } }}
           ref={mobileMenuRef}
           onClick={onBackdropCloseMobileMenu}
           className='absolute left-0 top-0 z-10 h-[100vh] w-full overflow-y-auto overflow-x-hidden bg-modal-overlay'
         >
           <motion.div
             initial={{ x: 500 }}
-            animate={{ x: 0, transition: { duration: 0.5 } }}
-            exit={{ x: 500, transition: { duration: 0.5 } }}
+            animate={{ x: 0, transition: { duration: 0.3 } }}
+            exit={{ x: 500, transition: { duration: 0.3 } }}
             className='fixed inset-y-0 right-0 z-10 flex w-full flex-col justify-between overflow-y-auto bg-[#09338F] px-4 pb-[10px] pt-10 sm:max-w-[400px] sm:ring-1'
           >
             <div className='flex flex-col'>
@@ -86,7 +65,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                 >
                   <Image
                     className='h-auto w-[85px]'
-                    src='/logo/logo.svg'
+                    src='/logo.svg'
                     alt='FixLab logo'
                     width='0'
                     height='0'
