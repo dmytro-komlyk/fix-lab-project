@@ -56,8 +56,8 @@
   }
   .hover-gadget-link:hover h3,
   .hover-gadget-link:focus h3 {
-  @apply md:text-[24px] mb-1;
-   @apply xl:text-[28px] mb-2;
+  @apply md:text-xl md:mb-1;
+   @apply xl:text-[28px] xl:mb-2;
   
   }
   .hover-gadget-link:hover p,
