@@ -34,6 +34,8 @@ module.exports = {
       '2xl': '2rem' /* 32px */,
       '3xl': '2.75rem' /* 44px */,
       '4xl': '5.25rem' /* 84px */,
+      title: '3.5rem' /* 56px */,
+      '9xl': '6.75rem' /* 108px */,
     },
     colors: {
       'white-dis': '#F8FCFF',
@@ -49,6 +51,9 @@ module.exports = {
     extend: {
       padding: {
         lg: '102px',
+      },
+      dropShadow: {
+        banner: '0px 0px 2px #FFFFFF',
       },
       fontFamily: {
         inter: ['var(--font-inter)'],
@@ -66,6 +71,7 @@ module.exports = {
         'bg-footer-img-sm': "url('/images/background-footer-mobile.jpg')",
         'bg-footer-img-lg': "url('/images/background-footer-pc.jpg')",
         'bg-courier-img-lg': "url('/images/courier-background-pc.png')",
+        'banner-img': "url('/images/microscope-main.svg')",
       },
       animation: {
         hoverBtnIn: 'slide-out-top 0.2s ease-in-out both;',

@@ -93,34 +93,36 @@ export const HeroSection = () => {
       </li>
     ))
 
-  // const renderPros = () =>
-  //   PROS.map((item, index) => (
-  //     <li className='bg-white-dis p-5 rounded-2xl' key={index}>
-  //       <img src={item.src} alt={item.alt} />
-  //       <p className='text-dark-blue'>{item.title}</p>
-  //     </li>
-  //   ))
+  const renderPros = () =>
+    PROS.map((item, index) => (
+      <li className='bg-white-dis p-5 rounded-2xl' key={index}>
+        <img src={item.src} alt={item.alt} />
+        <p className='text-dark-blue'>{item.title}</p>
+      </li>
+    ))
 
   return (
-    <section className='section w-full bg-dark-blue pt-36 bg-contain bg-banner bg-center bg-no-repeat bg-img-banner'>
-      <div className='relative flex flex-col'>
-        <div className='flex flex-col items-center text-white-dis font-exo_2 px-4'>
-          <h2 className='text-3xl font-bold leading-none'>Бачимо гаджети</h2>
+    <section className='section w-full bg-dark-blue pt-36 bg-banner-img bg-banner xl:bg-center bg-no-repeat'>
+      <div className='relative flex flex-col xl:px-20'>
+        <div className='flex flex-col items-center xl:items-start text-white-dis font-exo_2 px-4 xl:w-[500px]'>
+          <h2 className='text-3xl font-bold leading-none xl:text-title'>
+            Бачимо гаджети
+          </h2>
           <h3
-            className='text-4xl font-bold leading-none'
-            style={{
-              WebkitTextStrokeWidth: 1,
-              WebkitTextStrokeColor: 'white',
-              color: 'transparent',
-            }}
+            className='text-4xl xl:text-9xl font-bold leading-none text-mid-blue drop-shadow-banner'
+            // style={{
+            //   WebkitTextStrokeWidth: 1,
+            //   WebkitTextStrokeColor: 'white',
+            //   color: 'transparent',
+            // }}
           >
             наскрізь
           </h3>
 
-          <p className='mt-5 text-md leading-none tracking-wide'>
+          <p className='mt-5 text-md xl:text-xl leading-none tracking-wide'>
             Мережа студій ремонту твоєї техніки
           </p>
-          <button className='rounded-xl mt-14 bg-mid-green px-12 py-4 w-full'>
+          <button className='rounded-xl mt-14 bg-mid-green px-12 xl:px-2 py-4 w-full xl:w-[336px]'>
             <span className='font-inter text-dark-blue font-semibold text-base'>
               Розрахувати вартість ремонту
             </span>
@@ -141,9 +143,9 @@ export const HeroSection = () => {
           <ul className='flex ml-4 py-8 overflow-x-scroll'>{renderList()}</ul>
         </div>
 
-        {/* <div className='border absolute right-0 top-0 hidden md:flex'>
+        <div className='border absolute right-0 top-0 hidden md:flex'>
           <ul>{renderPros()}</ul>
-        </div> */}
+        </div>
       </div>
     </section>
   )
