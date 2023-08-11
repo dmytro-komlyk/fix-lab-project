@@ -1,3 +1,5 @@
+'use client'
+
 import MarkdownIt from 'markdown-it'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -6,6 +8,8 @@ import { BsShield } from 'react-icons/bs'
 import { CiSearch } from 'react-icons/ci'
 import { FiArrowUpRight } from 'react-icons/fi'
 import { MdKeyboardArrowRight } from 'react-icons/md'
+
+import Button from '@/app/(layouts)/(components)/Button'
 
 interface SubcategoryItem {
   id: number
@@ -47,13 +51,13 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
     html: true,
   })
   return (
-    <div className=' bg-dark-blue'>
-      <div className=' container  pb-[39px] pt-[151px]'>
+    <section className='bg-gradient-linear-blue'>
+      <div className='container relative pb-[39px] pt-[151px]'>
         {subcategoryData.data.map(item => {
           const categoryTitle = item.attributes.category.data.attributes.title
           const categorySlug = item.attributes.category.data.attributes.slug
           return (
-            <div className='flex items-center gap-1' key={item.id}>
+            <div className='flex flex-wrap items-center gap-2' key={item.id}>
               <Link
                 className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0]'
                 href='/'
@@ -72,20 +76,21 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
               >
                 <p> {categoryTitle}</p> <MdKeyboardArrowRight size={30} />
               </Link>
-              <p className='text-base font-[400] text-[#3EB9F0] opacity-70'>
+              <p className='text-base font-[300] text-[#3EB9F0] opacity-70'>
+                {' '}
                 {item.attributes.title}
               </p>
             </div>
           )
         })}
-        <div className='pt-[28px] '>
+        <div className='flex flex-col pt-[28px] max-md:pb-14'>
           <div>
             {subcategoryData.data.map((item: SubcategoryItem) => {
               const img = item.attributes.img_content.data.attributes.url
               return (
-                <div className=' flex justify-between gap-[27px]' key={item.id}>
-                  <div className='flex w-[516px] flex-col'>
-                    <h2 className='mb-8 font-exo_2 text-2xl font-bold text-white-dis'>
+                <div className='flex gap-[32px] sm:flex-col' key={item.id}>
+                  <div className='flex sm:flex-col'>
+                    <h2 className='mb-8 font-exo_2 text-2xl leading-10 font-bold text-white-dis'>
                       {item.attributes.title}
                     </h2>
                     <div
@@ -95,12 +100,10 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       }}
                       className='mb-[52px] text-base font-[400] text-white-dis'
                     />
-                    <button
-                      type='button'
-                      className='mb-[52px]  h-[58px] w-[304px] rounded-xl bg-mid-blue font-mono text-base text-white-dis'
-                    >
-                      Безкоштовна діагностика
-                    </button>
+                    <Button 
+                      textButton='Миттєва консультація'
+                      // toggleModal={toggleInstantAdviceModal}
+                    />
                     <h3>Швидкий звʼязок</h3>
                     <p>Подзвонити нам</p>
                     <div className='mb-[23px]'>
@@ -123,7 +126,7 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       Час ремонту від {item.attributes.repair_time}
                     </div>
                   </div>
-                  <div className='flex w-[737px] flex-col'>
+                  <div className='flex w-4/6 flex-col'>
                     <Image
                       className='mb-14 max-h-[366px] w-full rounded-2xl object-cover'
                       src={img}
@@ -142,7 +145,7 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       }}
                       className='mb-14 text-base font-[400] text-white-dis'
                     />
-                    <div className='flex gap-5'>
+                    {/* <div className='flex gap-5'>
                       <button
                         type='button'
                         className=' relative h-[116px] w-[356px] rounded-2xl bg-light-green'
@@ -165,7 +168,7 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                           <FiArrowUpRight size={56} color='#fff' />
                         </div>
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               )
@@ -173,7 +176,7 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 
