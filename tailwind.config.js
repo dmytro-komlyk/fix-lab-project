@@ -28,7 +28,7 @@ module.exports = {
       desktop: 'center',
     },
     fontSize: {
-      xs: ['0.75rem', '1.125rem'],
+      xs: '0.75rem' /* 12px */,
       sm: '0.875rem' /* 14px */,
       base: '1rem' /* 16px */,
       md: '1.125rem' /* 18px */,
