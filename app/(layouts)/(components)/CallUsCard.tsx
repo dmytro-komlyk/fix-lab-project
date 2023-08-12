@@ -23,10 +23,10 @@ const CallUsCard: React.FC<ICallUsCardProps> = () => {
         <li className='flex flex-col items-center'>
           <p className='font-[400] text-black-dis'>Оболонський р-н</p>
           <a
-            href='tel:380632272728'
+            href='tel:380502272728'
             className=' font-[500] leading-7 tracking-[0.96px] text-dark-blue  transition-opacity hover:opacity-70  focus:opacity-70'
           >
-            +38 063 227 27 28
+            +38 050 227 27 28
           </a>
         </li>
       </ul>
