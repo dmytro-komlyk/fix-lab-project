@@ -22,7 +22,7 @@ export const CallCourierSection: React.FC = () => {
         }  max-lg:justify-center max-md:py-14`}
       >
         <div>
-          <div className=' absolute bottom-[255px] left-[16px] max-xl:bottom-[235px] max-lg:bottom-[342px] max-lg:left-[0] max-md:bottom-[440px] max-md:left-[50%] max-md:translate-x-[-50%] max-sm:bottom-[400px]'>
+          <div className=' absolute bottom-[255px] left-[16px] max-xl:bottom-[235px] max-lg:bottom-[342px] max-lg:left-[0] max-md:bottom-[400px] max-md:left-[50%] max-md:translate-x-[-50%] max-sm:bottom-[400px]'>
             <Image
               className=' h-auto w-[480px] max-xl:w-[380px] max-md:min-w-[244px]'
               src='/images/courier-section/group-car.svg'
@@ -36,7 +36,7 @@ export const CallCourierSection: React.FC = () => {
             </p>
           </div>
           <Image
-            className=' absolute bottom-[91px] left-[43px] h-auto w-[420px] max-xl:w-[320px] max-lg:bottom-[191px] max-lg:left-[15px] max-md:bottom-[340px] max-md:left-[50%] max-md:w-[251px] max-md:translate-x-[-50%] max-sm:bottom-[300px]'
+            className=' absolute bottom-[91px] left-[43px] h-auto w-[420px] max-xl:w-[320px] max-lg:bottom-[191px] max-lg:left-[15px] max-md:bottom-[300px] max-md:left-[50%] max-md:w-[251px] max-md:translate-x-[-50%] max-sm:bottom-[300px]'
             src='/images/courier-section/group-bottom.svg'
             alt='FixLab logo'
             width={420}
@@ -44,7 +44,7 @@ export const CallCourierSection: React.FC = () => {
             priority
           />
           <Image
-            className=' absolute bottom-[150px] left-[19px] h-auto w-[467px] max-xl:bottom-[139px] max-xl:w-[367px] max-lg:bottom-[237px] max-lg:left-[0] max-md:bottom-[375px] max-md:left-[50%] max-md:w-[244px] max-md:translate-x-[-50%] max-sm:bottom-[335px]'
+            className=' absolute bottom-[150px] left-[19px] h-auto w-[467px] max-xl:bottom-[139px] max-xl:w-[367px] max-lg:bottom-[237px] max-lg:left-[0] max-md:bottom-[335px] max-md:left-[50%] max-md:w-[244px] max-md:translate-x-[-50%] max-sm:bottom-[335px]'
             src='/images/courier-section/light-center.svg'
             alt='FixLab logo'
             width={467}
@@ -63,9 +63,9 @@ export const CallCourierSection: React.FC = () => {
         <div className='z-[1] justify-between max-lg:flex max-lg:flex-col max-md:gap-[264px]'>
           <div className='flex flex-col gap-4  md:mb-8 '>
             <p className='text-2xl font-[400] text-dark-blue max-md:text-xl max-sm:text-lg'>
-              Нетреба ламати плани!
+              Не треба ламати плани!
             </p>
-            <p className='text-2xl font-[700] text-dark-blue max-sm:text-lg'>
+            <p className='font-exo_2 text-2xl font-bold text-dark-blue max-sm:text-lg'>
               Можна викликати курʼєра!
             </p>
           </div>

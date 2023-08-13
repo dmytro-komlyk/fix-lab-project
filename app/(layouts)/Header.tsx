@@ -12,6 +12,8 @@ import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
 import CourierModal from './(components)/CourierModal'
 import MobileMenu from './(components)/MobileMenu'
 
+const blogIdRegex = /\/blog\/\d+/
+
 export const Header: React.FC = () => {
   const pathname = usePathname()
   const toggleDropdownRegionRef = useRef<HTMLDivElement>(null)
@@ -91,8 +93,13 @@ export const Header: React.FC = () => {
 
   return (
     <header
-      className={`padding-lock max-md fixed left-0 top-0 z-50 flex w-full items-center transition-colors ${
-        isScrolled || pathname === '/repair' ? ' bg-[#04268B]' : ''
+      className={`padding-lock max-md fixed left-0 top-0 z-10 flex w-full items-center transition-colors ${
+        isScrolled ||
+        pathname === '/repair' ||
+        pathname === '/contacts' ||
+        blogIdRegex.test(pathname)
+          ? ' bg-[#04268B]'
+          : ''
       }`}
     >
       <nav
@@ -309,16 +316,31 @@ export const Header: React.FC = () => {
                 +38 063 227 27 28
               </a>
             </li>
-            {isOpenItem && (
-              <li className='absolute left-[0px] top-[27px]'>
-                <a
-                  href='tel:380632272730'
-                  className='whitespace-nowrap text-sm font-normal leading-tight tracking-wide text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px] '
+            <AnimatePresence>
+              {isOpenItem && (
+                <motion.li
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.1 },
+                  }}
+                  exit={{
+                    y: -5,
+                    opacity: 0,
+                    transition: { duration: 0.1 },
+                  }}
+                  className='absolute left-[0px] top-[27px]'
                 >
-                  +38 063 227 27 30
-                </a>
-              </li>
-            )}
+                  <a
+                    href='tel:380632272730'
+                    className='whitespace-nowrap text-sm font-normal leading-tight tracking-wide text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px] '
+                  >
+                    +38 063 227 27 30
+                  </a>
+                </motion.li>
+              )}
+            </AnimatePresence>
           </ul>
           <div
             className=' text-gray-700 -m-2.5 cursor-pointer items-center justify-center rounded-md p-2.5 transition-opacity hover:opacity-80 focus:opacity-80  md:pl-8'
