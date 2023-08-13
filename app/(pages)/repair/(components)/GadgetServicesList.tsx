@@ -88,7 +88,7 @@ const GadgetServicesList: React.FC<GadgetServicesListProps> = ({
                 className='flex  items-center justify-between  px-6 py-[20px] max-md:flex-col max-md:items-start  max-md:gap-2  max-md:py-[8px] '
                 href={`/repair/${categoryPath}/${subcategoryPath}`}
               >
-                <h2 className='font-exo_2 text-xl font-semibold text-dark-blue '>
+                <h2 className='font-exo_2 text-xl font-semibold text-dark-blue max-lg:text-lg '>
                   {item.attributes.title}
                 </h2>
                 <p className=' text-[18px] font-[400] text-black-dis '>

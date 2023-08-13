@@ -26,7 +26,7 @@ const Index: React.FC<IndexProps> = async ({ params }) => {
   const subcategoriesData = await getData(subcategoryUrl)
 
   return (
-    <main className='h-full flex-auto'>
+    <main className='flex-auto'>
       <CategorySection
         subcategoriesData={subcategoriesData}
         categoryData={categoryData}

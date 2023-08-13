@@ -1,6 +1,5 @@
 'use client'
 
-// import MarkdownIt from 'markdown-it'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
@@ -68,9 +67,6 @@ const CategorySection: React.FC<CategorySectionProps> = ({
   categoryData,
   subcategoriesData,
 }) => {
-  // const markdown = new MarkdownIt({
-  //   html: true,
-  // })
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
     useState<boolean>(false)
   const [showCostRepair, setShowCostRepair] = useState<boolean>(false)
@@ -84,8 +80,8 @@ const CategorySection: React.FC<CategorySectionProps> = ({
   }, [])
 
   return (
-    <section className=' overflow-hidden  bg-gradient-linear-blue'>
-      <div className='container relative flex flex-col  pb-[103px] pt-[151px] max-md:pb-14'>
+    <section className=' overflow-hidden  bg-gradient-linear-blue  pb-[102px] pt-[171px] max-md:pb-14 max-md:pt-[138px]'>
+      <div className='container relative flex flex-col '>
         <div className=' absolute left-[335px] top-[175px] max-lg:hidden'>
           <Image
             src='/background-flicker-center.svg'
@@ -141,7 +137,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                       height={50}
                       alt={item.attributes.title}
                     />
-                    <h2 className='font-exo_2 text-2xl font-bold text-white-dis '>
+                    <h2 className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
                       {item.attributes.title}
                     </h2>
                   </div>
