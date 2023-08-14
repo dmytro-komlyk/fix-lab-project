@@ -46,7 +46,7 @@ export default function RootLayout({
       className={`${inter.variable} ${manrope.variable} ${exo2.variable} ${gugi.variable} h-full`}
     >
       <body className=' h-full font-inter'>
-        <div className='bodyPadding flex min-h-full flex-col justify-between'>
+        <div className='flex min-h-full flex-col justify-between'>
           <Header />
           {children}
           <Footer />
