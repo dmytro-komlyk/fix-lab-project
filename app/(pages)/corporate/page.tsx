@@ -105,11 +105,11 @@ export default async function Corporate() {
   // const sectionData = await getData(sectionDataUrl)
 
   return (
-     <main className='h-full flex-auto'>
+    <main className='h-full flex-auto'>
       <ForBusinessSection sectionData={sectionData} />
       <CallCourierSection />
       <ColaborationSection />
       <AddressSection />
     </main>
-    )
+  )
 }
