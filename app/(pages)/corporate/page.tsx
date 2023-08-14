@@ -1,5 +1,8 @@
 import React from 'react'
 
+import { AddressSection } from '@/app/(layouts)/AddressSection'
+import { CallCourierSection } from '@/app/(layouts)/CallCourierSection'
+import { ColaborationSection } from '@/app/(layouts)/ColaborationSection'
 import IconCourier from '@/public/icons/icon-courier.svg'
 import IconFastArrival from '@/public/icons/icon-fast-arrival.svg'
 import IconGuard from '@/public/icons/icon-guard.svg'
@@ -101,5 +104,12 @@ export default async function Corporate() {
   // const sectionDataUrl = ``
   // const sectionData = await getData(sectionDataUrl)
 
-  return <ForBusinessSection sectionData={sectionData} />
+  return (
+     <>
+      <ForBusinessSection sectionData={sectionData} />
+      <CallCourierSection />
+      <ColaborationSection />
+      <AddressSection />
+    </>
+    )
 }
