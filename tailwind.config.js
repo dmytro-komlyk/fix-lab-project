@@ -90,6 +90,7 @@ module.exports = {
       animation: {
         hoverBtnIn: 'slide-out-top 0.2s ease-in-out both',
         hoverBtnOut: 'slide-out-bottom 0.2s ease-in-out both',
+        hoverCard: 'all 0.3s ease-in-out',
       },
     },
   },

@@ -93,7 +93,7 @@ export const Header: React.FC = () => {
 
   return (
     <header
-      className={`padding-lock max-md fixed left-0 top-0 z-10 flex w-full items-center transition-colors ${
+      className={`padding-lock max-md fixed left-0 top-0 z-50 flex w-full items-center transition-colors ${
         isScrolled ||
         pathname === '/repair' ||
         pathname === '/contacts' ||

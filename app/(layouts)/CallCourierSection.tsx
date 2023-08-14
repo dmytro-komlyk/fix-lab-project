@@ -15,7 +15,7 @@ export const CallCourierSection: React.FC = () => {
   }, [])
 
   return (
-    <section className=' w-full overflow-hidden bg-mid-green md:translate-y-[-100px] lg:translate-y-[-200px]'>
+    <section className=' w-full overflow-hidden bg-mid-green'>
       <div
         className={`container relative flex justify-end pb-[102px]    ${
           pathname !== '/' ? 'pt-[102px]' : 'pt-[213px]'

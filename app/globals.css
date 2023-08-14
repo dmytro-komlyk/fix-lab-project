@@ -64,6 +64,11 @@
   .hover-gadget-link:focus p  {
   @apply block;
   }
+  .hover-laptop:hover img,
+  .hover-laptop:focus img {
+     @apply translate-x-[10px];
+   
+  }
   /* ... */
 }
 
