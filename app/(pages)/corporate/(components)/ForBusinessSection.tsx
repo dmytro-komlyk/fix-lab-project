@@ -61,7 +61,7 @@ const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
         <div className='flex flex-col justify-between gap-[50px] pb-[102px] pt-[28px] lg:flex-row'>
           <div className='flex w-full flex-col gap-8 lg:max-w-[500px] lg:gap-14'>
             <div className='flex flex-col gap-6 lg:gap-8'>
-              <h3 className='text-xl text-[#FFFFFF] lg:text-2xl'>
+              <h3 className='font-exo_2 text-xl text-[#FFFFFF] lg:text-2xl'>
                 {sectionData.info.title}
               </h3>
               <BenefitsList items={sectionData.info.benefits} />
