@@ -28,6 +28,7 @@ module.exports = {
       desktop: 'center',
     },
     fontSize: {
+      xs: '0.75rem' /* 12px */,
       sm: '0.875rem' /* 14px */,
       base: '1rem' /* 16px */,
       md: '1.125rem' /* 18px */,
@@ -47,6 +48,7 @@ module.exports = {
       'black-dis': '#0B122F',
       'light-green': '#4BE0AA',
       'mid-green': '#00CC73',
+      'light-grey': '#F8FCFFC2',
       'mid-grey': '#92999C',
       'modal-overlay': 'rgba(0, 0, 0, 0.25)',
       'pros-bg': 'rgba(248, 252, 255, 0.76)',
