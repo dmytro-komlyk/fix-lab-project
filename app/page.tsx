@@ -5,12 +5,15 @@ import {
   ColaborationSection,
   HeroSection,
 } from './(layouts)'
+import getData from './(server)/api/service/getData'
 
-export default function Home() {
+export default async function Home() {
+  const categoriesUrl = `/api/categories?populate=*&sort=id:asc`
+  const categoryData = await getData(categoriesUrl)
   return (
-    <main className='h-max flex-auto'>
+    <main className='h-max flex-auto gap-0'>
       <HeroSection />
-      <BrokenSection />
+      <BrokenSection categoryData={categoryData} />
       <CallCourierSection />
       <ColaborationSection />
       <AddressSection />

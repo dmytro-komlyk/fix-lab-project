@@ -82,82 +82,86 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
         animate={{ opacity: 1, transition: { duration: 0.1 } }}
         exit={{ opacity: 1, transition: { duration: 0.1 } }}
         ref={modalRef}
-        onClick={onBackdropCloseModal}
-        className='fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center  overflow-y-auto overflow-x-hidden  bg-modal-overlay'
+        className='fixed left-0 top-0 z-50  h-full w-full   overflow-y-auto overflow-x-hidden  bg-modal-overlay'
       >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 0.3 } }}
-          exit={{ opacity: 0, transition: { duration: 0.3 } }}
-          className='relative max-w-[414px]  flex-col items-center justify-start rounded-2xl bg-[#00cc73] p-14 max-sm:px-4'
+        <div
+          onClick={onBackdropCloseModal}
+          className=' flex min-h-full items-center justify-center  px-3 py-6'
         >
-          <button
-            type='button'
-            className=' white-dis-700 absolute right-4 top-4 text-center'
-            onClick={toggleInstantAdviceModal}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.3 } }}
+            exit={{ opacity: 0, transition: { duration: 0.3 } }}
+            className='relative max-w-[414px]  flex-col items-center justify-start rounded-2xl bg-[#00cc73] p-14 max-sm:px-4'
           >
-            <MdOutlineClose
-              className='h-8 w-8 fill-white-dis transition-opacity  hover:opacity-80 focus:opacity-80'
-              aria-hidden='true'
-            />
-          </button>
-          <h3 className='mb-8 text-center text-xl font-semibold text-white-dis '>
-            Миттєва консультація
-          </h3>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
-            {({
-              isSubmitting,
-              touched,
-              errors,
-              isValidating,
-              dirty,
-              isValid,
-            }) => (
-              <Form className='flex flex-col items-center justify-center gap-6'>
-                <div className='relative'>
-                  <Field
-                    type='text'
-                    id='name'
-                    name='name'
-                    className={`h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px] ${
-                      touched.name && errors.name ? 'border-[#A80000]' : ''
-                    }`}
-                    autoComplete='off'
-                    placeholder='Імʼя'
+            <button
+              type='button'
+              className=' white-dis-700 absolute right-4 top-4 text-center'
+              onClick={toggleInstantAdviceModal}
+            >
+              <MdOutlineClose
+                className='h-8 w-8 fill-white-dis transition-opacity  hover:opacity-80 focus:opacity-80'
+                aria-hidden='true'
+              />
+            </button>
+            <h3 className='mb-8 text-center text-xl font-semibold text-white-dis '>
+              Миттєва консультація
+            </h3>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+            >
+              {({
+                isSubmitting,
+                touched,
+                errors,
+                isValidating,
+                dirty,
+                isValid,
+              }) => (
+                <Form className='flex flex-col items-center justify-center gap-6'>
+                  <div className='relative'>
+                    <Field
+                      type='text'
+                      id='name'
+                      name='name'
+                      className={`h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px] ${
+                        touched.name && errors.name ? 'border-[#A80000]' : ''
+                      }`}
+                      autoComplete='off'
+                      placeholder='Імʼя'
+                    />
+                    <ErrorMessage
+                      name='name'
+                      component='div'
+                      className=' absolute bottom-[-22px] left-[24px] text-sm font-normal tracking-wide text-[#A80000]'
+                    />
+                  </div>
+                  <div className='relative'>
+                    <Field
+                      type='text'
+                      id='number'
+                      name='number'
+                      className='h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px]'
+                      autoComplete='off'
+                      placeholder='Номер телефону'
+                    />
+                    <ErrorMessage
+                      name='number'
+                      component='div'
+                      className=' absolute bottom-[-22px] left-[24px] text-sm font-normal tracking-wide text-[#A80000]'
+                    />
+                  </div>
+                  <ModalButton
+                    validationArr={[isSubmitting, isValid, dirty, isValidating]}
+                    textButton='Миттєва консультація'
                   />
-                  <ErrorMessage
-                    name='name'
-                    component='div'
-                    className=' absolute bottom-[-22px] left-[24px] text-sm font-normal tracking-wide text-[#A80000]'
-                  />
-                </div>
-                <div className='relative'>
-                  <Field
-                    type='text'
-                    id='number'
-                    name='number'
-                    className='h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px]'
-                    autoComplete='off'
-                    placeholder='Номер телефону'
-                  />
-                  <ErrorMessage
-                    name='number'
-                    component='div'
-                    className=' absolute bottom-[-22px] left-[24px] text-sm font-normal tracking-wide text-[#A80000]'
-                  />
-                </div>
-                <ModalButton
-                  validationArr={[isSubmitting, isValid, dirty, isValidating]}
-                  textButton='Миттєва консультація'
-                />
-              </Form>
-            )}
-          </Formik>
-        </motion.div>
+                </Form>
+              )}
+            </Formik>
+          </motion.div>
+        </div>
       </motion.div>
     </AnimatePresence>
   )

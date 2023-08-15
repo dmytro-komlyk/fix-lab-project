@@ -54,9 +54,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             initial={{ x: 500 }}
             animate={{ x: 0, transition: { duration: 0.3 } }}
             exit={{ x: 500, transition: { duration: 0.3 } }}
-            className='fixed inset-y-0 right-0 z-10 flex w-full flex-col justify-between overflow-y-auto bg-[#09338F] px-4 pb-[10px] pt-10 sm:max-w-[400px] sm:ring-1'
+            className='fixed inset-y-0 right-0 z-10 flex w-full flex-col justify-between  bg-[#09338F] px-4 pb-[10px] pt-10 sm:ring-1 md:max-w-[400px]'
           >
-            <div className='flex flex-col'>
+            <div className='flex flex-col overflow-auto'>
               <div className='flex items-center justify-between'>
                 <Link
                   href='/'
@@ -83,12 +83,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                   />
                 </button>
               </div>
-              <ul className='space-y-2 py-6'>
+              <ul className='mt-8 flex flex-col items-center gap-4 max-md:justify-center md:items-start'>
                 <li>
                   <Link
                     href='/repair'
                     onClick={toggleMobileMenu}
-                    className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                    className='font-exo_2 text-xl font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                   >
                     Ремонт
                   </Link>
@@ -97,7 +97,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                   <Link
                     href='/contacts'
                     onClick={toggleMobileMenu}
-                    className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                    className='font-exo_2 text-xl font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                   >
                     Контакти
                   </Link>
@@ -106,7 +106,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                   <Link
                     href='/blog'
                     onClick={toggleMobileMenu}
-                    className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                    className='font-exo_2 text-xl font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                   >
                     Блог
                   </Link>
@@ -115,7 +115,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                   <Link
                     href='/corporate'
                     onClick={toggleMobileMenu}
-                    className='text-base font-semibold capitalize text-white-dis  transition-opacity hover:opacity-80 focus:opacity-80 '
+                    className='font-exo_2 text-xl font-semibold capitalize text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                   >
                     Для бізнесу
                   </Link>

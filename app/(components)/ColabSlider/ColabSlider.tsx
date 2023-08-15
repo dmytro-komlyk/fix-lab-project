@@ -75,7 +75,7 @@ export const ColabSlider = () => {
         {colabData.map(item => (
           <li
             key={item.id}
-            className='h-full w-[302px] rounded-xl border border-l-light-green p-8 font-inter text-white-dis'
+            className='h-full w-[302px] rounded-2xl border border-l-light-green p-8 font-inter text-white-dis'
             style={{ width: '302px', height: '460px' }}
           >
             <div className='mb-6 h-[86px]'>
@@ -97,7 +97,7 @@ export const ColabSlider = () => {
         {colabData.map(item => (
           <div
             key={item.id}
-            className='keen-slider__slide h-[490px] w-[302px] rounded-xl border-[1px] border-l-light-green p-8 font-inter text-white-dis'
+            className='keen-slider__slide h-[490px] w-[302px] rounded-2xl border-[1px] border-l-light-green p-8 font-inter text-white-dis'
             style={{ width: '302px', height: '500px' }}
           >
             <div className='mb-6 h-[86px]'>

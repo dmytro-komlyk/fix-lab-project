@@ -8,7 +8,7 @@ export const CategoriesList: React.FC<CategoriesSectionProps> = ({
   categoryData,
 }) => {
   return (
-    <ul className='flex flex-wrap gap-2 xl:gap-6'>
+    <ul className='relative z-10 flex flex-wrap gap-2 xl:gap-6'>
       {categoryData?.data.map((item: CategoryItem) => {
         const categoryPath = item.attributes.slug
         const img = item.attributes.img.data.attributes.url
@@ -17,11 +17,11 @@ export const CategoriesList: React.FC<CategoriesSectionProps> = ({
         return (
           <li
             key={item.id}
-            className='md:w-[calc((100%-32px)/3)] xl:w-[calc((100%-48px)/3)]'
+            className='h-[150px] md:w-[calc((100%-32px)/3)] xl:h-[261px] xl:w-[calc((100%-48px)/3)]'
           >
             <Link
               href={`/repair/${categoryPath}`}
-              className='flex w-full flex-col justify-between rounded-2xl bg-dark-blue md:h-full md:p-4 xl:h-[261px] xl:p-8'
+              className='hover-gadget-link flex w-full flex-col justify-between rounded-2xl bg-dark-blue transition-all md:h-full md:p-4 xl:h-[261px] xl:p-8'
             >
               <Image
                 className='ml-auto w-auto md:h-[40%] xl:h-[79px]'
@@ -30,9 +30,14 @@ export const CategoriesList: React.FC<CategoriesSectionProps> = ({
                 height={height}
                 alt={item.attributes.title}
               />
-              <h3 className='mr-auto font-semibold text-white-dis md:text-base xl:text-xl'>
-                {item.attributes.title}
-              </h3>
+              <div className='text-white-dis'>
+                <h3 className='mr-auto font-semibold leading-tight md:text-base xl:text-xl'>
+                  {item.attributes.title}
+                </h3>
+                <p className='hidden font-inter text-[12px] xl:text-sm'>
+                  Подивитися поломки
+                </p>
+              </div>
             </Link>
           </li>
         )

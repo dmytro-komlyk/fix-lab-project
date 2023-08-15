@@ -6,7 +6,7 @@ export default async function getData(url: string) {
     next: { revalidate: 60 },
   })
   if (!res.ok) {
-    throw new Error('Failed to fetch data')
+    throw new Error(res.status.toString() + res.statusText)
   }
 
   return res.json()
