@@ -120,7 +120,7 @@ export const HeroSection = () => {
           </button>
         </div>
 
-        <div className='pt-[426px] xl:max-w-[411px] xl:pt-[58px]'>
+        <div className='overflow-x-hidden pt-[426px] xl:max-w-[411px] xl:pt-[58px]'>
           <h3 className='relative mx-4 font-exo_2 text-xl text-white-dis md:mx-0'>
             Найчастіші звернення
             <Image
@@ -135,7 +135,7 @@ export const HeroSection = () => {
           <HeroSlider data={DATA.items} />
         </div>
 
-        <div className='absolute right-0 right-5 top-0 hidden md:flex lg:right-0'>
+        <div className='absolute right-0 top-0 hidden md:right-5 md:flex lg:right-0'>
           <ul>{renderPros()}</ul>
         </div>
       </div>

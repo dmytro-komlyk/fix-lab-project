@@ -4,9 +4,8 @@ interface ISliderProgressBarProps {
 }
 
 const SliderProgessBar = ({ progress, max }: ISliderProgressBarProps) => {
-  console.log({ progress, max })
-
   if (!max) return null
+
   return (
     <div className='relative w-full p-4 md:px-0'>
       <div
