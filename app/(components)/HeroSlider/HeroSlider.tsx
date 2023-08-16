@@ -36,6 +36,7 @@ const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
       },
       '(min-width: 1440px)': {
         slides: { perView: 3, spacing: 10 },
+        drag: false,
         slideChanged(slider) {
           setCurrentSlide(slider.track.details.rel)
         },

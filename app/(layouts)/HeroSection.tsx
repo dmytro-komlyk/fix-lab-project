@@ -130,10 +130,6 @@ export const HeroSection = () => {
               alt='arrow'
             />
           </h3>
-          {/* <HeroSlider
-            className='ml-4 flex overflow-x-scroll py-8 xl:hidden'
-            data={ITEMS}
-          /> */}
 
           <HeroSlider data={ITEMS} />
         </div>
