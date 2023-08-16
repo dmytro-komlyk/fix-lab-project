@@ -1,11 +1,16 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
+// import { useWindowSize } from '@/app/(hooks)/useWindowResize'
 import { phoneParse } from '@/app/(utils)/phoneParse'
 import { type Location } from '@/app/(utils)/types'
 
-export const CardItem: React.FC<Location> = item => {
+export const AddressLocationCard: React.FC<Location> = item => {
+  // const windowSize = useWindowSize()
+
   return (
     <li
       key={item.id}
@@ -37,7 +42,7 @@ export const CardItem: React.FC<Location> = item => {
         target='_blank'
       >
         <Image
-          className='aspect-square bg-cover bg-center lg:aspect-[1/1.05]'
+          className='bg-cover bg-center aspect-square lg:aspect-[1/1.05]'
           src={item.imageLink}
           alt={item.title}
           width={600}
