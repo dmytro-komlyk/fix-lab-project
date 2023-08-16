@@ -7,6 +7,7 @@ import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import { SliderItem } from './SliderItem'
+import { SliderProgressBar } from './SliderProgressBar'
 import type { IHeroSlider } from './types'
 
 const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
@@ -14,36 +15,21 @@ const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
   const [loaded, setLoaded] = useState(false)
   const [sliderRef, instanceRef] = useKeenSlider<HTMLUListElement>({
     initial: 0,
-    slides: {
-      perView: 3,
-      spacing: 15,
-    },
     breakpoints: {
       '(min-width: 390px)': {
         slides: { perView: 3, spacing: 15 },
-        loop: true,
-        mode: 'free',
-      },
-      '(min-width: 768px)': {
-        slides: { perView: 4, spacing: 15 },
-        loop: true,
-        mode: 'free',
-      },
-      '(min-width: 1100px)': {
-        slides: { perView: 4, spacing: 15 },
-        loop: true,
         mode: 'free',
       },
       '(min-width: 1440px)': {
-        slides: { perView: 3, spacing: 10 },
+        slides: { perView: 3, spacing: 15 },
         drag: false,
-        slideChanged(slider) {
-          setCurrentSlide(slider.track.details.rel)
-        },
-        created() {
-          setLoaded(true)
-        },
       },
+    },
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel)
+    },
+    created() {
+      setLoaded(true)
     },
   })
 
@@ -58,7 +44,7 @@ const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
       />
     ))
 
-  const renderSteps = (): JSX.Element | JSX.Element[] | undefined => {
+  const renderSteps = (): JSX.Element | JSX.Element[] | undefined | null => {
     if (instanceRef?.current) {
       const steps = [
         ...Array(instanceRef.current.track.details.slides.length).keys(),
@@ -85,16 +71,33 @@ const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
       return ElementHTML
     }
 
-    return <div>error</div>
+    return null
   }
 
   return (
     <>
-      <ul ref={sliderRef} className='keen-slider ml-4 pb-[20px] pt-8'>
+      <ul
+        ref={sliderRef}
+        className='keen-slider ml-4 overflow-hidden pb-[20px] pt-8 md:ml-0'
+      >
         {renderSlides()}
       </ul>
       {loaded && instanceRef && (
-        <div className='flex items-center justify-center'>{renderSteps()}</div>
+        <>
+          <div className='block w-full px-4 md:px-0 lg:hidden'>
+            <SliderProgressBar
+              progress={currentSlide}
+              max={
+                instanceRef?.current &&
+                instanceRef?.current.track.details.slides.length
+              }
+            />
+          </div>
+
+          <div className='hidden items-center justify-center lg:flex '>
+            {renderSteps()}
+          </div>
+        </>
       )}
     </>
   )
