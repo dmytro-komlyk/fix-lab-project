@@ -78,10 +78,10 @@ export const CallCourierSection: React.FC = () => {
               onClick={toggleCourierModal}
               onMouseEnter={() => setIsHovering(false)}
               onMouseLeave={() => setIsHovering(true)}
-              className='group flex cursor-pointer items-center justify-center rounded-[12px] bg-dark-blue transition-colors hover:bg-black-dis focus:bg-black-dis md:min-w-[256px] '
+              className='group flex h-[56px] cursor-pointer items-center justify-center rounded-[12px] bg-dark-blue transition-colors hover:bg-black-dis focus:bg-black-dis md:min-w-[256px]'
             >
               <p
-                className={`pb-[20px] pt-[23px] text-base font-semibold tracking-wide text-white-dis  ${
+                className={`text-base font-semibold tracking-wide text-white-dis  ${
                   isHovering ? 'animate-hoverBtnOut' : ''
                 } group-hover:animate-hoverBtnIn`}
               >

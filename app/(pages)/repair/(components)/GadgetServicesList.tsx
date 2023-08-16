@@ -11,7 +11,7 @@ interface GadgetServicesListProps {
       attributes: {
         recommend_brands: {
           data: {
-            id: string
+            id: number
             attributes: {
               url: string
               width: number
@@ -25,7 +25,7 @@ interface GadgetServicesListProps {
   }
   subcategoriesData: {
     data: {
-      id: string
+      id: number
       attributes: {
         category: {
           data: {
