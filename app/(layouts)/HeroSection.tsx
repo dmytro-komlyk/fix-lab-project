@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import React from 'react'
 
 import ArrowImage from '../../public/icons/arrow-down-right.svg'
 import IconGuard from '../../public/icons/icon-guard.svg'
@@ -14,6 +13,7 @@ import LaptopImage from '../../public/icons/pop-laptop.svg'
 import MatrixImage from '../../public/icons/pop-matrix.svg'
 import PowerImage from '../../public/icons/pop-power.svg'
 import SmartphoneImage from '../../public/icons/pop-smartphone.svg'
+import { HeroSlider } from '../(components)/HeroSlider'
 
 const ITEMS = [
   {
@@ -82,19 +82,6 @@ const PROS = [
 ]
 
 export const HeroSection = () => {
-  const renderList = () =>
-    ITEMS.map(item => (
-      <li
-        className='mr-4 flex h-[148px] w-[120px] min-w-[120px] flex-col items-center justify-between rounded-2xl bg-white-dis px-5 py-[18px]'
-        key={item.alt}
-      >
-        <Image src={item.src} height={60} alt={item.alt} className='border' />
-        <h4 className='text-center font-inter text-base leading-5 text-dark-blue'>
-          {item.title}
-        </h4>
-      </li>
-    ))
-
   const renderPros = () =>
     PROS.map(item => (
       <li
@@ -143,7 +130,12 @@ export const HeroSection = () => {
               alt='arrow'
             />
           </h3>
-          <ul className='ml-4 flex overflow-x-scroll py-8'>{renderList()}</ul>
+          {/* <HeroSlider
+            className='ml-4 flex overflow-x-scroll py-8 xl:hidden'
+            data={ITEMS}
+          /> */}
+
+          <HeroSlider data={ITEMS} />
         </div>
 
         <div className='absolute right-0 top-0 hidden md:right-5 md:flex xl:right-0'>
