@@ -111,7 +111,7 @@ export const HeroSection = () => {
   return (
     <section className='section w-full bg-dark-blue bg-banner-conic-blue-sm pt-36 md:bg-banner-conic-blue-md lg:bg-banner-conic-blue-lg xl:bg-banner-conic-blue-xl '>
       <div className='relative flex flex-col bg-banner-img bg-banner bg-no-repeat md:container md:bg-desktop'>
-        <div className='flex flex-col items-center px-4 font-exo_2 text-white-dis md:items-start xl:w-[500px]'>
+        <div className='flex flex-col items-center px-4 font-exo_2 text-white-dis  md:w-[500px] md:items-start'>
           <h2 className='text-3xl font-bold leading-none xl:text-title'>
             Бачимо гаджети
           </h2>
@@ -146,7 +146,7 @@ export const HeroSection = () => {
           <ul className='ml-4 flex overflow-x-scroll py-8'>{renderList()}</ul>
         </div>
 
-        <div className='absolute right-0 top-0 hidden md:flex'>
+        <div className='absolute right-0 top-0 hidden md:right-5 md:flex xl:right-0'>
           <ul>{renderPros()}</ul>
         </div>
       </div>

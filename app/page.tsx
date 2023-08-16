@@ -2,7 +2,6 @@ import {
   AddressSection,
   BrokenSection,
   CallCourierSection,
-  ColaborationSection,
   HeroSection,
 } from './(layouts)'
 import getData from './(server)/api/service/getData'
@@ -15,7 +14,7 @@ export default async function Home() {
       <HeroSection />
       <BrokenSection categoryData={categoryData} />
       <CallCourierSection />
-      <ColaborationSection />
+      {/* <ColaborationSection /> */}
       <AddressSection />
     </main>
   )
