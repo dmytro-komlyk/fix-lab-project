@@ -74,6 +74,8 @@ module.exports = {
           'linear-gradient(99deg, #20B9F4 0%, #00CC73 100%)',
         'card-gradient-blue':
           'linear-gradient(123deg, #121C37 0%, #04248B 55.98%, #264CC7 100%)',
+        'card-gradient-hover':
+          'linear-gradient(153deg, #06278B 100%, #3A65E5 100%)',
         'gradient-linear-blue':
           'linear-gradient(109deg, #121C37 0%, #0D225E 8%, #04248B 16%, #264CC7 100%)',
         'footer-gradient-linear-blue':
