@@ -1,5 +1,6 @@
 'use client'
 
+import { AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useCallback, useState } from 'react'
@@ -91,7 +92,9 @@ export const CallCourierSection: React.FC = () => {
           </div>
         </div>
       </div>
-      {showModal && <CourierModal toggleCourierModal={toggleCourierModal} />}
+      <AnimatePresence>
+        {showModal && <CourierModal toggleCourierModal={toggleCourierModal} />}
+      </AnimatePresence>
     </section>
   )
 }
