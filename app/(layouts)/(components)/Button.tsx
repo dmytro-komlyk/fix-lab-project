@@ -15,10 +15,10 @@ const Button: React.FC<ButtonProps> = ({ toggleModal, textButton }) => {
       onClick={toggleModal}
       onMouseEnter={() => setIsHovering(false)}
       onMouseLeave={() => setIsHovering(true)}
-      className=' group relative z-[1] flex min-w-[256px]  items-center justify-center rounded-[12px] bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+      className=' group relative z-[1] flex h-[56px] min-w-[256px] items-center justify-center rounded-[12px] bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
     >
       <p
-        className={`pb-[20px] pt-[23px] text-base  font-semibold tracking-wide text-[#04268b] ${
+        className={`text-base  font-semibold tracking-wide text-[#04268b] ${
           isHovering ? 'animate-hoverBtnOut' : ''
         } group-hover:animate-hoverBtnIn`}
       >

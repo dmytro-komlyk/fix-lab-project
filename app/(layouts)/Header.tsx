@@ -270,10 +270,10 @@ export const Header: React.FC = () => {
             onClick={toggleCourierModal}
             onMouseEnter={() => setIsHovering(false)}
             onMouseLeave={() => setIsHovering(true)}
-            className='group flex min-w-[256px] items-center justify-center rounded-[12px] bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue   max-lg:hidden'
+            className='group flex h-[56px] min-w-[256px] items-center justify-center rounded-[12px] bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue   max-lg:hidden'
           >
             <p
-              className={` pb-[20px] pt-[23px] text-base  font-semibold tracking-wide text-[#04268b] ${
+              className={`text-base  font-semibold tracking-wide text-[#04268b] ${
                 isHovering ? 'animate-hoverBtnOut' : ''
               } group-hover:animate-hoverBtnIn`}
             >
