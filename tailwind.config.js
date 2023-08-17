@@ -19,7 +19,6 @@ module.exports = {
       xl: '1440px',
       // => @media (min-width: 1440px) { ... }
     },
-
     fontSize: {
       xs: '0.75rem' /* 12px */,
       sm: '0.875rem' /* 14px */,
@@ -45,6 +44,7 @@ module.exports = {
       'mid-grey': '#92999C',
       'modal-overlay': 'rgba(0, 0, 0, 0.25)',
       'pros-bg': 'rgba(248, 252, 255, 0.76)',
+      
     },
     extend: {
       padding: {

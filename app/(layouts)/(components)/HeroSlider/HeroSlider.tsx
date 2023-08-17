@@ -39,6 +39,7 @@ const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
     data.map((item, index) => (
       <SliderItem
         key={item.alt}
+        link={item.link}
         src={item.src}
         alt={item.alt}
         title={item.title}

@@ -18,46 +18,55 @@ import { HeroSlider } from './(components)/HeroSlider'
 const DATA = {
   items: [
     {
+      link: '#',
       src: SmartphoneImage,
       alt: 'Замінити дисплей',
       title: 'Замінити дисплей',
     },
     {
+      link: '#',
       src: ChargingImage,
       alt: 'Замінити розʼєм',
       title: 'Замінити розʼєм',
     },
     {
+      link: '#',
       src: PowerImage,
       alt: 'Замінити батарею',
       title: 'Замінити батарею',
     },
     {
+      link: '#',
       src: KeyboardImage,
       alt: 'Замінити клавіатуру',
       title: 'Замінити клавіатуру',
     },
     {
+      link: '#',
       src: MatrixImage,
       alt: 'Замінити матрицю',
       title: 'Замінити матрицю',
     },
     {
+      link: '#',
       src: LaptopImage,
       alt: 'Апгрейд ноутбуку',
       title: 'Апгрейд ноутбуку',
     },
     {
+      link: '#',
       src: JoystickImage,
       alt: 'Ремонт джойстиків',
       title: 'Ремонт джойстиків',
     },
     {
+      link: '#',
       src: BoomboxImage,
       alt: 'Ремонт колонок',
       title: 'Ремонт колонок',
     },
     {
+      link: '#',
       src: EbookImage,
       alt: 'Ремонт читалок',
       title: 'Ремонт читалок',

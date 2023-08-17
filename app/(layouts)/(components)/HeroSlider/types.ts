@@ -2,6 +2,7 @@ export interface ISliderItem {
   src: any
   alt: string
   title: string
+  link: string
   id?: number
 }
 
