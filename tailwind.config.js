@@ -19,14 +19,7 @@ module.exports = {
       xl: '1440px',
       // => @media (min-width: 1440px) { ... }
     },
-    backgroundSize: {
-      banner: '150%',
-      desktop: '52%',
-    },
-    backgroundPosition: {
-      banner: 'center',
-      desktop: 'center',
-    },
+
     fontSize: {
       xs: '0.75rem' /* 12px */,
       sm: '0.875rem' /* 14px */,
@@ -66,6 +59,14 @@ module.exports = {
         manrope: ['var(--font-manrope)'],
         exo_2: ['var(--font-exo-2)'],
         gugi: ['var(--font-gugi)'],
+      },
+      backgroundSize: {
+        banner: '150%',
+        desktop: '52%',
+      },
+      backgroundPosition: {
+        banner: 'center',
+        desktop: 'center',
       },
       backgroundImage: {
         'gradient-radial-blue':

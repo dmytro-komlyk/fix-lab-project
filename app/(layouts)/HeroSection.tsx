@@ -13,7 +13,7 @@ import LaptopImage from '../../public/icons/pop-laptop.svg'
 import MatrixImage from '../../public/icons/pop-matrix.svg'
 import PowerImage from '../../public/icons/pop-power.svg'
 import SmartphoneImage from '../../public/icons/pop-smartphone.svg'
-import { HeroSlider } from '../(components)/HeroSlider'
+import { HeroSlider } from './(components)/HeroSlider'
 
 const DATA = {
   items: [
