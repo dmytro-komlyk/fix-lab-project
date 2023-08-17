@@ -15,6 +15,8 @@ const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
   const [loaded, setLoaded] = useState(false)
   const [sliderRef, instanceRef] = useKeenSlider<HTMLUListElement>({
     initial: 0,
+    slides: { perView: 3, spacing: 15 },
+    mode: 'free',
     breakpoints: {
       '(min-width: 390px)': {
         slides: { perView: 3, spacing: 15 },
