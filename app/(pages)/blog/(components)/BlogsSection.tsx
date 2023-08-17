@@ -28,7 +28,7 @@ interface BlogsSectionProps {
 
 const BlogsSection: React.FC<BlogsSectionProps> = ({ blogsData }) => {
   return (
-    <section className='overflow-hidden bg-gradient-linear-blue pb-[102px] pt-[171px] max-md:pb-14 max-md:pt-[138px]'>
+    <section className='overflow-hidden bg-gradient-linear-blue pb-[102px] pt-[163px] max-md:pb-14 max-md:pt-[138px]'>
       <div className='container relative flex flex-col xl:p-0 '>
         <div className='z-[1] mb-8 flex items-center gap-1'>
           <Link
