@@ -15,7 +15,7 @@ import GadgetServicesList from './GadgetServicesList'
 interface CategorySectionProps {
   categoryData: {
     data: {
-      id: string
+      id: number
       attributes: {
         img: {
           data: {
@@ -26,7 +26,7 @@ interface CategorySectionProps {
         }
         recommend_brands: {
           data: {
-            id: string
+            id: number
             attributes: {
               url: string
               width: number
@@ -46,7 +46,7 @@ interface CategorySectionProps {
   }
   subcategoriesData: {
     data: {
-      id: string
+      id: number
       attributes: {
         category: {
           data: {
@@ -80,7 +80,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
   }, [])
 
   return (
-    <section className=' overflow-hidden  bg-gradient-linear-blue  pb-[102px] pt-[171px] max-md:pb-14 max-md:pt-[138px]'>
+    <section className=' overflow-hidden  bg-gradient-linear-blue  pb-[102px] pt-[163px] max-md:pb-14 max-md:pt-[138px]'>
       <div className='container relative flex flex-col '>
         <div className=' absolute left-[335px] top-[175px] max-lg:hidden'>
           <Image
