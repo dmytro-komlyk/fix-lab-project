@@ -139,10 +139,10 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                         className='text-base font-[400] text-white-dis'
                       />
                       <Button
-                        textButton='Миттєва консультація'
+                        text='Миттєва консультація'
                         toggleModal={toggleInstantAdviceModal}
                         styles='group relative flex min-w-[256px]  items-center justify-center rounded-[12px] bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
-                        hoverAnimation='pb-[20px] pt-[23px] text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
+                        textHoverAnimation='pb-[20px] pt-[23px] text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
                       />
                     </div>
                     <CallUsCard />
@@ -184,10 +184,10 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                         <ServicesList subcategoriesData={subcategoriesData} />
                       </div>
                       <Button
-                        textButton='Розрахувати вартість ремонту'
+                        text='Розрахувати вартість ремонту'
                         toggleModal={toggleCostRepairModal}
                         styles='group relative w-full rounded-xl bg-mid-green'
-                        hoverAnimation='flex justify-between px-6 py-4 text-start font-exo_2 text-lg font-bold  text-dark-blue  transition-transform  duration-300 group-hover:translate-x-3  group-hover:scale-[1.05] max-md:font-inter max-md:text-base max-md:font-semibold max-[380px]:text-sm'
+                        textHoverAnimation='flex justify-between px-6 py-4 text-start font-exo_2 text-lg font-bold  text-dark-blue  transition-transform  duration-300 group-hover:translate-x-3  group-hover:scale-[1.05] max-md:font-inter max-md:text-base max-md:font-semibold max-[380px]:text-sm'
                         icon='absolute right-6 top-[50%] translate-y-[-50%] text-dark-blue transition-transform  duration-300 group-hover:scale-[1.4]  max-[380px]:right-'
                       />
                     </div>
