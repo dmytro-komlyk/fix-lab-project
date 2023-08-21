@@ -4,7 +4,6 @@ import MarkdownIt from 'markdown-it'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useCallback, useState } from 'react'
-import { FiArrowUpRight } from 'react-icons/fi'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import type { IBrandsListProps } from '@/app/(layouts)/(components)/BrandsList'
@@ -142,6 +141,8 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       <Button
                         textButton='Миттєва консультація'
                         toggleModal={toggleInstantAdviceModal}
+                        styles='group relative flex min-w-[256px]  items-center justify-center rounded-[12px] bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+                        hoverAnimation='pb-[20px] pt-[23px] text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
                       />
                     </div>
                     <CallUsCard />
@@ -178,25 +179,17 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       </div>
                       <div>
                         <p className='mb-8 font-exo_2 text-xl font-semibold text-white-dis'>
-                          Поломки
+                          Послуги
                         </p>
                         <ServicesList subcategoriesData={subcategoriesData} />
                       </div>
-                      <button
-                        type='button'
-                        onClick={toggleCostRepairModal}
-                        className='group relative w-full rounded-xl bg-mid-green'
-                      >
-                        <p className='flex justify-between px-6 py-4 text-start font-exo_2 text-lg font-bold  text-dark-blue  transition-transform  duration-300 group-hover:translate-x-3  group-hover:scale-[1.05] max-md:font-inter max-md:text-base max-md:font-semibold max-[380px]:text-sm'>
-                          Розрахувати вартість ремонту
-                        </p>
-                        <span className='absolute right-6 top-[50%] translate-y-[-50%] transition-transform  duration-300 group-hover:scale-[1.4]  max-[380px]:right-2'>
-                          <FiArrowUpRight
-                            size={42}
-                            className='text-dark-blue'
-                          />
-                        </span>
-                      </button>
+                      <Button
+                        textButton='Розрахувати вартість ремонту'
+                        toggleModal={toggleCostRepairModal}
+                        styles='group relative w-full rounded-xl bg-mid-green'
+                        hoverAnimation='flex justify-between px-6 py-4 text-start font-exo_2 text-lg font-bold  text-dark-blue  transition-transform  duration-300 group-hover:translate-x-3  group-hover:scale-[1.05] max-md:font-inter max-md:text-base max-md:font-semibold max-[380px]:text-sm'
+                        icon='absolute right-6 top-[50%] translate-y-[-50%] text-dark-blue transition-transform  duration-300 group-hover:scale-[1.4]  max-[380px]:right-'
+                      />
                     </div>
                   </div>
                 </div>

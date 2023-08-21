@@ -1,29 +1,29 @@
-import type { MouseEventHandler } from 'react'
-import { useState } from 'react'
+import { type MouseEventHandler } from 'react'
+import { FiArrowUpRight } from 'react-icons/fi'
 
 interface ButtonProps {
   toggleModal: MouseEventHandler<HTMLButtonElement>
-  textButton: string
+  text: string
+  styles: string
+  textHoverAnimation: string
+  icon?: string
 }
 
-const Button: React.FC<ButtonProps> = ({ toggleModal, textButton }) => {
-  const [isHovering, setIsHovering] = useState<boolean>(false)
-
+const Button: React.FC<ButtonProps> = ({
+  toggleModal,
+  text,
+  styles,
+  textHoverAnimation,
+  icon,
+}) => {
   return (
-    <button
-      type='button'
-      onClick={toggleModal}
-      onMouseEnter={() => setIsHovering(false)}
-      onMouseLeave={() => setIsHovering(true)}
-      className=' group relative z-[1] flex h-[56px] min-w-[256px] items-center justify-center rounded-[12px] bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
-    >
-      <p
-        className={`text-base  font-semibold tracking-wide text-[#04268b] ${
-          isHovering ? 'animate-hoverBtnOut' : ''
-        } group-hover:animate-hoverBtnIn`}
-      >
-        {textButton}
-      </p>
+    <button type='button' onClick={toggleModal} className={`${styles}`}>
+      <p className={`${textHoverAnimation}`}>{text}</p>
+      {icon && (
+        <span className={icon}>
+          <FiArrowUpRight size={42} />
+        </span>
+      )}
     </button>
   )
 }
