@@ -15,14 +15,17 @@ const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
   const [loaded, setLoaded] = useState(false)
   const [sliderRef, instanceRef] = useKeenSlider<HTMLUListElement>({
     initial: 0,
-    slides: { perView: 3, spacing: 15 },
     mode: 'free',
     breakpoints: {
       '(min-width: 390px)': {
         slides: { perView: 3, spacing: 15 },
         mode: 'free',
       },
-      '(min-width: 1440px)': {
+      '(min-width: 600px)': {
+        slides: { perView: 4, spacing: 15 },
+        mode: 'free',
+      },
+      '(min-width: 767px)': {
         slides: { perView: 3, spacing: 15 },
         drag: false,
       },
@@ -87,7 +90,7 @@ const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
       </ul>
       {loaded && instanceRef && (
         <>
-          <div className='block w-full px-4 md:px-0 lg:hidden'>
+          <div className='block w-full px-4 md:hidden md:px-0'>
             <SliderProgressBar
               progress={currentSlide}
               max={
@@ -97,7 +100,7 @@ const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
             />
           </div>
 
-          <div className='hidden items-center justify-center lg:flex '>
+          <div className='hidden items-center justify-center md:flex '>
             {renderSteps()}
           </div>
         </>

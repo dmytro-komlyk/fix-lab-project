@@ -129,7 +129,7 @@ export const HeroSection = () => {
           </button>
         </div>
 
-        <div className='overflow-x-hidden pt-[426px] xl:max-w-[411px] xl:pt-[58px]'>
+        <div className='overflow-x-hidden pt-[426px] md:max-w-[411px] xl:pt-[58px]'>
           <h3 className='relative mx-4 font-exo_2 text-xl text-white-dis md:mx-0'>
             Найчастіші звернення
             <Image
