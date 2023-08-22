@@ -1,5 +1,6 @@
 'use client'
 
+import { AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
@@ -230,14 +231,18 @@ const CategorySection: React.FC<CategorySectionProps> = ({
           </div>
         </div>
       </div>
-      {showCostRepair && (
-        <CostRepairModal toggleCostRepairModal={toggleCostRepairModal} />
-      )}
-      {showInstantAdviceModal && (
-        <InstantAdviceModal
-          toggleInstantAdviceModal={toggleInstantAdviceModal}
-        />
-      )}
+      <AnimatePresence>
+        {showCostRepair && (
+          <CostRepairModal toggleCostRepairModal={toggleCostRepairModal} />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {showInstantAdviceModal && (
+          <InstantAdviceModal
+            toggleInstantAdviceModal={toggleInstantAdviceModal}
+          />
+        )}
+      </AnimatePresence>
     </section>
   )
 }
