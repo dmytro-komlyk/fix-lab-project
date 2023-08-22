@@ -350,14 +350,17 @@ export const Header: React.FC = () => {
           </div>
         </div>
       </nav>
-      {mobileMenuOpen && (
-        <MobileMenu
-          mobileMenuOpen={mobileMenuOpen}
-          toggleCourierModal={toggleCourierModal}
-          toggleMobileMenu={toggleMobileMenu}
-        />
-      )}
-      {showModal && <CourierModal toggleCourierModal={toggleCourierModal} />}
+      <AnimatePresence>
+        {showModal && <CourierModal toggleCourierModal={toggleCourierModal} />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <MobileMenu
+            toggleCourierModal={toggleCourierModal}
+            toggleMobileMenu={toggleMobileMenu}
+          />
+        )}
+      </AnimatePresence>
     </header>
   )
 }
