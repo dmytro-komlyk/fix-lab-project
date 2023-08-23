@@ -33,7 +33,7 @@ const ServicesList: React.FC<IServicesListProps> = ({ subcategoriesData }) => {
             key={item.id}
           >
             <Link
-              className='flex items-center justify-between px-6 py-4 max-md:flex-col max-md:items-start  max-md:gap-2  max-md:py-[8px] '
+              className='flex items-center justify-between px-6 py-4 max-md:flex-col max-md:items-start  max-md:gap-2  max-md:py-[8px]'
               href={`/repair/${categoryPath}/${subcategoryPath}`}
             >
               <p className='font-exo_2 text-xl font-semibold text-dark-blue max-md:text-lg'>
