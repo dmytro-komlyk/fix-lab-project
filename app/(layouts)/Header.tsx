@@ -9,6 +9,7 @@ import { FaBars } from 'react-icons/fa'
 import { FiMapPin } from 'react-icons/fi'
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
 
+import Button from './(components)/Button'
 import CourierModal from './(components)/CourierModal'
 import MobileMenu from './(components)/MobileMenu'
 
@@ -21,7 +22,6 @@ export const Header: React.FC = () => {
   const itemsRegion: Array<string> = ['Голосіївський', 'Оболонський']
 
   const [showModal, setShowModal] = useState<boolean>(false)
-  const [isHovering, setIsHovering] = useState<boolean>(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
   const [isOpenItem, setIsOpenItem] = useState<boolean>(false)
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
@@ -265,21 +265,12 @@ export const Header: React.FC = () => {
 
           {/* Modal Open Button */}
 
-          <button
-            type='button'
-            onClick={toggleCourierModal}
-            onMouseEnter={() => setIsHovering(false)}
-            onMouseLeave={() => setIsHovering(true)}
-            className='group flex h-[56px] min-w-[256px] items-center justify-center rounded-[12px] bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue   max-lg:hidden'
-          >
-            <p
-              className={`text-base  font-semibold tracking-wide text-[#04268b] ${
-                isHovering ? 'animate-hoverBtnOut' : ''
-              } group-hover:animate-hoverBtnIn`}
-            >
-              Викликати курʼєра
-            </p>
-          </button>
+          <Button
+            text='Викликати курʼєра'
+            toggleModal={toggleCourierModal}
+            styles='group relative flex min-w-[256px] min-h-[56px] items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+            textHoverAnimation='py-5 text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
+          />
         </div>
 
         {/* Phone Toggle Mobile */}
