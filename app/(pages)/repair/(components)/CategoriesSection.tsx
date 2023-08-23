@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import Button from '@/app/(layouts)/(components)/Button'
@@ -34,7 +34,12 @@ export interface CategoryItem {
 const CategoriesSection: React.FC<CategoriesSectionProps> = ({
   categoryData,
 }) => {
-  const [isModalShown, setIsModalShown] = useState(false)
+  const [showInstantAdviceModal, setShowInstantAdviceModal] =
+    useState<boolean>(false)
+
+  const toggleInstantAdviceModal = useCallback(() => {
+    setShowInstantAdviceModal(prev => !prev)
+  }, [setShowInstantAdviceModal])
   return (
     <section className='section pt-[163px]'>
       <div className='container'>
@@ -67,17 +72,19 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
               Або ж, економте час, залишайте заявку на консультацію.
             </p>
             <Button
-              toggleModal={() => setIsModalShown(!isModalShown)}
-              textButton='Миттєва консультація'
+              text='Миттєва консультація'
+              toggleModal={toggleInstantAdviceModal}
+              styles='group relative flex min-w-[256px] min-h-[56px] items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+              textHoverAnimation='py-5 text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
             />
           </div>
 
           <CategoriesSlider categoryData={categoryData} />
         </div>
       </div>
-      {isModalShown && (
+      {showInstantAdviceModal && (
         <InstantAdviceModal
-          toggleInstantAdviceModal={() => setIsModalShown(!isModalShown)}
+          toggleInstantAdviceModal={toggleInstantAdviceModal}
         />
       )}
     </section>
