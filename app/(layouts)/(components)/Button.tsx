@@ -18,12 +18,10 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button type='button' onClick={toggleModal} className={`${styles}`}>
-      <p className={`${textHoverAnimation}`}>{text}</p>
-      {icon && (
-        <span className={icon}>
-          <FiArrowUpRight size={42} />
-        </span>
-      )}
+      <p className={`${textHoverAnimation}`}>
+        {text}
+        {icon && <FiArrowUpRight className={icon} />}
+      </p>
     </button>
   )
 }
