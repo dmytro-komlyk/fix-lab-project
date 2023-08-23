@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import type { CategoriesSectionProps } from '../(pages)/repair/(components)/CategoriesSection'
 import CategoriesSlider from '../(pages)/repair/(components)/slider'
@@ -10,7 +10,12 @@ import InstantAdviceModal from './(components)/InstantAdviceModal'
 export const BrokenSection: React.FC<CategoriesSectionProps> = ({
   categoryData,
 }) => {
-  const [isModalShown, setIsModalShown] = useState(false)
+  const [showInstantAdviceModal, setShowInstantAdviceModal] =
+    useState<boolean>(false)
+
+  const toggleInstantAdviceModal = useCallback(() => {
+    setShowInstantAdviceModal(prev => !prev)
+  }, [setShowInstantAdviceModal])
 
   return (
     <section className='section md:mb-[-50px] lg:mb-[-100px] xl:mb-[-150px]'>
@@ -32,17 +37,19 @@ export const BrokenSection: React.FC<CategoriesSectionProps> = ({
               Або ж, економте час, залишайте заявку на консультацію.
             </p>
             <Button
-              toggleModal={() => setIsModalShown(!isModalShown)}
-              textButton='Миттєва консультація'
+              text='Миттєва консультація'
+              toggleModal={toggleInstantAdviceModal}
+              styles='group relative flex min-w-[256px] min-h-[56px]  items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+              textHoverAnimation='py-5 text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
             />
           </div>
 
           <CategoriesSlider categoryData={categoryData} />
         </div>
       </div>
-      {isModalShown && (
+      {showInstantAdviceModal && (
         <InstantAdviceModal
-          toggleInstantAdviceModal={() => setIsModalShown(!isModalShown)}
+          toggleInstantAdviceModal={toggleInstantAdviceModal}
         />
       )}
     </section>
