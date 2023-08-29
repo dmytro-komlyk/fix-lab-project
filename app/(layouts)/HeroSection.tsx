@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import React from 'react'
 
 import ArrowImage from '../../public/icons/arrow-down-right.svg'
 import IconGuard from '../../public/icons/icon-guard.svg'
@@ -14,89 +13,87 @@ import LaptopImage from '../../public/icons/pop-laptop.svg'
 import MatrixImage from '../../public/icons/pop-matrix.svg'
 import PowerImage from '../../public/icons/pop-power.svg'
 import SmartphoneImage from '../../public/icons/pop-smartphone.svg'
+import { HeroSlider } from './(components)/HeroSlider'
 
-const ITEMS = [
-  {
-    src: SmartphoneImage,
-    alt: 'Замінити дисплей',
-    title: 'Замінити дисплей',
-  },
-  {
-    src: ChargingImage,
-    alt: 'Замінити розʼєм',
-    title: 'Замінити розʼєм',
-  },
-  {
-    src: PowerImage,
-    alt: 'Замінити батарею',
-    title: 'Замінити батарею',
-  },
-  {
-    src: KeyboardImage,
-    alt: 'Замінити клавіатуру',
-    title: 'Замінити клавіатуру',
-  },
-  {
-    src: MatrixImage,
-    alt: 'Замінити матрицю',
-    title: 'Замінити матрицю',
-  },
-  {
-    src: LaptopImage,
-    alt: 'Апгрейд ноутбуку',
-    title: 'Апгрейд ноутбуку',
-  },
-  {
-    src: JoystickImage,
-    alt: 'Ремонт джойстиків',
-    title: 'Ремонт джойстиків',
-  },
-  {
-    src: BoomboxImage,
-    alt: 'Ремонт колонок',
-    title: 'Ремонт колонок',
-  },
-  {
-    src: EbookImage,
-    alt: 'Ремонт читалок',
-    title: 'Ремонт читалок',
-  },
-]
-
-const PROS = [
-  {
-    src: IconZoom,
-    alt: 'Безкоштовна діагностика',
-    title: 'Безкоштовна діагностика',
-  },
-  {
-    src: IconGuard,
-    alt: 'Гарантія до 6 місяців',
-    title: 'Гарантія до 6 місяців',
-  },
-  {
-    src: IconScredriver,
-    alt: 'Швидкий ремонт',
-    title: 'Швидкий ремонт',
-  },
-]
+const DATA = {
+  items: [
+    {
+      link: '#',
+      src: SmartphoneImage,
+      alt: 'Замінити дисплей',
+      title: 'Замінити дисплей',
+    },
+    {
+      link: '#',
+      src: ChargingImage,
+      alt: 'Замінити розʼєм',
+      title: 'Замінити розʼєм',
+    },
+    {
+      link: '#',
+      src: PowerImage,
+      alt: 'Замінити батарею',
+      title: 'Замінити батарею',
+    },
+    {
+      link: '#',
+      src: KeyboardImage,
+      alt: 'Замінити клавіатуру',
+      title: 'Замінити клавіатуру',
+    },
+    {
+      link: '#',
+      src: MatrixImage,
+      alt: 'Замінити матрицю',
+      title: 'Замінити матрицю',
+    },
+    {
+      link: '#',
+      src: LaptopImage,
+      alt: 'Апгрейд ноутбуку',
+      title: 'Апгрейд ноутбуку',
+    },
+    {
+      link: '#',
+      src: JoystickImage,
+      alt: 'Ремонт джойстиків',
+      title: 'Ремонт джойстиків',
+    },
+    {
+      link: '#',
+      src: BoomboxImage,
+      alt: 'Ремонт колонок',
+      title: 'Ремонт колонок',
+    },
+    {
+      link: '#',
+      src: EbookImage,
+      alt: 'Ремонт читалок',
+      title: 'Ремонт читалок',
+    },
+  ],
+  pros: [
+    {
+      src: IconZoom,
+      alt: 'Безкоштовна діагностика',
+      title: 'Безкоштовна діагностика',
+    },
+    {
+      src: IconGuard,
+      alt: 'Гарантія до 6 місяців',
+      title: 'Гарантія до 6 місяців',
+    },
+    {
+      src: IconScredriver,
+      alt: 'Швидкий ремонт',
+      title: 'Швидкий ремонт',
+    },
+  ],
+}
 
 export const HeroSection = () => {
-  const renderList = () =>
-    ITEMS.map(item => (
-      <li
-        className='mr-4 flex h-[148px] w-[120px] min-w-[120px] flex-col items-center justify-between rounded-2xl bg-white-dis px-5 py-[18px]'
-        key={item.alt}
-      >
-        <Image src={item.src} height={60} alt={item.alt} className='border' />
-        <h4 className='text-center font-inter text-base leading-5 text-dark-blue'>
-          {item.title}
-        </h4>
-      </li>
-    ))
-
   const renderPros = () =>
-    PROS.map(item => (
+    DATA.pros.map(item => (
       <li
         className='mb-8 flex w-[156px] flex-col items-center rounded-2xl bg-pros-bg px-[18px] py-6 drop-shadow-pros'
         key={item.alt}
@@ -111,7 +108,7 @@ export const HeroSection = () => {
   return (
     <section className='section w-full bg-dark-blue bg-banner-conic-blue-sm pt-36 md:bg-banner-conic-blue-md lg:bg-banner-conic-blue-lg xl:bg-banner-conic-blue-xl '>
       <div className='relative flex flex-col bg-banner-img bg-banner bg-no-repeat md:container md:bg-desktop'>
-        <div className='flex flex-col items-center px-4 font-exo_2 text-white-dis md:items-start xl:w-[500px]'>
+        <div className='flex flex-col items-center px-4 font-exo_2 text-white-dis md:w-[500px] md:items-start md:px-0'>
           <h2 className='text-3xl font-bold leading-none xl:text-title'>
             Бачимо гаджети
           </h2>
@@ -132,8 +129,8 @@ export const HeroSection = () => {
           </button>
         </div>
 
-        <div className='pt-[426px] xl:max-w-[411px] xl:pt-[58px]'>
-          <h3 className='relative mx-4 font-exo_2 text-xl text-white-dis'>
+        <div className='overflow-x-hidden pt-[426px] md:max-w-[411px] xl:pt-[58px]'>
+          <h3 className='relative mx-4 font-exo_2 text-xl text-white-dis md:mx-0'>
             Найчастіші звернення
             <Image
               className='absolute right-0 top-1/2 -translate-y-1/2 text-white-dis'
@@ -143,10 +140,11 @@ export const HeroSection = () => {
               alt='arrow'
             />
           </h3>
-          <ul className='ml-4 flex overflow-x-scroll py-8'>{renderList()}</ul>
+
+          <HeroSlider data={DATA.items} />
         </div>
 
-        <div className='absolute right-0 top-0 hidden md:flex'>
+        <div className='absolute right-0 top-0 hidden md:right-5 md:flex lg:right-0'>
           <ul>{renderPros()}</ul>
         </div>
       </div>
