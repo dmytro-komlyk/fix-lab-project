@@ -74,7 +74,7 @@ export const CallCourierSection: React.FC = () => {
           </div>
           <div className='gap-14 max-lg:flex max-lg:flex-col max-md:gap-8'>
             <p className='w-[512px] text-xl font-[300]  text-dark-blue max-md:w-full max-md:font-[400] max-sm:text-lg lg:mb-14'>
-             Ми самі заберемо гаджет на дослідження  і він буде жити!
+              Ми самі заберемо гаджет на дослідження і він буде жити!
             </p>
             <button
               type='button'
