@@ -4,7 +4,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { FaEdit } from 'react-icons/fa'
 import { MdKeyboardArrowRight, MdOutlineClose } from 'react-icons/md'
 
@@ -24,6 +24,8 @@ interface GadgetService {
     slug: string
     title: string
     price: string
+    repair_time: string
+    guarantee: string
   }
 }
 
@@ -38,6 +40,7 @@ const GadgetServicesList: React.FC<GadgetServicesListProps> = ({
 }) => {
   const [showModal, setShowModal] = useState<boolean>(false)
   const [selectedItemId, setSelectedItemId] = useState<string | number>(0)
+  const [editedData, setEditedData] = useState<{ [key: string]: string }>({})
 
   const toggleEditModal = useCallback(() => {
     setShowModal(prev => !prev)
@@ -54,7 +57,28 @@ const GadgetServicesList: React.FC<GadgetServicesListProps> = ({
     [toggleEditModal],
   )
 
-  const [editedData, setEditedData] = useState<{ [key: string]: string }>({})
+  useEffect(() => {
+    const storEditedData = localStorage.getItem(
+      `editedDataEdit_${selectedItemId}`,
+    )
+
+    if (storEditedData) {
+      setEditedData(JSON.parse(storEditedData))
+    }
+  }, [selectedItemId])
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      localStorage.setItem(
+        `editedDataEdit_${selectedItemId}`,
+        JSON.stringify(editedData),
+      )
+    }, 500)
+
+    return () => {
+      clearInterval(timer)
+    }
+  }, [editedData, selectedItemId])
 
   const handleInputChange = (key: string, value: string) => {
     setEditedData(prevData => ({
@@ -66,11 +90,13 @@ const GadgetServicesList: React.FC<GadgetServicesListProps> = ({
     try {
       const endpoint = `subcategories/${id}`
       const data = { data: editedData }
-      await sendPutRequest(data, endpoint)
-      setSelectedItemId(0)
+      const res = await sendPutRequest(data, endpoint)
+      if (res?.status === 200) {
+        localStorage.removeItem(`editedDataEdit_${id}`)
+        setSelectedItemId(0)
+      }
     } catch (error) {
       console.error(error)
-      setSelectedItemId(0)
     }
   }
 
@@ -169,19 +195,47 @@ const GadgetServicesList: React.FC<GadgetServicesListProps> = ({
                     <div className='flex flex-col items-center justify-center gap-6'>
                       <h2>{item.attributes.title}</h2>
                       <input
+                        title='Заголовок'
                         className='h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px]'
                         type='text'
-                        value={editedData.title || item.attributes.title}
+                        value={editedData.title || item.attributes.title || ''}
                         onChange={e =>
                           handleInputChange('title', e.target.value)
                         }
                       />
                       <input
+                        title='Ціна'
                         className='h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px]'
                         type='text'
-                        value={editedData.price || item.attributes.price}
+                        value={editedData.price || item.attributes.price || ''}
                         onChange={e =>
                           handleInputChange('price', e.target.value)
+                        }
+                      />
+                      <input
+                        title='Чаc ремонту'
+                        className='h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px]'
+                        type='text'
+                        value={
+                          editedData.repair_time ||
+                          item.attributes.repair_time ||
+                          ''
+                        }
+                        onChange={e =>
+                          handleInputChange('repair_time', e.target.value)
+                        }
+                      />
+                      <input
+                        title='Тривалість гарантії'
+                        className='h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px]'
+                        type='text'
+                        value={
+                          editedData.guarantee ||
+                          item.attributes.guarantee ||
+                          ''
+                        }
+                        onChange={e =>
+                          handleInputChange('guarantee', e.target.value)
                         }
                       />
                       <button

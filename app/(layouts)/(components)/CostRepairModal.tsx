@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { motion } from 'framer-motion'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
 import * as Yup from 'yup'
 
@@ -17,13 +17,21 @@ interface MyFormValues {
 }
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Не введенно імʼя').min(3),
+  name: Yup.string()
+    .required('Не введенно імʼя')
+    .matches(/^[A-Za-zА-ЯІЇа-яіїЁё]+$/, 'Можливі тільки букви')
+    .min(3, 'Мінімум три символи')
+    .max(60, 'Максимум 60 символів'),
   number: Yup.string()
     .required('Не введенно номер телефону')
     .matches(/^\+380\d{9}$/, 'Невірний номер')
     .min(13, 'Невірний номер'),
-  gadget: Yup.string().required('Не введенно назву пристрою').min(3),
-  address: Yup.string().required('Не введенна адреса').min(3),
+  gadget: Yup.string()
+    .required('Не введенно назву пристрою')
+    .min(3, 'Мінімум три символи'),
+  address: Yup.string()
+    .required('Не введенна адреса')
+    .min(3, 'Мінімум три символи'),
 })
 interface CostRepairModalProps {
   toggleCostRepairModal: () => void
@@ -57,30 +65,6 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
     [toggleCostRepairModal],
   )
   useCustomScrollbarLock({ handleEscKeyPressContent })
-  useEffect(() => {
-    document.body.style.overflowY = 'hidden'
-    document.body.style.paddingRight = '17px'
-
-    const paddingLock = document.getElementsByClassName('padding-lock')
-    for (let i = 0; i < paddingLock.length; i += 1) {
-      const element = paddingLock[i] as HTMLElement
-      element.style.paddingRight = '17px'
-    }
-
-    window.addEventListener('keydown', handleEscKeyPressContent)
-
-    return () => {
-      document.body.style.overflowY = 'auto'
-      document.body.style.paddingRight = '0'
-
-      for (let i = 0; i < paddingLock.length; i += 1) {
-        const element = paddingLock[i] as HTMLElement
-        element.style.paddingRight = '0'
-      }
-
-      window.removeEventListener('keydown', handleEscKeyPressContent)
-    }
-  }, [handleEscKeyPressContent])
 
   const handleSubmit = async (values: MyFormValues) => {
     try {
@@ -134,7 +118,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
               aria-hidden='true'
             />
           </button>
-          <h3 className='mb-8 text-center text-xl font-semibold text-white-dis '>
+          <h3 className='mb-8 text-center font-exo_2 text-xl font-semibold leading-[20px] text-white-dis '>
             Скільки коштуватиме ремонт?
           </h3>
           <Formik

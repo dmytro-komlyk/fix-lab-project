@@ -18,13 +18,23 @@ interface MyFormValues {
 }
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Не введенно імʼя').min(3),
+  name: Yup.string()
+    .required('Не введенно імʼя')
+    .matches(
+      /^[A-Za-zА-ЯІЇа-яіїЁё\s]*[A-Za-zА-ЯІЇа-яіїЁё]{3,}[A-Za-zА-ЯІЇа-яіїЁё\s]*$/,
+      'Тільки букви',
+    )
+    .min(3, 'Мінімум три букви ')
+    .max(60, 'Максимум 60 символів'),
   number: Yup.string()
     .required('Не введенно номер телефону')
     .matches(/^\+380\d{9}$/, 'Невірний номер')
     .min(13, 'Невірний номер'),
-  address: Yup.string().required('Не введенна адреса').min(3),
+  address: Yup.string()
+    .required('Не введенно адреса')
+    .min(6, 'Мінімум шість символів'),
 })
+
 interface CourierModalProps {
   toggleCourierModal: () => void
 }
@@ -107,7 +117,7 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
               aria-hidden='true'
             />
           </button>
-          <h3 className='mb-8 text-center text-xl font-semibold text-white-dis '>
+          <h3 className='mb-8 text-center font-exo_2 text-xl font-semibold leading-[20px] text-white-dis'>
             Потрібен курʼєр!
           </h3>
           <Formik

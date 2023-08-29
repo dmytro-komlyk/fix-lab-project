@@ -41,7 +41,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.1 } }}
-      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+      exit={{ transition: { duration: 0.1 } }}
       ref={mobileMenuRef}
       onClick={onBackdropCloseMobileMenu}
       className='absolute left-0 top-0 z-10 h-[100vh] w-full overflow-y-auto overflow-x-hidden bg-modal-overlay'

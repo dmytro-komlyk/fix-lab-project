@@ -57,9 +57,8 @@ const GadgetServicesList: React.FC<GadgetServicesListProps> = ({
           {categoryData.data.map(categoryItem => {
             return categoryItem.attributes.recommend_brands.data.map(item => {
               const img = item.attributes.url
-              const { width } = item.attributes
-              const { height } = item.attributes
-              const { name } = item.attributes
+              const { width, height, name } = item.attributes
+
               return (
                 <li
                   className='flex h-[77px] w-[77px]  items-center justify-center rounded-[50%] bg-white-dis'
@@ -73,7 +72,7 @@ const GadgetServicesList: React.FC<GadgetServicesListProps> = ({
         </ul>
       </div>
       <p className='mb-8 font-exo_2 text-xl font-semibold text-white-dis md:hidden'>
-        Поломки
+        Послуги
       </p>
       <ul className='mb-14 flex  flex-col'>
         {subcategoriesData.data.map(item => {

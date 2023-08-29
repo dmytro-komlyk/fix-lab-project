@@ -15,7 +15,11 @@ interface MyFormValues {
 }
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Не введенно імʼя').min(3),
+  name: Yup.string()
+    .required('Не введенно імʼя')
+    .matches(/^[A-Za-zА-ЯІЇа-яіїЁё]+$/, 'Можливі тільки букви')
+    .min(3, 'Мінімум три символи')
+    .max(60, 'Максимум 60 символів'),
   number: Yup.string()
     .required('Не введенно номер телефону')
     .matches(/^\+380\d{9}$/, 'Невірний номер')
@@ -103,7 +107,7 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
               aria-hidden='true'
             />
           </button>
-          <h3 className='mb-8 text-center text-xl font-semibold text-white-dis '>
+          <h3 className='mb-8 text-center font-exo_2 text-xl font-semibold leading-[20px] text-white-dis '>
             Миттєва консультація
           </h3>
           <Formik
