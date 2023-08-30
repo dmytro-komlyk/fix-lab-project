@@ -6,32 +6,32 @@ import { TbClockHour9 } from 'react-icons/tb'
 
 const ContactsSection = () => {
   return (
-    <section className=' overflow-hidden  bg-white-dis  pb-[102px] pt-[163px] max-md:pb-14 max-md:pt-[138px]'>
+    <section className=' overflow-hidden  bg-white-dis  pb-[102px] pt-[163px] max-md:pb-14 max-md:pt-[120px]'>
       <div className='container relative flex flex-col xl:p-0 '>
-        <div className='z-[1] mb-8 flex items-center gap-1'>
+        <div className='z-[1] mb-[21px] flex items-center '>
           <Link
-            className='flex items-center gap-1 text-base font-[400] text-dark-blue transition-opacity  hover:opacity-70 focus:opacity-70'
+            className='flex items-center text-base font-[400] text-dark-blue transition-opacity  hover:opacity-70 focus:opacity-70'
             href='/'
           >
-            <p> Головна</p> <MdKeyboardArrowRight size={30} />
+            <p> Головна</p> <MdKeyboardArrowRight size={25} />
           </Link>
 
-          <p className='text-base font-[400] text-dark-blue opacity-70'>
+          <p className='text-base font-[400]  text-dark-blue opacity-70'>
             Контакти
           </p>
         </div>
-        <h2 className='mb-14 font-exo_2 text-2xl  font-bold text-dark-blue max-lg:text-xl  max-lg:font-semibold'>
+        <h2 className='mb-[39px] font-exo_2 text-2xl font-bold text-dark-blue max-lg:text-xl max-lg:font-semibold max-md:mb-[47px]  xl:leading-[57px]'>
           Контакти
         </h2>
-        <div className='flex items-start justify-between max-lg:flex-wrap max-lg:gap-14'>
-          <div className='flex max-w-[342px] flex-col gap-14 max-lg:gap-0'>
-            <div className='flex items-center gap-2 max-lg:mb-8'>
+        <div className='flex items-start justify-between max-lg:flex-wrap max-lg:gap-[61px]'>
+          <div className='flex max-w-[342px] flex-col'>
+            <div className='mb-[45px] flex items-center gap-2 max-lg:mb-[26px]'>
               <BiMap color='#04268B' size={24} />
               <p className='font-exo_2 text-xl font-semibold text-dark-blue  max-lg:text-lg '>
                 Приїхати до нас
               </p>
             </div>
-            <div className='flex flex-col gap-[18px] max-lg:mb-6'>
+            <div className='mb-14 flex flex-col gap-[22px] max-lg:mb-6'>
               <div>
                 <p className='font-semibold text-black-dis'>
                   Вул. Саперно-Слобідська 10 (Деміївка)
@@ -48,18 +48,18 @@ const ContactsSection = () => {
                 <p>Деміївська</p>
               </div>
               <a
-                className='font-medium  text-dark-blue'
+                className='font-medium leading-none tracking-[1px] text-dark-blue'
                 href='tel:+380502272728'
               >
                 +38 050 227 27 28
               </a>
             </div>
-            <div className='flex flex-col gap-[18px]'>
-              <p className='font-semibold text-black-dis'>
+            <div className='flex flex-col'>
+              <p className='mb-[12px] font-semibold text-black-dis'>
                 Просп. Володимира Івасюка, 27 (Оболонь)
               </p>
-              <div className='flex flex-col gap-2'>
-                <div className='flex items-center gap-2'>
+              <div className='mb-[25px] flex flex-col gap-[8px]'>
+                <div className='flex items-center gap-[17px]'>
                   <Image
                     src='/icons/kyiv_metro_logo_2015.svg'
                     width={24}
@@ -68,7 +68,7 @@ const ContactsSection = () => {
                   />
                   <p>Мінська</p>
                 </div>
-                <div className='flex items-center gap-2'>
+                <div className='flex items-center gap-[17px]'>
                   <Image
                     src='/icons/kyiv_metro_logo_2015.svg'
                     width={24}
@@ -79,7 +79,7 @@ const ContactsSection = () => {
                 </div>
               </div>
               <a
-                className='font-medium  text-dark-blue'
+                className='font-medium leading-none tracking-[1px] text-dark-blue'
                 href='tel:+380502272728'
               >
                 +38 050 227 27 28
@@ -87,7 +87,7 @@ const ContactsSection = () => {
             </div>
           </div>
           <div className='max-w-[200px]'>
-            <div className='mb-14 flex items-center gap-2 max-lg:mb-8'>
+            <div className='mb-14 flex  items-center gap-2 max-lg:mb-8 max-md:mb-[30px]'>
               <TbClockHour9 color='#04268B' size={24} />
               <p className='font-exo_2 text-xl  font-semibold text-dark-blue  max-lg:text-lg'>
                 Режим роботи
@@ -99,7 +99,7 @@ const ContactsSection = () => {
             </div>
           </div>
           <iframe
-            className='h-[420px] w-[628px] rounded-2xl max-xl:w-[428px] max-lg:h-[320px] max-lg:w-full'
+            className='h-[407px] w-[628px] rounded-2xl max-xl:w-[428px]  max-lg:w-full max-md:h-[223px]'
             src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d45686.724461612605!2d30.49208527376294!3d50.3872428190653!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cf48c96776b7%3A0x986deb84ddb3a38c!2z0KHQtdGA0LLRltGB0L3QuNC5INGG0LXQvdGC0YAgRml4TGFiOiDRgNC10LzQvtC90YIg0YLQtdC70LXRhNC-0L3RltCyLCDQv9C70LDQvdGI0LXRgtGW0LIsINC90L7Rg9GC0LHRg9C60ZbQsg!5e0!3m2!1sru!2sua!4v1691778163725!5m2!1sru!2sua'
             loading='lazy'
             referrerPolicy='no-referrer-when-downgrade'

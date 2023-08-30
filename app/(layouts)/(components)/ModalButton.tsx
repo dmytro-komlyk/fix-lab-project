@@ -22,7 +22,7 @@ const ModalButton: React.FC<ModalButtonProps> = ({
         !isValid || !dirty || isValidating
           ? 'pointer-events-none opacity-70'
           : ''
-      } group mt-4 flex h-[56px] w-full items-center justify-center rounded-lg bg-dark-blue transition-colors hover:bg-black-dis focus:bg-black-dis`}
+      } group flex h-[56px] w-[297px] items-center justify-center rounded-2xl bg-dark-blue transition-colors hover:bg-black-dis focus:bg-black-dis`}
     >
       <p
         className={`whitespace-nowrap text-base font-semibold tracking-[0.64] text-white-dis ${

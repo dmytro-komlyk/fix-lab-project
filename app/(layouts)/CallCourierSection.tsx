@@ -25,7 +25,7 @@ export const CallCourierSection: React.FC = () => {
         }  max-lg:justify-center  max-md:py-14`}
       >
         <div>
-          <div className=' absolute bottom-[222px] left-[16px] max-xl:bottom-[235px] max-lg:bottom-[342px] max-lg:left-[0] max-md:bottom-[337px] max-md:left-[50%] max-md:translate-x-[-50%] '>
+          <div className=' absolute bottom-[250px] left-[23px] max-xl:bottom-[235px] max-lg:bottom-[342px] max-lg:left-[0] max-md:bottom-[337px] max-md:left-[50%] max-md:translate-x-[-50%] '>
             <Image
               className=' h-auto w-[480px] max-xl:w-[380px] max-md:min-w-[244px]'
               src='/images/courier-section/group-car.svg'
@@ -39,7 +39,7 @@ export const CallCourierSection: React.FC = () => {
             </p>
           </div>
           <Image
-            className=' absolute bottom-[48px] left-[43px] h-auto w-[420px] max-xl:w-[320px] max-lg:bottom-[191px] max-lg:left-[15px] max-md:bottom-[237px] max-md:left-[50%] max-md:w-[251px] max-md:translate-x-[-50%] '
+            className=' absolute bottom-[72px] left-[51px] h-auto w-[420px] max-xl:w-[320px] max-lg:bottom-[191px] max-lg:left-[15px] max-md:bottom-[237px] max-md:left-[50%] max-md:w-[251px] max-md:translate-x-[-50%] '
             src='/images/courier-section/group-bottom.svg'
             alt='FixLab logo'
             width={420}
@@ -47,7 +47,7 @@ export const CallCourierSection: React.FC = () => {
             priority
           />
           <Image
-            className=' absolute bottom-[107px] left-[19px] h-auto w-[467px] max-xl:bottom-[139px] max-xl:w-[367px] max-lg:bottom-[237px] max-lg:left-[0] max-md:bottom-[277px] max-md:left-[50%] max-md:w-[244px] max-md:translate-x-[-50%] '
+            className=' absolute bottom-[134px] left-[26px] h-auto w-[467px] max-xl:bottom-[139px] max-xl:w-[367px] max-lg:bottom-[237px] max-lg:left-[0] max-md:bottom-[277px] max-md:left-[50%] max-md:w-[244px] max-md:translate-x-[-50%] '
             src='/images/courier-section/light-center.svg'
             alt='FixLab logo'
             width={467}
@@ -63,8 +63,8 @@ export const CallCourierSection: React.FC = () => {
             priority
           />
         </div>
-        <div className='z-[1] justify-between max-lg:flex max-lg:flex-col max-md:gap-[271px]'>
-          <div className='flex flex-col gap-4  md:mb-8 '>
+        <div className='z-[1] justify-between max-lg:flex max-lg:flex-col max-md:gap-[276px]'>
+          <div className='flex flex-col gap-2  md:mb-8 '>
             <p className='text-xl font-[400] leading-9 text-dark-blue max-md:text-xl max-sm:text-lg'>
               Не треба ламати плани!
             </p>
@@ -73,15 +73,18 @@ export const CallCourierSection: React.FC = () => {
             </p>
           </div>
           <div className='gap-14 max-lg:flex max-lg:flex-col max-md:gap-8'>
-            <p className='w-[512px] text-xl font-[300]  text-dark-blue max-md:w-full max-md:font-[400] max-sm:text-lg lg:mb-14'>
+            <p className=' w-[503px] text-xl font-[300] text-dark-blue  max-md:w-full max-md:font-[400] max-sm:text-lg md:hidden lg:mb-14'>
               Ми самі заберемо гаджет на дослідження і він буде жити!
+            </p>
+            <p className='w-[503px] text-xl font-[300] text-dark-blue  max-md:hidden max-md:w-full max-md:font-[400] max-sm:text-lg lg:mb-14'>
+              Ми самі заберемо гаджет на дослідження та подаруємо йому життя
             </p>
             <button
               type='button'
               onClick={toggleCourierModal}
               onMouseEnter={() => setIsHovering(false)}
               onMouseLeave={() => setIsHovering(true)}
-              className='group flex h-[56px] cursor-pointer items-center justify-center rounded-[12px] bg-dark-blue transition-colors hover:bg-black-dis focus:bg-black-dis md:min-w-[244px]'
+              className='group flex h-[58px] cursor-pointer items-center justify-center rounded-[12px] bg-dark-blue transition-colors hover:bg-black-dis focus:bg-black-dis md:min-w-[244px]'
             >
               <p
                 className={`text-base font-semibold tracking-wide text-white-dis  ${

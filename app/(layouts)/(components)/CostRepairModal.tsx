@@ -106,7 +106,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { duration: 0.3 } }}
           exit={{ opacity: 0, transition: { duration: 0.3 } }}
-          className='relative max-w-[414px]  flex-col items-center justify-start rounded-2xl bg-[#00cc73] p-14 max-sm:px-4'
+          className='relative max-w-[414px]  flex-col items-center justify-start rounded-2xl bg-[#00cc73] px-14 py-12 max-sm:px-4'
         >
           <button
             type='button'
@@ -118,7 +118,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
               aria-hidden='true'
             />
           </button>
-          <h3 className='mb-8 text-center font-exo_2 text-xl font-semibold leading-[20px] text-white-dis '>
+          <h3 className='mb-8 text-center font-exo_2 text-xl font-semibold leading-[30px] text-white-dis '>
             Скільки коштуватиме ремонт?
           </h3>
           <Formik
