@@ -1,9 +1,9 @@
 export default async function getData(url: string) {
   const res = await fetch(`https://ropeaccess-hub.onrender.com${url}`, {
     headers: {
-      Authorization: `Bearer c210828bdbc4747aece96d0f64c52c20d33c116b217c012826f61ddb418daacff328cd2707e5c15808457678bf8bfc7c448a6ae7a3093c7116fda55e9094a887cc0d1f2f07c1701054e08f11adfd2f4de24b1e47f6cc203c11937283e8811300cb672a3d05c018f22f28b10c60b3a1d055a16ac897d51b7f13181dab5dc91d01`,
+      Authorization: `Bearer b52d3c1c4a902b67f71be90a9379894cacad7f9ec3752910b1e00d2f8a190794341fc823b1101bfb9753c13a4d004ca45d735946e61efcc75dc48cdea6a8bb6eef6e872b255773074ccc25e7697aca3dfef8ef8095c4420ab3a2294c44c5619b7d8d925a0ec75c1defbba467f7417b9df465efde28dcaf5138a627bd8e735b6e`,
     },
-    next: { revalidate: 10 },
+    next: { revalidate: 60 },
   })
   if (!res.ok) {
     throw new Error(res.status.toString() + res.statusText)
