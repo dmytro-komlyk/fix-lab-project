@@ -1,16 +1,22 @@
 'use client'
 
-import React, { useState } from 'react'
+import { AnimatePresence } from 'framer-motion'
+import React, { useCallback, useState } from 'react'
 
 import type { CategoriesSectionProps } from '../(pages)/repair/(components)/CategoriesSection'
 import CategoriesSlider from '../(pages)/repair/(components)/slider'
 import Button from './(components)/Button'
 import InstantAdviceModal from './(components)/InstantAdviceModal'
+import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
 
 export const BrokenSection: React.FC<CategoriesSectionProps> = ({
   categoryData,
 }) => {
   const [isModalShown, setIsModalShown] = useState(false)
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
+  const toggleSuccessSubmitModal = useCallback(() => {
+    setSubmitSuccess(prev => !prev)
+  }, [])
 
   return (
     <section className='section md:mb-[-50px] lg:mb-[-100px] xl:mb-[-150px]'>
@@ -43,7 +49,15 @@ export const BrokenSection: React.FC<CategoriesSectionProps> = ({
       {isModalShown && (
         <InstantAdviceModal
           toggleInstantAdviceModal={() => setIsModalShown(!isModalShown)}
+          setSubmitSuccess={setSubmitSuccess}
         />
+      )}
+      {submitSuccess && (
+        <AnimatePresence>
+          <SuccessSubmitBanner
+            toggleSuccessSubmitModal={toggleSuccessSubmitModal}
+          />
+        </AnimatePresence>
       )}
     </section>
   )

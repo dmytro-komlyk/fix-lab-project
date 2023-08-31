@@ -10,6 +10,7 @@ import { TbPhone } from 'react-icons/tb'
 import Button from '@/app/(layouts)/(components)/Button'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
+import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 
 import GadgetServicesList from './GadgetServicesList'
 
@@ -68,9 +69,14 @@ const CategorySection: React.FC<CategorySectionProps> = ({
   categoryData,
   subcategoriesData,
 }) => {
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
     useState<boolean>(false)
   const [showCostRepair, setShowCostRepair] = useState<boolean>(false)
+
+  const toggleSuccessSubmitModal = useCallback(() => {
+    setSubmitSuccess(prev => !prev)
+  }, [])
 
   const toggleInstantAdviceModal = useCallback(() => {
     setShowInstantAdviceModal(prev => !prev)
@@ -233,13 +239,24 @@ const CategorySection: React.FC<CategorySectionProps> = ({
       </div>
       <AnimatePresence>
         {showCostRepair && (
-          <CostRepairModal toggleCostRepairModal={toggleCostRepairModal} />
+          <CostRepairModal
+            toggleCostRepairModal={toggleCostRepairModal}
+            setSubmitSuccess={setSubmitSuccess}
+          />
         )}
       </AnimatePresence>
       <AnimatePresence>
         {showInstantAdviceModal && (
           <InstantAdviceModal
             toggleInstantAdviceModal={toggleInstantAdviceModal}
+            setSubmitSuccess={setSubmitSuccess}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {submitSuccess && (
+          <SuccessSubmitBanner
+            toggleSuccessSubmitModal={toggleSuccessSubmitModal}
           />
         )}
       </AnimatePresence>

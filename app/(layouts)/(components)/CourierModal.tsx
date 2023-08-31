@@ -3,6 +3,7 @@
 import axios from 'axios'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { motion } from 'framer-motion'
+import type { Dispatch, SetStateAction } from 'react'
 import { useCallback, useRef } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
 import * as Yup from 'yup'
@@ -20,25 +21,27 @@ interface MyFormValues {
 const validationSchema = Yup.object().shape({
   name: Yup.string()
     .required('Не введенно імʼя')
-    .matches(
-      /^[A-Za-zА-ЯІЇа-яіїЁё\s]*[A-Za-zА-ЯІЇа-яіїЁё]{3,}[A-Za-zА-ЯІЇа-яіїЁё\s]*$/,
-      'Тільки букви',
-    )
-    .min(3, 'Мінімум три букви ')
-    .max(60, 'Максимум 60 символів'),
+    .matches(/^[A-Za-zА-ЯІЇа-яіїЁё\s]+$/, 'Можливі тільки букви')
+    .min(3, 'Введіть мінімум три символи')
+    .max(60, 'Максимально допустимо 60 символів'),
   number: Yup.string()
     .required('Не введенно номер телефону')
     .matches(/^\+380\d{9}$/, 'Невірний номер')
     .min(13, 'Невірний номер'),
   address: Yup.string()
-    .required('Не введенно адреса')
-    .min(6, 'Мінімум шість символів'),
+    .required('Не введенна адреса')
+    .min(3, 'Введіть мінімум три символи')
+    .max(300, 'Максимально допустимо 300 символів'),
 })
 
 interface CourierModalProps {
   toggleCourierModal: () => void
+  setSubmitSuccess: Dispatch<SetStateAction<boolean>>
 }
-const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
+const CourierModal: React.FC<CourierModalProps> = ({
+  toggleCourierModal,
+  setSubmitSuccess,
+}) => {
   const initialValues: MyFormValues = {
     name: '',
     number: '+380',
@@ -78,12 +81,21 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
       message += `<b>Номер телефону:</b>\n${values.number}\n`
       message += `<b>Адреса:</b>\n${values.address}\n`
 
-      await axios.post(URL_API, {
+      const res = await axios.post(URL_API, {
         chat_id: CHAT_ID,
         parse_mode: 'html',
         text: message,
       })
-      toggleCourierModal()
+      if (res.status === 200) {
+        toggleCourierModal()
+        setTimeout(() => {
+          setSubmitSuccess(true)
+        }, 500)
+
+        setTimeout(() => {
+          setSubmitSuccess(false)
+        }, 3000)
+      }
     } catch (error) {
       /* eslint-disable no-console */
       console.log('Помилка при відправленні.')
@@ -139,7 +151,7 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
                     type='text'
                     id='name'
                     name='name'
-                    className={`h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px] ${
+                    className={`h-[58px] w-[302px] rounded-2xl px-6 py-2 max-md:w-[280px] ${
                       touched.name && errors.name ? 'border-[#A80000]' : ''
                     }`}
                     autoComplete='off'
@@ -148,7 +160,7 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
                   <ErrorMessage
                     name='name'
                     component='div'
-                    className=' absolute bottom-[-22px] left-[24px] text-sm font-normal tracking-wide text-[#A80000]'
+                    className=' absolute bottom-[-22px] left-[18px] text-sm font-normal tracking-wide text-[#A80000]'
                   />
                 </div>
                 <div className='relative'>
@@ -156,14 +168,14 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
                     type='text'
                     id='number'
                     name='number'
-                    className='h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px]'
+                    className='h-[58px] w-[302px] rounded-2xl px-6 py-2 max-md:w-[280px]'
                     autoComplete='off'
                     placeholder='Номер телефону'
                   />
                   <ErrorMessage
                     name='number'
                     component='div'
-                    className=' absolute bottom-[-22px] left-[24px] text-sm font-normal tracking-wide text-[#A80000]'
+                    className=' absolute bottom-[-22px] left-[18px] text-sm font-normal tracking-wide text-[#A80000]'
                   />
                 </div>
 
@@ -172,14 +184,14 @@ const CourierModal: React.FC<CourierModalProps> = ({ toggleCourierModal }) => {
                     as='textarea'
                     id='address'
                     name='address'
-                    className='h-[144px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px]'
+                    className='h-[144px] w-[302px] rounded-2xl px-6 py-2 max-md:w-[280px]'
                     autoComplete='off'
                     placeholder='Адреса'
                   />
                   <ErrorMessage
                     name='address'
                     component='div'
-                    className=' absolute bottom-[-22px] left-[24px] text-sm font-normal tracking-wide text-[#A80000]'
+                    className=' absolute bottom-[-22px] left-[18px] text-sm font-normal tracking-wide text-[#A80000]'
                   />
                 </div>
                 <ModalButton

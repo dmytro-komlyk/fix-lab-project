@@ -6,13 +6,18 @@ import { usePathname } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import CourierModal from './(components)/CourierModal'
+import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
 
 export const CallCourierSection: React.FC = () => {
   const pathname = usePathname()
   const [showModal, setShowModal] = useState<boolean>(false)
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
   const [isHovering, setIsHovering] = useState<boolean>(false)
   const toggleCourierModal = useCallback(() => {
     setShowModal(prev => !prev)
+  }, [])
+  const toggleSuccessSubmitModal = useCallback(() => {
+    setSubmitSuccess(prev => !prev)
   }, [])
 
   return (
@@ -98,7 +103,19 @@ export const CallCourierSection: React.FC = () => {
         </div>
       </div>
       <AnimatePresence>
-        {showModal && <CourierModal toggleCourierModal={toggleCourierModal} />}
+        {submitSuccess && (
+          <SuccessSubmitBanner
+            toggleSuccessSubmitModal={toggleSuccessSubmitModal}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {showModal && (
+          <CourierModal
+            toggleCourierModal={toggleCourierModal}
+            setSubmitSuccess={setSubmitSuccess}
+          />
+        )}
       </AnimatePresence>
     </section>
   )

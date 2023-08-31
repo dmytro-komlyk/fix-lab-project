@@ -11,6 +11,7 @@ import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
 
 import CourierModal from './(components)/CourierModal'
 import MobileMenu from './(components)/MobileMenu'
+import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
 
 const blogIdRegex = /\/blog\/\d+/
 
@@ -21,12 +22,17 @@ export const Header: React.FC = () => {
   const itemsRegion: Array<string> = ['Голосіївський', 'Оболонський']
 
   const [showModal, setShowModal] = useState<boolean>(false)
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
   const [isHovering, setIsHovering] = useState<boolean>(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
   const [isOpenItem, setIsOpenItem] = useState<boolean>(false)
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
   const [selectedRegionItem, setSelectedRegionItem] =
     useState<string>('Голосіївський')
+
+  const toggleSuccessSubmitModal = useCallback(() => {
+    setSubmitSuccess(prev => !prev)
+  }, [])
 
   useEffect(() => {
     const storedScrollState = window.localStorage.getItem('isScrolled')
@@ -347,13 +353,25 @@ export const Header: React.FC = () => {
         </div>
       </nav>
       <AnimatePresence>
-        {showModal && <CourierModal toggleCourierModal={toggleCourierModal} />}
+        {showModal && (
+          <CourierModal
+            toggleCourierModal={toggleCourierModal}
+            setSubmitSuccess={setSubmitSuccess}
+          />
+        )}
       </AnimatePresence>
       <AnimatePresence>
         {mobileMenuOpen && (
           <MobileMenu
             toggleCourierModal={toggleCourierModal}
             toggleMobileMenu={toggleMobileMenu}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {submitSuccess && (
+          <SuccessSubmitBanner
+            toggleSuccessSubmitModal={toggleSuccessSubmitModal}
           />
         )}
       </AnimatePresence>
