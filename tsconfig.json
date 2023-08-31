@@ -23,6 +23,7 @@
     "outDir": "out",
     "declaration": true,
     "sourceMap": true,
+    "downlevelIteration": true,
 
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
