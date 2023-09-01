@@ -101,8 +101,8 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                   <Button
                     text='Миттєва консультація'
                     toggleModal={toggleInstantAdviceModal}
-                    styles='group relative flex min-w-[256px] min-h-[56px] items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
-                    textHoverAnimation='py-5 text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
+                    styles='group relative flex min-w-[256px] py-4 items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+                    textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
                   />
                 </div>
               )
@@ -126,9 +126,9 @@ const CategorySection: React.FC<CategorySectionProps> = ({
               <Button
                 text='Розрахувати вартість ремонту'
                 toggleModal={toggleCostRepairModal}
-                styles='group w-full min-h-[76px] px-6 rounded-2xl bg-mid-blue'
-                textHoverAnimation='flex justify-between font-exo_2 text-xl font-semibold text-dark-blue transition-transform group-hover:-translate-y-1 duration-300 group-hover:scale-[1.05] max-md:font-inter max-md:text-base max-md:font-semibold max-[380px]:text-sm'
-                icon='text-3xl max-md:text-xl'
+                styles='group flex justify-between w-full px-6 py-4 rounded-2xl bg-mid-blue'
+                textHoverAnimation='font-exo_2 text-xl font-semibold text-dark-blue transition-transform duration-300 group-hover:translate-x-1 origin-center group-hover:scale-105 max-md:font-inter max-md:text-base max-md:font-semibold max-[380px]:text-sm'
+                icon='text-dark-blue text-3xl max-md:text-xl transition-transform duration-300 origin-center group-hover:scale-125'
               />
             </div>
           </div>
