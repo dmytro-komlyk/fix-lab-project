@@ -56,16 +56,16 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
   const markdown = new MarkdownIt({
     html: true,
   })
-  const [showCostRepair, setShowCostRepair] = useState<boolean>(false)
+
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
     useState<boolean>(false)
-
   const toggleInstantAdviceModal = useCallback(() => {
     setShowInstantAdviceModal(prev => !prev)
   }, [setShowInstantAdviceModal])
 
+  const [showCostRepairModal, setShowCostRepairModal] = useState<boolean>(false)
   const toggleCostRepairModal = useCallback(() => {
-    setShowCostRepair(prev => !prev)
+    setShowCostRepairModal(prev => !prev)
   }, [])
 
   return (
@@ -141,8 +141,8 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       <Button
                         text='Миттєва консультація'
                         toggleModal={toggleInstantAdviceModal}
-                        styles='group relative flex min-w-[256px]  items-center justify-center rounded-[12px] bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
-                        textHoverAnimation='pb-[20px] pt-[23px] text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
+                        styles='group relative flex min-w-[256px] py-4 items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+                        textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
                       />
                     </div>
                     <CallUsCard />
@@ -186,9 +186,9 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
                       <Button
                         text='Розрахувати вартість ремонту'
                         toggleModal={toggleCostRepairModal}
-                        styles='group relative w-full rounded-xl bg-mid-green'
-                        textHoverAnimation='flex justify-between px-6 py-4 text-start font-exo_2 text-lg font-bold  text-dark-blue  transition-transform  duration-300 group-hover:translate-x-3  group-hover:scale-[1.05] max-md:font-inter max-md:text-base max-md:font-semibold max-[380px]:text-sm'
-                        icon='absolute right-6 top-[50%] translate-y-[-50%] text-dark-blue transition-transform  duration-300 group-hover:scale-[1.4]  max-[380px]:right-'
+                        styles='group flex justify-between w-full px-6 py-4 rounded-2xl bg-mid-green'
+                        textHoverAnimation='font-exo_2 text-xl font-semibold text-dark-blue transition-transform duration-300 group-hover:translate-x-1 origin-center group-hover:scale-105 max-md:font-inter max-md:text-base max-md:font-semibold max-[380px]:text-sm'
+                        icon='text-dark-blue text-3xl max-md:text-xl transition-transform duration-300 origin-center group-hover:scale-125'
                       />
                     </div>
                   </div>
@@ -198,7 +198,7 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
           </div>
         </div>
       </div>
-      {showCostRepair && (
+      {showCostRepairModal && (
         <CostRepairModal toggleCostRepairModal={toggleCostRepairModal} />
       )}
       {showInstantAdviceModal && (
