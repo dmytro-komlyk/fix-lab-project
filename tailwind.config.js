@@ -19,14 +19,6 @@ module.exports = {
       xl: '1440px',
       // => @media (min-width: 1440px) { ... }
     },
-    backgroundSize: {
-      banner: '150%',
-      desktop: '52%',
-    },
-    backgroundPosition: {
-      banner: 'center',
-      desktop: 'center',
-    },
     fontSize: {
       xs: '0.75rem' /* 12px */,
       sm: '0.875rem' /* 14px */,
@@ -52,6 +44,7 @@ module.exports = {
       'mid-grey': '#92999C',
       'modal-overlay': 'rgba(0, 0, 0, 0.25)',
       'pros-bg': 'rgba(248, 252, 255, 0.76)',
+      
     },
     extend: {
       padding: {
@@ -66,6 +59,14 @@ module.exports = {
         manrope: ['var(--font-manrope)'],
         exo_2: ['var(--font-exo-2)'],
         gugi: ['var(--font-gugi)'],
+      },
+      backgroundSize: {
+        banner: '150%',
+        desktop: '52%',
+      },
+      backgroundPosition: {
+        banner: 'center',
+        desktop: 'center',
       },
       backgroundImage: {
         'card-repair-gradient':
@@ -87,18 +88,22 @@ module.exports = {
         'bg-courier-img-lg': "url('/images/courier-background-pc.png')",
         'banner-img': "url('/images/microscope-main.svg')",
         'banner-conic-blue-sm':
-          'conic-gradient(from 147deg at 36.21% 54.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
+          'conic-gradient(from 147deg at 45.50% 54.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
         'banner-conic-blue-md':
-          'conic-gradient(from 147deg at 36.21% 54.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
+          'conic-gradient(from 147deg at 48.80% 54.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
         'banner-conic-blue-lg':
-          'conic-gradient(from 147deg at 36.21% 54.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
+          'conic-gradient(from 147deg at 48.50% 54.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
         'banner-conic-blue-xl':
-          'conic-gradient(from 147deg at 46.21% 56.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
+          'conic-gradient(from 147deg at 48.50% 56.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',
+      },
+      transitionProperty: {
+        width: 'width',
       },
       animation: {
         hoverBtnIn: 'slide-out-top 0.2s ease-in-out both',
         hoverBtnOut: 'slide-out-bottom 0.2s ease-in-out both',
         hoverCard: 'all 0.3s ease-in-out',
+        progressBar: 'width 0.5s',
       },
     },
   },
