@@ -44,7 +44,6 @@ module.exports = {
       'mid-grey': '#92999C',
       'modal-overlay': 'rgba(0, 0, 0, 0.25)',
       'pros-bg': 'rgba(248, 252, 255, 0.76)',
-      
     },
     extend: {
       padding: {
