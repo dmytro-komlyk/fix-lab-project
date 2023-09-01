@@ -115,11 +115,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           </ul>
         </div>
         <Button
-          toggleModal={() => {
-            toggleCourierModal()
-            toggleMobileMenu()
-          }}
-          textButton='Викликати курʼєра'
+          styles='group relative flex min-w-[256px] py-4 items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+          textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
+          toggleModal={toggleCourierModal}
+          text='Викликати курʼєра'
         />
       </motion.div>
     </motion.div>
