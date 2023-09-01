@@ -8,23 +8,22 @@ export const CategoriesList: React.FC<CategoriesSectionProps> = ({
   categoryData,
 }) => {
   return (
-    <ul className='relative z-10 flex flex-wrap gap-2 xl:gap-6'>
+    <ul className='z-10 flex w-[954px] flex-wrap gap-2 xl:gap-6'>
       {categoryData?.data.map((item: CategoryItem) => {
         const categoryPath = item.attributes.slug
         const img = item.attributes.img.data.attributes.url
-        const { width } = item.attributes.img.data.attributes
-        const { height } = item.attributes.img.data.attributes
+        const { width, height } = item.attributes.img.data.attributes
         return (
           <li
             key={item.id}
-            className='h-[150px] md:w-[calc((100%-32px)/3)] xl:h-[261px] xl:w-[calc((100%-48px)/3)]'
+            className='hover-gadget-link h-[180px] rounded-2xl bg-card-repair-gradient md:w-[calc((100%-32px)/3)] xl:h-[261px] xl:w-[calc((100%-48px)/3)]'
           >
             <Link
               href={`/repair/${categoryPath}`}
-              className='hover-gadget-link flex w-full flex-col justify-between rounded-2xl bg-dark-blue transition-all md:h-full md:p-4 xl:h-[261px] xl:p-8'
+              className='flex w-full flex-col justify-between rounded-2xl p-8 hover:bg-dark-blue md:h-full xl:h-[261px]'
             >
               <Image
-                className='ml-auto w-auto md:h-[40%] xl:h-[79px]'
+                className='ml-auto w-auto md:h-[40%] xl:h-[70px]'
                 src={img}
                 width={width}
                 height={height}
