@@ -78,8 +78,8 @@ export const CallCourierSection: React.FC = () => {
             <Button
               text='Викликати курʼєра'
               toggleModal={toggleCourierModal}
-              styles='group relative flex min-w-[256px] min-h-[56px] items-center justify-center rounded-2xl bg-dark-blue transition-colors  hover:bg-black-dis focus:bg-black-dis  max-md:w-full'
-              textHoverAnimation='py-5 text-base font-semibold tracking-wide text-white-dis group-hover:animate-hoverBtnOut animate-hoverBtnIn'
+              styles='group relative flex min-w-[256px] py-4 items-center justify-center rounded-2xl bg-dark-blue transition-colors  hover:bg-black-dis focus:bg-black-dis  max-md:w-full'
+              textHoverAnimation='text-base font-semibold tracking-wide text-white-dis group-hover:animate-hoverBtnOut animate-hoverBtnIn'
             />
           </div>
         </div>
