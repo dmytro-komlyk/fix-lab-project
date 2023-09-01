@@ -268,8 +268,8 @@ export const Header: React.FC = () => {
           <Button
             text='Викликати курʼєра'
             toggleModal={toggleCourierModal}
-            styles='group relative flex min-w-[256px] min-h-[56px] items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
-            textHoverAnimation='py-5 text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
+            styles='group relative flex min-w-[256px] py-4 items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+            textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
           />
         </div>
 
