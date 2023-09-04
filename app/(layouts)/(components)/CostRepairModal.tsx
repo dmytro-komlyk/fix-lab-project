@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { motion } from 'framer-motion'
-import { useCallback, useEffect, useRef } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { useCallback, useRef } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
 import * as Yup from 'yup'
 
@@ -17,19 +18,31 @@ interface MyFormValues {
 }
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Не введенно імʼя').min(3),
+  name: Yup.string()
+    .required('Не введенно імʼя')
+    .matches(/^[A-Za-zА-ЯІЇа-яіїЁё\s]+$/, 'Можливі тільки букви')
+    .min(3, 'Введіть мінімум три символи')
+    .max(60, 'Максимально допустимо 60 символів'),
   number: Yup.string()
     .required('Не введенно номер телефону')
     .matches(/^\+380\d{9}$/, 'Невірний номер')
     .min(13, 'Невірний номер'),
-  gadget: Yup.string().required('Не введенно назву пристрою').min(3),
-  address: Yup.string().required('Не введенна адреса').min(3),
+  gadget: Yup.string()
+    .required('Не введенно назву пристрою')
+    .min(3, 'Введіть мінімум три символи')
+    .max(160, 'Максимально допустимо 160 символів'),
+  address: Yup.string()
+    .required('Не введенна адреса')
+    .min(3, 'Введіть мінімум три символи')
+    .max(300, 'Максимально допустимо 300 символів'),
 })
 interface CostRepairModalProps {
   toggleCostRepairModal: () => void
+  setSubmitSuccess: Dispatch<SetStateAction<boolean>>
 }
 const CostRepairModal: React.FC<CostRepairModalProps> = ({
   toggleCostRepairModal,
+  setSubmitSuccess,
 }) => {
   const initialValues: MyFormValues = {
     name: '',
@@ -57,30 +70,6 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
     [toggleCostRepairModal],
   )
   useCustomScrollbarLock({ handleEscKeyPressContent })
-  useEffect(() => {
-    document.body.style.overflowY = 'hidden'
-    document.body.style.paddingRight = '17px'
-
-    const paddingLock = document.getElementsByClassName('padding-lock')
-    for (let i = 0; i < paddingLock.length; i += 1) {
-      const element = paddingLock[i] as HTMLElement
-      element.style.paddingRight = '17px'
-    }
-
-    window.addEventListener('keydown', handleEscKeyPressContent)
-
-    return () => {
-      document.body.style.overflowY = 'auto'
-      document.body.style.paddingRight = '0'
-
-      for (let i = 0; i < paddingLock.length; i += 1) {
-        const element = paddingLock[i] as HTMLElement
-        element.style.paddingRight = '0'
-      }
-
-      window.removeEventListener('keydown', handleEscKeyPressContent)
-    }
-  }, [handleEscKeyPressContent])
 
   const handleSubmit = async (values: MyFormValues) => {
     try {
@@ -95,12 +84,20 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
       message += `<b>Пристрій:</b>\n${values.gadget}\n`
       message += `<b>Адреса:</b>\n${values.address}\n`
 
-      await axios.post(URL_API, {
+      const res = await axios.post(URL_API, {
         chat_id: CHAT_ID,
         parse_mode: 'html',
         text: message,
       })
-      toggleCostRepairModal()
+      if (res.status === 200) {
+        toggleCostRepairModal()
+        setTimeout(() => {
+          setSubmitSuccess(true)
+        }, 500)
+        setTimeout(() => {
+          setSubmitSuccess(false)
+        }, 3000)
+      }
     } catch (error) {
       /* eslint-disable no-console */
       console.log('Помилка при відправленні.')
@@ -122,7 +119,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { duration: 0.3 } }}
           exit={{ opacity: 0, transition: { duration: 0.3 } }}
-          className='relative max-w-[414px]  flex-col items-center justify-start rounded-2xl bg-[#00cc73] p-14 max-sm:px-4'
+          className='relative max-w-[414px]  flex-col items-center justify-start rounded-2xl bg-[#00cc73] px-14 py-12 max-sm:px-4'
         >
           <button
             type='button'
@@ -134,7 +131,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
               aria-hidden='true'
             />
           </button>
-          <h3 className='mb-8 text-center text-xl font-semibold text-white-dis '>
+          <h3 className='mb-8 text-center font-exo_2 text-xl font-semibold leading-[30px] text-white-dis '>
             Скільки коштуватиме ремонт?
           </h3>
           <Formik
@@ -156,7 +153,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
                     type='text'
                     id='name'
                     name='name'
-                    className={`h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px] ${
+                    className={`h-[58px] w-[302px] rounded-2xl px-6 py-2 max-md:w-[280px] ${
                       touched.name && errors.name ? 'border-[#A80000]' : ''
                     }`}
                     autoComplete='off'
@@ -165,7 +162,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
                   <ErrorMessage
                     name='name'
                     component='div'
-                    className=' absolute bottom-[-22px] left-[24px] text-sm font-normal tracking-wide text-[#A80000]'
+                    className=' absolute bottom-[-22px] left-[18px] text-sm font-normal tracking-wide text-[#A80000]'
                   />
                 </div>
                 <div className='relative'>
@@ -173,14 +170,14 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
                     type='text'
                     id='number'
                     name='number'
-                    className='h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px]'
+                    className='h-[58px] w-[302px] rounded-2xl px-6 py-2 max-md:w-[280px]'
                     autoComplete='off'
                     placeholder='Номер телефону'
                   />
                   <ErrorMessage
                     name='number'
                     component='div'
-                    className=' absolute bottom-[-22px] left-[24px] text-sm font-normal tracking-wide text-[#A80000]'
+                    className=' absolute bottom-[-22px] left-[18px] text-sm font-normal tracking-wide text-[#A80000]'
                   />
                 </div>
                 <div className='relative'>
@@ -188,14 +185,14 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
                     type='text'
                     id='gadget'
                     name='gadget'
-                    className='h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px]'
+                    className='h-[58px] w-[302px] rounded-2xl px-6 py-2 max-md:w-[280px]'
                     autoComplete='off'
                     placeholder='Пристрій'
                   />
                   <ErrorMessage
                     name='gadget'
                     component='div'
-                    className=' absolute bottom-[-22px] left-[24px] text-sm font-normal tracking-wide text-[#A80000]'
+                    className=' absolute bottom-[-22px] left-[18px] text-sm font-normal tracking-wide text-[#A80000]'
                   />
                 </div>
 
@@ -204,14 +201,14 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
                     as='textarea'
                     id='address'
                     name='address'
-                    className='h-[144px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px]'
+                    className='h-[144px] w-[302px] rounded-2xl px-6 py-2 max-md:w-[280px]'
                     autoComplete='off'
                     placeholder='Адреса'
                   />
                   <ErrorMessage
                     name='address'
                     component='div'
-                    className=' absolute bottom-[-22px] left-[24px] text-sm font-normal tracking-wide text-[#A80000]'
+                    className=' absolute bottom-[-22px] left-[18px] text-sm font-normal tracking-wide text-[#A80000]'
                   />
                 </div>
                 <ModalButton

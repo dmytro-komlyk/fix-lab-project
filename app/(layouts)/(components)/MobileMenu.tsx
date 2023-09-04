@@ -41,7 +41,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.1 } }}
-      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+      exit={{ transition: { duration: 0.1 } }}
       ref={mobileMenuRef}
       onClick={onBackdropCloseMobileMenu}
       className='absolute left-0 top-0 z-10 h-[100vh] w-full overflow-y-auto overflow-x-hidden bg-modal-overlay'
@@ -50,13 +50,13 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
         initial={{ x: 500 }}
         animate={{ x: 0, transition: { duration: 0.3 } }}
         exit={{ x: 500, transition: { duration: 0.3 } }}
-        className='fixed inset-y-0 right-0 z-10 flex w-full flex-col justify-between  bg-[#09338F] px-4 pb-[10px] pt-10 sm:ring-1 md:max-w-[400px]'
+        className='fixed inset-y-0 right-0 z-10 flex w-full flex-col justify-between  bg-[#09338F] px-4 pb-[10px] pt-[30px] sm:ring-1 md:max-w-[400px]'
       >
         <div className='flex flex-col overflow-auto'>
           <div className='flex items-center justify-between'>
             <Link href='/' onClick={toggleMobileMenu} className=' flex gap-3'>
               <Image
-                className='h-auto w-[85px]'
+                className='h-auto w-[65px]'
                 src='/logo.svg'
                 alt='FixLab logo'
                 width='0'

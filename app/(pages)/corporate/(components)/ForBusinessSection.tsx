@@ -1,5 +1,6 @@
 'use client'
 
+import { AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
@@ -9,6 +10,7 @@ import { useWindowSize } from '@/app/(hooks)/useWindowResize'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
+import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 
 import type { IBenefitItem } from './BenefitsList'
 import { BenefitsList } from './BenefitsList'
@@ -35,8 +37,13 @@ const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
 }) => {
   const windowSize = useWindowSize()
 
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
     useState<boolean>(false)
+
+  const toggleSuccessSubmitModal = useCallback(() => {
+    setSubmitSuccess(prev => !prev)
+  }, [])
 
   const toggleInstantAdviceModal = useCallback(() => {
     setShowInstantAdviceModal(prev => !prev)
@@ -100,8 +107,16 @@ const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
         {showInstantAdviceModal && (
           <InstantAdviceModal
             toggleInstantAdviceModal={toggleInstantAdviceModal}
+            setSubmitSuccess={setSubmitSuccess}
           />
         )}
+        <AnimatePresence>
+          {submitSuccess && (
+            <SuccessSubmitBanner
+              toggleSuccessSubmitModal={toggleSuccessSubmitModal}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </section>
   )
