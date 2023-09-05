@@ -4,8 +4,8 @@ import { LiaViber } from 'react-icons/lia'
 
 export const Footer = () => {
   return (
-    <footer className='relative bg-footer-gradient-linear-blue '>
-      <div className='container flex flex-col items-start gap-[52px] py-14 md:flex-row md:justify-between md:px-0 xl:gap-[245px]'>
+    <footer className='bg-footer-gradient-linear-blue '>
+      <div className='container relative flex flex-col items-start gap-[52px] py-14 md:flex-row md:justify-between md:px-0 xl:gap-[240px]'>
         <div className='z-1 absolute left-[261px] top-0 h-full md:flex'>
           <Image
             src='/background-flicker-footer-pc.svg'
@@ -33,7 +33,7 @@ export const Footer = () => {
             />
           </Link>
         </div>
-        <div className='flex gap-[133px]'>
+        <div className='z-10 flex gap-[133px]'>
           <ul className='flex flex-col items-start gap-[10px]'>
             <li>
               <Link
@@ -123,7 +123,7 @@ export const Footer = () => {
             </li>
           </ul>
         </div>
-        <div className='flex gap-24 md:flex-row-reverse lg:flex-row lg:gap-[235px]'>
+        <div className='z-10 flex gap-24 md:flex-row-reverse lg:flex-row lg:gap-[235px]'>
           <ul className='flex flex-col gap-2'>
             <li>
               <Link
