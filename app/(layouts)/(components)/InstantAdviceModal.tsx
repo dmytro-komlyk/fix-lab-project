@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { motion } from 'framer-motion'
+import type { Dispatch, SetStateAction } from 'react'
 import { useCallback, useRef } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
 import * as Yup from 'yup'
@@ -15,17 +16,24 @@ interface MyFormValues {
 }
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Не введенно імʼя').min(3),
+  name: Yup.string()
+    .required('Не введенно імʼя')
+    .matches(/^[A-Za-zА-ЯІЇа-яіїЁё\s]+$/, 'Можливі тільки букви')
+    .min(3, 'Введіть мінімум три символи')
+    .max(60, 'Максимально допустимо 60 символів'),
   number: Yup.string()
     .required('Не введенно номер телефону')
     .matches(/^\+380\d{9}$/, 'Невірний номер')
     .min(13, 'Невірний номер'),
 })
+
 interface InstantAdviceModalProps {
   toggleInstantAdviceModal: () => void
+  setSubmitSuccess: Dispatch<SetStateAction<boolean>>
 }
 const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
   toggleInstantAdviceModal,
+  setSubmitSuccess,
 }) => {
   const initialValues: MyFormValues = {
     name: '',
@@ -64,12 +72,21 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
       message += `<b>Ім'я:</b>\n${values.name}\n`
       message += `<b>Номер телефону:</b>\n${values.number}\n`
 
-      await axios.post(URL_API, {
+      const res = await axios.post(URL_API, {
         chat_id: CHAT_ID,
         parse_mode: 'html',
         text: message,
       })
-      toggleInstantAdviceModal()
+      if (res.status === 200) {
+        toggleInstantAdviceModal()
+        setTimeout(() => {
+          setSubmitSuccess(true)
+        }, 500)
+
+        setTimeout(() => {
+          setSubmitSuccess(false)
+        }, 3000)
+      }
     } catch (error) {
       /* eslint-disable no-console */
       console.log(error)
@@ -103,7 +120,7 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
               aria-hidden='true'
             />
           </button>
-          <h3 className='mb-8 text-center text-xl font-semibold text-white-dis '>
+          <h3 className='mb-8 text-center font-exo_2 text-xl font-semibold leading-[20px] text-white-dis '>
             Миттєва консультація
           </h3>
           <Formik
@@ -125,7 +142,7 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
                     type='text'
                     id='name'
                     name='name'
-                    className={`h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px] ${
+                    className={`h-[58px] w-[302px] rounded-2xl px-6 py-2 max-md:w-[280px] ${
                       touched.name && errors.name ? 'border-[#A80000]' : ''
                     }`}
                     autoComplete='off'
@@ -134,7 +151,7 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
                   <ErrorMessage
                     name='name'
                     component='div'
-                    className=' absolute bottom-[-22px] left-[24px] text-sm font-normal tracking-wide text-[#A80000]'
+                    className=' absolute bottom-[-22px] left-[18px] text-sm font-normal tracking-wide text-[#A80000]'
                   />
                 </div>
                 <div className='relative'>
@@ -142,14 +159,14 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
                     type='text'
                     id='number'
                     name='number'
-                    className='h-[58px] w-[302px] rounded-xl px-6 py-2 max-md:w-[280px]'
+                    className='h-[58px] w-[302px] rounded-2xl px-6 py-2 max-md:w-[280px]'
                     autoComplete='off'
                     placeholder='Номер телефону'
                   />
                   <ErrorMessage
                     name='number'
                     component='div'
-                    className=' absolute bottom-[-22px] left-[24px] text-sm font-normal tracking-wide text-[#A80000]'
+                    className=' absolute bottom-[-22px] left-[18px] text-sm font-normal tracking-wide text-[#A80000]'
                   />
                 </div>
                 <ModalButton

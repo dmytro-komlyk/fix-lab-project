@@ -1,5 +1,6 @@
 'use client'
 
+import { AnimatePresence } from 'framer-motion'
 import MarkdownIt from 'markdown-it'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -14,6 +15,7 @@ import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import type { IServicesListProps } from '@/app/(layouts)/(components)/ServicesList'
 import ServicesList from '@/app/(layouts)/(components)/ServicesList'
+import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 
 interface SubcategoryItem {
   id: string
@@ -56,9 +58,15 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
   const markdown = new MarkdownIt({
     html: true,
   })
-
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
+  const [showCostRepair, setShowCostRepair] = useState<boolean>(false)
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
     useState<boolean>(false)
+
+  const toggleSuccessSubmitModal = useCallback(() => {
+    setSubmitSuccess(prev => !prev)
+  }, [])
+
   const toggleInstantAdviceModal = useCallback(() => {
     setShowInstantAdviceModal(prev => !prev)
   }, [setShowInstantAdviceModal])
@@ -198,14 +206,29 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
           </div>
         </div>
       </div>
-      {showCostRepairModal && (
-        <CostRepairModal toggleCostRepairModal={toggleCostRepairModal} />
-      )}
-      {showInstantAdviceModal && (
-        <InstantAdviceModal
-          toggleInstantAdviceModal={toggleInstantAdviceModal}
-        />
-      )}
+      <AnimatePresence>
+        {showCostRepair && (
+          <CostRepairModal
+            toggleCostRepairModal={toggleCostRepairModal}
+            setSubmitSuccess={setSubmitSuccess}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {showInstantAdviceModal && (
+          <InstantAdviceModal
+            toggleInstantAdviceModal={toggleInstantAdviceModal}
+            setSubmitSuccess={setSubmitSuccess}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {submitSuccess && (
+          <SuccessSubmitBanner
+            toggleSuccessSubmitModal={toggleSuccessSubmitModal}
+          />
+        )}
+      </AnimatePresence>
     </section>
   )
 }

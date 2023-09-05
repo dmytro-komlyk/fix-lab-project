@@ -1,11 +1,13 @@
 'use client'
 
+import { AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import Button from '@/app/(layouts)/(components)/Button'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
+import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 
 import { CategoriesSlider } from './CategoriesSlider'
 
@@ -37,9 +39,12 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
     useState<boolean>(false)
 
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
+
   const toggleInstantAdviceModal = useCallback(() => {
     setShowInstantAdviceModal(prev => !prev)
   }, [setShowInstantAdviceModal])
+
   return (
     <section className='section py-[120px] max-md:pb-[56px] max-md:pt-[120px]'>
       <div className='container flex flex-col gap-6 lg:px-0'>
@@ -84,8 +89,16 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
       {showInstantAdviceModal && (
         <InstantAdviceModal
           toggleInstantAdviceModal={toggleInstantAdviceModal}
+          setSubmitSuccess={setSubmitSuccess}
         />
       )}
+      <AnimatePresence>
+        {submitSuccess && (
+          <SuccessSubmitBanner
+            toggleSuccessSubmitModal={toggleInstantAdviceModal}
+          />
+        )}
+      </AnimatePresence>
     </section>
   )
 }

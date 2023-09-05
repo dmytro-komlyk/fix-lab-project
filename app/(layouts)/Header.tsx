@@ -12,6 +12,7 @@ import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
 import Button from './(components)/Button'
 import CourierModal from './(components)/CourierModal'
 import MobileMenu from './(components)/MobileMenu'
+import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
 
 const blogIdRegex = /\/blog\/\d+/
 
@@ -22,11 +23,16 @@ export const Header: React.FC = () => {
   const itemsRegion: Array<string> = ['Голосіївський', 'Оболонський']
 
   const [showModal, setShowModal] = useState<boolean>(false)
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
   const [isOpenItem, setIsOpenItem] = useState<boolean>(false)
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
   const [selectedRegionItem, setSelectedRegionItem] =
     useState<string>('Голосіївський')
+
+  const toggleSuccessSubmitModal = useCallback(() => {
+    setSubmitSuccess(prev => !prev)
+  }, [])
 
   useEffect(() => {
     const storedScrollState = window.localStorage.getItem('isScrolled')
@@ -103,15 +109,15 @@ export const Header: React.FC = () => {
       }`}
     >
       <nav
-        className='container mx-auto flex w-full items-center  justify-between py-6 max-md:justify-between max-md:pb-[10px] max-md:pt-10 lg:px-0'
+        className='container mx-auto flex w-full items-center  justify-between py-6 max-md:justify-between max-md:pb-[15px] max-md:pt-[30px] lg:px-0'
         aria-label='Global'
       >
         <Link
           href='/'
-          className='flex gap-1 transition-opacity hover:opacity-80 focus:opacity-80 max-md:m-0  xl:mr-12'
+          className='flex gap-1 transition-opacity hover:opacity-80 focus:opacity-80 max-md:m-0  xl:mr-9'
         >
           <Image
-            className='h-auto w-[85px]'
+            className='h-auto w-[88px] max-md:w-[65px]'
             src='/logo.svg'
             alt='FixLab logo'
             width='0'
@@ -120,14 +126,13 @@ export const Header: React.FC = () => {
           />
         </Link>
 
-        <div className='hidden items-center md:flex md:gap-12'>
+        <div className='hidden items-center md:flex '>
           {/* Phone Toggle Desktop */}
-
           <div
             ref={toggleDropdownRegionRef}
             onClick={toggleDropDown}
-            className={` select-text-none relative flex min-w-[196px] cursor-pointer items-center justify-center border-[2px] border-mid-green py-3  ${
-              isOpenItem ? 'rounded-t-xl' : 'rounded-xl'
+            className={` select-text-none relative mr-[61px] flex h-[48px] min-w-[196px]  cursor-pointer items-center justify-center border-[2px] border-mid-green  ${
+              isOpenItem ? 'rounded-t-2xl' : 'rounded-2xl'
             } `}
           >
             <button
@@ -137,15 +142,14 @@ export const Header: React.FC = () => {
               {selectedRegionItem}
             </button>
             <FiMapPin
-              className='absolute left-[20px] top-[15px]'
+              className='absolute left-[12px] top-[11px]'
               aria-hidden='true'
               color='#F8F8F8'
-              width={19}
-              height={22}
+              size={20}
             />
             {isOpenItem ? (
               <TiArrowSortedUp
-                className='absolute right-[12px] top-[17px]'
+                className='absolute right-[12px] top-[15px]'
                 aria-hidden='true'
                 color='#F8F8F8'
                 width={24}
@@ -153,7 +157,7 @@ export const Header: React.FC = () => {
               />
             ) : (
               <TiArrowSortedDown
-                className='z-2 absolute right-[12px] top-[17px]'
+                className='z-2 absolute right-[12px] top-[15px]'
                 aria-hidden='true'
                 color='#F8F8F8'
                 width={24}
@@ -199,12 +203,11 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Nav List */}
-
-          <ul className='hidden gap-6 max-md:m-0  xl:flex'>
+          <ul className='mr-[41px] hidden gap-6 max-md:m-0 xl:flex'>
             <li>
               <Link
                 href='/repair'
-                className='text-base font-semibold tracking-[0.64px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold  text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Ремонт
               </Link>
@@ -212,7 +215,7 @@ export const Header: React.FC = () => {
             <li>
               <Link
                 href='/contacts'
-                className='text-base font-semibold tracking-[0.64px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold  text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Контакти
               </Link>
@@ -220,7 +223,7 @@ export const Header: React.FC = () => {
             <li>
               <Link
                 href='/blog'
-                className='text-base font-semibold tracking-[0.64px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold  text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Блог
               </Link>
@@ -228,21 +231,20 @@ export const Header: React.FC = () => {
             <li>
               <Link
                 href='/corporate'
-                className='text-base font-semibold tracking-[0.64px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-base font-semibold  text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Для бізнесу
               </Link>
             </li>
           </ul>
-
           {/* Phone Box */}
 
-          <div className='flex flex-col items-center  gap-2 max-md:m-0'>
-            <p className='flex flex-row items-end gap-1'>
-              <span className='whitespace-nowrap text-sm  text-[rgba(248,_252,_255,_0.56)]'>
+          <div className='mr-[31px] flex flex-col items-center max-md:m-0'>
+            <p className='flex flex-row items-center  gap-1'>
+              <span className='whitespace-nowrap text-sm leading-6  text-[rgba(248,_252,_255,_0.56)]'>
                 10:00 - 19:30
               </span>
-              <span className='whitespace-nowrap text-sm  text-[rgba(248,_252,_255,_0.56)]'>
+              <span className='whitespace-nowrap text-sm  leading-6 text-[rgba(248,_252,_255,_0.56)]'>
                 |
               </span>
               <span className='w-1/2 whitespace-nowrap  text-sm text-[rgba(248,_252,_255,_0.56)]'>
@@ -278,12 +280,12 @@ export const Header: React.FC = () => {
         <div className='flex items-center xl:hidden'>
           <ul
             ref={toggleDropdownPhoneRef}
-            className={` select-text-none relative mr-10 hidden cursor-pointer max-md:flex `}
+            className={` select-text-none relative mr-[33px] hidden cursor-pointer max-md:flex `}
           >
             {isOpenItem ? (
               <TiArrowSortedUp
                 onClick={toggleDropDown}
-                className='absolute right-[-24px] top-[5px]'
+                className='absolute right-[-19px] top-[4px]'
                 aria-hidden='true'
                 color='#F8F8F8'
                 width={24}
@@ -292,7 +294,7 @@ export const Header: React.FC = () => {
             ) : (
               <TiArrowSortedDown
                 onClick={toggleDropDown}
-                className='absolute right-[-24px] top-[5px]'
+                className='absolute right-[-19px] top-[4px]'
                 aria-hidden='true'
                 color='#F8F8F8'
                 width={24}
@@ -302,7 +304,7 @@ export const Header: React.FC = () => {
             <li>
               <a
                 href='tel:380632272728'
-                className='text-sm font-normal leading-tight tracking-wide text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px]'
+                className='text-sm font-normal leading-none tracking-wide text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px]'
               >
                 +38 063 227 27 28
               </a>
@@ -342,13 +344,25 @@ export const Header: React.FC = () => {
         </div>
       </nav>
       <AnimatePresence>
-        {showModal && <CourierModal toggleCourierModal={toggleCourierModal} />}
+        {showModal && (
+          <CourierModal
+            toggleCourierModal={toggleCourierModal}
+            setSubmitSuccess={setSubmitSuccess}
+          />
+        )}
       </AnimatePresence>
       <AnimatePresence>
         {mobileMenuOpen && (
           <MobileMenu
             toggleCourierModal={toggleCourierModal}
             toggleMobileMenu={toggleMobileMenu}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {submitSuccess && (
+          <SuccessSubmitBanner
+            toggleSuccessSubmitModal={toggleSuccessSubmitModal}
           />
         )}
       </AnimatePresence>
