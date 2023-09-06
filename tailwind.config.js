@@ -65,14 +65,14 @@ module.exports = {
       },
       backgroundSize: {
         'mscope-sm': '145%',
-        'mscope-md': '100%',
-        'mscope-lg': '100%',
+        'mscope-md': '115%',
+        'mscope-lg': '80%',
         'mscope-xl': '65%',
       },
       backgroundPosition: {
         'mscope-sm': 'top calc(50% - 8px) right calc(50% + 32px)',
-        'mscope-md': 'top calc(50% - 8px) right calc(50% + 32px)',
-        'mscope-lg': 'top calc(50% - 60px) right calc(50% + 30px)',
+        'mscope-md': 'top calc(50% - 4px) right calc(50% + 4px)',
+        'mscope-lg': 'top calc(50% + 4px) right calc(50% + 10px)',
         'mscope-xl': 'top calc(50% + 35px) right calc(50% - 32px)',
       },
       backgroundImage: {
