@@ -58,15 +58,14 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
   const markdown = new MarkdownIt({
     html: true,
   })
-  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
-  const [showCostRepair, setShowCostRepair] = useState<boolean>(false)
-  const [showInstantAdviceModal, setShowInstantAdviceModal] =
-    useState<boolean>(false)
 
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
   const toggleSuccessSubmitModal = useCallback(() => {
     setSubmitSuccess(prev => !prev)
   }, [])
 
+  const [showInstantAdviceModal, setShowInstantAdviceModal] =
+    useState<boolean>(false)
   const toggleInstantAdviceModal = useCallback(() => {
     setShowInstantAdviceModal(prev => !prev)
   }, [setShowInstantAdviceModal])
@@ -207,7 +206,7 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
         </div>
       </div>
       <AnimatePresence>
-        {showCostRepair && (
+        {showCostRepairModal && (
           <CostRepairModal
             toggleCostRepairModal={toggleCostRepairModal}
             setSubmitSuccess={setSubmitSuccess}
