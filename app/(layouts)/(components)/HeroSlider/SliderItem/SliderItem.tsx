@@ -3,7 +3,13 @@ import Link from 'next/link'
 
 import type { ISliderItem } from '../types'
 
-const SliderItem = ({ link, src, alt, title, id = 0 }: ISliderItem) => (
+const SliderItem: React.FC<ISliderItem> = ({
+  link,
+  src,
+  alt,
+  title,
+  id = 0,
+}) => (
   <li className={`keen-slider__slide number-slide${id}`} key={alt}>
     <Link
       href={link}

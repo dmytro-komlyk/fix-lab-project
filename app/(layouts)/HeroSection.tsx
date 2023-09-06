@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 
 import ArrowImage from '../../public/icons/arrow-down-right.svg'
@@ -13,6 +15,7 @@ import LaptopImage from '../../public/icons/pop-laptop.svg'
 import MatrixImage from '../../public/icons/pop-matrix.svg'
 import PowerImage from '../../public/icons/pop-power.svg'
 import SmartphoneImage from '../../public/icons/pop-smartphone.svg'
+import { CommonButton } from '../(components)/CommonButton'
 import { HeroSlider } from './(components)/HeroSlider'
 
 const DATA = {
@@ -106,46 +109,46 @@ export const HeroSection = () => {
     ))
 
   return (
-    <section className='section w-full bg-dark-blue bg-banner-conic-blue-sm pt-36 md:bg-banner-conic-blue-md lg:bg-banner-conic-blue-lg xl:bg-banner-conic-blue-xl '>
-      <div className='relative flex flex-col bg-banner-img bg-banner bg-no-repeat md:container md:bg-desktop'>
-        <div className='flex flex-col items-center px-4 font-exo_2 text-white-dis md:w-[500px] md:items-start md:px-0'>
-          <h2 className='text-3xl font-bold leading-none xl:text-title'>
-            Бачимо гаджети
-          </h2>
-          <h3 className='text-4xl font-bold leading-none text-mid-blue drop-shadow-banner xl:text-9xl'>
-            наскрізь
-          </h3>
+    <section className='section xl:bg-herp-xl w-full bg-dark-blue bg-hero-sm py-0 md:bg-hero-md lg:bg-hero-lg xl:bg-hero-xl'>
+      <div className='xl:bg-mscope-xlpt-[156px] h-full w-full bg-mscope-img bg-no-repeat pb-[80px] xl:container md:pt-[162px] xl:bg-mscope-xl xl:px-0'>
+        <div className='relative flex flex-col '>
+          <div className='mt-[-11px] flex flex-col items-center justify-start px-4 font-exo_2 text-white-dis md:w-[500px] md:items-start md:px-0'>
+            <h2 className='text-3xl font-bold leading-none xl:text-title'>
+              Бачимо гаджети
+            </h2>
+            <h3 className='text-4xl font-bold leading-none text-mid-blue drop-shadow-banner xl:text-9xl'>
+              наскрізь
+            </h3>
 
-          <p className='mt-5 text-md leading-none tracking-wide md:text-xl'>
-            Мережа студій ремонту твоєї техніки
-          </p>
-          <button
-            type='button'
-            className='mt-14 w-full rounded-xl bg-mid-green px-12 py-4 xl:w-[336px] xl:px-2'
-          >
-            <span className='font-inter text-base font-semibold text-dark-blue'>
-              Розрахувати вартість ремонту
-            </span>
-          </button>
-        </div>
+            <p className='mt-[22px] font-inter text-md leading-none tracking-title md:mt-11 md:text-xl md:tracking-normal'>
+              Мережа студій ремонту твоєї техніки
+            </p>
 
-        <div className='overflow-x-hidden pt-[426px] md:max-w-[411px] xl:pt-[58px]'>
-          <h3 className='relative mx-4 font-exo_2 text-xl text-white-dis md:mx-0'>
-            Найчастіші звернення
-            <Image
-              className='absolute right-0 top-1/2 -translate-y-1/2 text-white-dis'
-              width={24}
-              height={24}
-              src={ArrowImage}
-              alt='arrow'
-            />
-          </h3>
+            <div className='mt-[54px] w-full md:mt-[48px] md:w-[320px] xl:w-[336px]'>
+              <CommonButton onClick={() => {}}>
+                Розрахувати вартість ремонту
+              </CommonButton>
+            </div>
+          </div>
 
-          <HeroSlider data={DATA.items} />
-        </div>
+          <div className='overflow-x-hidden pt-[424px] md:max-w-[411px] md:pt-[54px]'>
+            <h3 className='heading-none relative mx-3 border-b-2 border-pros-bg pb-[10px] align-top font-exo_2 text-xl tracking-middle text-white-dis md:mx-0'>
+              Найчастіші звернення
+              <Image
+                className='absolute right-[2px] top-[calc(50%-4px)] -translate-y-1/2 text-white-dis'
+                width={24}
+                height={24}
+                src={ArrowImage}
+                alt='arrow'
+              />
+            </h3>
 
-        <div className='absolute right-0 top-0 hidden md:right-5 md:flex lg:right-0'>
-          <ul>{renderPros()}</ul>
+            <HeroSlider data={DATA.items} />
+          </div>
+
+          <div className='absolute right-0 top-0 hidden md:flex'>
+            <ul>{renderPros()}</ul>
+          </div>
         </div>
       </div>
     </section>
