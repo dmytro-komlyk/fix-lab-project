@@ -109,6 +109,8 @@ module.exports = {
         hoverBtnOut: 'slide-out-bottom 0.2s ease-in-out both',
         hoverCard: 'all 0.3s ease-in-out',
         progressBar: 'width 0.5s',
+        'slide-top': 'slide-out-top 0.2s ease-in-out both',
+        'slide-bottom': 'slide-out-bottom 0.2s ease-in-out both',
       },
     },
   },

@@ -14,7 +14,7 @@ const CommonButton: React.FC<ICommonButtonProps> = ({
     onClick={onClick}
     className='group relative z-[1] flex w-full items-center justify-center rounded-[12px] bg-mid-green pb-[21px] pt-[22px] transition-colors hover:bg-mid-blue focus:bg-mid-blue'
   >
-    <span className='text-base font-semibold leading-none tracking-wide text-[#04268b] group-hover:animate-hoverBtnOut'>
+    <span className='animate-slide-bottom text-base font-semibold leading-none tracking-wide text-[#04268b] group-hover:animate-slide-top'>
       {children}
     </span>
   </button>
