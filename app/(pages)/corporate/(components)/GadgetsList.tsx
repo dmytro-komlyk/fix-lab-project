@@ -41,10 +41,18 @@ export const GadgetsList: React.FC<IGadgetsListProps> = ({ items }) => {
         return (
           <div
             key={item.id}
-            className='flex min-w-[206px] max-w-[270px] shrink grow items-center gap-4'
+            className='flex w-full max-w-[270px] shrink grow items-center gap-5'
           >
-            <Image src={item.icon.src} width={40} height={40} alt={item.alt} />
-            <p className='hyphens-auto text-center font-exo_2 text-xl text-[#F8FCFF]'>
+            <div className='w-full'>
+              <Image
+                className='mx-auto my-0'
+                src={item.icon.src}
+                width={item.icon.width}
+                height={item.icon.height}
+                alt={item.alt}
+              />
+            </div>
+            <p className='min-w-[205px] hyphens-auto font-exo_2 text-xl text-[#F8FCFF]'>
               {item.title}
             </p>
           </div>

@@ -68,12 +68,12 @@ export const CallCourierSection: React.FC = () => {
             priority
           />
         </div>
-        <div className='z-[1] justify-between max-lg:flex max-lg:flex-col max-md:gap-[276px]'>
-          <div className='flex flex-col gap-2  md:mb-8 '>
+        <div className='z-[1] justify-between max-lg:flex max-lg:flex-col max-md:gap-[281px]'>
+          <div className='flex flex-col gap-3.5  md:mb-8 '>
             <p className='text-xl font-[400] leading-9 text-dark-blue max-md:text-xl max-sm:text-lg'>
               Не треба ламати плани!
             </p>
-            <p className='font-exo_2 text-2xl font-bold leading-[46px] text-dark-blue max-sm:text-lg'>
+            <p className='font-exo_2 text-2xl font-bold leading-10 text-dark-blue max-sm:text-lg'>
               Можна викликати курʼєра!
             </p>
           </div>

@@ -53,7 +53,7 @@ export const ColabSlider = () => {
         slides: { perView: 4, spacing: 16 },
       },
     },
-    slides: { perView: 1.13, spacing: 16 },
+    slides: { perView: 1.17, spacing: 16 },
   })
   const size = useWindowSize()
 
@@ -73,10 +73,10 @@ export const ColabSlider = () => {
         {colabData.map(item => (
           <li
             key={item.id}
-            className='h-full w-[302px] rounded-2xl border border-l-light-green p-8 font-inter text-white-dis'
+            className='h-[475px] w-[302px] rounded-2xl border border-l-light-green p-8 font-inter text-white-dis'
             style={{ width: '302px', height: '460px' }}
           >
-            <div className='mb-6 h-[86px]'>
+            <div className='mb-3.5 h-[86px]'>
               <img src={`/${item.icon}`} className='block' alt={item.title} />
             </div>
             <p className='mb-6 text-base leading-normal text-white-dis'>
@@ -95,16 +95,15 @@ export const ColabSlider = () => {
         {colabData.map(item => (
           <div
             key={item.id}
-            className='keen-slider__slide h-[490px] w-[302px] rounded-2xl border-[1px] border-l-light-green p-8 font-inter text-white-dis'
-            style={{ width: '302px', height: '500px' }}
+            className='keen-slider__slide flex h-[475px] w-[302px] flex-col gap-5 rounded-2xl border-[1px] border-l-light-green p-[30px] font-inter text-white-dis'
           >
-            <div className='mb-6 h-[86px]'>
+            <div className='h-[86px]'>
               <img src={`/${item.icon}`} className='block' alt={item.title} />
             </div>
-            <h3 className='mb-6 font-exo_2  text-xl font-semibold leading-tight text-white-dis'>
+            <h3 className='w-3/4 font-exo_2 text-lg font-semibold leading-tight text-white-dis'>
               {item.title}
             </h3>
-            <p className='mb-6 font-inter text-base leading-normal text-white-dis'>
+            <p className='font-inter text-base leading-normal text-white-dis'>
               {item.text}
             </p>
             <p className='font-inter text-base leading-normal text-white-dis'>

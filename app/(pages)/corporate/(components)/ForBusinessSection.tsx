@@ -50,7 +50,7 @@ const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
   }, [setShowInstantAdviceModal])
 
   return (
-    <section className='overflow-hidden bg-gradient-linear-blue pt-[151px]'>
+    <section className='overflow-hidden bg-gradient-linear-blue pt-[118px] lg:pt-[159px]'>
       <div className='container flex flex-col lg:p-0'>
         <div className='flex items-center gap-1'>
           <Link
@@ -58,21 +58,21 @@ const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
             href='/'
           >
             <p className='text-md'>Головна</p>{' '}
-            <MdKeyboardArrowRight size={30} />
+            <MdKeyboardArrowRight size={18} />
           </Link>
 
           <p className='text-md font-[400] text-[#0088C5] opacity-70'>
             {sectionData.path}
           </p>
         </div>
-        <div className='flex flex-col justify-between gap-[50px] pb-[102px] pt-[28px] lg:flex-row'>
+        <div className='flex flex-col justify-between gap-[56px] pb-[74px] pt-[18px] lg:flex-row lg:pt-[24px]'>
           <div className='flex w-full flex-col gap-8 lg:max-w-[500px] lg:gap-14'>
-            <div className='flex flex-col gap-6 lg:gap-8'>
-              <h3 className='font-exo_2 text-xl text-[#FFFFFF] lg:text-2xl'>
+            <div className='flex flex-col gap-[20px] lg:gap-8'>
+              <h3 className='max-w-[350px] font-exo_2 text-xl leading-[30px] text-[#FFFFFF] lg:max-w-full lg:text-2xl'>
                 {sectionData.info.title}
               </h3>
               <BenefitsList items={sectionData.info.benefits} />
-              <p className='font-[400] text-white-dis'>
+              <p className='mt-1.5 font-[400] text-white-dis'>
                 {sectionData.info.description}
               </p>
             </div>

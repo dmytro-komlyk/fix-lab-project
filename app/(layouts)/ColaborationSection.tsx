@@ -5,9 +5,9 @@ import ColabSlider from '../(components)/ColabSlider/slider'
 
 export const ColaborationSection = () => {
   return (
-    <section className='section bg-gradient-linear-center-blue py-24'>
+    <section className='section bg-gradient-linear-center-blue pb-[55px] pt-[45px]'>
       <div className='container relative'>
-        <h2 className='mb-10 font-exo_2 text-xl font-bold text-white-dis md:text-2xl'>
+        <h2 className='mb-6 font-exo_2 text-xl font-bold text-white-dis md:text-2xl'>
           Співпраця з нами це
         </h2>
         <div className='absolute right-[130px] top-[-130px] hidden h-[150px] w-[150px] rotate-[-10deg] rounded-full shadow-[-8px_29px_76px_30px_rgba(0,144,255,0.44)] lg:flex' />
