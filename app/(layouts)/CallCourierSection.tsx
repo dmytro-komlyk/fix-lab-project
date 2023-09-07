@@ -79,7 +79,7 @@ export const CallCourierSection: React.FC = () => {
             </p>
           </div>
           <div className='gap-14 max-lg:flex max-lg:flex-col max-md:gap-8'>
-            <p className=' w-[503px] text-xl font-[300] text-dark-blue  max-md:w-full max-md:font-[400] max-sm:text-lg md:hidden lg:mb-14'>
+            <p className='w-[503px] text-xl font-[300] text-dark-blue max-md:w-full  max-md:font-[400] max-sm:text-lg md:hidden lg:mb-14 lg:tracking-[1px]'>
               Ми самі заберемо гаджет на дослідження і він буде жити!
             </p>
             <p className='w-[503px] text-xl font-[300] text-dark-blue  max-md:hidden max-md:w-full max-md:font-[400] max-sm:text-lg lg:mb-14'>
