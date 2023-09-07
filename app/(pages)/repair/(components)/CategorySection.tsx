@@ -5,65 +5,18 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
-import { TbPhone } from 'react-icons/tb'
 
+import type { IBrandsListProps } from '@/app/(layouts)/(components)/BrandsList'
+import BrandsList from '@/app/(layouts)/(components)/BrandsList'
 import Button from '@/app/(layouts)/(components)/Button'
+import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
+import type { IServicesListProps } from '@/app/(layouts)/(components)/ServicesList'
+import ServicesList from '@/app/(layouts)/(components)/ServicesList'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 
-import GadgetServicesList from './GadgetServicesList'
-
-interface CategorySectionProps {
-  categoryData: {
-    data: {
-      id: number
-      attributes: {
-        img: {
-          data: {
-            attributes: {
-              url: string
-            }
-          }
-        }
-        recommend_brands: {
-          data: {
-            id: number
-            attributes: {
-              url: string
-              width: number
-              height: number
-              name: string
-            }
-          }[]
-        }
-
-        title: string
-        description: string
-        images: string
-        top_text_content: string
-        text_content: string
-      }
-    }[]
-  }
-  subcategoriesData: {
-    data: {
-      id: number
-      attributes: {
-        category: {
-          data: {
-            attributes: {
-              slug: string
-            }
-          }
-        }
-        slug: string
-        title: string
-        price: string
-      }
-    }[]
-  }
-}
+interface CategorySectionProps extends IServicesListProps, IBrandsListProps {}
 
 const CategorySection: React.FC<CategorySectionProps> = ({
   categoryData,
@@ -152,88 +105,38 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                     {item.attributes.description}
                   </p>
                   <Button
-                    textButton='Миттєва консультація'
+                    text='Миттєва консультація'
                     toggleModal={toggleInstantAdviceModal}
+                    styles='group relative flex min-w-[256px] py-4 items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+                    textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
                   />
                 </div>
               )
             })}
-            <div className='flex max-w-[302px] flex-col items-center justify-center rounded-[15px] bg-white-dis p-8 opacity-80 max-lg:hidden'>
-              <p className='relative mb-[24px] font-exo_2 text-xl font-semibold text-dark-blue'>
-                <TbPhone
-                  className=' absolute left-[-26px] top-[7px]'
-                  size={24}
-                />
-                Подзвонити нам
-              </p>
-              <ul className='flex flex-col items-center gap-[15px]'>
-                <li className='flex flex-col items-center'>
-                  <p className='font-[400] text-black-dis'>Голосіївський р-н</p>
-                  <a
-                    href='tel:380632272728'
-                    className=' font-[500] leading-7 tracking-[0.96px] text-dark-blue  transition-opacity hover:opacity-70  focus:opacity-70'
-                  >
-                    +38 063 227 27 28
-                  </a>
-                </li>
-                <li className='flex flex-col items-center'>
-                  <p className='font-[400] text-black-dis'>Оболонський р-н</p>
-                  <a
-                    href='tel:380632272728'
-                    className=' font-[500] leading-7 tracking-[0.96px] text-dark-blue  transition-opacity hover:opacity-70  focus:opacity-70'
-                  >
-                    +38 063 227 27 28
-                  </a>
-                </li>
-              </ul>
-            </div>
+            <CallUsCard />
           </div>
-          <div className='w-[737px] max-xl:w-[550px]  max-lg:w-full'>
-            {/* {categoryData.data.map(item => {
-              // console.log(item.attributes.images.data[0].attributes.url)
-              // const img = item.attributes.images.data[0].attributes.url
-
-              return (
-                <div className='mb-14' key={item.id}>
-                  <div className='flex gap-[18px] justify-center mb-[50px]'>
-                    <Image
-                      className='w-[537px] h-[343px] rounded-2xl object-cover'
-                      src={img}
-                      width={537}
-                      height={343}
-                      alt={item.attributes.title}
-                    />
-                    <ul className='flex flex-col justify-between'>
-                      {item.attributes.images.data.slice(1).map(item => {
-                        return (
-                          <li>
-                            <Image
-                              className='w-[182px] h-[99px] rounded-2xl object-cover'
-                              src={img}
-                              width={182}
-                              height={99}
-                              alt={item.attributes.title}
-                            />
-                          </li>
-                        )
-                      })}
-                    </ul>
-                  </div>
-
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: markdown.render(item.attributes.text_content),
-                    }}
-                    className='text-base text-white-dis font-[400] '
-                  ></div>
-                </div>
-              )
-            })} */}
-            <GadgetServicesList
-              categoryData={categoryData}
-              subcategoriesData={subcategoriesData}
-              toggleCostRepairModal={toggleCostRepairModal}
-            />
+          <div className='flex flex-col gap-8 lg:w-[737px] lg:gap-14'>
+            <div className='flex flex-col gap-14'>
+              <div>
+                <p className='mb-8 font-exo_2 text-xl font-semibold text-white-dis'>
+                  Бренди, які ремонтуємо
+                </p>
+                <BrandsList categoryData={categoryData} />
+              </div>
+              <div>
+                <p className='mb-8 font-exo_2 text-xl font-semibold text-white-dis'>
+                  Послуги
+                </p>
+                <ServicesList subcategoriesData={subcategoriesData} />
+              </div>
+              <Button
+                text='Розрахувати вартість ремонту'
+                toggleModal={toggleCostRepairModal}
+                styles='group flex justify-between w-full px-6 py-4 rounded-2xl bg-mid-blue'
+                textHoverAnimation='font-exo_2 text-xl font-semibold text-dark-blue transition-transform duration-300 group-hover:translate-x-1 origin-center group-hover:scale-105 max-md:font-inter max-md:text-base max-md:font-semibold max-[380px]:text-sm'
+                icon='text-dark-blue text-3xl max-md:text-xl transition-transform duration-300 origin-center group-hover:scale-125'
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -12,11 +12,13 @@ import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
 export const BrokenSection: React.FC<CategoriesSectionProps> = ({
   categoryData,
 }) => {
-  const [isModalShown, setIsModalShown] = useState(false)
+  const [showInstantAdviceModal, setShowInstantAdviceModal] =
+    useState<boolean>(false)
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
-  const toggleSuccessSubmitModal = useCallback(() => {
-    setSubmitSuccess(prev => !prev)
-  }, [])
+
+  const toggleInstantAdviceModal = useCallback(() => {
+    setShowInstantAdviceModal(prev => !prev)
+  }, [setShowInstantAdviceModal])
 
   return (
     <section className='section md:mb-[-50px] lg:mb-[-100px] xl:mb-[-150px]'>
@@ -38,24 +40,26 @@ export const BrokenSection: React.FC<CategoriesSectionProps> = ({
               Або ж, економте час, залишайте заявку на консультацію.
             </p>
             <Button
-              toggleModal={() => setIsModalShown(!isModalShown)}
-              textButton='Миттєва консультація'
+              text='Миттєва консультація'
+              toggleModal={toggleInstantAdviceModal}
+              styles='group relative flex min-w-[256px] min-h-[56px]  items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+              textHoverAnimation='py-5 text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
             />
           </div>
 
           <CategoriesSlider categoryData={categoryData} />
         </div>
       </div>
-      {isModalShown && (
+      {showInstantAdviceModal && (
         <InstantAdviceModal
-          toggleInstantAdviceModal={() => setIsModalShown(!isModalShown)}
+          toggleInstantAdviceModal={toggleInstantAdviceModal}
           setSubmitSuccess={setSubmitSuccess}
         />
       )}
       {submitSuccess && (
         <AnimatePresence>
           <SuccessSubmitBanner
-            toggleSuccessSubmitModal={toggleSuccessSubmitModal}
+            toggleSuccessSubmitModal={toggleInstantAdviceModal}
           />
         </AnimatePresence>
       )}

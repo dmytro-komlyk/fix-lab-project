@@ -44,31 +44,20 @@
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
   }
-  .hover-gadget-link:hover,
-  .hover-gadget-link:focus {
-   @apply bg-dark-blue;
 
-  }
   .hover-gadget-link:hover img,
   .hover-gadget-link:focus img {
-  transform-origin: top right;
-  transform: scale(1.25);
-
+  @apply transition-all delay-75 duration-300 ease-in-out scale-125;
   }
+
   .hover-gadget-link:hover h3,
   .hover-gadget-link:focus h3 {
-  @apply md:text-xl md:mb-1;
-   @apply xl:text-[28px] xl:mb-2;
-  
+  @apply p-1 transition-all delay-75 duration-300 translate-x-0 ease-in-out scale-110;
   }
+
   .hover-gadget-link:hover p,
   .hover-gadget-link:focus p  {
-  @apply block;
-  }
-  .hover-laptop:hover img,
-  .hover-laptop:focus img {
-     @apply translate-x-[10px];
-   
+  @apply flex p-1 transition-all delay-75 duration-300 translate-x-0 ease-in-out scale-110;
   }
   /* ... */
 }
