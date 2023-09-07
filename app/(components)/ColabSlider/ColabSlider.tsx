@@ -59,9 +59,9 @@ export const ColabSlider = () => {
 
   return size.width > 1439 ? (
     <div>
-      <ul className='mb-11 flex gap-6 border-b-2 border-b-[#20B9F4]'>
+      <ul className='lg: mb-11 flex gap-6 border-b-2 border-b-[#20B9F4]'>
         {colabData.map(item => (
-          <li className='relative h-[98px] w-[302px]' key={item.id}>
+          <li className='relative h-[98px] w-[302px] lg:h-[89px]' key={item.id}>
             <h3 className='w-[191px] font-exo_2 text-xl font-semibold leading-tight text-white-dis'>
               {item.title}
             </h3>
@@ -73,10 +73,9 @@ export const ColabSlider = () => {
         {colabData.map(item => (
           <li
             key={item.id}
-            className='h-[475px] w-[302px] rounded-2xl border border-l-light-green p-8 font-inter text-white-dis'
-            style={{ width: '302px', height: '460px' }}
+            className='h-[475px] w-[302px] rounded-2xl border border-l-light-green p-8 font-inter text-white-dis lg:h-[420px]'
           >
-            <div className='mb-3.5 h-[86px]'>
+            <div className='mb-3.5 h-[86px] lg:mb-5'>
               <img src={`/${item.icon}`} className='block' alt={item.title} />
             </div>
             <p className='mb-6 text-base leading-normal text-white-dis'>

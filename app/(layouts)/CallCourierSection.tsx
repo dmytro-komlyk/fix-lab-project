@@ -23,9 +23,9 @@ export const CallCourierSection: React.FC = () => {
   return (
     <section className={` w-full overflow-hidden bg-mid-green`}>
       <div
-        className={`container relative flex justify-end  pb-[124px]    ${
+        className={`container relative flex justify-end pb-[124px] ${
           pathname !== '/'
-            ? 'pt-[102px] '
+            ? 'pt-[106px] '
             : 'pt-[213px] max-xl:pt-[90px] max-md:py-14'
         }  max-lg:justify-center  max-md:py-14`}
       >
@@ -69,7 +69,7 @@ export const CallCourierSection: React.FC = () => {
           />
         </div>
         <div className='z-[1] justify-between max-lg:flex max-lg:flex-col max-md:gap-[281px]'>
-          <div className='flex flex-col gap-3.5  md:mb-8 '>
+          <div className='flex flex-col gap-3.5 md:mb-8 '>
             <p className='text-xl font-[400] leading-9 text-dark-blue max-md:text-xl max-sm:text-lg'>
               Не треба ламати плани!
             </p>

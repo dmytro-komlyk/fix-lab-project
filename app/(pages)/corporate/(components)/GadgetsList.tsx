@@ -36,14 +36,14 @@ export const GadgetsList: React.FC<IGadgetsListProps> = ({ items }) => {
         })
       : items
   return (
-    <div className='flex flex-wrap gap-6'>
+    <div className='flex flex-wrap gap-6 lg:gap-x-[59px] lg:gap-y-[50px]'>
       {sortedItems?.map((item: IGadgetItem) => {
         return (
           <div
             key={item.id}
-            className='flex w-full max-w-[270px] shrink grow items-center gap-5'
+            className='flex max-w-[270px] shrink grow basis-9/12 items-center gap-[20px] lg:basis-auto'
           >
-            <div className='w-full'>
+            <div className='w-1/5'>
               <Image
                 className='mx-auto my-0'
                 src={item.icon.src}
@@ -52,7 +52,7 @@ export const GadgetsList: React.FC<IGadgetsListProps> = ({ items }) => {
                 alt={item.alt}
               />
             </div>
-            <p className='min-w-[205px] hyphens-auto font-exo_2 text-xl text-[#F8FCFF]'>
+            <p className='w-4/5 max-w-[205px] hyphens-auto font-exo_2 text-xl leading-6 text-[#F8FCFF]'>
               {item.title}
             </p>
           </div>

@@ -20,7 +20,7 @@ interface IBenefitsListProps {
 
 export const BenefitsList: React.FC<IBenefitsListProps> = ({ items }) => {
   return (
-    <div className='flex flex-wrap gap-x-3.5 gap-y-[17px] lg:gap-5'>
+    <div className='flex flex-wrap gap-x-3.5 gap-y-[17px] lg:gap-[18px]'>
       {items?.map((item: IBenefitItem) => {
         return (
           <div

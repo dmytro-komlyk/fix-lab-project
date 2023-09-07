@@ -54,7 +54,7 @@ const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
       <div className='container flex flex-col lg:p-0'>
         <div className='flex items-center gap-1'>
           <Link
-            className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0]'
+            className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0] hover:text-[#0088C5]'
             href='/'
           >
             <p className='text-md'>Головна</p>{' '}
@@ -65,10 +65,10 @@ const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
             {sectionData.path}
           </p>
         </div>
-        <div className='flex flex-col justify-between gap-[56px] pb-[74px] pt-[18px] lg:flex-row lg:pt-[24px]'>
+        <div className='flex flex-col justify-between gap-[56px] pb-[74px] pt-[18px] lg:flex-row lg:gap-[45px] lg:pt-[32px]'>
           <div className='flex w-full flex-col gap-8 lg:max-w-[500px] lg:gap-14'>
-            <div className='flex flex-col gap-[20px] lg:gap-8'>
-              <h3 className='max-w-[350px] font-exo_2 text-xl leading-[30px] text-[#FFFFFF] lg:max-w-full lg:text-2xl'>
+            <div className='flex flex-col gap-[20px] lg:gap-7'>
+              <h3 className='max-w-[350px] font-exo_2 text-xl leading-[30px] text-[#FFFFFF] lg:mb-2.5 lg:max-w-full lg:text-2xl'>
                 {sectionData.info.title}
               </h3>
               <BenefitsList items={sectionData.info.benefits} />
@@ -96,8 +96,8 @@ const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
               width={737}
               height={360}
             />
-            <div className='flex flex-col gap-8'>
-              <h5 className='text-md font-[300] text-white-dis'>
+            <div className='flex flex-col gap-8 lg:gap-[7]'>
+              <h5 className='text-md font-[300] text-white-dis lg:text-base'>
                 {sectionData.officeGadgets.title}
               </h5>
               <GadgetsList items={sectionData.officeGadgets.gadgets} />
