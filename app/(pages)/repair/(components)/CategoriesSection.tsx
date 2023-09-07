@@ -36,63 +36,66 @@ export interface CategoryItem {
 const CategoriesSection: React.FC<CategoriesSectionProps> = ({
   categoryData,
 }) => {
-  const [isModalShown, setIsModalShown] = useState(false)
+  const [showInstantAdviceModal, setShowInstantAdviceModal] =
+    useState<boolean>(false)
+
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
 
-  const toggleSuccessSubmitModal = useCallback(() => {
-    setSubmitSuccess(prev => !prev)
-  }, [])
+  const toggleInstantAdviceModal = useCallback(() => {
+    setShowInstantAdviceModal(prev => !prev)
+  }, [setShowInstantAdviceModal])
 
   return (
-    <section className='section pt-[163px]'>
-      <div className='container'>
+    <section className='section py-[120px] max-md:pb-[56px] max-md:pt-[120px]'>
+      <div className='container flex flex-col gap-6 lg:px-0'>
         <div className='flex items-center gap-1'>
           <Link
-            className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0]'
+            className='flex items-center gap-1 text-base font-[400] text-dark-blue'
             href='/'
           >
-            <p> Головна</p> <MdKeyboardArrowRight size={30} />
+            <p> Головна</p>
           </Link>
-
-          <p className='text-base font-[400] text-[#3EB9F0] opacity-70'>
+          <MdKeyboardArrowRight className='text-dark-blue' size={20} />
+          <p className='text-base font-[400] text-dark-blue opacity-50'>
             Ремонт
           </p>
         </div>
-        <div className='justify-between gap-8 md:flex'>
-          <div className='mb-8 max-w-[300px] md:mb-0'>
-            <h3 className='mb-8 font-exo_2 text-xl font-bold leading-normal text-light-blue md:text-2xl'>
+        <div className='flex justify-between gap-8 max-md:flex-col'>
+          <div className='flex w-[300px] flex-col gap-6 max-md:w-full'>
+            <h3 className='font-exo_2 text-xl font-bold leading-normal text-light-blue md:text-2xl'>
               Що зламалося?
             </h3>
-            <p className='mb-4'>
-              У нас є багато варіантів, як подарувати друге життя вашому
-              гаджету.
-            </p>
-            <p className='mb-4'>
-              У нас є багато варіантів, як подарувати друге життя вашому
-              гаджету.
-            </p>
-            <p className='mb-8'>
-              Або ж, економте час, залишайте заявку на консультацію.
-            </p>
+            <div className='flex flex-col gap-4 text-base font-normal'>
+              <p>
+                У нас є багато варіантів, як подарувати друге життя вашому
+                гаджету.
+              </p>
+              <p>
+                Обирайте потрібний пристрій, що зламався, та дізнавайтесь ціни
+                на ремонт.
+              </p>
+              <p>Або ж, економте час, залишайте заявку на консультацію.</p>
+            </div>
             <Button
-              toggleModal={() => setIsModalShown(!isModalShown)}
-              textButton='Миттєва консультація'
+              text='Миттєва консультація'
+              toggleModal={toggleInstantAdviceModal}
+              styles='group relative flex max-w-[256px] py-4 items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+              textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
             />
           </div>
-
           <CategoriesSlider categoryData={categoryData} />
         </div>
       </div>
-      {isModalShown && (
+      {showInstantAdviceModal && (
         <InstantAdviceModal
-          toggleInstantAdviceModal={() => setIsModalShown(!isModalShown)}
+          toggleInstantAdviceModal={toggleInstantAdviceModal}
           setSubmitSuccess={setSubmitSuccess}
         />
       )}
       <AnimatePresence>
         {submitSuccess && (
           <SuccessSubmitBanner
-            toggleSuccessSubmitModal={toggleSuccessSubmitModal}
+            toggleSuccessSubmitModal={toggleInstantAdviceModal}
           />
         )}
       </AnimatePresence>

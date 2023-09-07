@@ -4,10 +4,18 @@ import React from 'react'
 export interface IBrandsListProps {
   categoryData: {
     data: {
+      id: number
       attributes: {
+        img: {
+          data: {
+            attributes: {
+              url: string
+            }
+          }
+        }
         recommend_brands: {
           data: {
-            id: string
+            id: number
             attributes: {
               url: string
               width: number
@@ -16,6 +24,11 @@ export interface IBrandsListProps {
             }
           }[]
         }
+        title: string
+        description: string
+        images: string
+        top_text_content: string
+        text_content: string
       }
     }[]
   }

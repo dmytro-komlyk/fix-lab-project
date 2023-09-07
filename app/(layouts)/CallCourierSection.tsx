@@ -5,14 +5,15 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
+import Button from './(components)/Button'
 import CourierModal from './(components)/CourierModal'
 import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
 
 export const CallCourierSection: React.FC = () => {
   const pathname = usePathname()
+
   const [showModal, setShowModal] = useState<boolean>(false)
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
-  const [isHovering, setIsHovering] = useState<boolean>(false)
   const toggleCourierModal = useCallback(() => {
     setShowModal(prev => !prev)
   }, [])
@@ -84,21 +85,12 @@ export const CallCourierSection: React.FC = () => {
             <p className='w-[503px] text-xl font-[300] text-dark-blue  max-md:hidden max-md:w-full max-md:font-[400] max-sm:text-lg lg:mb-14'>
               Ми самі заберемо гаджет на дослідження та подаруємо йому життя
             </p>
-            <button
-              type='button'
-              onClick={toggleCourierModal}
-              onMouseEnter={() => setIsHovering(false)}
-              onMouseLeave={() => setIsHovering(true)}
-              className='group flex h-[58px] cursor-pointer items-center justify-center rounded-[12px] bg-dark-blue transition-colors hover:bg-black-dis focus:bg-black-dis md:min-w-[244px]'
-            >
-              <p
-                className={`text-base font-semibold tracking-wide text-white-dis  ${
-                  isHovering ? 'animate-hoverBtnOut' : ''
-                } group-hover:animate-hoverBtnIn`}
-              >
-                Потрібен курʼєр
-              </p>
-            </button>
+            <Button
+              text='Викликати курʼєра'
+              toggleModal={toggleCourierModal}
+              styles='group relative flex min-w-[256px] py-4 items-center justify-center rounded-2xl bg-dark-blue transition-colors  hover:bg-black-dis focus:bg-black-dis  max-md:w-full'
+              textHoverAnimation='text-base font-semibold tracking-wide text-white-dis group-hover:animate-hoverBtnOut animate-hoverBtnIn'
+            />
           </div>
         </div>
       </div>
