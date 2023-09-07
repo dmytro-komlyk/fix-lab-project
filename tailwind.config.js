@@ -44,7 +44,6 @@ module.exports = {
       'mid-grey': '#92999C',
       'modal-overlay': 'rgba(0, 0, 0, 0.25)',
       'pros-bg': 'rgba(248, 252, 255, 0.76)',
-      
     },
     extend: {
       padding: {
@@ -69,6 +68,8 @@ module.exports = {
         desktop: 'center',
       },
       backgroundImage: {
+        'card-repair-gradient':
+          'linear-gradient(192.07deg, #06278B -22.68%, #0D3DCE 112.47%)',
         'gradient-radial-blue':
           'radial-gradient(240.65% 83.67% at 48.21% 48.61%, #37122B 0%, #04248B 55.98%, #264CC7 100%)',
         'gradient-linear-green':

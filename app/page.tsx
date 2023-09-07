@@ -11,7 +11,7 @@ export default async function Home() {
   const categoriesUrl = `/api/categories?populate=*&sort=id:asc`
   const categoryData = await getData(categoriesUrl)
   return (
-    <main className='h-max flex-auto gap-0'>
+    <main className='flex-auto'>
       <HeroSection />
       <BrokenSection categoryData={categoryData} />
       <CallCourierSection />

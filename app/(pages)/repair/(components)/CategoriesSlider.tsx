@@ -24,13 +24,12 @@ export const CategoriesSlider: React.FC<CategoriesSectionProps> = ({
         {categoryData.data.map((item: CategoryItem) => {
           const categoryPath = item.attributes.slug
           const img = item.attributes.img.data.attributes.url
-          const { width } = item.attributes.img.data.attributes
-          const { height } = item.attributes.img.data.attributes
+          const { width, height } = item.attributes.img.data.attributes
           return (
             <Link
               key={item.id}
               href={`/repair/${categoryPath}`}
-              className='keen-slider__slide hover-gadget-link hoverCard flex h-[261px] flex-col justify-between rounded-2xl bg-dark-blue p-8'
+              className='keen-slider__slide hover-gadget-link flex h-[261px] flex-col justify-between rounded-2xl bg-card-repair-gradient p-8'
             >
               <Image
                 className='ml-auto'
@@ -40,10 +39,10 @@ export const CategoriesSlider: React.FC<CategoriesSectionProps> = ({
                 alt={item.attributes.title}
               />
               <div className='text-white-dis'>
-                <h3 className='mr-auto font-semibold leading-tight max-md:text-xl md:text-base xl:text-xl'>
+                <h3 className='mr-auto text-xl font-semibold leading-7'>
                   {item.attributes.title}
                 </h3>
-                <p className='hidden font-inter text-[12px] xl:text-sm'>
+                <p className='hidden font-inter text-xs xl:text-sm'>
                   Подивитися поломки
                 </p>
               </div>

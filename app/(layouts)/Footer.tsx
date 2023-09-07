@@ -4,40 +4,37 @@ import { LiaViber } from 'react-icons/lia'
 
 export const Footer = () => {
   return (
-    <footer className='w-full  bg-footer-gradient-linear-blue '>
-      <div className=' container relative z-[1] items-start pb-[92px] pt-14 md:flex  md:flex-row-reverse md:justify-between md:gap-[80px] lg:flex-row lg:px-0'>
-        <div className='absolute left-[261px] top-[55px] z-0 hidden md:flex'>
+    <footer className='bg-footer-gradient-linear-blue '>
+      <div className='container relative flex flex-col items-start gap-[52px] py-14 md:flex-row md:justify-between md:px-0 xl:gap-[240px]'>
+        <div className='z-1 absolute left-[261px] top-0 h-full md:flex'>
           <Image
             src='/background-flicker-footer-pc.svg'
             width={1008}
-            height={328}
-            alt='flicker'
-          />
-        </div>
-        <div className='absolute right-[69px] top-[0] z-0 hidden max-md:flex'>
-          <Image
-            src='/background-flicker-footer-mobile.svg'
-            width={637}
             height={321}
             alt='flicker'
           />
         </div>
-        <Link
-          href='/'
-          className='mr-12 flex gap-3  transition-opacity hover:opacity-80 focus:opacity-80 max-md:m-0 md:hidden lg:m-0  lg:flex'
-          aria-label='Логотип'
-        >
+        <div className='z-1 absolute right-0 top-0 hidden h-full w-full max-md:flex'>
           <Image
-            className='h-auto w-[167px] max-md:w-[129px]'
-            src='/logo.svg'
-            alt='FixLab logo'
-            width='0'
-            height='0'
-            priority
+            src='/background-flicker-footer-mobile.svg'
+            width={321}
+            height={637}
+            alt='flicker'
           />
-        </Link>
-        <div className='z-[1] mt-14 flex justify-between   md:m-0 '>
-          <ul className='flex flex-col gap-6'>
+        </div>
+        <div className='flex h-[61px] w-[95px] gap-3 transition-opacity hover:opacity-80 focus:opacity-80 md:h-[75px] md:w-[115px]'>
+          <Link href='/' aria-label='Логотип'>
+            <Image
+              src='/logo.svg'
+              alt='FixLab logo'
+              width={115}
+              height={75}
+              priority
+            />
+          </Link>
+        </div>
+        <div className='z-10 flex gap-[133px]'>
+          <ul className='flex flex-col items-start gap-[10px]'>
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
@@ -87,7 +84,7 @@ export const Footer = () => {
               </Link>
             </li>
           </ul>
-          <ul className='flex flex-col justify-between md:hidden'>
+          <ul className='flex flex-col gap-[29px] md:hidden'>
             <li>
               <Link
                 className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase '
@@ -126,8 +123,8 @@ export const Footer = () => {
             </li>
           </ul>
         </div>
-        <div className='z-[1] mt-14 flex justify-between md:m-0 md:flex-row-reverse md:gap-[120px] lg:flex-row xl:gap-[200px]'>
-          <ul className='flex flex-col gap-6'>
+        <div className='z-10 flex gap-24 md:flex-row-reverse lg:flex-row lg:gap-[235px]'>
+          <ul className='flex flex-col gap-2'>
             <li>
               <Link
                 href='/repair'
@@ -161,27 +158,14 @@ export const Footer = () => {
               </Link>
             </li>
           </ul>
-          <div className='flex flex-col items-end justify-between md:flex-col md:items-start md:gap-[30px] lg:flex lg:items-end lg:gap-[50px]'>
-            <Link
-              href='/'
-              className=' flex gap-3   transition-opacity hover:opacity-80 focus:opacity-80 max-md:hidden  lg:hidden'
-            >
-              <Image
-                className='h-auto w-[129px]'
-                src='/logo.svg'
-                alt='FixLab logo'
-                width='0'
-                height='0'
-                priority
-              />
-            </Link>
-            <ul>
+          <div className='flex flex-col items-end gap-4 md:flex-col md:items-start md:gap-[30px] lg:flex lg:items-end lg:gap-[25px]'>
+            <ul className='flex flex-col gap-1'>
               <li>
                 <a
                   href='tel:380632272730'
                   className='text-base font-medium leading-7 tracking-wide text-mid-green transition-colors hover:text-white-dis  focus:text-white-dis'
                 >
-                  +38 063 227 27 30
+                  +38 050 227 27 28
                 </a>
               </li>
               <li>
@@ -193,12 +177,11 @@ export const Footer = () => {
                 </a>
               </li>
             </ul>
+            <div className='flex flex-col items-start gap-1 '>
+              <span className='text-base  text-white-dis'>10:00 - 19:30</span>
 
-            <p className='flex flex-col items-start gap-1 '>
-              <span className='text-sm  text-white-dis'>10:00 - 19:30</span>
-
-              <span className='text-sm  text-white-dis '>нд - вихідний</span>
-            </p>
+              <span className='text-base  text-white-dis '>нд - вихідний</span>
+            </div>
             <ul className='flex  max-md:hidden md:flex md:gap-3'>
               <li>
                 <Link

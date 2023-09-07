@@ -78,8 +78,10 @@ const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
             </div>
             <div className='w-full lg:max-w-[288px]'>
               <Button
-                textButton='Миттєва консультація'
+                text='Миттєва консультація'
                 toggleModal={toggleInstantAdviceModal}
+                styles='group relative flex min-w-[256px] py-4 items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+                textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
               />
             </div>
             <CallUsCard />
