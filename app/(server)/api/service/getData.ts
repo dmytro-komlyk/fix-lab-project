@@ -1,7 +1,7 @@
 export default async function getData(url: string) {
   const res = await fetch(`https://ropeaccess-hub.onrender.com${url}`, {
     headers: {
-      Authorization: `Bearer b52d3c1c4a902b67f71be90a9379894cacad7f9ec3752910b1e00d2f8a190794341fc823b1101bfb9753c13a4d004ca45d735946e61efcc75dc48cdea6a8bb6eef6e872b255773074ccc25e7697aca3dfef8ef8095c4420ab3a2294c44c5619b7d8d925a0ec75c1defbba467f7417b9df465efde28dcaf5138a627bd8e735b6e`,
+      Authorization: `Bearer 47174ee70e4e144d3de4212f9ce09a004315772bae5b648c067bbcd0c54ca5a6848ed744867cfddcce63ec11f02e433908ae85463a3c8f16cf03ace88ae60434e7f7bf5ff15e3aece0ec1ddda294504033c12d38176ad5fbb86655ff8e8b6f544ee05f54c93435dfdd264223d5c0733e4816bbeffca7d27d34e71f83fbf84848`,
     },
     next: { revalidate: 60 },
   })
