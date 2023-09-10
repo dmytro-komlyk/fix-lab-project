@@ -24,9 +24,9 @@ export const CallCourierSection: React.FC = () => {
   return (
     <section className={` w-full overflow-hidden bg-mid-green`}>
       <div
-        className={`container relative flex justify-end  pb-[124px]    ${
+        className={`container relative flex justify-end pb-[124px] ${
           pathname !== '/'
-            ? 'pt-[102px] '
+            ? 'pt-[106px] '
             : 'pt-[213px] max-xl:pt-[90px] max-md:py-14'
         }  max-lg:justify-center  max-md:py-14`}
       >
@@ -69,17 +69,17 @@ export const CallCourierSection: React.FC = () => {
             priority
           />
         </div>
-        <div className='z-[1] justify-between max-lg:flex max-lg:flex-col max-md:gap-[276px]'>
-          <div className='flex flex-col gap-2  md:mb-8 '>
+        <div className='z-[1] justify-between max-lg:flex max-lg:flex-col max-md:gap-[281px]'>
+          <div className='flex flex-col gap-3.5 md:mb-8 '>
             <p className='text-xl font-[400] leading-9 text-dark-blue max-md:text-xl max-sm:text-lg'>
               Не треба ламати плани!
             </p>
-            <p className='font-exo_2 text-2xl font-bold leading-[46px] text-dark-blue max-sm:text-lg'>
+            <p className='font-exo_2 text-2xl font-bold leading-10 text-dark-blue max-sm:text-lg'>
               Можна викликати курʼєра!
             </p>
           </div>
           <div className='gap-14 max-lg:flex max-lg:flex-col max-md:gap-8'>
-            <p className=' w-[503px] text-xl font-[300] text-dark-blue  max-md:w-full max-md:font-[400] max-sm:text-lg md:hidden lg:mb-14'>
+            <p className='w-[503px] text-xl font-[300] text-dark-blue max-md:w-full  max-md:font-[400] max-sm:text-lg md:hidden lg:mb-14 lg:tracking-[1px]'>
               Ми самі заберемо гаджет на дослідження і він буде жити!
             </p>
             <p className='w-[503px] text-xl font-[300] text-dark-blue  max-md:hidden max-md:w-full max-md:font-[400] max-sm:text-lg lg:mb-14'>
