@@ -94,9 +94,6 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
         setTimeout(() => {
           setSubmitSuccess(true)
         }, 500)
-        setTimeout(() => {
-          setSubmitSuccess(false)
-        }, 5000)
       }
     } catch (error) {
       /* eslint-disable no-console */

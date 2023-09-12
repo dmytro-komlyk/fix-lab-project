@@ -6,10 +6,12 @@ import { AiOutlineCloseCircle } from 'react-icons/ai'
 
 interface SuccessSubmitBannerProps {
   toggleSuccessSubmitModal: () => void
+  text?: string
 }
 
 const SuccessSubmitBanner: React.FC<SuccessSubmitBannerProps> = ({
   toggleSuccessSubmitModal,
+  text,
 }) => {
   const successSubmitModalRef = useRef<HTMLDivElement>(null)
 
@@ -54,9 +56,11 @@ const SuccessSubmitBanner: React.FC<SuccessSubmitBannerProps> = ({
           <p className=' w-[296px] text-center font-exo_2 text-xl font-semibold leading-[29px] text-white-dis max-md:max-w-[196px]'>
             Ваша заявка успішно відправлена!
           </p>
-          <p className=' w-[250px] text-center  font-normal text-white-dis max-md:max-w-[196px]'>
-            Менеджер зв &apos яжеться з вами протягом години.
-          </p>
+          {text && (
+            <p className=' w-[250px] text-center  font-normal text-white-dis max-md:max-w-[196px]'>
+              {text}
+            </p>
+          )}
         </motion.div>
       </div>
     </motion.div>

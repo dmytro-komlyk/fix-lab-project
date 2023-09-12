@@ -82,10 +82,6 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
         setTimeout(() => {
           setSubmitSuccess(true)
         }, 500)
-
-        setTimeout(() => {
-          setSubmitSuccess(false)
-        }, 5000)
       }
     } catch (error) {
       /* eslint-disable no-console */

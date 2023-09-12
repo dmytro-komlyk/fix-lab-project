@@ -91,10 +91,6 @@ const CourierModal: React.FC<CourierModalProps> = ({
         setTimeout(() => {
           setSubmitSuccess(true)
         }, 500)
-
-        setTimeout(() => {
-          setSubmitSuccess(false)
-        }, 5000)
       }
     } catch (error) {
       /* eslint-disable no-console */
