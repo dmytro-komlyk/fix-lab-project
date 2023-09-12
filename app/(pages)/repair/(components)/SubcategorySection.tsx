@@ -224,6 +224,7 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
       <AnimatePresence>
         {submitSuccess && (
           <SuccessSubmitBanner
+            text='Менеджер звʼжеться з вами протягом години.'
             toggleSuccessSubmitModal={toggleSuccessSubmitModal}
           />
         )}

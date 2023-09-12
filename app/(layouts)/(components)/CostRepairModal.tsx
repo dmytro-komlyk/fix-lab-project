@@ -3,7 +3,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { motion } from 'framer-motion'
 import type { Dispatch, SetStateAction } from 'react'
 import { useCallback, useRef } from 'react'
-import { MdOutlineClose } from 'react-icons/md'
+import { AiOutlineCloseCircle } from 'react-icons/ai'
 import * as Yup from 'yup'
 
 import useCustomScrollbarLock from '@/app/(hooks)/useCustomScrollbarLock'
@@ -94,9 +94,6 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
         setTimeout(() => {
           setSubmitSuccess(true)
         }, 500)
-        setTimeout(() => {
-          setSubmitSuccess(false)
-        }, 3000)
       }
     } catch (error) {
       /* eslint-disable no-console */
@@ -119,15 +116,15 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, transition: { duration: 0.3 } }}
           exit={{ opacity: 0, transition: { duration: 0.3 } }}
-          className='relative max-w-[414px]  flex-col items-center justify-start rounded-2xl bg-[#00cc73] px-14 py-12 max-sm:px-4'
+          className='relative max-w-[414px]  flex-col items-center justify-start rounded-2xl bg-[#00cc73] px-14 py-12 max-md:px-[30px] max-sm:px-4'
         >
           <button
             type='button'
-            className=' white-dis-700 absolute right-4 top-4 text-center'
+            className=' white-dis-700 absolute right-[13px] top-[14px] text-center'
             onClick={toggleCostRepairModal}
           >
-            <MdOutlineClose
-              className='h-8 w-8 fill-white-dis  transition-opacity hover:opacity-80 focus:opacity-80'
+            <AiOutlineCloseCircle
+              className='h-[26px] w-[26px] fill-white-dis  transition-opacity  hover:opacity-80 focus:opacity-80'
               aria-hidden='true'
             />
           </button>
@@ -153,7 +150,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
                     type='text'
                     id='name'
                     name='name'
-                    className={`h-[58px] w-[302px] rounded-2xl px-6 py-2 max-md:w-[280px] ${
+                    className={`h-[58px] w-[302px] rounded-2xl px-6 py-2 ${
                       touched.name && errors.name ? 'border-[#A80000]' : ''
                     }`}
                     autoComplete='off'
@@ -170,7 +167,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
                     type='text'
                     id='number'
                     name='number'
-                    className='h-[58px] w-[302px] rounded-2xl px-6 py-2 max-md:w-[280px]'
+                    className='h-[58px] w-[302px] rounded-2xl px-6 py-2'
                     autoComplete='off'
                     placeholder='Номер телефону'
                   />
@@ -185,7 +182,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
                     type='text'
                     id='gadget'
                     name='gadget'
-                    className='h-[58px] w-[302px] rounded-2xl px-6 py-2 max-md:w-[280px]'
+                    className='h-[58px] w-[302px] rounded-2xl px-6 py-2'
                     autoComplete='off'
                     placeholder='Пристрій'
                   />
@@ -201,7 +198,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
                     as='textarea'
                     id='address'
                     name='address'
-                    className='h-[144px] w-[302px] rounded-2xl px-6 py-2 max-md:w-[280px]'
+                    className='h-[144px] w-[302px] rounded-2xl px-6 py-2'
                     autoComplete='off'
                     placeholder='Адреса'
                   />
