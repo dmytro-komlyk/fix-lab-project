@@ -131,7 +131,7 @@ export const Header: React.FC = () => {
           <div
             ref={toggleDropdownRegionRef}
             onClick={toggleDropDown}
-            className={` select-text-none relative mr-[61px] flex h-[48px] min-w-[196px]  cursor-pointer items-center justify-center border-[2px] border-mid-green  ${
+            className={` select-text-none relative mr-[63px] flex h-[48px] min-w-[196px]  cursor-pointer items-center justify-center border-[2px] border-mid-green  ${
               isOpenItem ? 'rounded-t-2xl' : 'rounded-2xl'
             } `}
           >
@@ -203,7 +203,7 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Nav List */}
-          <ul className='mr-[41px] hidden gap-6 max-md:m-0 xl:flex'>
+          <ul className='mr-[55px] hidden gap-6 max-md:m-0 xl:flex'>
             <li>
               <Link
                 href='/repair'
@@ -254,10 +254,10 @@ export const Header: React.FC = () => {
             <a
               href={`tel:${
                 selectedRegionItem === 'Голосіївський'
-                  ? '380632272728'
-                  : '380632272730'
+                  ? '+380632272728'
+                  : '+380632272730'
               }`}
-              className='whitespace-nowrap text-lg text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
+              className='whitespace-nowrap text-md leading-none tracking-[2px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
             >
               {selectedRegionItem === 'Голосіївський'
                 ? '+38 063 227 27 28'
@@ -304,7 +304,7 @@ export const Header: React.FC = () => {
             <li>
               <a
                 href='tel:380632272728'
-                className='text-sm font-normal leading-none tracking-wide text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px]'
+                className='text-base font-normal leading-none  tracking-[0.45px] text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px]'
               >
                 +38 063 227 27 28
               </a>
@@ -327,7 +327,7 @@ export const Header: React.FC = () => {
                 >
                   <a
                     href='tel:380632272730'
-                    className='whitespace-nowrap text-sm font-normal leading-tight tracking-wide text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px] '
+                    className='whitespace-nowrap text-base font-normal leading-tight tracking-[0.45px]  text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px] '
                   >
                     +38 063 227 27 30
                   </a>
