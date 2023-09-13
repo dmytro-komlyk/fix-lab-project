@@ -22,13 +22,20 @@ const CategorySection: React.FC<CategorySectionProps> = ({
   categoryData,
   subcategoriesData,
 }) => {
-  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
+  const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
+    useState<boolean>(false)
+  const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
+    useState<boolean>(false)
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
     useState<boolean>(false)
   const [showCostRepair, setShowCostRepair] = useState<boolean>(false)
 
-  const toggleSuccessSubmitModal = useCallback(() => {
-    setSubmitSuccess(prev => !prev)
+  const toggleSuccessSubmitInstantAdviceModal = useCallback(() => {
+    setSubmitSuccessInstantAdviceModal(prev => !prev)
+  }, [])
+
+  const toggleSuccessCostRepair = useCallback(() => {
+    setSubmitSuccessCostRepair(prev => !prev)
   }, [])
 
   const toggleInstantAdviceModal = useCallback(() => {
@@ -144,7 +151,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
         {showCostRepair && (
           <CostRepairModal
             toggleCostRepairModal={toggleCostRepairModal}
-            setSubmitSuccess={setSubmitSuccess}
+            setSubmitSuccess={setSubmitSuccessCostRepair}
           />
         )}
       </AnimatePresence>
@@ -152,15 +159,20 @@ const CategorySection: React.FC<CategorySectionProps> = ({
         {showInstantAdviceModal && (
           <InstantAdviceModal
             toggleInstantAdviceModal={toggleInstantAdviceModal}
-            setSubmitSuccess={setSubmitSuccess}
+            setSubmitSuccess={setSubmitSuccessInstantAdviceModal}
           />
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {submitSuccess && (
+        {submitSuccessCostRepair && (
           <SuccessSubmitBanner
             text='Менеджер звʼжеться з вами протягом години.'
-            toggleSuccessSubmitModal={toggleSuccessSubmitModal}
+            toggleSuccessSubmitModal={toggleSuccessCostRepair}
+          />
+        )}
+        {submitSuccessInstantAdviceModal && (
+          <SuccessSubmitBanner
+            toggleSuccessSubmitModal={toggleSuccessSubmitInstantAdviceModal}
           />
         )}
       </AnimatePresence>
