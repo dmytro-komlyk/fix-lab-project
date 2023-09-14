@@ -255,13 +255,13 @@ export const Header: React.FC = () => {
               href={`tel:${
                 selectedRegionItem === 'Голосіївський'
                   ? '+380632272728'
-                  : '+380632272730'
+                  : '+380502272728'
               }`}
               className='whitespace-nowrap text-md leading-none tracking-[2px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
             >
               {selectedRegionItem === 'Голосіївський'
                 ? '+38 063 227 27 28'
-                : '+38 063 227 27 30'}
+                : '+38 050 227 27 28'}
             </a>
           </div>
 
@@ -326,10 +326,10 @@ export const Header: React.FC = () => {
                   className='absolute left-[0px] top-[27px]'
                 >
                   <a
-                    href='tel:380632272730'
+                    href='tel:+380502272728'
                     className='whitespace-nowrap text-base font-normal leading-tight tracking-[0.45px]  text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px] '
                   >
-                    +38 063 227 27 30
+                    +38 050 227 27 28
                   </a>
                 </motion.li>
               )}
