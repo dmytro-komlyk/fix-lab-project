@@ -28,15 +28,15 @@ const DATA = {
     },
     {
       link: '#',
-      src: ChargingImage,
-      alt: 'Замінити розʼєм',
-      title: 'Замінити розʼєм',
-    },
-    {
-      link: '#',
       src: PowerImage,
       alt: 'Замінити батарею',
       title: 'Замінити батарею',
+    },
+    {
+      link: '#',
+      src: ChargingImage,
+      alt: 'Замінити розʼєм',
+      title: 'Замінити розʼєм',
     },
     {
       link: '#',
