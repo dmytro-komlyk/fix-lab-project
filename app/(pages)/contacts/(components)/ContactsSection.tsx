@@ -82,9 +82,9 @@ const ContactsSection = () => {
               </div>
               <a
                 className='font-medium leading-none tracking-[1.7px] text-dark-blue transition-opacity  hover:opacity-70 focus:opacity-70'
-                href='tel:+380632272730'
+                href='tel:+380502272728'
               >
-                +38 063 227 27 30
+                +38 050 227 27 28
               </a>
             </div>
           </div>
@@ -105,7 +105,7 @@ const ContactsSection = () => {
             src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5235.089259977758!2d30.52665780948944!3d50.403311429989216!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4cf48c96776b7%3A0x986deb84ddb3a38c!2sFixLab!5e0!3m2!1suk!2sua!4v1694523827787!5m2!1suk!2sua'
             width='628'
             height='400'
-            title='fixlab maps'
+            title='FixLab maps'
           />
         </div>
       </div>

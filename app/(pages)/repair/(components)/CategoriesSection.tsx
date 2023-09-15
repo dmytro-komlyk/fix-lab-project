@@ -41,6 +41,10 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
 
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
 
+  const toggleSuccessSubmitModal = useCallback(() => {
+    setSubmitSuccess(prev => !prev)
+  }, [])
+
   const toggleInstantAdviceModal = useCallback(() => {
     setShowInstantAdviceModal(prev => !prev)
   }, [setShowInstantAdviceModal])
@@ -95,7 +99,7 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
       <AnimatePresence>
         {submitSuccess && (
           <SuccessSubmitBanner
-            toggleSuccessSubmitModal={toggleInstantAdviceModal}
+            toggleSuccessSubmitModal={toggleSuccessSubmitModal}
           />
         )}
       </AnimatePresence>

@@ -40,7 +40,7 @@ const SuccessSubmitBanner: React.FC<SuccessSubmitBannerProps> = ({
           initial={{ scale: 0 }}
           animate={{ scale: 1, transition: { duration: 0.3 } }}
           exit={{ scale: 0, transition: { duration: 0.3 } }}
-          className='relative flex cursor-pointer flex-col items-center justify-center gap-6 rounded-2xl bg-mid-green p-14'
+          className='relative flex h-[235px] cursor-pointer flex-col items-center justify-center gap-8 rounded-2xl bg-mid-green px-[56px]'
           onClick={onBackdropCloseModal}
         >
           <button
@@ -53,11 +53,11 @@ const SuccessSubmitBanner: React.FC<SuccessSubmitBannerProps> = ({
               aria-hidden='true'
             />
           </button>
-          <p className=' w-[296px] text-center font-exo_2 text-xl font-semibold leading-[29px] text-white-dis max-md:max-w-[196px]'>
+          <p className=' w-[296px] text-center font-exo_2 text-xl font-semibold  leading-[29px] text-white-dis max-md:max-w-[196px]'>
             Ваша заявка успішно відправлена!
           </p>
           {text && (
-            <p className=' w-[250px] text-center  font-normal text-white-dis max-md:max-w-[196px]'>
+            <p className=' w-[250px] text-center font-normal  tracking-[1.1px] text-white-dis max-md:max-w-[196px]'>
               {text}
             </p>
           )}
