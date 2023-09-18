@@ -185,7 +185,7 @@ export const Footer = () => {
             <ul className='flex  max-md:hidden md:flex md:gap-3'>
               <li>
                 <Link
-                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
+                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
                   href='/#'
                   aria-label='Соціальні мережі'
                   target='_blank'
@@ -201,7 +201,7 @@ export const Footer = () => {
               </li>
               <li>
                 <Link
-                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
+                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
                   href='/#'
                   target='_blank'
                   aria-label='Соціальні мережі'
@@ -217,7 +217,7 @@ export const Footer = () => {
               </li>
               <li>
                 <Link
-                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
+                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
                   href='/#'
                   aria-label='Соціальні мережі'
                   target='_blank'
