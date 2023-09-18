@@ -16,6 +16,10 @@ export const BrokenSection: React.FC<CategoriesSectionProps> = ({
     useState<boolean>(false)
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
 
+  const toggleSuccessSubmitModal = useCallback(() => {
+    setSubmitSuccess(prev => !prev)
+  }, [])
+
   const toggleInstantAdviceModal = useCallback(() => {
     setShowInstantAdviceModal(prev => !prev)
   }, [setShowInstantAdviceModal])
@@ -59,7 +63,7 @@ export const BrokenSection: React.FC<CategoriesSectionProps> = ({
       {submitSuccess && (
         <AnimatePresence>
           <SuccessSubmitBanner
-            toggleSuccessSubmitModal={toggleInstantAdviceModal}
+            toggleSuccessSubmitModal={toggleSuccessSubmitModal}
           />
         </AnimatePresence>
       )}

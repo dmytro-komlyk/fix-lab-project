@@ -1,6 +1,8 @@
 'use client'
 
+import { AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
+import { useCallback, useState } from 'react'
 
 import ArrowImage from '../../public/icons/arrow-down-right.svg'
 import IconGuard from '../../public/icons/icon-guard.svg'
@@ -16,7 +18,9 @@ import MatrixImage from '../../public/icons/pop-matrix.svg'
 import PowerImage from '../../public/icons/pop-power.svg'
 import SmartphoneImage from '../../public/icons/pop-smartphone.svg'
 import { CommonButton } from '../(components)/CommonButton'
+import CostRepairModal from './(components)/CostRepairModal'
 import { HeroSlider } from './(components)/HeroSlider'
+import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
 
 const DATA = {
   items: [
@@ -28,15 +32,15 @@ const DATA = {
     },
     {
       link: '#',
-      src: ChargingImage,
-      alt: 'Замінити розʼєм',
-      title: 'Замінити розʼєм',
-    },
-    {
-      link: '#',
       src: PowerImage,
       alt: 'Замінити батарею',
       title: 'Замінити батарею',
+    },
+    {
+      link: '#',
+      src: ChargingImage,
+      alt: 'Замінити розʼєм',
+      title: 'Замінити розʼєм',
     },
     {
       link: '#',
@@ -95,6 +99,17 @@ const DATA = {
 }
 
 export const HeroSection = () => {
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
+  const [showCostRepairModal, setShowCostRepairModal] = useState<boolean>(false)
+
+  const toggleSuccessSubmitModal = useCallback(() => {
+    setSubmitSuccess(prev => !prev)
+  }, [])
+
+  const toggleCostRepairModal = useCallback(() => {
+    setShowCostRepairModal(prev => !prev)
+  }, [])
+
   const renderPros = () =>
     DATA.pros.map(item => (
       <li
@@ -125,7 +140,7 @@ export const HeroSection = () => {
             </p>
 
             <div className='mt-[54px] w-full md:mt-[48px] md:w-[320px] xl:w-[336px]'>
-              <CommonButton onClick={() => {}}>
+              <CommonButton onClick={toggleCostRepairModal}>
                 Розрахувати вартість ремонту
               </CommonButton>
             </div>
@@ -151,6 +166,23 @@ export const HeroSection = () => {
           </div>
         </div>
       </div>
+      <AnimatePresence>
+        {showCostRepairModal && (
+          <CostRepairModal
+            toggleCostRepairModal={toggleCostRepairModal}
+            setSubmitSuccess={setSubmitSuccess}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {submitSuccess && (
+          <SuccessSubmitBanner
+            text='Менеджер звʼжеться з вами протягом години.'
+            toggleSuccessSubmitModal={toggleSuccessSubmitModal}
+          />
+        )}
+      </AnimatePresence>
     </section>
   )
 }

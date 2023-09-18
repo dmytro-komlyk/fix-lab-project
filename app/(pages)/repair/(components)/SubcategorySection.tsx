@@ -59,22 +59,29 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
     html: true,
   })
 
-  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
-  const toggleSuccessSubmitModal = useCallback(() => {
-    setSubmitSuccess(prev => !prev)
-  }, [])
-
+  const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
+    useState<boolean>(false)
+  const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
+    useState<boolean>(false)
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
     useState<boolean>(false)
+  const [showCostRepair, setShowCostRepair] = useState<boolean>(false)
+
+  const toggleSuccessSubmitInstantAdviceModal = useCallback(() => {
+    setSubmitSuccessInstantAdviceModal(prev => !prev)
+  }, [])
+
+  const toggleSuccessCostRepair = useCallback(() => {
+    setSubmitSuccessCostRepair(prev => !prev)
+  }, [])
+
   const toggleInstantAdviceModal = useCallback(() => {
     setShowInstantAdviceModal(prev => !prev)
   }, [setShowInstantAdviceModal])
 
-  const [showCostRepairModal, setShowCostRepairModal] = useState<boolean>(false)
   const toggleCostRepairModal = useCallback(() => {
-    setShowCostRepairModal(prev => !prev)
+    setShowCostRepair(prev => !prev)
   }, [])
-
   return (
     <section className='overflow-hidden bg-gradient-linear-blue'>
       <div className='container relative pb-[39px] pt-[151px]'>
@@ -206,10 +213,10 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
         </div>
       </div>
       <AnimatePresence>
-        {showCostRepairModal && (
+        {showCostRepair && (
           <CostRepairModal
             toggleCostRepairModal={toggleCostRepairModal}
-            setSubmitSuccess={setSubmitSuccess}
+            setSubmitSuccess={setSubmitSuccessCostRepair}
           />
         )}
       </AnimatePresence>
@@ -217,14 +224,20 @@ const SubcategorySection: React.FC<SubcategorySectionProps> = ({
         {showInstantAdviceModal && (
           <InstantAdviceModal
             toggleInstantAdviceModal={toggleInstantAdviceModal}
-            setSubmitSuccess={setSubmitSuccess}
+            setSubmitSuccess={setSubmitSuccessInstantAdviceModal}
           />
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {submitSuccess && (
+        {submitSuccessCostRepair && (
           <SuccessSubmitBanner
-            toggleSuccessSubmitModal={toggleSuccessSubmitModal}
+            text='Менеджер звʼжеться з вами протягом години.'
+            toggleSuccessSubmitModal={toggleSuccessCostRepair}
+          />
+        )}
+        {submitSuccessInstantAdviceModal && (
+          <SuccessSubmitBanner
+            toggleSuccessSubmitModal={toggleSuccessSubmitInstantAdviceModal}
           />
         )}
       </AnimatePresence>
