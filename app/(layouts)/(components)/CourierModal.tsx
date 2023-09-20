@@ -2,6 +2,8 @@
 
 import axios from 'axios'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PersistFormikValues } from 'formik-persist-values'
 import { motion } from 'framer-motion'
 import type { Dispatch, SetStateAction } from 'react'
 import { useCallback, useRef } from 'react'
@@ -88,6 +90,7 @@ const CourierModal: React.FC<CourierModalProps> = ({
       })
       if (res.status === 200) {
         toggleCourierModal()
+        sessionStorage.removeItem('courier-modal')
         setTimeout(() => {
           setSubmitSuccess(true)
         }, 500)
@@ -193,6 +196,11 @@ const CourierModal: React.FC<CourierModalProps> = ({
                 <ModalButton
                   validationArr={[isSubmitting, isValid, dirty, isValidating]}
                   textButton='Викликати курʼєра'
+                />
+                <PersistFormikValues
+                  storage='sessionStorage'
+                  persistInvalid
+                  name='courier-modal'
                 />
               </Form>
             )}

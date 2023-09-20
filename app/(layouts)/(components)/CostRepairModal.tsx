@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PersistFormikValues } from 'formik-persist-values'
 import { motion } from 'framer-motion'
 import type { Dispatch, SetStateAction } from 'react'
 import { useCallback, useRef } from 'react'
@@ -91,6 +93,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
       })
       if (res.status === 200) {
         toggleCostRepairModal()
+        sessionStorage.removeItem('cost-repair-modal')
         setTimeout(() => {
           setSubmitSuccess(true)
         }, 500)
@@ -211,6 +214,11 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
                 <ModalButton
                   validationArr={[isSubmitting, isValid, dirty, isValidating]}
                   textButton='Вартість ремонту'
+                />
+                <PersistFormikValues
+                  storage='sessionStorage'
+                  persistInvalid
+                  name='cost-repair-modal'
                 />
               </Form>
             )}

@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PersistFormikValues } from 'formik-persist-values'
 import { motion } from 'framer-motion'
 import type { Dispatch, SetStateAction } from 'react'
 import { useCallback, useRef } from 'react'
@@ -79,6 +81,7 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
       })
       if (res.status === 200) {
         toggleInstantAdviceModal()
+        sessionStorage.removeItem('instant-advice-modal')
         setTimeout(() => {
           setSubmitSuccess(true)
         }, 500)
@@ -168,6 +171,11 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
                 <ModalButton
                   validationArr={[isSubmitting, isValid, dirty, isValidating]}
                   textButton='Миттєва консультація'
+                />
+                <PersistFormikValues
+                  storage='sessionStorage'
+                  persistInvalid
+                  name='instant-advice-modal'
                 />
               </Form>
             )}
