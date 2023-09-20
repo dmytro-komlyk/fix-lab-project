@@ -10,7 +10,7 @@ export default async function Repair() {
   const categoryData = await getData(categoriesUrl)
 
   return (
-    <main>
+    <main className='flex-auto lg:pt-[56px]'>
       <CategoriesSection categoryData={categoryData} />
       <ColaborationSection />
       <AddressSection />
