@@ -33,7 +33,7 @@ export const Footer = () => {
             />
           </Link>
         </div>
-        <div className='z-10 flex gap-[133px]'>
+        <div className='z-10 flex gap-[130px]'>
           <ul className='flex flex-col items-start gap-[10px]'>
             <li>
               <Link
@@ -123,7 +123,7 @@ export const Footer = () => {
             </li>
           </ul>
         </div>
-        <div className='z-10 flex gap-24 md:flex-row-reverse lg:flex-row lg:gap-[235px]'>
+        <div className='z-10 flex gap-28 md:flex-row-reverse lg:flex-row lg:gap-[235px]'>
           <ul className='flex flex-col gap-2'>
             <li>
               <Link
@@ -185,9 +185,10 @@ export const Footer = () => {
             <ul className='flex  max-md:hidden md:flex md:gap-3'>
               <li>
                 <Link
-                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
+                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
                   href='/#'
                   aria-label='Соціальні мережі'
+                  target='_blank'
                 >
                   <Image
                     className='h-[25px] w-[25px]'
@@ -200,8 +201,9 @@ export const Footer = () => {
               </li>
               <li>
                 <Link
-                  className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
+                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
                   href='/#'
+                  target='_blank'
                   aria-label='Соціальні мережі'
                 >
                   <Image
@@ -215,9 +217,10 @@ export const Footer = () => {
               </li>
               <li>
                 <Link
-                  className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase  transition-opacity hover:opacity-80  focus:opacity-80 '
+                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
                   href='/#'
                   aria-label='Соціальні мережі'
+                  target='_blank'
                 >
                   <LiaViber size={28} fill='#8c5da7' />
                 </Link>
