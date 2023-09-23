@@ -1,37 +1,35 @@
+/* eslint-disable no-underscore-dangle */
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
 
-import type { CategoriesSectionProps, CategoryItem } from './CategoriesSection'
+import type { IGadgetsProps } from '@/app/(layouts)'
+import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
 
-export const CategoriesList: React.FC<CategoriesSectionProps> = ({
-  categoryData,
-}) => {
+export const GadgetsList: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
   return (
     <ul className='z-10 flex w-[954px] flex-wrap gap-2 xl:gap-6'>
-      {categoryData?.data.map((item: CategoryItem) => {
-        const categoryPath = item.attributes.slug
-        const img = item.attributes.img.data.attributes.url
-        const { width, height } = item.attributes.img.data.attributes
+      {gadgetsData.map((item: IGadget) => {
         return (
           <li
-            key={item.id}
+            key={item._id}
             className='hover-gadget-link h-[180px] rounded-2xl bg-card-repair-gradient md:w-[calc((100%-32px)/3)] xl:h-[261px] xl:w-[calc((100%-48px)/3)]'
           >
             <Link
-              href={`/repair/${categoryPath}`}
+              href={`/repair/${item.slug}`}
               className='flex w-full flex-col justify-between rounded-2xl p-8 hover:bg-dark-blue md:h-full xl:h-[261px]'
             >
-              <Image
-                className='ml-auto w-auto md:h-[40%] xl:h-[70px]'
-                src={img}
-                width={width}
-                height={height}
-                alt={item.attributes.title}
-              />
+              {item.icon && (
+                <Image
+                  className='ml-auto'
+                  src={`http://95.217.34.212:30000${item.icon}`}
+                  width={50}
+                  height={50}
+                  alt={item.title}
+                />
+              )}
               <div className='text-white-dis'>
                 <h3 className='mr-auto font-semibold leading-tight md:text-base xl:text-xl'>
-                  {item.attributes.title}
+                  {item.title}
                 </h3>
                 <p className='hidden font-inter text-[12px] xl:text-sm'>
                   Подивитися поломки

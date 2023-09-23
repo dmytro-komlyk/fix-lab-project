@@ -1,17 +1,15 @@
 import React from 'react'
 
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
-import getData from '@/app/(server)/api/service/getData'
+import { getAllGadgetsData } from '@/app/(server)/api/service/modules/gadgetService'
 
-import CategoriesSection from './(components)/CategoriesSection'
+import GadgetsSection from './(components)/GadgetsSection'
 
 export default async function Repair() {
-  const categoriesUrl = `/api/categories?populate=*&sort=id:asc`
-  const categoryData = await getData(categoriesUrl)
-
+  const gadgetsData = await getAllGadgetsData()
   return (
     <main className='flex-auto lg:pt-[56px]'>
-      <CategoriesSection categoryData={categoryData} />
+      <GadgetsSection gadgetsData={gadgetsData} />
       <ColaborationSection />
       <AddressSection />
     </main>

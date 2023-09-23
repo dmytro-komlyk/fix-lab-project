@@ -6,21 +6,19 @@ import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import type { IBrandsListProps } from '@/app/(layouts)/(components)/BrandsList'
-import BrandsList from '@/app/(layouts)/(components)/BrandsList'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
-import type { IServicesListProps } from '@/app/(layouts)/(components)/ServicesList'
-import ServicesList from '@/app/(layouts)/(components)/ServicesList'
+// import ServicesList from '@/app/(layouts)/(components)/ServicesList'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
+import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
 
-interface CategorySectionProps extends IServicesListProps, IBrandsListProps {}
-
-const CategorySection: React.FC<CategorySectionProps> = ({
-  categoryData,
-  subcategoriesData,
+interface SingleGadgetProps {
+  singleGadgetData: IGadget
+}
+const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
+  singleGadgetData,
 }) => {
   const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
     useState<boolean>(false)
@@ -45,7 +43,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({
   const toggleCostRepairModal = useCallback(() => {
     setShowCostRepair(prev => !prev)
   }, [])
-
+  const { title, icon, description } = singleGadgetData
   return (
     <section className=' overflow-hidden  bg-gradient-linear-blue  pb-[102px] pt-[163px] max-md:pb-14 max-md:pt-[138px]'>
       <div className='container relative flex flex-col '>
@@ -65,61 +63,54 @@ const CategorySection: React.FC<CategorySectionProps> = ({
             alt='flicker'
           />
         </div>
-        {categoryData.data.map(item => {
-          const categoryTitle = item.attributes.title
-          return (
-            <div className='z-[1] flex items-center gap-1' key={item.id}>
-              <Link
-                className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0] transition-opacity  hover:opacity-70 focus:opacity-70'
-                href='/'
-              >
-                <p> Головна</p> <MdKeyboardArrowRight size={30} />
-              </Link>
-              <Link
-                className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0] transition-opacity  hover:opacity-70 focus:opacity-70'
-                href='/repair'
-              >
-                <p> Ремонт</p> <MdKeyboardArrowRight size={30} />
-              </Link>
+        <div className='z-[1] flex items-center gap-1'>
+          <Link
+            className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0] transition-opacity  hover:opacity-70 focus:opacity-70'
+            href='/'
+          >
+            <p> Головна</p> <MdKeyboardArrowRight size={30} />
+          </Link>
+          <Link
+            className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0] transition-opacity  hover:opacity-70 focus:opacity-70'
+            href='/repair'
+          >
+            <p> Ремонт</p> <MdKeyboardArrowRight size={30} />
+          </Link>
 
-              <p className='text-base font-[400] text-[#3EB9F0] opacity-70'>
-                {categoryTitle}
-              </p>
-            </div>
-          )
-        })}
+          <p className='text-base font-[400] text-[#3EB9F0] opacity-70'>
+            {title}
+          </p>
+        </div>
         <div className='z-[1] flex justify-between pt-[24px] max-xl:gap-8 max-lg:flex-col max-lg:gap-0  max-md:gap-0 '>
           <div className='max-xl:w-[350px] max-lg:w-full xl:max-w-[411px] '>
-            {categoryData.data.map(item => {
-              const img = item.attributes.img.data.attributes.url
-              return (
-                <div
-                  key={item.id}
-                  className='flex flex-col items-start gap-14 pb-[68px]  max-xl:gap-4 max-xl:pb-[56px]  max-md:gap-8'
-                >
-                  <div className='flex items-center justify-center gap-[18px]'>
-                    <Image
-                      src={img}
-                      width={50}
-                      height={50}
-                      alt={item.attributes.title}
-                    />
-                    <h2 className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
-                      {item.attributes.title}
-                    </h2>
-                  </div>
-                  <p className='font-[400] leading-6 text-white-dis'>
-                    {item.attributes.description}
-                  </p>
-                  <Button
-                    text='Миттєва консультація'
-                    toggleModal={toggleInstantAdviceModal}
-                    styles='group relative flex min-w-[256px] py-4 items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
-                    textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
+            <div className='flex flex-col items-start gap-14 pb-[68px]  max-xl:gap-4 max-xl:pb-[56px]  max-md:gap-8'>
+              <div className='flex items-center justify-center gap-[18px]'>
+                {icon && (
+                  <Image
+                    src={icon}
+                    width={0}
+                    height={0}
+                    style={{
+                      width: '100%',
+                      height: 'auto',
+                    }}
+                    alt={title}
                   />
-                </div>
-              )
-            })}
+                )}
+                <h2 className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
+                  {title}
+                </h2>
+              </div>
+              <p className='font-[400] leading-6 text-white-dis'>
+                {description}
+              </p>
+              <Button
+                text='Миттєва консультація'
+                toggleModal={toggleInstantAdviceModal}
+                styles='group relative flex min-w-[256px] py-4 items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+                textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
+              />
+            </div>
             <CallUsCard />
           </div>
           <div className='flex flex-col gap-8 lg:w-[737px] lg:gap-14'>
@@ -128,13 +119,13 @@ const CategorySection: React.FC<CategorySectionProps> = ({
                 <p className='mb-8 font-exo_2 text-xl font-semibold text-white-dis'>
                   Бренди, які ремонтуємо
                 </p>
-                <BrandsList categoryData={categoryData} />
+                {/* <BrandsList categoryData={categoryData} /> */}
               </div>
               <div>
                 <p className='mb-8 font-exo_2 text-xl font-semibold text-white-dis'>
                   Послуги
                 </p>
-                <ServicesList subcategoriesData={subcategoriesData} />
+                {/* <ServicesList subcategoriesData={subcategoriesData} /> */}
               </div>
               <Button
                 text='Розрахувати вартість ремонту'
@@ -180,4 +171,4 @@ const CategorySection: React.FC<CategorySectionProps> = ({
   )
 }
 
-export default CategorySection
+export default SingleGadgetSection
