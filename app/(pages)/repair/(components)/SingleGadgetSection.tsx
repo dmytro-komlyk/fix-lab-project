@@ -157,7 +157,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
       <AnimatePresence>
         {submitSuccessCostRepair && (
           <SuccessSubmitBanner
-            text='Менеджер звʼжеться з вами протягом години.'
+            text='Менеджер звʼяжеться з вами протягом години.'
             toggleSuccessSubmitModal={toggleSuccessCostRepair}
           />
         )}
