@@ -45,7 +45,7 @@ jobs:
             D_ADMIN_KEY=${{ secrets.D_ADMIN_KEY }}
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/prod-fixlab-server:latest
+            ghcr.io/iryna-gry/prod-fixlab-server:latest
 
       - name: "Build&Deploy Admin"
         uses: docker/build-push-action@v4
@@ -54,7 +54,7 @@ jobs:
           target: production
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/prod-fixlab-admin:latest
+            ghcr.io/iryna-gry/prod-fixlab-admin:latest
 
       - name: "Run deploy on SSH"
         uses: appleboy/ssh-action@v1.0.0
