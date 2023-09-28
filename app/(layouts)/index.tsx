@@ -1,7 +1,0 @@
-export * from './AddressSection'
-export * from './BrokenSection'
-export * from './CallCourierSection'
-export * from './ColaborationSection'
-export * from './Footer'
-export * from './Header'
-export * from './HeroSection'
