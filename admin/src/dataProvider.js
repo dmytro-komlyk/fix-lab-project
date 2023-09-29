@@ -16,10 +16,13 @@ const saveFileInStorage = (resource, id, rawFile) => {
   const formData = new FormData();
   formData.append("icon", rawFile);
 
-  return httpClient(`http://localhost:3000/api/${resource}/${id}/update-icon`, {
-    method: "PATCH",
-    body: formData,
-  });
+  return httpClient(
+    `http://95.217.34.212:30000/api/${resource}/${id}/update-icon`,
+    {
+      method: "PATCH",
+      body: formData,
+    }
+  );
 };
 
 const addUploadFeature = (dataProvider) => ({
@@ -33,7 +36,7 @@ const addUploadFeature = (dataProvider) => ({
   getOne: (resource, params) =>
     dataProvider.getOne(resource, params).then(({ data }) => {
       const { _id, ...rest } = data;
-      const modifiedData = { id: _id, _id, ...rest };
+      const modifiedData = { id: _id, ...rest };
       return { data: modifiedData };
     }),
 
@@ -94,7 +97,7 @@ const addUploadFeature = (dataProvider) => ({
 });
 
 const dataProvider = simpleRestProvider(
-  `http://localhost:3000/api`,
+  `http://95.217.34.212:30000/api`,
   httpClient
 );
 
