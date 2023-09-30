@@ -1,4 +1,4 @@
-import getData from '@/app/(server)/api/service/getData'
+import getData from '@/app/(server)/api/service/helpers/fetchDataFromServer'
 
 import BlogsSection from './(components)/BlogsSection'
 

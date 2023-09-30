@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { AddressSection } from '@/app/(layouts)'
-import getData from '@/app/(server)/api/service/getData'
+import getData from '@/app/(server)/api/service/helpers/fetchDataFromServer'
 
 import SubcategorySection from '../../(components)/SubcategorySection'
 

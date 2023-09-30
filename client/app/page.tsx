@@ -5,15 +5,14 @@ import {
   ColaborationSection,
   HeroSection,
 } from './(layouts)'
-import getData from './(server)/api/service/getData'
+import { getAllGadgetsData } from './(server)/api/service/modules/gadgetService'
 
 export default async function Home() {
-  const categoriesUrl = `/api/categories?populate=*&sort=id:asc`
-  const categoryData = await getData(categoriesUrl)
+  const gadgetsData = await getAllGadgetsData()
   return (
     <main className='flex-auto'>
       <HeroSection />
-      <BrokenSection categoryData={categoryData} />
+      <BrokenSection gadgetsData={gadgetsData} />
       <CallCourierSection />
       <ColaborationSection />
       <AddressSection />
