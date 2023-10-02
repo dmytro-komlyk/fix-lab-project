@@ -30,7 +30,7 @@ export const GadgetsSlider: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
             >
               {item.icon && (
                 <Image
-                  src={item.icon}
+                  src={`http://95.217.34.212:30000${item.icon}`}
                   width={0}
                   height={0}
                   style={{

@@ -87,7 +87,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
               <div className='flex items-center justify-center gap-[18px]'>
                 {icon && (
                   <Image
-                    src={icon}
+                    src={`http://95.217.34.212:30000${icon}`}
                     width={0}
                     height={0}
                     style={{
