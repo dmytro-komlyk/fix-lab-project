@@ -2,34 +2,47 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document, HydratedDocument, Types } from 'mongoose';
 
+import { Type } from 'class-transformer';
+
+import { Benefit } from 'domain/benefits/schemas/benefit.schema';
 import MetadataProps from 'shared/metadata-props.schema';
 
 export type IssueDocument = HydratedDocument<Issue>;
 
-export class Info {
+export class Image {
   @ApiProperty({
-    example: 'Безкоштовна діагностика'
+    example: '/public/image_path'
   })
-  @Prop({ type: String, default: null })
-  readonly diagnostic: string;
+  @Prop({ type: String })
+  readonly src: string;
 
   @ApiProperty({
-    example: 'Гарантія до 1 місяця'
+    example: 'Alt image'
   })
-  @Prop({ type: String, default: null })
-  readonly gaurantee: string;
+  @Prop({ type: String })
+  readonly alt: string;
 
   @ApiProperty({
-    example: 'Ремонт від 3 годин'
+    example: 20
   })
-  @Prop({ type: String, default: null })
-  readonly repair: string;
+  @Prop({ type: Number })
+  readonly width: number;
+
+  @ApiProperty({
+    example: 20
+  })
+  @Prop({ type: Number })
+  readonly height: number;
 }
 
 @Schema({ versionKey: false })
 class Issue extends Document {
   @ApiProperty({ example: '64ef4383e46e72721c03090e' })
-  readonly _id: Types.ObjectId;
+  @Prop({
+    type: Types.ObjectId,
+    auto: true
+  })
+  readonly _id: string;
 
   @ApiProperty({ example: true })
   @Prop({ type: Boolean, default: false })
@@ -39,7 +52,8 @@ class Issue extends Document {
   @Prop({
     type: String,
     unique: true,
-    set: (v: string) => v?.trim().toLowerCase()
+    set: (v: string) => v?.trim().toLowerCase(),
+    required: true
   })
   readonly slug: string;
 
@@ -49,23 +63,33 @@ class Issue extends Document {
 
   @ApiProperty({ example: 'Так виявляються приховані..' })
   @Prop({ type: String })
+  readonly info: string;
+
+  @ApiProperty({
+    type: Benefit,
+    isArray: true
+  })
+  @Prop({
+    type: [{ type: Types.ObjectId, ref: Benefit.name }]
+  })
+  @Type(() => Benefit)
+  readonly benefits: Array<Benefit>;
+
+  @ApiProperty({ example: 'Так виявляються приховані..' })
+  @Prop({ type: String })
   readonly description: string;
 
   @ApiProperty({ example: 'від 200 грн' })
   @Prop({ type: String, required: true })
   readonly price: string;
 
-  @ApiProperty({ example: 'Так виявляються приховані..' })
-  @Prop({ type: [String] })
-  readonly images: Array<string>;
+  @ApiProperty({ type: Image })
+  @Prop({ _id: false, type: Image })
+  readonly image: Image;
 
   @ApiProperty({ type: MetadataProps })
   @Prop({ _id: false, type: MetadataProps })
   readonly metadata: MetadataProps;
-
-  @ApiProperty({ type: Info })
-  @Prop({ _id: false, type: Info })
-  readonly info: Info;
 }
 
 const IssueSchema = SchemaFactory.createForClass(Issue);

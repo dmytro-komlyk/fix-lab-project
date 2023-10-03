@@ -13,8 +13,6 @@ import {
   ValidateNested
 } from 'class-validator';
 
-import { Info } from '../schemas/issue.schema';
-
 import { MetadataDto } from 'shared/metadata.dto';
 
 export class CreateIssueDto {
@@ -59,7 +57,17 @@ export class CreateIssueDto {
   @IsDefined()
   @IsNotEmpty()
   @IsString()
-  readonly description?: string;
+  readonly info: string;
+
+  @ApiProperty({
+    example: 'Diagnostic...',
+    description: 'Issue description'
+  })
+  @IsOptional()
+  @IsDefined()
+  @IsNotEmpty()
+  @IsString()
+  readonly description: string;
 
   @ApiProperty({
     example: false,
@@ -68,15 +76,6 @@ export class CreateIssueDto {
   @IsOptional()
   @IsBoolean({ message: 'field must be a boolean' })
   readonly isActive?: boolean;
-
-  @ApiProperty({ type: Info })
-  @IsOptional()
-  @IsDefined()
-  @IsObject()
-  @IsNotEmptyObject()
-  @ValidateNested()
-  @Type(() => Info)
-  readonly info?: Info;
 
   @ApiProperty({
     type: MetadataDto
