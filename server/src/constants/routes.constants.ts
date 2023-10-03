@@ -6,7 +6,8 @@ export const ROUTES = {
   auth: 'auth',
   contacts: 'contacts',
   issues: 'issues',
-  benefits: 'benefits'
+  benefits: 'benefits',
+  images: 'images'
 };
 
 export const PUBLIC_FOLDER = 'public';
