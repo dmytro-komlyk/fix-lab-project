@@ -41,6 +41,15 @@ export class ImagesController {
     return await this.imagesService.findAll();
   }
 
+  // @ApiOperation({ summary: 'get Icons data, auth reqiured*' })
+  // @ApiResponse({ status: 200, type: Image, isArray: true })
+  // @Get('/icons')
+  // @Header('Access-Control-Expose-Headers', 'Content-Range')
+  // @Header('Content-Range', 'posts 0-24/319')
+  // public async findAllIconsTest(): Promise<Image[]> {
+  //   return await this.imagesService.findAllByType({ type: 'icon' });
+  // }
+
   @ApiOperation({ summary: 'get Icons data, auth reqiured*' })
   @ApiResponse({ status: 200, type: Image, isArray: true })
   @Get('/icons/all')
