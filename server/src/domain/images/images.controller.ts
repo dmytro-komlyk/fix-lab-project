@@ -77,7 +77,7 @@ export class ImagesController {
     )
     file: Express.Multer.File
   ): Promise<Image> {
-    const filePath = `/${file.path}`;
+    const filePath = `${process.env.SERVER_URL}/${file.path}`;
 
     const pictureData = {
       file: file,
@@ -109,7 +109,7 @@ export class ImagesController {
     )
     file: Express.Multer.File
   ): Promise<Image> {
-    const filePath = `/${file.path}`;
+    const filePath = `${process.env.SERVER_URL}/${file.path}`;
 
     const pictureData = {
       file: file,
@@ -139,7 +139,7 @@ export class ImagesController {
     )
     file: Express.Multer.File
   ): Promise<Image> {
-    const filePath = `/${file.path}`;
+    const filePath = `${process.env.SERVER_URL}/${file.path}`;
     const pictureData = {
       file: file,
       src: filePath,
@@ -167,7 +167,7 @@ export class ImagesController {
     )
     file: Express.Multer.File
   ): Promise<Image> {
-    const filePath = `/${file.path}`;
+    const filePath = `${process.env.SERVER_URL}/${file.path}`;
     const pictureData = {
       file: file,
       src: filePath,
