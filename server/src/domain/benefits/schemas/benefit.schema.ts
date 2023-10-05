@@ -21,7 +21,7 @@ class Benefit extends Document {
   })
   @Prop({
     type: MongooseSchema.Types.ObjectId,
-    ref: 'Image'
+    ref: Image.name
   })
   readonly icon: Types.ObjectId;
 
