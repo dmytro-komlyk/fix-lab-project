@@ -6,7 +6,6 @@ import { Benefit } from './schemas/benefit.schema';
 
 import { CreateBenefitDto } from './dto/create-benefit.dto';
 import { UpdateBenefitDto } from './dto/update-benefit.dto';
-import { UpdateIconBenefitDto } from './dto/update-icon-benefit.dto';
 
 @Injectable()
 export class BenefitsService {
@@ -15,11 +14,11 @@ export class BenefitsService {
   ) {}
 
   public async findAll(): Promise<Benefit[]> {
-    return await this.benefitModel.find();
+    return await this.benefitModel.find().populate('icon');
   }
 
   public async findAllByQuery(query: UpdateBenefitDto): Promise<Benefit[]> {
-    return await this.benefitModel.find(query);
+    return await this.benefitModel.find(query).populate('icon').select('-isActive');
   }
 
   public async findOneById(id: string): Promise<Benefit> {
@@ -27,7 +26,7 @@ export class BenefitsService {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
 
-    const benefit = await this.benefitModel.findById(id);
+    const benefit = await this.benefitModel.findById(id).populate('icon');
 
     if (!benefit) {
       throw new NotFoundException(`Brand with ID "${id}" was not found`);
@@ -44,31 +43,21 @@ export class BenefitsService {
         `Benefit with slug "${dto.title}" already exists`
       );
     }
-
     const createdBenefit = await new this.benefitModel(dto).save();
     const benefit = await this.findOneById(createdBenefit._id);
-
     return benefit;
   }
 
   public async update(id: string, dto: UpdateBenefitDto): Promise<Benefit> {
     await this.findOneById(id);
 
-    const benefit = await this.benefitModel.findByIdAndUpdate(id, dto, {
-      new: true
-    });
+    const updatedBenefit = await this.benefitModel
+      .findByIdAndUpdate(id, dto, {
+        new: true
+      })
+      .populate('icon');
 
-    return benefit;
-  }
-
-  public async updateIcon(id: string, dto: UpdateIconBenefitDto): Promise<Benefit> {
-    await this.findOneById(id);
-
-    const benefit = await this.benefitModel.findByIdAndUpdate(id, dto, {
-      new: true
-    });
-
-    return benefit;
+    return updatedBenefit;
   }
 
   public async remove(id: string): Promise<Benefit> {

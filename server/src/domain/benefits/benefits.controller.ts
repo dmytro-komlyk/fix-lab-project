@@ -5,8 +5,8 @@ import {
   Get,
   Header,
   Param,
-  Patch,
-  Post
+  Post,
+  Put
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
@@ -27,7 +27,7 @@ import { ROUTES } from 'constants/routes.constants';
 export class BenefitsController {
   constructor(private readonly benefitsService: BenefitsService) {}
 
-  @ApiOperation({ summary: 'Client: get all active benefits' })
+  @ApiOperation({ summary: 'get all active benefits' })
   @ApiResponse({ status: 200, type: Benefit, isArray: true })
   @Public()
   @Get('')
@@ -66,7 +66,7 @@ export class BenefitsController {
   @ApiOperation({ summary: 'update existing Benefit by ID' })
   @ApiResponse({ status: 200, type: Benefit })
   @ApiResponse({ status: 404, description: 'Benefit was not found' })
-  @Patch('/:id')
+  @Put('/:id')
   public async updateBenefit(
     @Param('id') id: string,
     @Body()

@@ -1,6 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { Document, HydratedDocument } from 'mongoose';
+import {
+  Document,
+  HydratedDocument,
+  Schema as MongooseSchema,
+  Types
+} from 'mongoose';
 
 import { Image } from 'domain/images/schemas/image.schema';
 
@@ -11,9 +16,14 @@ class Benefit extends Document {
   @ApiProperty({ example: '64ef4383e46e72721c03090e' })
   readonly _id: string;
 
-  @ApiProperty({ type: Image })
-  @Prop({ type: Image })
-  readonly icon: Image;
+  @ApiProperty({
+    type: Image
+  })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Image'
+  })
+  readonly icon: Types.ObjectId;
 
   @ApiProperty({ example: 'Безкоштовна діагностика' })
   @Prop({ type: String, required: true })

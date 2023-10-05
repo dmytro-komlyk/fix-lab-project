@@ -1,27 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsDefined,
   IsNotEmpty,
-  IsNotEmptyObject,
-  IsObject,
   IsOptional,
   IsString,
   Length
 } from 'class-validator';
 
-import { ImagedataDto } from 'shared/imagedata.dto';
-
 export class CreateBenefitDto {
   @ApiProperty({
-    type: ImagedataDto
+    example: '"651c7fafb8f1268ad2156521"',
+    description: 'Image id'
   })
-  @IsObject()
-  @IsNotEmptyObject()
-  @Type(() => ImagedataDto)
-  readonly icon: ImagedataDto;
+  @IsDefined()
+  @IsNotEmpty()
+  @IsString()
+  readonly icon: string;
 
   @ApiProperty({
     example: 'Безкоштовна діагностика',
