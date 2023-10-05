@@ -20,6 +20,7 @@ export class CreateIssueDto {
     example: 'diagnostic',
     description: 'Issue URL'
   })
+  @IsOptional()
   @IsDefined()
   @IsNotEmpty()
   @IsString()
@@ -60,6 +61,15 @@ export class CreateIssueDto {
   readonly info: string;
 
   @ApiProperty({
+    example: '"651c7fafb8f1268ad2156521"',
+    description: 'Image id'
+  })
+  @IsDefined()
+  @IsNotEmpty()
+  @IsString()
+  readonly image: string;
+
+  @ApiProperty({
     example: 'Diagnostic...',
     description: 'Issue description'
   })
@@ -75,7 +85,7 @@ export class CreateIssueDto {
   })
   @IsOptional()
   @IsBoolean({ message: 'field must be a boolean' })
-  readonly isActive?: boolean;
+  readonly isActive: boolean;
 
   @ApiProperty({
     type: MetadataDto
@@ -86,5 +96,5 @@ export class CreateIssueDto {
   @IsNotEmptyObject()
   @ValidateNested()
   @Type(() => MetadataDto)
-  readonly metadata?: MetadataDto;
+  readonly metadata: MetadataDto;
 }

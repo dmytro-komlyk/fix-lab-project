@@ -1,47 +1,21 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { Document, HydratedDocument, Types } from 'mongoose';
-
-import { Type } from 'class-transformer';
+import {
+  Document,
+  HydratedDocument,
+  Schema as MongooseSchema,
+  Types
+} from 'mongoose';
 
 import { Benefit } from 'domain/benefits/schemas/benefit.schema';
+import { Image } from 'domain/images/schemas/image.schema';
 import MetadataProps from 'shared/metadata-props.schema';
 
 export type IssueDocument = HydratedDocument<Issue>;
 
-export class Image {
-  @ApiProperty({
-    example: '/public/image_path'
-  })
-  @Prop({ type: String })
-  readonly src: string;
-
-  @ApiProperty({
-    example: 'Alt image'
-  })
-  @Prop({ type: String })
-  readonly alt: string;
-
-  @ApiProperty({
-    example: 20
-  })
-  @Prop({ type: Number })
-  readonly width: number;
-
-  @ApiProperty({
-    example: 20
-  })
-  @Prop({ type: Number })
-  readonly height: number;
-}
-
 @Schema({ versionKey: false })
 class Issue extends Document {
   @ApiProperty({ example: '64ef4383e46e72721c03090e' })
-  @Prop({
-    type: Types.ObjectId,
-    auto: true
-  })
   readonly _id: string;
 
   @ApiProperty({ example: true })
@@ -69,11 +43,13 @@ class Issue extends Document {
     type: Benefit,
     isArray: true
   })
-  @Prop({
-    type: [{ type: Types.ObjectId, ref: Benefit.name }]
-  })
-  @Type(() => Benefit)
-  readonly benefits: Array<Benefit>;
+  @Prop([
+    {
+      type: MongooseSchema.Types.ObjectId,
+      ref: Benefit.name
+    }
+  ])
+  readonly benefits: [Benefit];
 
   @ApiProperty({ example: 'Так виявляються приховані..' })
   @Prop({ type: String })
@@ -83,9 +59,14 @@ class Issue extends Document {
   @Prop({ type: String, required: true })
   readonly price: string;
 
-  @ApiProperty({ type: Image })
-  @Prop({ _id: false, type: Image })
-  readonly image: Image;
+  @ApiProperty({
+    type: Image
+  })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: Image.name
+  })
+  readonly image: Types.ObjectId;
 
   @ApiProperty({ type: MetadataProps })
   @Prop({ _id: false, type: MetadataProps })
