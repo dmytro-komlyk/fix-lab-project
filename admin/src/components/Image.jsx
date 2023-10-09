@@ -10,6 +10,7 @@ import {
   SimpleForm,
   TextField,
   TextInput,
+  required,
 } from "react-admin";
 
 const ListImages = () => {
@@ -41,16 +42,17 @@ const CreateImage = () => {
   return (
     <Create>
       <SimpleForm>
-        <ImageInput source="file" label="Зображення">
+        <ImageInput source="file" label="Зображення" validate={[required()]}>
           <ImageField source="src" />
         </ImageInput>
-        <TextInput source="alt" label="Alt" />
+        <TextInput source="alt" label="Alt" validate={[required()]} />
         <RadioButtonGroupInput
           source="type"
           choices={[
             { id: "icon", name: "Icon" },
             { id: "picture", name: "Picture" },
           ]}
+          validate={[required()]}
         />
       </SimpleForm>
     </Create>
