@@ -10,16 +10,26 @@ import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
-// import ServicesList from '@/app/(layouts)/(components)/ServicesList'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
-import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
+import type {
+  IBrand,
+  IGadget,
+  IIssue,
+} from '@/app/(server)/api/service/modules/gadgetService'
+
+import { BrandsSlider } from './BrandsSlider'
 
 interface SingleGadgetProps {
   singleGadgetData: IGadget
+  singleIssueData: IIssue[]
+  brandData: IBrand[]
 }
 const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
   singleGadgetData,
+  singleIssueData,
+  brandData,
 }) => {
+  console.log(singleIssueData)
   const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
     useState<boolean>(false)
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
@@ -43,7 +53,9 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
   const toggleCostRepairModal = useCallback(() => {
     setShowCostRepair(prev => !prev)
   }, [])
-  const { title, icon, description } = singleGadgetData
+
+  const { title, icon, description, slug } = singleGadgetData
+
   return (
     <section className=' overflow-hidden  bg-gradient-linear-blue  pb-[102px] pt-[163px] max-md:pb-14 max-md:pt-[138px]'>
       <div className='container relative flex flex-col '>
@@ -85,18 +97,15 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
           <div className='max-xl:w-[350px] max-lg:w-full xl:max-w-[411px] '>
             <div className='flex flex-col items-start gap-14 pb-[68px]  max-xl:gap-4 max-xl:pb-[56px]  max-md:gap-8'>
               <div className='flex items-center justify-center gap-[18px]'>
-                {icon && (
-                  <Image
-                    src={`http://95.217.34.212:30000${icon}`}
-                    width={0}
-                    height={0}
-                    style={{
-                      width: '100%',
-                      height: 'auto',
-                    }}
-                    alt={title}
-                  />
-                )}
+                <div className='relative h-[60px] w-[60px]'>
+                  {icon && (
+                    <Image
+                      src={`http://95.217.34.212:30000${icon}`}
+                      fill
+                      alt={title}
+                    />
+                  )}
+                </div>
                 <h2 className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
                   {title}
                 </h2>
@@ -119,13 +128,43 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                 <p className='mb-8 font-exo_2 text-xl font-semibold text-white-dis'>
                   Бренди, які ремонтуємо
                 </p>
-                {/* <BrandsList categoryData={categoryData} /> */}
+                <BrandsSlider
+                  brandData={brandData}
+                  gadgetData={singleGadgetData}
+                  // sliderOption={{
+                  //   '390': {
+                  //     slides: { perView: 2, spacing: 55 },
+                  //     mode: 'free',
+                  //   },
+                  // }}
+                />
               </div>
               <div>
                 <p className='mb-8 font-exo_2 text-xl font-semibold text-white-dis'>
                   Послуги
                 </p>
-                {/* <ServicesList subcategoriesData={subcategoriesData} /> */}
+                <ul>
+                  {singleIssueData?.map(item => {
+                    return (
+                      <li
+                        className='hover:op border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl hover:opacity-100 focus:opacity-100'
+                        key={item._id}
+                      >
+                        <Link
+                          className='flex items-center justify-between px-6 py-4 max-md:flex-col max-md:items-start  max-md:gap-2  max-md:py-[8px]'
+                          href={`/repair/${slug}/${item.slug}`}
+                        >
+                          <p className='font-exo_2 text-xl font-semibold text-dark-blue max-md:text-lg'>
+                            {item.title}
+                          </p>
+                          <p className='text-md font-[400] text-black-dis'>
+                            {item.price}
+                          </p>
+                        </Link>
+                      </li>
+                    )
+                  })}
+                </ul>
               </div>
               <Button
                 text='Розрахувати вартість ремонту'

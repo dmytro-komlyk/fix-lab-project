@@ -23,7 +23,10 @@ export interface IBrand {
   slug: string
   isActive: boolean
   title: string
-  icon: string
+  icon: {
+    src: string
+    alt: string
+  }
   article: string
   metadata: {
     title: string
@@ -39,17 +42,27 @@ export interface IIssue {
   title: string
   description: string
   price: string
-  images: string
+  image: {
+    src: string
+    alt: string
+    width: number
+    height: number
+  }
   metadata: {
     title: string
     description: string
     keywords: string
   }
-  info: {
-    diagnostic: string
-    gaurantee: string
-    repair: string
+  richText: {
+    title: string
+    description: string
   }
+  info: {
+    id: number
+    icon: string
+    title: string
+    alt: string
+  }[]
 }
 
 export const getAllGadgetsData = async (): Promise<IGadget[]> => {

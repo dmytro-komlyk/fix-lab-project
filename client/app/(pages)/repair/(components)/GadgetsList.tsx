@@ -12,21 +12,21 @@ export const GadgetsList: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
         return (
           <li
             key={item._id}
-            className='hover-gadget-link h-[180px] rounded-2xl bg-card-repair-gradient md:w-[calc((100%-32px)/3)] xl:h-[261px] xl:w-[calc((100%-48px)/3)]'
+            className='hover-gadget-link h-[261px] w-[302px] rounded-2xl bg-card-repair-gradient md:w-[calc((100%-32px)/3)] xl:w-[calc((100%-48px)/3)]'
           >
             <Link
               href={`/repair/${item.slug}`}
               className='flex w-full flex-col justify-between rounded-2xl p-8 hover:bg-dark-blue md:h-full xl:h-[261px]'
             >
-              {item.icon && (
-                <Image
-                  className='ml-auto'
-                  src={`http://95.217.34.212:30000${item.icon}`}
-                  width={50}
-                  height={50}
-                  alt={item.title}
-                />
-              )}
+              <div className='relative ml-auto h-[60px] w-[60px]'>
+                {item.icon && (
+                  <Image
+                    src={`http://95.217.34.212:30000${item.icon}`}
+                    fill
+                    alt={item.title}
+                  />
+                )}
+              </div>
               <div className='text-white-dis'>
                 <h3 className='mr-auto font-semibold leading-tight md:text-base xl:text-xl'>
                   {item.title}
