@@ -80,6 +80,8 @@ services:
       - MONGO_DB_AUTH_PASSWORD=
       - SECRET=
       - D_ADMIN_KEY=
+    volumes:
+      - ./server/public/:/app/server/public
     ports:
       - 30000:3000
     networks:
