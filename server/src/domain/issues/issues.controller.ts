@@ -6,8 +6,8 @@ import {
   Header,
   NotFoundException,
   Param,
-  Patch,
-  Post
+  Post,
+  Put
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
@@ -66,6 +66,15 @@ export class IssuesController {
     return await this.issuesService.findAll();
   }
 
+  @ApiOperation({ summary: 'get Issue data by ID' })
+  @ApiResponse({ status: 200, type: Issue })
+  @ApiResponse({ status: 404, description: 'Issue was not found' })
+  @Public()
+  @Get('/:id')
+  public async findIssueById(@Param('id') id: string): Promise<Issue> {
+    return await this.issuesService.findOneById(id);
+  }
+
   @ApiOperation({ summary: 'create new Issue' })
   @ApiResponse({ status: 200, type: Issue })
   @ApiResponse({
@@ -86,7 +95,7 @@ export class IssuesController {
     status: 404,
     description: 'Issue was not found'
   })
-  @Patch('/:id')
+  @Put('/:id')
   public async updateIssue(
     @Param('id') id: string,
     @Body()

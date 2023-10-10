@@ -34,7 +34,7 @@ class Contact extends Document {
   @ApiProperty({
     example: 'Вхід через супермаркет ВЕЛМАРТ'
   })
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: false })
   readonly comment: string;
 
   @ApiProperty({ example: ['Мінська', 'Оболонь'] })

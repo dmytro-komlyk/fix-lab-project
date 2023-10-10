@@ -7,17 +7,17 @@ export class MetadataDto {
   @IsDefined()
   @IsNotEmpty()
   @IsString()
-  readonly title: string;
+  readonly title?: string;
 
   @ApiProperty({ example: 'seo titldescriptione' })
   @IsDefined()
   @IsNotEmpty()
   @IsString()
-  readonly description: string;
+  readonly description?: string;
 
   @ApiProperty({ example: 'seo keywords' })
   @IsDefined()
   @IsNotEmpty()
   @IsString()
-  readonly keywords: string;
+  readonly keywords?: string;
 }

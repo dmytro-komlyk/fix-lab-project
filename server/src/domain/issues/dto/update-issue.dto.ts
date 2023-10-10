@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { Type } from 'class-transformer';
 import {
+  IsArray,
   IsBoolean,
   IsDefined,
   IsNotEmpty,
@@ -12,8 +13,6 @@ import {
   Length,
   ValidateNested
 } from 'class-validator';
-
-import { Info } from '../schemas/issue.schema';
 
 import { MetadataDto } from 'shared/metadata.dto';
 
@@ -40,6 +39,24 @@ export class UpdateIssueDto {
     message: 'title required to be 1-60 symbols length'
   })
   readonly title?: string;
+
+  @ApiProperty({
+    example: '["651c7fafb8f1268ad2156521"]',
+    description: 'Benefits id'
+  })
+  @IsOptional()
+  @IsDefined()
+  @IsArray()
+  readonly benefits?: string[];
+
+  @ApiProperty({
+    example: '"651c7fafb8f1268ad2156521"',
+    description: 'Image id'
+  })
+  @IsDefined()
+  @IsNotEmpty()
+  @IsString()
+  readonly image?: string;
 
   @ApiProperty({
     example: 'Diagnostic...',
@@ -72,14 +89,15 @@ export class UpdateIssueDto {
   })
   readonly price?: string;
 
-  @ApiProperty({ type: Info })
+  @ApiProperty({
+    example: 'Diagnostic...',
+    description: 'Issue description'
+  })
   @IsOptional()
   @IsDefined()
-  @IsObject()
-  @IsNotEmptyObject()
-  @ValidateNested()
-  @Type(() => Info)
-  readonly info?: Info;
+  @IsNotEmpty()
+  @IsString()
+  readonly info?: string;
 
   @ApiProperty({
     type: MetadataDto
