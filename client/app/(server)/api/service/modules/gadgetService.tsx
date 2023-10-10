@@ -59,7 +59,12 @@ export interface IIssue {
   }
   info: {
     id: number
-    icon: string
+    icon: {
+      src: string
+      alt: string
+      width: number
+      height: number
+    }
     title: string
     alt: string
   }[]

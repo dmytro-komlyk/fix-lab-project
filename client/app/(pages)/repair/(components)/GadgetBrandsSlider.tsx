@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 import { AnimatePresence } from 'framer-motion'
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
@@ -74,9 +76,11 @@ export const GadgetBrandsSlider: React.FC<BrandsProps> = ({
           const { alt, src } = item.icon
 
           return (
-            <div className='keen-slider__slide max-w-[77px] p-[14px]'>
+            <div
+              key={item._id}
+              className='keen-slider__slide max-w-[77px] p-[14px]'
+            >
               <Link
-                key={item._id}
                 className='flex h-[77px] min-w-[77px] max-w-[77px]  items-center justify-center rounded-[50%] bg-white-dis transition-all hover:shadow-brandLight  focus:shadow-brandLight'
                 href={`/repair/${gadgetData?.slug}/brands/${item.slug}`}
               >
@@ -85,7 +89,7 @@ export const GadgetBrandsSlider: React.FC<BrandsProps> = ({
                   alt={alt}
                   width={0}
                   height={0}
-                  className='w-[32px] h-[40px]'
+                  className='h-[40px] w-[32px]'
                 />
               </Link>
             </div>
@@ -100,10 +104,10 @@ export const GadgetBrandsSlider: React.FC<BrandsProps> = ({
               width: `${(100 / filled) * currentSlide}%`,
             }}
           />
-          <div className='absolute left-0 top-0 h-[6px] w-full rounded-full bg-light-grey' />
+          <div className='absolute left-0 top-0 h-[6px] w-full rounded-full bg-white-dis/50' />
         </div>
       )}
-      <div className='flex justify-between w-full pt-[15px]'>
+      <div className='flex w-full justify-between pt-[15px]'>
         <div className='flex max-w-[852px] gap-16  max-lg:flex-col lg:gap-32'>
           {brandPath !== 'brands' ? (
             brandData?.map(item => (

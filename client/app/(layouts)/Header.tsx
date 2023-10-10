@@ -15,8 +15,8 @@ import MobileMenu from './(components)/MobileMenu'
 import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
 
 const blogIdRegex = /\/blog\/\d+/
-const brandsSinglePageRegex = /^\/repair\/([^\/]+)\/brands\/([^\/]+)\/?$/
-const brandsPageRegex = /^\/repair\/([^\/]+)\/brands\/?$/
+const brandsSinglePageRegex = /^\/repair\/([^/]+)\/brands\/([^/]+)\/?$/
+const brandsPageRegex = /^\/repair\/([^/]+)\/brands\/?$/
 
 export const Header: React.FC = () => {
   const pathname = usePathname()

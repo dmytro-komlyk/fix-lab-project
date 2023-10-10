@@ -1,5 +1,6 @@
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
 import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
+
 import BrandsSection from '../../../(components)/BrandsSection'
 
 interface IndexProps {
@@ -16,7 +17,7 @@ const brandData = [
     isActive: true,
     title: 'Apple',
     icon: {
-      src: '/logo.svg',
+      src: '/icons/brands/Apple_logo_black 2.svg',
       alt: 'Alt',
     },
     article:
@@ -33,7 +34,7 @@ const brandData = [
     isActive: true,
     title: 'Samsung',
     icon: {
-      src: '/logo.svg',
+      src: '/icons/brands/samsung.svg',
       alt: 'Alt',
     },
     article: 'Second Reparing Samsung phones...2',
@@ -49,7 +50,7 @@ const brandData = [
     isActive: true,
     title: 'Xiaomi',
     icon: {
-      src: '/logo.svg',
+      src: '/icons/brands/huawei.svg',
       alt: 'Alt',
     },
     article: 'Third Reparing Samsung phones...',

@@ -22,7 +22,7 @@ const brandData = [
     isActive: true,
     title: 'Apple',
     icon: {
-      src: '/logo.svg',
+      src: '/icons/brands/Apple_logo_black 2.svg',
       alt: 'Alt',
     },
     article:
@@ -39,7 +39,7 @@ const brandData = [
     isActive: true,
     title: 'Samsung',
     icon: {
-      src: '/logo.svg',
+      src: '/icons/brands/samsung.svg',
       alt: 'Alt',
     },
     article: 'Second Reparing Samsung phones...2',
@@ -55,7 +55,7 @@ const brandData = [
     isActive: true,
     title: 'Xiaomi',
     icon: {
-      src: '/logo.svg',
+      src: '/icons/brands/huawei.svg',
       alt: 'Alt',
     },
     article: 'Third Reparing Samsung phones...',
@@ -244,7 +244,7 @@ const brandData = [
   },
 ]
 
-const singleIssueData = [
+const issuesData = [
   {
     _id: 'string',
     isActive: true,
@@ -254,7 +254,7 @@ const singleIssueData = [
       'Будь-який ремонт смартфону у сервісному центрі FixLab починається з БЕЗКОШТОВНОЇ діагностики гаджета. <br />Так виявляються приховані дефекти, про які власник пристрою може i не знати.',
     price: 'від 200 грн',
     image: {
-      src: '/app/public/images/for-business-table.png',
+      src: '/app/public/logo.svg',
       alt: 'Діагностика',
       width: 730,
       height: 330,
@@ -269,7 +269,41 @@ const singleIssueData = [
       description:
         'На пристрій потрапила вода, він упав i більше не вмикається або почав глючити? Без зволікань потрібно вирушати до сервісного центру FixLab.<br /> Інженери проведуть діагностику вашого пристрою, по можливості, проведуть експрес-ремонт. <br /> За необхідності ми завжди намагаємося увійти в положення свого клієнта i виконати діагностику та ремонт вашого гаджета в найкоротші терміни.',
     },
-    info: [],
+    info: [
+      {
+        id: 1,
+        icon: {
+          src: '/logo.svg',
+          alt: 'Діагностика',
+          width: 730,
+          height: 330,
+        },
+        title: 'Безкоштовна діагностика',
+        alt: 'Безкоштовна діагностика',
+      },
+      {
+        id: 2,
+        icon: {
+          src: '/logo.svg',
+          alt: 'Діагностика',
+          width: 730,
+          height: 330,
+        },
+        title: 'Гарантія до 2 місяця',
+        alt: 'Гарантія до 2 місяця',
+      },
+      {
+        id: 3,
+        icon: {
+          src: '/logo.svg',
+          alt: 'Діагностика',
+          width: 730,
+          height: 330,
+        },
+        title: 'Ремонт від 5 годин',
+        alt: 'Ремонт від 5 годин',
+      },
+    ],
   },
   {
     _id: 'string1',
@@ -280,7 +314,7 @@ const singleIssueData = [
       'Однією з найпоширеніших проблем з якими звертаються до нашого сервісного центру - це розбите скло на смартфонах та планшетах. <br /> Скло в сучасних гаджетах досить якісне та міцне, проте розбити його досить просто. Навіть якщо у вас наклеєне захисне скло, еце не гарнтує того що дисплей залишиться цілий після падіння або інших неприємностей.',
     price: 'від 200 грн',
     image: {
-      src: '/app/public/images/for-business-table.png',
+      src: '/app/public/logo.svg',
       alt: 'Діагностика',
       width: 730,
       height: 330,
@@ -299,19 +333,34 @@ const singleIssueData = [
     info: [
       {
         id: 1,
-        icon: '',
+        icon: {
+          src: '/logo.svg',
+          alt: 'Діагностика',
+          width: 730,
+          height: 330,
+        },
         title: 'Безкоштовна діагностика',
         alt: 'Безкоштовна діагностика',
       },
       {
         id: 2,
-        icon: '',
+        icon: {
+          src: '/logo.svg',
+          alt: 'Діагностика',
+          width: 730,
+          height: 330,
+        },
         title: 'Гарантія до 2 місяця',
         alt: 'Гарантія до 2 місяця',
       },
       {
         id: 3,
-        icon: '',
+        icon: {
+          src: '/logo.svg',
+          alt: 'Діагностика',
+          width: 730,
+          height: 330,
+        },
         title: 'Ремонт від 5 годин',
         alt: 'Ремонт від 5 годин',
       },
@@ -325,7 +374,7 @@ const Index: React.FC<IndexProps> = async ({ params }) => {
     <main className='flex-auto'>
       <SingleGadgetSection
         singleGadgetData={singleGadgetData}
-        singleIssueData={singleIssueData}
+        issuesData={issuesData}
         brandData={brandData}
       />
       <CallCourierSection />

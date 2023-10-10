@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 'use client'
 
 import { AnimatePresence } from 'framer-motion'
@@ -21,15 +23,14 @@ import { GadgetBrandsSlider } from './GadgetBrandsSlider'
 
 interface SingleGadgetProps {
   singleGadgetData: IGadget
-  singleIssueData: IIssue[]
+  issuesData: IIssue[]
   brandData: IBrand[]
 }
 const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
   singleGadgetData,
-  singleIssueData,
+  issuesData,
   brandData,
 }) => {
-  console.log(singleIssueData)
   const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
     useState<boolean>(false)
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
@@ -131,12 +132,6 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                 <GadgetBrandsSlider
                   brandData={brandData}
                   gadgetData={singleGadgetData}
-                  // sliderOption={{
-                  //   '390': {
-                  //     slides: { perView: 2, spacing: 55 },
-                  //     mode: 'free',
-                  //   },
-                  // }}
                 />
               </div>
               <div>
@@ -144,7 +139,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                   Послуги
                 </p>
                 <ul>
-                  {singleIssueData?.map(item => {
+                  {issuesData?.map(item => {
                     return (
                       <li
                         className='hover:op border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl hover:opacity-100 focus:opacity-100'

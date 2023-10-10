@@ -1,13 +1,12 @@
-/* eslint-disable no-underscore-dangle */
-
 'use client'
 
+/* eslint-disable no-underscore-dangle */
 import { AnimatePresence } from 'framer-motion'
 import MarkdownIt from 'markdown-it'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import Button from '@/app/(layouts)/(components)/Button'
@@ -16,20 +15,26 @@ import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 import type {
+  IBrand,
   IGadget,
   IIssue,
 } from '@/app/(server)/api/service/modules/gadgetService'
 
 import { BenefitsList } from '../../corporate/(components)/BenefitsList'
+import { GadgetBrandsSlider } from './GadgetBrandsSlider'
 
 interface SingleIssueProps {
-  singleIssueData: IIssue[]
+  issuesData: IIssue[]
+  singleIssueData: IIssue
   singleGadgetData: IGadget
+  brandData: IBrand[]
 }
 
 const IssueSection: React.FC<SingleIssueProps> = ({
   singleIssueData,
   singleGadgetData,
+  issuesData,
+  brandData,
 }) => {
   const markdown = new MarkdownIt({
     html: true,
@@ -63,10 +68,9 @@ const IssueSection: React.FC<SingleIssueProps> = ({
   const { title, slug } = singleGadgetData
 
   const slugIssue = pathname.split('/').pop()
-  const pk = singleIssueData.find(issue => issue.slug === slugIssue)
 
   return (
-    issuesData && (
+    singleIssueData && (
       <section className='overflow-hidden bg-gradient-linear-blue'>
         <div className='container relative pb-[39px] pt-[151px]'>
           <div className=' absolute left-[335px] top-[175px] hidden lg:block'>
@@ -87,7 +91,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
           </div>
           <div
             className='flex flex-wrap items-center gap-1'
-            key={issuesData._id}
+            key={singleIssueData._id}
           >
             <Link
               className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0]'
@@ -108,8 +112,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
               <p> {title}</p> <MdKeyboardArrowRight size={30} />
             </Link>
             <p className='text-base font-[300] text-[#3EB9F0] opacity-70'>
-              {' '}
-              {issuesData.title}
+              {singleIssueData.title}
             </p>
           </div>
           <div className='flex flex-col pb-[14px] pt-[28px]'>
@@ -117,13 +120,13 @@ const IssueSection: React.FC<SingleIssueProps> = ({
               <div className='flex flex-col gap-8 lg:w-[411px] lg:gap-14'>
                 <div className='flex flex-col items-start gap-8 lg:gap-14'>
                   <h2 className='font-exo_2 text-xl font-semibold leading-7 text-white-dis lg:text-2xl lg:font-bold lg:leading-10'>
-                    {issuesData.title}
+                    {singleIssueData.title}
                   </h2>
-                  <BenefitsList items={pk.info} />
+                  <BenefitsList items={singleIssueData.info} />
                   <div
                     // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{
-                      __html: markdown.render(pk.description),
+                      __html: markdown.render(singleIssueData.description),
                     }}
                     className='text-base font-[400] text-white-dis'
                   />
@@ -140,21 +143,23 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                 <div>
                   <Image
                     className='min-h-[245px] w-full rounded-2xl object-cover md:max-h-[340px]'
-                    src={pk.image.src}
-                    width={pk.image.width}
-                    height={pk.image.height}
-                    alt={pk?.image.alt}
+                    src={singleIssueData.image.src}
+                    width={singleIssueData.image.width}
+                    height={singleIssueData.image.height}
+                    alt={singleIssueData?.image.alt}
                     priority
                   />
                 </div>
                 <div className='flex flex-col gap-8'>
                   <h3 className='font-exo_2 text-xl font-semibold text-white-dis'>
-                    {pk?.richText?.title}
+                    {singleIssueData?.richText?.title}
                   </h3>
                   <div
                     // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{
-                      __html: markdown.render(pk.richText.description),
+                      __html: markdown.render(
+                        singleIssueData.richText.description,
+                      ),
                     }}
                     className='gap-6 text-base font-[400] text-white-dis'
                   />
@@ -164,17 +169,18 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                     <p className='mb-8 font-exo_2 text-xl font-semibold text-white-dis'>
                       Бренди, які ремонтуємо
                     </p>
-                    {/* <BrandsList categoryData={categoryData} /> */}
+                    <GadgetBrandsSlider
+                      brandData={brandData}
+                      gadgetData={singleGadgetData}
+                    />
                   </div>
                   <div>
                     <p className='mb-8 font-exo_2 text-xl font-semibold text-white-dis'>
                       Послуги
                     </p>
 
-                    {/* <ServicesList subcategoriesData={subcategoriesData} /> */}
-
                     <ul>
-                      {singleIssueData?.map(item => {
+                      {issuesData?.map(item => {
                         return (
                           <li
                             key={item._id}

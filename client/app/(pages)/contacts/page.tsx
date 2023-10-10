@@ -1,4 +1,5 @@
 import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
+
 import ContactsSection from './(components)/ContactsSection'
 
 export interface IContact {
