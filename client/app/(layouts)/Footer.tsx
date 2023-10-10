@@ -38,7 +38,7 @@ export const Footer = () => {
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
-                href='/#'
+                href='/repair/telefon/brands/apple'
               >
                 Ремонт iphone
               </Link>

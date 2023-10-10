@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
 import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
 import BrandsSection from '../../../(components)/BrandsSection'

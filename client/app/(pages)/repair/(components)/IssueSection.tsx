@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+
 'use client'
 
 import { AnimatePresence } from 'framer-motion'
@@ -20,12 +22,12 @@ import type {
 
 import { BenefitsList } from '../../corporate/(components)/BenefitsList'
 
-interface singleIssueProps {
+interface SingleIssueProps {
   singleIssueData: IIssue[]
   singleGadgetData: IGadget
 }
 
-const IssueSection: React.FC<singleIssueProps> = ({
+const IssueSection: React.FC<SingleIssueProps> = ({
   singleIssueData,
   singleGadgetData,
 }) => {
@@ -61,7 +63,7 @@ const IssueSection: React.FC<singleIssueProps> = ({
   const { title, slug } = singleGadgetData
 
   const slugIssue = pathname.split('/').pop()
-  const issuesData = singleIssueData.find(issue => issue.slug === slugIssue)
+  const pk = singleIssueData.find(issue => issue.slug === slugIssue)
 
   return (
     issuesData && (
@@ -117,11 +119,11 @@ const IssueSection: React.FC<singleIssueProps> = ({
                   <h2 className='font-exo_2 text-xl font-semibold leading-7 text-white-dis lg:text-2xl lg:font-bold lg:leading-10'>
                     {issuesData.title}
                   </h2>
-                  <BenefitsList items={issuesData.info} />
+                  <BenefitsList items={pk.info} />
                   <div
                     // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{
-                      __html: markdown.render(issuesData.description),
+                      __html: markdown.render(pk.description),
                     }}
                     className='text-base font-[400] text-white-dis'
                   />
@@ -138,21 +140,21 @@ const IssueSection: React.FC<singleIssueProps> = ({
                 <div>
                   <Image
                     className='min-h-[245px] w-full rounded-2xl object-cover md:max-h-[340px]'
-                    src={issuesData.image.src}
-                    width={issuesData.image.width}
-                    height={issuesData.image.height}
-                    alt={issuesData?.image.alt}
+                    src={pk.image.src}
+                    width={pk.image.width}
+                    height={pk.image.height}
+                    alt={pk?.image.alt}
                     priority
                   />
                 </div>
                 <div className='flex flex-col gap-8'>
                   <h3 className='font-exo_2 text-xl font-semibold text-white-dis'>
-                    {issuesData?.richText?.title}
+                    {pk?.richText?.title}
                   </h3>
                   <div
                     // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{
-                      __html: markdown.render(issuesData.richText.description),
+                      __html: markdown.render(pk.richText.description),
                     }}
                     className='gap-6 text-base font-[400] text-white-dis'
                   />

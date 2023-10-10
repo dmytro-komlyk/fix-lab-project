@@ -12,7 +12,7 @@ import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanne
 
 import type { BrandsProps } from './BrandsSection'
 
-export const BrandsSlider: React.FC<BrandsProps> = ({
+export const GadgetBrandsSlider: React.FC<BrandsProps> = ({
   brandData,
   gadgetData,
   // sliderOption,
@@ -70,21 +70,14 @@ export const BrandsSlider: React.FC<BrandsProps> = ({
   return (
     <>
       <div ref={sliderRef} className='keen-slider flex '>
-        {brandData?.map((item, index) => {
+        {brandData?.map(item => {
           const { alt, src } = item.icon
-          const selectedTabClass =
-            brandPath === item.slug ||
-            (index === 0 &&
-              brandPath !== item.slug &&
-              brandPath !== gadgetData?.slug)
-              ? ' bg-dark-grey flex  h-[128px]  max-w-[128px]  items-center justify-center rounded-[50%] shadow-brand'
-              : ' flex h-[128px] min-w-[128px] max-w-[128px]  items-center justify-center rounded-[50%] '
 
           return (
-            <div className='keen-slider__slide max-w-[128px] py-[25px]'>
+            <div className='keen-slider__slide max-w-[77px] p-[14px]'>
               <Link
                 key={item._id}
-                className={selectedTabClass}
+                className='flex h-[77px] min-w-[77px] max-w-[77px]  items-center justify-center rounded-[50%] bg-white-dis transition-all hover:shadow-brandLight  focus:shadow-brandLight'
                 href={`/repair/${gadgetData?.slug}/brands/${item.slug}`}
               >
                 <Image
@@ -92,26 +85,25 @@ export const BrandsSlider: React.FC<BrandsProps> = ({
                   alt={alt}
                   width={0}
                   height={0}
-                  className='w-[75px] h-[92px]'
+                  className='w-[32px] h-[40px]'
                 />
               </Link>
             </div>
           )
         })}
       </div>
-
       {loaded && instanceRef && (
-        <div className='relative w-full'>
+        <div className='relative mt-8'>
           <div
-            className='absolute left-0 top-[-2px] z-10 h-[4px] rounded-full bg-mid-grey transition-width'
+            className='absolute left-0 top-0 z-10 h-[6px] rounded-full bg-white-dis transition-width'
             style={{
               width: `${(100 / filled) * currentSlide}%`,
             }}
           />
-          <div className='absolute left-0 top-[-2px] h-[4px] w-full rounded-full bg-[#92999C63]' />
+          <div className='absolute left-0 top-0 h-[6px] w-full rounded-full bg-light-grey' />
         </div>
       )}
-      <div className='flex justify-between w-full pt-[52px]'>
+      <div className='flex justify-between w-full pt-[15px]'>
         <div className='flex max-w-[852px] gap-16  max-lg:flex-col lg:gap-32'>
           {brandPath !== 'brands' ? (
             brandData?.map(item => (

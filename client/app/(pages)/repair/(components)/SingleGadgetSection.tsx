@@ -17,7 +17,7 @@ import type {
   IIssue,
 } from '@/app/(server)/api/service/modules/gadgetService'
 
-import { BrandsSlider } from './BrandsSlider'
+import { GadgetBrandsSlider } from './GadgetBrandsSlider'
 
 interface SingleGadgetProps {
   singleGadgetData: IGadget
@@ -128,7 +128,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                 <p className='mb-8 font-exo_2 text-xl font-semibold text-white-dis'>
                   Бренди, які ремонтуємо
                 </p>
-                <BrandsSlider
+                <GadgetBrandsSlider
                   brandData={brandData}
                   gadgetData={singleGadgetData}
                   // sliderOption={{
