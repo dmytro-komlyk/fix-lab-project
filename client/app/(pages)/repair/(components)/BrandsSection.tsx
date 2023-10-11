@@ -49,7 +49,7 @@ const BrandsSection: React.FC<BrandsProps> = ({ brandData, gadgetData }) => {
         </div>
         <div className='mb-8 flex flex-col items-start'>
           {gadgetData && (
-            <div className='mb-8 h-[80px]'>
+            <div className='mb-[50px] h-[80px]'>
               <Image
                 src={`http://95.217.34.212:30000${gadgetData.icon}`}
                 width={0}
@@ -64,7 +64,7 @@ const BrandsSection: React.FC<BrandsProps> = ({ brandData, gadgetData }) => {
               />
             </div>
           )}
-          <h1 className='mb-[10px] font-exo_2 text-2xl font-bold leading-[1.2px] tracking-[0.060em] text-black-dis'>
+          <h1 className='mb-[29px] font-exo_2 text-2xl font-bold leading-[1.2px] xln:tracking-[0.060em] text-black-dis'>
             Бренди телефонів, які ремонтуємо у сервісному центрі FixLab
           </h1>
           <BrandsSlider brandData={brandData} gadgetData={gadgetData} />
