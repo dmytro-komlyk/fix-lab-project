@@ -151,15 +151,10 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                   />
                 </div>
                 <div className='flex flex-col gap-8'>
-                  <h3 className='font-exo_2 text-xl font-semibold text-white-dis'>
-                    {singleIssueData?.richText?.title}
-                  </h3>
                   <div
                     // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{
-                      __html: markdown.render(
-                        singleIssueData.richText.description,
-                      ),
+                      __html: markdown.render(singleIssueData.richText),
                     }}
                     className='gap-6 text-base font-[400] text-white-dis'
                   />

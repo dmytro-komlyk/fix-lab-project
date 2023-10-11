@@ -53,10 +53,7 @@ export interface IIssue {
     description: string
     keywords: string
   }
-  richText: {
-    title: string
-    description: string
-  }
+  richText: string
   info: {
     id: number
     icon: {

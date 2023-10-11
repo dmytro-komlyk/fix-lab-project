@@ -99,15 +99,15 @@ export const GadgetBrandsSlider: React.FC<BrandsProps> = ({
       {loaded && instanceRef && (
         <div className='relative mt-8'>
           <div
-            className='absolute left-0 top-0 z-10 h-[6px] rounded-full bg-white-dis transition-width'
+            className='absolute left-0 top-[-14px] z-10 h-[4px] rounded-full bg-white-dis transition-width'
             style={{
               width: `${(100 / filled) * currentSlide}%`,
             }}
           />
-          <div className='absolute left-0 top-0 h-[6px] w-full rounded-full bg-white-dis/50' />
+          <div className='absolute left-0 top-[-14px] h-[4px] w-full rounded-full bg-white-dis/50' />
         </div>
       )}
-      <div className='flex w-full justify-between pt-[15px]'>
+      <div className='flex w-full justify-between '>
         <div className='flex max-w-[852px] gap-16  max-lg:flex-col lg:gap-32'>
           {brandPath !== 'brands' ? (
             brandData?.map(item => (
