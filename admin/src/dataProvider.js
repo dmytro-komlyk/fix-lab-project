@@ -47,8 +47,6 @@ const addUploadFeature = (dataProvider) => ({
     }),
 
   create: async (resource, params) => {
-    const { meta, data } = params;
-
     if (resource === "images" && Boolean(params.data.file)) {
       const file = params.data.file;
       const { type, alt } = params.data;
@@ -130,7 +128,6 @@ const addUploadFeature = (dataProvider) => ({
         return { data: modifiedData };
       });
     }
-    console.log(resource, newParams, "UPDATED");
     return dataProvider.update(resource, newParams).then(({ data }) => {
       const { _id, ...rest } = data;
       const modifiedData = { id: _id, _id, ...rest };

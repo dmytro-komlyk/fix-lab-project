@@ -6,11 +6,13 @@ import {
   Datagrid,
   Edit,
   ImageField,
-  ImageInput,
   List,
+  RadioButtonGroupInput,
+  ReferenceInput,
   TabbedForm,
   TextField,
   TextInput,
+  required,
   useRecordContext,
 } from "react-admin";
 
@@ -27,10 +29,16 @@ const ListBrands = () => {
   return (
     <List title="Бренди">
       <Datagrid rowClick="edit">
-        <ImageField source="icon.src" title="Зображення" />
+        <ImageField
+          source="icon.src"
+          label="Зображення"
+          sx={{
+            "& img": { maxWidth: 40, maxHeight: 40, objectFit: "contain" },
+          }}
+        />
         <TextField source="slug" label="Slug" />
         <TextField source="title" label="Назва" />
-        <BooleanField label="isActive" source="Активний" />
+        <BooleanField source="isActive" label="Активний" />
       </Datagrid>
     </List>
   );
@@ -42,11 +50,30 @@ const EditBrand = () => {
       <TabbedForm>
         <TabbedForm.Tab label="Контент">
           <TextInput disabled source="id" />
-          <TextInput source="slug" label="Slug" />
+          <TextInput source="slug" label="Slug" validate={[required()]} />
+          <ReferenceInput source="icon" reference="images/icons">
+            <RadioButtonGroupInput
+              validate={[required()]}
+              label="Іконка"
+              optionText={
+                <ImageField
+                  source="src"
+                  title="alt"
+                  sx={{
+                    "& img": {
+                      maxWidth: 60,
+                      maxHeight: 60,
+                      objectFit: "contain",
+                    },
+                  }}
+                />
+              }
+              optionValue="id"
+            >
+              <TextField source="id" />
+            </RadioButtonGroupInput>
+          </ReferenceInput>
           <TextInput source="title" label="Заголовок" />
-          <ImageInput source="icon" label="Зображення">
-            <ImageField source="src" />
-          </ImageInput>
           <RichTextInput source="article" label="Cтаття" />
           <BooleanInput source="isActive" label="Активний" />
         </TabbedForm.Tab>
@@ -75,10 +102,29 @@ const CreateBrand = () => {
       <TabbedForm>
         <TabbedForm.Tab label="Контент">
           <TextInput source="slug" label="Slug" />
+          <ReferenceInput source="icon" reference="images/icons">
+            <RadioButtonGroupInput
+              validate={[required()]}
+              optionText={
+                <ImageField
+                  label="Іконка"
+                  source="src"
+                  title="alt"
+                  sx={{
+                    "& img": {
+                      maxWidth: 60,
+                      maxHeight: 60,
+                      objectFit: "contain",
+                    },
+                  }}
+                />
+              }
+              optionValue="id"
+            >
+              <TextField source="id" />
+            </RadioButtonGroupInput>
+          </ReferenceInput>
           <TextInput source="title" label="Заголовок" />
-          <ImageInput source="icon" label="Зображення">
-            <ImageField source="src" />
-          </ImageInput>
           <RichTextInput source="article" label="Cтаття" />
           <BooleanInput source="isActive" label="Активний" />
         </TabbedForm.Tab>

@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { Document, HydratedDocument, Types } from 'mongoose';
+import { Document, HydratedDocument } from 'mongoose';
+
+import { Type } from 'class-transformer';
 
 import { Image } from 'domain/images/schemas/image.schema';
 import { Metadata } from 'shared/schemas/metadata.schema';
@@ -10,10 +12,6 @@ export type BrandDocument = HydratedDocument<Brand>;
 @Schema({ versionKey: false })
 class Brand extends Document {
   @ApiProperty({ example: '64ef4383e46e72721c03090e' })
-  @Prop({
-    type: Types.ObjectId,
-    auto: true
-  })
   readonly _id: string;
 
   @ApiProperty({ example: 'apple' })
@@ -33,10 +31,6 @@ class Brand extends Document {
   @Prop({ type: String, required: true })
   readonly title: string;
 
-  @ApiProperty({ type: Image })
-  @Prop({ type: Image, default: null })
-  readonly icon: Image;
-
   @ApiProperty({ example: 'Reparing Apple phones...' })
   @Prop({ type: String })
   readonly article: string;
@@ -46,6 +40,11 @@ class Brand extends Document {
   })
   @Prop({ type: Metadata })
   readonly metadata: Metadata;
+
+  @ApiProperty({ type: Image })
+  @Prop({ type: Image, ref: Image.name, default: null })
+  @Type(() => Image)
+  readonly icon: Image;
 }
 
 const BrandSchema = SchemaFactory.createForClass(Brand);

@@ -17,6 +17,15 @@ import { MetadataDto } from 'shared/dto/metadata.dto';
 
 export class CreateBrandDto {
   @ApiProperty({
+    example: '"651c7fafb8f1268ad2156521"',
+    description: 'Icon id'
+  })
+  @IsDefined()
+  @IsNotEmpty()
+  @IsString()
+  readonly icon: string;
+
+  @ApiProperty({
     example: 'Apple',
     description: 'Brand title'
   })
@@ -27,15 +36,6 @@ export class CreateBrandDto {
     message: 'title required to be 1-60 symbols length'
   })
   readonly title: string;
-
-  @ApiProperty({
-    example: 'We repair Apple gadgets',
-    description: 'Brand description'
-  })
-  @IsDefined()
-  @IsNotEmpty()
-  @IsString()
-  readonly description: string;
 
   @ApiProperty({
     example: 'xiaomi',
@@ -62,7 +62,7 @@ export class CreateBrandDto {
   @IsDefined()
   @IsNotEmpty()
   @IsString()
-  readonly article?: string;
+  readonly article: string;
 
   @ApiProperty({
     type: MetadataDto

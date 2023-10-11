@@ -6,8 +6,8 @@ import {
   Header,
   NotFoundException,
   Param,
-  Patch,
-  Post
+  Post,
+  Put
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
@@ -54,7 +54,7 @@ export class BrandsController {
   @ApiResponse({ status: 200, type: Brand, isArray: true })
   @Get('/all')
   @Header('Access-Control-Expose-Headers', 'Content-Range')
-  @Header('Content-Range', 'posts 0-24/319')
+  @Header('Content-Range', 'brands 0-24/319')
   public async findAllBrands(): Promise<Brand[]> {
     return await this.brandsService.findAll();
   }
@@ -81,12 +81,13 @@ export class BrandsController {
   @ApiOperation({ summary: 'update existing Brand by ID' })
   @ApiResponse({ status: 200, type: Brand })
   @ApiResponse({ status: 404, description: 'Brand was not found' })
-  @Patch('/:id')
+  @Put('/:id')
   public async updateBrand(
     @Param('id') id: string,
     @Body()
     dto: UpdateBrandDto
   ): Promise<Brand> {
+    console.log(dto);
     return await this.brandsService.update(id, dto);
   }
 
