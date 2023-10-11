@@ -6,7 +6,6 @@ import { Brand } from './schemas/brand.schema';
 
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
-import { UpdateIconBrandDto } from './dto/update-icon-brand.dto';
 
 @Injectable()
 export class BrandsService {
@@ -62,16 +61,6 @@ export class BrandsService {
   }
 
   public async update(id: string, dto: UpdateBrandDto): Promise<Brand> {
-    await this.findOneById(id);
-
-    const brand = await this.brandModel.findByIdAndUpdate(id, dto, {
-      new: true
-    });
-
-    return brand;
-  }
-
-  public async updateIcon(id: string, dto: UpdateIconBrandDto): Promise<Brand> {
     await this.findOneById(id);
 
     const brand = await this.brandModel.findByIdAndUpdate(id, dto, {

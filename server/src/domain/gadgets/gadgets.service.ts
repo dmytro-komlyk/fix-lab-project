@@ -14,7 +14,6 @@ import { Gadget } from './schemas/gadget.schema';
 
 import { CreateGadgetDto } from './dto/create-gadget.dto';
 import { UpdateGadgetDto } from './dto/update-gadget.dto';
-import { UpdateImageGadgetDto } from './dto/update-image-gadget.dto';
 
 @Injectable()
 export class GadgetsService {
@@ -87,61 +86,6 @@ export class GadgetsService {
       .select('-isActive');
 
     return updatedGadget;
-  }
-
-  public async updateImages(id: string, dto: UpdateImageGadgetDto): Promise<Gadget> {
-    await this.findOneById(id);
-
-    const gadget = await this.gadgetModel
-      .findByIdAndUpdate(id, dto, {
-        new: true
-      })
-      .populate('brands')
-      .populate('issues')
-      .select('-isActive');
-
-    return gadget;
-  }
-
-  public async updateBrandsGadget(id: string, brandIds: string[]): Promise<Gadget> {
-    const brands = await this.brandsService.findAllByIds(brandIds);
-
-    const gadget = await this.gadgetModel
-      .findByIdAndUpdate(
-        id,
-        {
-          brands
-        },
-        { new: true }
-      )
-      .populate('brands')
-      .populate('issues')
-      .select('-isActive');
-
-    return gadget;
-  }
-
-  public async updateIssueGadget(
-    gadgetId: string,
-    issueId: string,
-    action: 'push' | 'pull'
-  ): Promise<Gadget> {
-    await this.findOneById(gadgetId);
-    const issue = await this.issuesService.findOneById(issueId);
-
-    const modifier = () => {
-      if (action === 'push') return { $push: { issues: issue } };
-      if (action === 'pull') return { $pull: { issues: issue } };
-      return { $set: { issues: issue } };
-    };
-
-    const gadget = await this.gadgetModel
-      .findByIdAndUpdate(gadgetId, modifier(), { new: true })
-      .populate('brands')
-      .populate('issues')
-      .select('-isActive');
-
-    return gadget;
   }
 
   public async remove(id: string): Promise<Gadget> {

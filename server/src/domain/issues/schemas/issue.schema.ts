@@ -9,7 +9,7 @@ import {
 
 import { Benefit } from 'domain/benefits/schemas/benefit.schema';
 import { Image } from 'domain/images/schemas/image.schema';
-import MetadataProps from 'shared/metadata-props.schema';
+import { Metadata } from 'shared/schemas/metadata.schema';
 
 export type IssueDocument = HydratedDocument<Issue>;
 
@@ -68,9 +68,9 @@ class Issue extends Document {
   })
   readonly image: Types.ObjectId;
 
-  @ApiProperty({ type: MetadataProps })
-  @Prop({ _id: false, type: MetadataProps })
-  readonly metadata: MetadataProps;
+  @ApiProperty({ type: Metadata })
+  @Prop({ _id: false, type: Metadata })
+  readonly metadata: Metadata;
 }
 
 const IssueSchema = SchemaFactory.createForClass(Issue);
