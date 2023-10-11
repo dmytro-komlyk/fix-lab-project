@@ -7,10 +7,8 @@ import {
   NotFoundException,
   Param,
   Post,
-  Put,
-  UseInterceptors
+  Put
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
 
@@ -19,8 +17,6 @@ import { ISuccessDelete } from 'interfaces/success-delete.interface';
 import { BrandsService } from './brands.service';
 
 import { Brand } from './schemas/brand.schema';
-
-import { FileStorageHelper } from 'helpers/file-storage.helper';
 
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
@@ -95,10 +91,6 @@ export class BrandsController {
     return await this.brandsService.update(id, dto);
   }
 
-  @ApiOperation({ summary: 'upload svg image for Brand by ID' })
-  @UseInterceptors(
-    FileInterceptor('icon', { storage: FileStorageHelper(ROUTES.brands) })
-  )
   @ApiOperation({ summary: 'remove permanently Brand by ID' })
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, description: 'Brand was not found' })

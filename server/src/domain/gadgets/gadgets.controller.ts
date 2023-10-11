@@ -2,18 +2,13 @@ import {
   Body,
   Controller,
   Delete,
-  FileTypeValidator,
   Get,
   Header,
   NotFoundException,
   Param,
-  ParseFilePipe,
-  Patch,
   Post,
-  UploadedFile,
-  UseInterceptors
+  Put
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
 
@@ -23,13 +18,10 @@ import { GadgetsService } from './gadgets.service';
 
 import { Gadget } from './schemas/gadget.schema';
 
-import { FileStorageHelper } from 'helpers/file-storage.helper';
-
 import { CreateGadgetDto } from './dto/create-gadget.dto';
-import { RelateBrandToGadgetDto } from './dto/relate-brand-to-gadget.dto';
 import { UpdateGadgetDto } from './dto/update-gadget.dto';
 
-import { PUBLIC_FOLDER, ROUTES } from 'constants/routes.constants';
+import { ROUTES } from 'constants/routes.constants';
 
 @ApiTags(ROUTES.gadgets)
 @Controller(ROUTES.gadgets)
@@ -104,126 +96,12 @@ export class GadgetsController {
     status: 404,
     description: 'Gadget was not found'
   })
-  @Patch('/:id')
+  @Put('/:id')
   public async updateGadget(
     @Param('id') id: string,
     @Body() dto: UpdateGadgetDto
   ): Promise<Gadget> {
     return await this.gadetsService.update(id, dto);
-  }
-
-  @ApiOperation({
-    summary: 'update Brands of Gadget by ID'
-  })
-  @ApiResponse({ status: 200, type: Gadget })
-  @ApiResponse({
-    status: 404,
-    description: 'Gadget was not found'
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Brand was not found'
-  })
-  @Patch('/:id/brands')
-  public async addBrands(
-    @Param('id') id: string,
-    @Body() { brandIds }: RelateBrandToGadgetDto
-  ): Promise<Gadget> {
-    return await this.gadetsService.updateBrandsGadget(id, brandIds);
-  }
-
-  @ApiOperation({
-    summary: 'update Brands of Gadget by ID'
-  })
-  @ApiResponse({ status: 200, type: Gadget })
-  @ApiResponse({
-    status: 404,
-    description: 'Gadget was not found'
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Brand was not found'
-  })
-  @Patch('/:gadgetId/add-issue/:issueId')
-  public async addIssueToGadget(
-    @Param('gadgetId') gadgetId: string,
-    @Param('issueId') issueId: string
-  ): Promise<Gadget> {
-    return await this.gadetsService.updateIssueGadget(gadgetId, issueId, 'push');
-  }
-
-  @ApiOperation({
-    summary: 'update Brands of Gadget by ID'
-  })
-  @ApiResponse({ status: 200, type: Gadget })
-  @ApiResponse({
-    status: 404,
-    description: 'Gadget was not found'
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Issue was not found'
-  })
-  @Patch('/:id/remove-issue/:issueId')
-  public async removeIssueToGadget(
-    @Param('id') id: string,
-    @Param('issueId') issueId: string
-  ): Promise<Gadget> {
-    return await this.gadetsService.updateIssueGadget(id, issueId, 'pull');
-  }
-
-  @ApiOperation({
-    summary: 'upload svg image for Gadget by ID'
-  })
-  @UseInterceptors(
-    FileInterceptor('gadgets', {
-      storage: FileStorageHelper(ROUTES.gadgets)
-    })
-  )
-  @Patch('/:id/update-image')
-  public async updateBrandIcon(
-    @Param('id') id: string,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [new FileTypeValidator({ fileType: '.(svg|SVG)' })]
-      })
-    )
-    image: Express.Multer.File
-  ): Promise<string> {
-    const filePath = `/${PUBLIC_FOLDER}/${ROUTES.brands}/${image.filename}`;
-
-    await this.gadetsService.updateImages(id, {
-      image: filePath
-    });
-
-    return filePath;
-  }
-
-  @ApiOperation({
-    summary: 'upload svg image for Gadget by ID'
-  })
-  @UseInterceptors(
-    FileInterceptor('icon', {
-      storage: FileStorageHelper(ROUTES.gadgets)
-    })
-  )
-  @Patch('/:id/update-icon')
-  public async updateGadgetIcon(
-    @Param('id') id: string,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [new FileTypeValidator({ fileType: '.(svg|SVG)' })]
-      })
-    )
-    icon: Express.Multer.File
-  ): Promise<string> {
-    const filePath = `/${PUBLIC_FOLDER}/${ROUTES.gadgets}/${icon.filename}`;
-
-    await this.gadetsService.updateImages(id, {
-      icon: filePath
-    });
-
-    return filePath;
   }
 
   @ApiOperation({
