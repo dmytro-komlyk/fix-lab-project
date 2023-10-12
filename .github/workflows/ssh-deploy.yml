@@ -44,7 +44,7 @@ jobs:
           tags: |
             ghcr.io/iryna-gry/prod-fixlab-server:latest
 
-      - name: "Build&Deploy Admin"
+      - name: "Build&Deploy Client"
         uses: docker/build-push-action@v4
         with:
           context: ./client
