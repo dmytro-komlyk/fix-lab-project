@@ -1,5 +1,4 @@
 import { headers } from 'next/headers'
-import React from 'react'
 
 import { type Location } from '@/app/(utils)/types'
 
