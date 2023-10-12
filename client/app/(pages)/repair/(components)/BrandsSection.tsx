@@ -64,7 +64,7 @@ const BrandsSection: React.FC<BrandsProps> = ({ brandData, gadgetData }) => {
               />
             </div>
           )}
-          <h1 className='mb-[29px] font-exo_2 text-2xl font-bold leading-[1.2px] xln:tracking-[0.060em] text-black-dis'>
+          <h1 className='mb-[29px] font-exo_2 text-2xl font-bold leading-[1.2px] xl:tracking-[0.060em] text-black-dis'>
             Бренди телефонів, які ремонтуємо у сервісному центрі FixLab
           </h1>
           <BrandsSlider brandData={brandData} gadgetData={gadgetData} />
