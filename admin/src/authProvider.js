@@ -20,7 +20,11 @@ const authProvider = {
       headers: myHeaders,
       body: raw,
     };
-    return fetch("http://95.217.34.212:30000/api/users", requestOptions)
+
+    return fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_API_URL}/users`,
+      requestOptions
+    )
       .then((response) => {
         if (!response.ok) {
           return Promise.reject("Invalid credentials");
@@ -35,8 +39,8 @@ const authProvider = {
   },
 
   login: ({ userLogin, password }) => {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
       login: userLogin,
@@ -45,11 +49,14 @@ const authProvider = {
 
     const requestOptions = {
       method: "POST",
-      headers: myHeaders,
+      headers,
       body: raw,
     };
 
-    return fetch("http://95.217.34.212:30000/api/auth/login", requestOptions)
+    return fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_API_URL}/auth/login`,
+      requestOptions
+    )
       .then(async (response) => {
         const result = await response.text();
 
