@@ -5,24 +5,25 @@ const httpClient = (url, options = {}) => {
   if (!options.headers) {
     options.headers = new Headers({ Accept: "application/json" });
   }
-  options.headers.set(
-    "Authorization",
-    `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTAyZGFiNDVkZGY4ZjJiMDY1YzQwMjEiLCJsb2dpbiI6ImFkbWluIiwiaWF0IjoxNjk0Njg1OTQ0fQ.I0LLv5ihAY4OxR-h4RDfboVEO08pHrr3uUilr91poek`
-  );
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return;
+  }
+  options.headers.set("Authorization", `Bearer ${token}`);
   return fetchUtils.fetchJson(url, options);
 };
 
-const saveFileInStorage = (resource, id, rawFile) => {
+const saveFileInStorage = ({ resource, type, alt, file }) => {
   const formData = new FormData();
-  formData.append("icon", rawFile);
 
-  return httpClient(
-    `http://95.217.34.212:30000/api/${resource}/${id}/update-icon`,
-    {
-      method: "PATCH",
-      body: formData,
-    }
-  );
+  formData.append("alt", alt);
+  formData.append("type", type);
+  formData.append("file", file.rawFile);
+
+  return httpClient(`${process.env.NEXT_PUBLIC_SERVER_API_URL}/${resource}`, {
+    method: "POST",
+    body: formData,
+  });
 };
 
 const addUploadFeature = (dataProvider) => ({
@@ -33,6 +34,12 @@ const addUploadFeature = (dataProvider) => ({
       total: data.length,
     })),
 
+  getMany: (resource, params) => {
+    return dataProvider.getMany(`${resource}/all`, params).then(({ data }) => ({
+      data: data.map(({ _id, ...rest }) => ({ id: _id, _id, ...rest })),
+    }));
+  },
+
   getOne: (resource, params) =>
     dataProvider.getOne(resource, params).then(({ data }) => {
       const { _id, ...rest } = data;
@@ -40,7 +47,38 @@ const addUploadFeature = (dataProvider) => ({
       return { data: modifiedData };
     }),
 
-  create: (resource, params) => {
+  create: async (resource, params) => {
+    if (resource === "images" && Boolean(params.data.file)) {
+      const file = params.data.file;
+      const { type, alt } = params.data;
+      const updatedResource = `${resource}/${
+        type === "icon" ? "upload-icon" : "upload-picture"
+      }`;
+
+      if (Boolean(file.rawFile)) {
+        return Promise.resolve(
+          saveFileInStorage({ resource: updatedResource, type, alt, file })
+        )
+          .then((res) => res.body)
+          .then((imageData) => {
+            return dataProvider
+              .create(resource, {
+                ...params,
+                data: {
+                  ...params.data,
+                  ...JSON.parse(imageData),
+                  src: file.src,
+                },
+              })
+              .then(({ data }) => {
+                const { _id, ...rest } = data;
+                const modifiedData = { id: _id, _id, ...rest };
+                return { data: modifiedData };
+              });
+          });
+      }
+    }
+
     return dataProvider
       .create(resource, params)
       .then(({ data }) => {
@@ -57,22 +95,25 @@ const addUploadFeature = (dataProvider) => ({
     const { id: previousDataId, ...restPreviousData } = previousData;
     const newParams = { id, data: restData, previousData: restPreviousData };
 
-    if (Boolean(params.data.icon)) {
-      const { rawFile, ...restImageData } = params.data.icon;
-      if (Boolean(rawFile)) {
-        return Promise.resolve(saveFileInStorage(resource, id, rawFile))
+    if (resource === "images" && Boolean(params.data.file)) {
+      const file = params.data.file;
+      const { type, alt } = params.data;
+      const updatedResource = `${resource}/${
+        type === "icon" ? "upload-icon" : "upload-picture"
+      }`;
+      if (Boolean(file.rawFile)) {
+        return Promise.resolve(
+          saveFileInStorage({ resource: updatedResource, type, alt, file })
+        )
           .then((res) => res.body)
           .then((imageData) => {
-            console.log(imageData);
             return dataProvider
               .update(resource, {
                 ...newParams,
                 data: {
                   ...newParams.data,
-                  icon: {
-                    ...restImageData,
-                    src: imageData,
-                  },
+                  ...JSON.parse(imageData),
+                  src: file.src,
                 },
               })
               .then(({ data }) => {
@@ -97,7 +138,7 @@ const addUploadFeature = (dataProvider) => ({
 });
 
 const dataProvider = simpleRestProvider(
-  `http://95.217.34.212:30000/api`,
+  `${process.env.NEXT_PUBLIC_SERVER_API_URL}`,
   httpClient
 );
 

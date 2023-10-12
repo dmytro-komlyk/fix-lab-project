@@ -1,4 +1,3 @@
-import { RichTextInput } from "ra-input-rich-text";
 import {
   BooleanField,
   BooleanInput,
@@ -12,11 +11,10 @@ import {
   TabbedForm,
   TextField,
   TextInput,
-  required,
   useRecordContext,
 } from "react-admin";
 
-const TitleBrand = ({ text }) => {
+const TitleBenefit = ({ text }) => {
   const record = useRecordContext();
   return (
     <span>
@@ -25,9 +23,9 @@ const TitleBrand = ({ text }) => {
   );
 };
 
-const ListBrands = () => {
+const ListBenefits = () => {
   return (
-    <List title="Бренди">
+    <List title="Бенефіти">
       <Datagrid rowClick="edit">
         <ImageField
           source="icon.src"
@@ -36,25 +34,25 @@ const ListBrands = () => {
             "& img": { maxWidth: 40, maxHeight: 40, objectFit: "contain" },
           }}
         />
-        <TextField source="slug" label="Slug" />
         <TextField source="title" label="Назва" />
-        <BooleanField source="isActive" label="Активний" />
+        <BooleanField label="Активний" source="isActive" />
       </Datagrid>
     </List>
   );
 };
 
-const EditBrand = () => {
+const EditBenefit = () => {
   return (
-    <Edit title={<TitleBrand text="Редагування бренду" />}>
+    <Edit title={<TitleBenefit text="Редагування бенефіту" />}>
       <TabbedForm>
         <TabbedForm.Tab label="Контент">
           <TextInput disabled source="id" />
-          <TextInput source="slug" label="Slug" validate={[required()]} />
-          <ReferenceInput source="icon" reference="images/icons">
+          <ReferenceInput
+            source="icon"
+            label="Бенефіти"
+            reference="images/icons"
+          >
             <RadioButtonGroupInput
-              validate={[required()]}
-              label="Іконка"
               optionText={
                 <ImageField
                   source="src"
@@ -74,40 +72,26 @@ const EditBrand = () => {
             </RadioButtonGroupInput>
           </ReferenceInput>
           <TextInput source="title" label="Заголовок" />
-          <RichTextInput source="article" label="Cтаття" />
           <BooleanInput source="isActive" label="Активний" />
-        </TabbedForm.Tab>
-        <TabbedForm.Tab label="SEO">
-          <TextField source="title" label="Назва" />
-          <TextInput source="metadata.title" label="SEO title" fullWidth />
-          <TextInput
-            source="metadata.description"
-            label="SEO description"
-            fullWidth
-          />
-          <TextInput
-            source="metadata.keywords"
-            label="SEO keywords"
-            fullWidth
-          />
         </TabbedForm.Tab>
       </TabbedForm>
     </Edit>
   );
 };
 
-const CreateBrand = () => {
+const CreateBenefit = () => {
   return (
-    <Create title={<TitleBrand text="Новый бренд" />}>
+    <Create title={<TitleBenefit text="Новий бенефіт" />}>
       <TabbedForm>
         <TabbedForm.Tab label="Контент">
-          <TextInput source="slug" label="Slug" />
-          <ReferenceInput source="icon" reference="images/icons">
+          <ReferenceInput
+            source="icon"
+            label="Бенефіти"
+            reference="images/icons"
+          >
             <RadioButtonGroupInput
-              validate={[required()]}
               optionText={
                 <ImageField
-                  label="Іконка"
                   source="src"
                   title="alt"
                   sx={{
@@ -125,26 +109,11 @@ const CreateBrand = () => {
             </RadioButtonGroupInput>
           </ReferenceInput>
           <TextInput source="title" label="Заголовок" />
-          <RichTextInput source="article" label="Cтаття" />
           <BooleanInput source="isActive" label="Активний" />
-        </TabbedForm.Tab>
-        <TabbedForm.Tab label="SEO">
-          <TextField source="title" label="Назва" />
-          <TextInput source="metadata.title" label="SEO title" fullWidth />
-          <TextInput
-            source="metadata.description"
-            label="SEO description"
-            fullWidth
-          />
-          <TextInput
-            source="metadata.keywords"
-            label="SEO keywords"
-            fullWidth
-          />
         </TabbedForm.Tab>
       </TabbedForm>
     </Create>
   );
 };
 
-export { CreateBrand, EditBrand, ListBrands };
+export { CreateBenefit, EditBenefit, ListBenefits };

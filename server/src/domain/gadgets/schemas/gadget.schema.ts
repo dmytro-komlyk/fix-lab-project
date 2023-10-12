@@ -5,8 +5,9 @@ import { Document, HydratedDocument, Types } from 'mongoose';
 import { Type } from 'class-transformer';
 
 import { Brand } from 'domain/brands/schemas/brand.schema';
+import { Image } from 'domain/images/schemas/image.schema';
 import { Issue } from 'domain/issues/schemas/issue.schema';
-import MetadataProps from 'shared/metadata-props.schema';
+import { Metadata } from 'shared/schemas/metadata.schema';
 
 export type GadgetDocument = HydratedDocument<Gadget>;
 
@@ -41,17 +42,18 @@ class Gadget extends Document {
   readonly icon: string;
 
   @ApiProperty({
-    example: 'public/gadget/image.svg',
-    isArray: true
+    type: Metadata
   })
-  @Prop({ type: [String], default: null })
-  readonly gallery: Array<string>;
+  @Prop({ type: Metadata })
+  readonly metadata: Metadata;
 
   @ApiProperty({
-    type: MetadataProps
+    type: Image,
+    isArray: true
   })
-  @Prop({ type: MetadataProps })
-  readonly metadata: MetadataProps;
+  @Prop({ type: [{ type: Types.ObjectId, ref: Image.name }] })
+  @Type(() => Image)
+  readonly gallery: Array<Image>;
 
   @ApiProperty({
     type: Brand,
