@@ -3,9 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { AuthModule } from './auth/auth.module';
+import { BenefitsModule } from './benefits/benefits.module';
 import { BrandsModule } from './brands/brands.module';
 import { ContactsModule } from './contacts/contacts.module';
 import { GadgetsModule } from './gadgets/gadgets.module';
+import { ImagesModule } from './images/images.module';
 import { IssuesModule } from './issues/issues.module';
 import { UsersModule } from './users/users.module';
 
@@ -28,8 +30,10 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     GadgetsModule,
     IssuesModule,
+    BenefitsModule,
     BrandsModule,
-    ContactsModule
+    ContactsModule,
+    ImagesModule
   ],
   controllers: [],
   providers: []

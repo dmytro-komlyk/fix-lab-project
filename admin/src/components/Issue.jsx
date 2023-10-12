@@ -1,55 +1,99 @@
+import { RichTextInput } from "ra-input-rich-text";
 import {
   BooleanField,
   BooleanInput,
+  CheckboxGroupInput,
   Create,
   Datagrid,
   Edit,
+  ImageField,
   List,
+  RadioButtonGroupInput,
+  ReferenceArrayInput,
+  ReferenceInput,
   TabbedForm,
   TextField,
   TextInput,
   useRecordContext,
 } from "react-admin";
 
-const TitleIssue = () => {
+const TitleIssue = ({ text }) => {
   const record = useRecordContext();
-  return <span>Послуга {record ? `"${record.title}"` : ""}</span>;
+  return (
+    <span>
+      {text} {record ? `"${record.title}"` : ""}
+    </span>
+  );
 };
 
 const ListIssues = () => {
   return (
-    <List title="Issues">
+    <List title="Послуги">
       <Datagrid rowClick="edit">
-        <TextField source="title" label="Послуга" />
+        <ImageField source="image.src" title="Зображення" />
         <TextField source="slug" label="Slug" />
-        <BooleanField label="isActive" source="isActive" />
+        <TextField source="title" label="Заголовок" />
+        <BooleanField label="Активний" source="isActive" />
       </Datagrid>
     </List>
   );
 };
 
-const EditIssue = (props) => {
-  console.log(props);
+const EditIssue = () => {
   return (
-    <Edit title={<TitleIssue />} {...props}>
+    <Edit title={<TitleIssue text="Редагування послуги" />}>
       <TabbedForm>
         <TabbedForm.Tab label="Контент">
-          <TextInput disabled source="slug" />
-          {/* <ImageInput source="icon" label="Related icon">
-          <ImageField source="src" title="title" />
-        </ImageInput> */}
-          <TextInput source="slug" label="Slug" required />
-          <TextInput source="title" label="Title" required fullWidth />
+          <TextInput disabled source="id" />
+          <TextInput source="slug" label="Slug" />
+          <TextInput source="title" label="Заголовок" fullWidth />
+          <TextInput source="price" label="Ціна" />
+          <ReferenceArrayInput
+            source="benefits"
+            label="Бенефіти"
+            reference="benefits"
+          >
+            <CheckboxGroupInput optionValue="_id" optionText="title" />
+          </ReferenceArrayInput>
+          <RichTextInput source="info" label="Інфо" />
+          <ReferenceInput
+            source="image"
+            label="Картинка"
+            reference="images/pictures"
+          >
+            <RadioButtonGroupInput
+              optionText={
+                <ImageField
+                  source="src"
+                  title="alt"
+                  sx={{
+                    "& img": {
+                      maxWidth: 250,
+                      maxHeight: 150,
+                      objectFit: "contain",
+                    },
+                  }}
+                />
+              }
+              optionValue="id"
+            >
+              <TextField source="id" />
+            </RadioButtonGroupInput>
+          </ReferenceInput>
+          <RichTextInput source="description" label="Опис" />
+          <BooleanInput source="isActive" label="Активний" />
+        </TabbedForm.Tab>
+        <TabbedForm.Tab label="SEO">
+          <TextInput source="metadata.title" label="SEO title" fullWidth />
           <TextInput
-            source="description"
-            label="Description"
-            required
+            source="metadata.description"
+            label="SEO description"
             fullWidth
           />
-          <BooleanInput
-            label="isActive"
-            source="isActive"
-            defaultChecked={true}
+          <TextInput
+            source="metadata.keywords"
+            label="SEO keywords"
+            fullWidth
           />
         </TabbedForm.Tab>
       </TabbedForm>
@@ -57,26 +101,69 @@ const EditIssue = (props) => {
   );
 };
 
-const CreateIssue = () => (
-  <Create>
-    <TabbedForm>
-      <TabbedForm.Tab label="Контент">
-        <TextInput source="slug" label="Slug" />
-        <TextInput source="title" label="Title" />
-        <TextInput source="description" label="Description" />
-        <TextInput source="price" label="Price" />
-        <TextInput source="info.diagnostic" label="Diagnostic Info" />
-        <TextInput source="info.gaurantee" label="Guarantee Info" />
-        <TextInput source="info.repair" label="Repair Info" />
-        <BooleanInput source="isActive" label="Is Active" />
-      </TabbedForm.Tab>
-      <TabbedForm.Tab label="SEO">
-        <TextInput source="metadata.title" label="SEO Title" />
-        <TextInput source="metadata.description" label="SEO Description" />
-        <TextInput source="metadata.keywords" label="SEO Keywords" />
-      </TabbedForm.Tab>
-    </TabbedForm>
-  </Create>
-);
+const CreateIssue = () => {
+  return (
+    <Create title={<TitleIssue text="Нова послуга" />}>
+      <TabbedForm>
+        <TabbedForm.Tab label="Контент">
+          <TextInput source="slug" label="Slug" />
+          <TextInput source="title" label="Заголовок" fullWidth />
+          <TextInput source="price" label="Ціна" />
+          <ReferenceArrayInput
+            source="benefits"
+            label="Бенефіти"
+            reference="benefits"
+          >
+            <CheckboxGroupInput optionValue="_id" optionText="title" />
+          </ReferenceArrayInput>
+          <RichTextInput source="info" label="Інфо" />
+          <ReferenceInput
+            source="image"
+            label="Картинка"
+            reference="images/pictures"
+          >
+            <RadioButtonGroupInput
+              optionText={
+                <ImageField
+                  source="src"
+                  title="alt"
+                  sx={{
+                    "& img": {
+                      maxWidth: 250,
+                      maxHeight: 150,
+                      objectFit: "contain",
+                    },
+                  }}
+                />
+              }
+              optionValue="id"
+            >
+              <TextField source="id" />
+            </RadioButtonGroupInput>
+          </ReferenceInput>
+          <RichTextInput source="description" label="Опис" />
+          <BooleanInput
+            source="isActive"
+            label="Активний"
+            defaultChecked={true}
+          />
+        </TabbedForm.Tab>
+        <TabbedForm.Tab label="SEO">
+          <TextInput source="metadata.title" label="SEO title" fullWidth />
+          <TextInput
+            source="metadata.description"
+            label="SEO description"
+            fullWidth
+          />
+          <TextInput
+            source="metadata.keywords"
+            label="SEO keywords"
+            fullWidth
+          />
+        </TabbedForm.Tab>
+      </TabbedForm>
+    </Create>
+  );
+};
 
 export { CreateIssue, EditIssue, ListIssues };

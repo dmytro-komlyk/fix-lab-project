@@ -2,18 +2,13 @@ import {
   Body,
   Controller,
   Delete,
-  FileTypeValidator,
   Get,
   Header,
   NotFoundException,
   Param,
-  ParseFilePipe,
-  Patch,
   Post,
-  UploadedFile,
-  UseInterceptors
+  Put
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
 
@@ -23,12 +18,10 @@ import { BrandsService } from './brands.service';
 
 import { Brand } from './schemas/brand.schema';
 
-import { FileStorageHelper } from 'helpers/file-storage.helper';
-
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
 
-import { PUBLIC_FOLDER, ROUTES } from 'constants/routes.constants';
+import { ROUTES } from 'constants/routes.constants';
 
 @ApiTags(ROUTES.brands)
 @Controller(ROUTES.brands)
@@ -61,7 +54,7 @@ export class BrandsController {
   @ApiResponse({ status: 200, type: Brand, isArray: true })
   @Get('/all')
   @Header('Access-Control-Expose-Headers', 'Content-Range')
-  @Header('Content-Range', 'posts 0-24/319')
+  @Header('Content-Range', 'brands 0-24/319')
   public async findAllBrands(): Promise<Brand[]> {
     return await this.brandsService.findAll();
   }
@@ -88,34 +81,14 @@ export class BrandsController {
   @ApiOperation({ summary: 'update existing Brand by ID' })
   @ApiResponse({ status: 200, type: Brand })
   @ApiResponse({ status: 404, description: 'Brand was not found' })
-  @Patch('/:id')
+  @Put('/:id')
   public async updateBrand(
     @Param('id') id: string,
     @Body()
     dto: UpdateBrandDto
   ): Promise<Brand> {
+    console.log(dto);
     return await this.brandsService.update(id, dto);
-  }
-
-  @ApiOperation({ summary: 'upload svg image for Brand by ID' })
-  @UseInterceptors(
-    FileInterceptor('icon', { storage: FileStorageHelper(ROUTES.brands) })
-  )
-  @Patch('/:id/update-icon')
-  public async updateBrandIcon(
-    @Param('id') id: string,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [new FileTypeValidator({ fileType: '.(svg|SVG)' })]
-      })
-    )
-    icon: Express.Multer.File
-  ): Promise<string> {
-    const filePath = `/${PUBLIC_FOLDER}/${ROUTES.brands}/${icon.filename}`;
-
-    await this.brandsService.updateIcon(id, { icon: filePath });
-
-    return filePath;
   }
 
   @ApiOperation({ summary: 'remove permanently Brand by ID' })
