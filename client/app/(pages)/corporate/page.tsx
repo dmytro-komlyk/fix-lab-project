@@ -1,3 +1,4 @@
+import { AddressSection } from '@/app/(layouts)'
 import { CallCourierSection } from '@/app/(layouts)/CallCourierSection'
 import { ColaborationSection } from '@/app/(layouts)/ColaborationSection'
 import IconCourier from '@/public/icons/icon-courier.svg'
@@ -12,7 +13,6 @@ import IconTablet from '@/public/icons/icon-tablet.svg'
 import IconWorkTime from '@/public/icons/icon-work-time.svg'
 import IconZoom from '@/public/icons/icon-zoom.svg'
 
-// import getData from '@/app/(server)/api/service/getData'
 import ForBusinessSection from './(components)/ForBusinessSection'
 
 const sectionData = {
@@ -98,14 +98,12 @@ const sectionData = {
 }
 
 export default async function Corporate() {
-  // const sectionDataUrl = ``
-  // const sectionData = await getData(sectionDataUrl)
-
   return (
     <main className='h-full flex-auto'>
       <ForBusinessSection sectionData={sectionData} />
       <CallCourierSection />
       <ColaborationSection />
+      <AddressSection />
     </main>
   )
 }

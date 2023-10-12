@@ -1,4 +1,5 @@
 import {
+  AddressSection,
   BrokenSection,
   CallCourierSection,
   ColaborationSection,
@@ -14,6 +15,7 @@ export default async function Home() {
       <BrokenSection gadgetsData={gadgetsData} />
       <CallCourierSection />
       <ColaborationSection />
+      <AddressSection />
     </main>
   )
 }
