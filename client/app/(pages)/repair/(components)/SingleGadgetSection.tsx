@@ -13,24 +13,12 @@ import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
-import type {
-  IBrand,
-  IGadget,
-  IIssue,
-} from '@/app/(server)/api/service/modules/gadgetService'
-
-import { GadgetBrandsSlider } from './GadgetBrandsSlider'
+import type { IIssue } from '@/app/(server)/api/service/modules/gadgetService'
 
 interface SingleGadgetProps {
-  singleGadgetData: IGadget
   issuesData: IIssue[]
-  brandData: IBrand[]
 }
-const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
-  singleGadgetData,
-  issuesData,
-  brandData,
-}) => {
+const SingleGadgetSection: React.FC<SingleGadgetProps> = ({ issuesData }) => {
   const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
     useState<boolean>(false)
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
@@ -55,7 +43,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
     setShowCostRepair(prev => !prev)
   }, [])
 
-  const { title, icon, description, slug } = singleGadgetData
+  // const { title, icon, description, slug } = singleGadgetData
 
   return (
     <section className=' overflow-hidden  bg-gradient-linear-blue  pb-[102px] pt-[159px] max-md:pb-14 max-md:pt-[138px]'>
@@ -90,16 +78,16 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
             <p> Ремонт</p> <MdKeyboardArrowRight size={30} />
           </Link>
 
-          <p className='text-base font-[400] text-[#3EB9F0] opacity-70'>
+          {/* <p className='text-base font-[400] text-[#3EB9F0] opacity-70'>
             {title}
-          </p>
+          </p> */}
         </div>
         <div className='z-[1] flex justify-between pt-[29px] max-xl:gap-8 max-lg:flex-col max-lg:gap-0  max-md:gap-0 '>
           <div className='max-xl:w-[350px] max-lg:w-full xl:max-w-[411px] '>
             <div className='flex flex-col items-start justify-between  pb-[68px]  max-xl:gap-4 max-xl:pb-[56px]  max-md:gap-8'>
               <div className='mb-14 flex items-center justify-center gap-[18px]'>
                 <div className='flex flex-col items-start justify-center '>
-                  {icon && (
+                  {/* {icon && (
                     <Image
                       className=' h-[80px]'
                       src={`http://95.217.34.212:30000${icon}`}
@@ -111,15 +99,15 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                       }}
                       alt={title}
                     />
-                  )}
+                  )} */}
                 </div>
-                <h2 className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
+                {/* <h2 className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
                   {title}
-                </h2>
+                </h2> */}
               </div>
-              <p className='mb-14 text-base font-[400] leading-6 tracking-[0.5px] text-white-dis'>
+              {/* <p className='mb-14 text-base font-[400] leading-6 tracking-[0.5px] text-white-dis'>
                 {description}
-              </p>
+              </p> */}
               <Button
                 text='Миттєва консультація'
                 toggleModal={toggleInstantAdviceModal}
@@ -134,10 +122,10 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
               <p className=' mb-[18px] font-exo_2 text-xl font-semibold leading-[0.7] text-white-dis'>
                 Бренди, які ремонтуємо
               </p>
-              <GadgetBrandsSlider
+              {/* <GadgetBrandsSlider
                 brandData={brandData}
                 gadgetData={singleGadgetData}
-              />
+              /> */}
               <p className='mb-8 mt-[47px] font-exo_2 text-xl font-semibold leading-[0.7] text-white-dis'>
                 Послуги
               </p>
@@ -150,7 +138,8 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                     >
                       <Link
                         className='flex h-[75px] items-center justify-between px-6 max-md:flex-col max-md:items-start  max-md:gap-2  max-md:py-[8px]'
-                        href={`/repair/${slug}/${item.slug}`}
+                        // href={`/repair/${slug}/${item.slug}`}
+                        href={`/repair/telefon/${item.slug}`}
                       >
                         <p className='font-exo_2 text-xl font-semibold text-dark-blue max-md:text-lg'>
                           {item.title}
