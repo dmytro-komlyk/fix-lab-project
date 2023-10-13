@@ -1,29 +1,27 @@
-import { headers } from 'next/headers'
-import React from 'react'
-
 import { type Location } from '@/app/(utils)/types'
 
 import { AddressLocationCard } from './(components)/AddressLocationCard'
 
-async function getData() {
-  const headersData = headers()
-  const protocol = headersData.get('x-forwarded-proto')
-  const host = headersData.get('host')
-  const response = await fetch(`${protocol}://${host}/api/locations`)
-
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc
-  if (response.status !== 200) {
-    //   // This will activate the closest `error.js` Error Boundary
-    throw new Error('Failed to fetch data')
-  }
-
-  return response.json()
-}
+const locations: Array<Location> = [
+  {
+    id: '1',
+    title: 'Голосіївський р-н',
+    address: 'Саперно-слобітська, 10',
+    phone: '+380632272728',
+    mapLink: 'https://goo.gl/maps/Ynvi3DGyr4kHo5XP7',
+    imageLink: '/images/map-screen-1.png',
+  },
+  {
+    id: '2',
+    title: 'Оболонський р-н',
+    address: 'Просп. Володимира Івасюка, 27',
+    phone: '+380632272730',
+    mapLink: 'https://goo.gl/maps/s93niPYLLkB3HXsK8',
+    imageLink: '/images/map-screen-2.png',
+  },
+]
 
 export const AddressSection = async () => {
-  const locations: Location[] = await getData()
-
   return (
     <section className='section'>
       <div className='container lg:p-0'>

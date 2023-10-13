@@ -53,6 +53,10 @@ module.exports = {
         pros: '0px 4px 24px 0px rgba(0, 0, 0, 0.10)',
         banner: '0px 0px 2px #FFFFFF',
       },
+      boxShadow: {
+        brand: '0px 4px 24px rgba(0, 0, 0, 0.10)',
+        brandLight: '0px 4px 14px #FFFFFF',
+      },
       fontFamily: {
         inter: ['var(--font-inter)'],
         manrope: ['var(--font-manrope)'],

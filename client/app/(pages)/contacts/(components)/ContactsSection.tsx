@@ -4,7 +4,13 @@ import { BiMap } from 'react-icons/bi'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 import { TbClockHour9 } from 'react-icons/tb'
 
-const ContactsSection = () => {
+import type { IContact } from '../page'
+
+interface ContactsProps {
+  contactsData: IContact[]
+}
+
+const ContactsSection: React.FC<ContactsProps> = () => {
   return (
     <section className=' overflow-hidden  bg-white-dis  pb-[102px] pt-[163px] max-md:pb-14 max-md:pt-[120px]'>
       <div className='container relative flex flex-col xl:p-0 '>

@@ -5,37 +5,14 @@ import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
+import type { IGadgetsProps } from '@/app/(layouts)'
 import Button from '@/app/(layouts)/(components)/Button'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 
-import { CategoriesSlider } from './CategoriesSlider'
+import { GadgetsSlider } from './GadgetsSlider'
 
-export interface CategoriesSectionProps {
-  categoryData: {
-    data: CategoryItem[]
-  }
-}
-export interface CategoryItem {
-  id: number
-  attributes: {
-    slug: string
-    title: string
-    img: {
-      data: {
-        attributes: {
-          url: string
-          height: number
-          width: number
-        }
-      }
-    }
-  }
-}
-
-const CategoriesSection: React.FC<CategoriesSectionProps> = ({
-  categoryData,
-}) => {
+const GadgetsSection: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
     useState<boolean>(false)
 
@@ -87,7 +64,7 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
               textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
             />
           </div>
-          <CategoriesSlider categoryData={categoryData} />
+          <GadgetsSlider gadgetsData={gadgetsData} />
         </div>
       </div>
       {showInstantAdviceModal && (
@@ -107,4 +84,4 @@ const CategoriesSection: React.FC<CategoriesSectionProps> = ({
   )
 }
 
-export default CategoriesSection
+export default GadgetsSection

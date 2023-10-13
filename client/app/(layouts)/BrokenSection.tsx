@@ -3,15 +3,16 @@
 import { AnimatePresence } from 'framer-motion'
 import React, { useCallback, useState } from 'react'
 
-import type { CategoriesSectionProps } from '../(pages)/repair/(components)/CategoriesSection'
-import CategoriesSlider from '../(pages)/repair/(components)/slider'
+import GadgetsSlider from '../(pages)/repair/(components)/slider'
+import type { IGadget } from '../(server)/api/service/modules/gadgetService'
 import Button from './(components)/Button'
 import InstantAdviceModal from './(components)/InstantAdviceModal'
 import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
 
-export const BrokenSection: React.FC<CategoriesSectionProps> = ({
-  categoryData,
-}) => {
+export interface IGadgetsProps {
+  gadgetsData: IGadget[]
+}
+export const BrokenSection: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
     useState<boolean>(false)
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
@@ -51,7 +52,7 @@ export const BrokenSection: React.FC<CategoriesSectionProps> = ({
             />
           </div>
 
-          <CategoriesSlider categoryData={categoryData} />
+          <GadgetsSlider gadgetsData={gadgetsData} />
         </div>
       </div>
       {showInstantAdviceModal && (
