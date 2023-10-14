@@ -1,5 +1,3 @@
-'use client'
-
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
 import { getAllGadgetsData } from '@/app/(server)/api/service/modules/gadgetService'
 
