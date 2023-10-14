@@ -5,7 +5,10 @@ import {
   CallCourierSection,
   ColaborationSection,
 } from '@/app/(layouts)'
-import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
+import {
+  getAllGadgetsData,
+  getSingleGadgetData,
+} from '@/app/(server)/api/service/modules/gadgetService'
 
 import SingleGadgetSection from '../(components)/SingleGadgetSection'
 
@@ -362,6 +365,13 @@ const issuesData = [
     ],
   },
 ]
+
+export async function generateStaticParams() {
+  const gadgets = await getAllGadgetsData()
+  return gadgets.map(gadget => ({
+    gadget: gadget.slug,
+  }))
+}
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const singleGadgetData = await getSingleGadgetData(params.gadget)
