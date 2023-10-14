@@ -1,14 +1,6 @@
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-
-import { BrandsService } from 'domain/brands/brands.service';
-import { IssuesService } from 'domain/issues/issues.service';
 
 import { Gadget } from './schemas/gadget.schema';
 
@@ -18,9 +10,7 @@ import { UpdateGadgetDto } from './dto/update-gadget.dto';
 @Injectable()
 export class GadgetsService {
   constructor(
-    @InjectModel(Gadget.name) private readonly gadgetModel: Model<Gadget>,
-    @Inject(BrandsService) private readonly brandsService: BrandsService,
-    @Inject(IssuesService) private readonly issuesService: IssuesService
+    @InjectModel(Gadget.name) private readonly gadgetModel: Model<Gadget>
   ) {}
 
   public async findAll(): Promise<Gadget[]> {
