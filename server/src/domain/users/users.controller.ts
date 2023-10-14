@@ -45,6 +45,17 @@ export class UsersController {
     return await this.usersService.create(dto);
   }
 
+  @ApiOperation({ summary: 'create new user' })
+  @ApiResponse({ status: 200, type: User })
+  @ApiResponse({ status: 400, description: 'Incorrect content data' })
+  @Post('/register')
+  public async register(
+    @Body()
+    dto: CreateUserDto
+  ): Promise<User> {
+    return await this.usersService.create(dto);
+  }
+
   @ApiOperation({ summary: 'update existing Contact by ID' })
   @ApiResponse({ status: 200, type: User })
   @ApiResponse({ status: 404, description: 'Contact was not found' })
