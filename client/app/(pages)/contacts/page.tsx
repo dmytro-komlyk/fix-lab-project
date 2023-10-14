@@ -1,11 +1,27 @@
-import React from 'react'
+import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 
 import ContactsSection from './(components)/ContactsSection'
 
-export default function Contacts() {
+export interface IContact {
+  _id: string
+  isActive: boolean
+  area: string
+  address: string
+  comment: string
+  subways: string[]
+  phones: string[]
+  workingTime: string
+  workingDate: string
+  coords: {
+    lat: number
+    lang: number
+  }
+}
+export default async function Contacts() {
+  const contactsData = await getAllContactsData()
   return (
     <main className=' flex-auto'>
-      <ContactsSection />
+      <ContactsSection contactsData={contactsData} />
     </main>
   )
 }

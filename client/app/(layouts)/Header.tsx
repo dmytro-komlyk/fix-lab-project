@@ -15,6 +15,8 @@ import MobileMenu from './(components)/MobileMenu'
 import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
 
 const blogIdRegex = /\/blog\/\d+/
+const brandsSinglePageRegex = /^\/repair\/([^/]+)\/brands\/([^/]+)\/?$/
+const brandsPageRegex = /^\/repair\/([^/]+)\/brands\/?$/
 
 export const Header: React.FC = () => {
   const pathname = usePathname()
@@ -103,7 +105,9 @@ export const Header: React.FC = () => {
         isScrolled ||
         pathname === '/repair' ||
         pathname === '/contacts' ||
-        blogIdRegex.test(pathname)
+        blogIdRegex.test(pathname) ||
+        brandsPageRegex.test(pathname) ||
+        brandsSinglePageRegex.test(pathname)
           ? ' bg-[#04268B]'
           : ''
       }`}

@@ -1,5 +1,5 @@
 'use client'
 
-import { CategoriesSlider } from './CategoriesSlider'
+import { GadgetsSlider } from './GadgetsSlider'
 
-export default CategoriesSlider
+export default GadgetsSlider

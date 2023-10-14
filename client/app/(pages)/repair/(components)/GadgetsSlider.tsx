@@ -1,46 +1,45 @@
+/* eslint-disable no-underscore-dangle */
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 import { useWindowSize } from '@/app/(hooks)/useWindowResize'
+import type { IGadgetsProps } from '@/app/(layouts)'
+import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
 
-import { CategoriesList } from './CategoriesList'
-import type { CategoriesSectionProps, CategoryItem } from './CategoriesSection'
+import { GadgetsList } from './GadgetsList'
 
-export const CategoriesSlider: React.FC<CategoriesSectionProps> = ({
-  categoryData,
-}) => {
+export const GadgetsSlider: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
   const [ref] = useKeenSlider<HTMLDivElement>({
     slides: { perView: 1.15, spacing: 16 },
   })
   const size = useWindowSize()
 
   return size.width > 767 ? (
-    <CategoriesList categoryData={categoryData} />
+    <GadgetsList gadgetsData={gadgetsData} />
   ) : (
-    <div className='navigation-wrapper relative z-10 mr-[-16px] md:mr-auto'>
+    <div className='relative z-10 mr-[-16px] md:mr-0'>
       <div ref={ref} className='keen-slider'>
-        {categoryData.data.map((item: CategoryItem) => {
-          const categoryPath = item.attributes.slug
-          const img = item.attributes.img.data.attributes.url
-          const { width, height } = item.attributes.img.data.attributes
+        {gadgetsData.map((item: IGadget) => {
           return (
             <Link
-              key={item.id}
-              href={`/repair/${categoryPath}`}
+              key={item._id}
+              href={`/repair/${item.slug}`}
               className='keen-slider__slide hover-gadget-link flex h-[261px] flex-col justify-between rounded-2xl bg-card-repair-gradient p-8'
             >
-              <Image
-                className='ml-auto'
-                src={img}
-                width={width}
-                height={height}
-                alt={item.attributes.title}
-              />
+              <div className='relative ml-auto h-[60px] w-[60px]'>
+                {item.icon && (
+                  <Image
+                    src={`http://95.217.34.212:30000${item.icon}`}
+                    fill
+                    alt={item.title}
+                  />
+                )}
+              </div>
               <div className='text-white-dis'>
                 <h3 className='mr-auto text-xl font-semibold leading-7'>
-                  {item.attributes.title}
+                  {item.title}
                 </h3>
                 <p className='hidden font-inter text-xs xl:text-sm'>
                   Подивитися поломки

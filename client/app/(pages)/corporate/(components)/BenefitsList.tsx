@@ -5,10 +5,9 @@ export interface IBenefitItem {
   id: number
   icon: {
     src: string
+    alt: string
     height: number
     width: number
-    blurWidth: number
-    blurHeight: number
   }
   alt: string
   title: string
