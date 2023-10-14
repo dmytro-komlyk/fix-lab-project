@@ -1,17 +1,17 @@
 /* eslint-disable no-console */
-const apiUrl = `http://95.217.34.212:30000/api` // замінити на NEXT_PUBLIC_BASE_URL
+import axios from 'axios'
+
+const apiUrl = `http://95.217.34.212:30000/api` // замінити на NEXT_PUBLIC_SERVER_URL
 
 export default async function fetchDataFromServer(url: string) {
   try {
-    const res = await fetch(`${apiUrl}${url}`, {
-      next: { revalidate: 60 },
-    })
+    const response = await axios.get(`${apiUrl}${url}`, {})
 
-    if (!res.ok) {
-      throw new Error(res.status.toString() + res.statusText)
+    if (response.status !== 200) {
+      throw new Error(`${response.status} ${response.statusText}`)
     }
 
-    return await res.json()
+    return response.data
   } catch (error) {
     console.error('Error fetching data:', error)
     throw error
