@@ -111,8 +111,8 @@ module.exports = {
         width: 'width',
       },
       animation: {
-        hoverBtnIn: 'slide-out-top 0.2s ease-in-out both',
-        hoverBtnOut: 'slide-out-bottom 0.2s ease-in-out both',
+        hoverBtnIn: 'slide-out-top 0.3s ease-in both',
+        hoverBtnOut: 'slide-out-bottom 0.3s ease-out both',
         hoverCard: 'all 0.3s ease-in-out',
         progressBar: 'width 0.5s',
         'slide-top': 'slide-out-top 0.2s ease-in-out both',
