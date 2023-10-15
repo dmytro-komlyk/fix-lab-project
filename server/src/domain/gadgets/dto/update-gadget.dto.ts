@@ -67,4 +67,24 @@ export class UpdateGadgetDto {
   @ValidateNested()
   @Type(() => MetadataDto)
   readonly metadata?: MetadataDto;
+
+  @ApiProperty({ example: '64ef4383e46e72721c03090e' })
+  @IsOptional()
+  @IsString()
+  readonly icon?: string;
+
+  @ApiProperty({ example: ['64ef4383e46e72721c03090e'] })
+  @IsOptional()
+  @IsString({ each: true })
+  readonly gallery?: Array<string>;
+
+  @ApiProperty({ example: ['64ef4383e46e72721c03090e'] })
+  @IsOptional()
+  @IsString({ each: true })
+  readonly issues?: Array<string>;
+
+  @ApiProperty({ example: ['64ef4383e46e72721c03090e'] })
+  @IsOptional()
+  @IsString({ each: true })
+  readonly brands?: Array<string>;
 }

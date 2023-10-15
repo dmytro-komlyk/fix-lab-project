@@ -24,7 +24,7 @@ export class CreateIssueDto {
   @IsDefined()
   @IsNotEmpty()
   @IsString()
-  readonly slug: string;
+  readonly slug?: string;
 
   @ApiProperty({
     example: 'Diagnostic',
@@ -61,15 +61,6 @@ export class CreateIssueDto {
   readonly info: string;
 
   @ApiProperty({
-    example: '"651c7fafb8f1268ad2156521"',
-    description: 'Image id'
-  })
-  @IsDefined()
-  @IsNotEmpty()
-  @IsString()
-  readonly image: string;
-
-  @ApiProperty({
     example: 'Diagnostic...',
     description: 'Issue description'
   })
@@ -96,5 +87,15 @@ export class CreateIssueDto {
   @IsNotEmptyObject()
   @ValidateNested()
   @Type(() => MetadataDto)
-  readonly metadata: MetadataDto;
+  readonly metadata?: MetadataDto;
+
+  @ApiProperty({ example: '64ef4383e46e72721c03090e' })
+  @IsOptional()
+  @IsString()
+  readonly image?: string;
+
+  @ApiProperty({ example: ['64ef4383e46e72721c03090e'] })
+  @IsOptional()
+  @IsString({ each: true })
+  readonly benefits?: string[];
 }

@@ -14,23 +14,34 @@ export class GadgetsService {
   ) {}
 
   public async findAll(): Promise<Gadget[]> {
-    return await this.gadgetModel.find().populate('brands').populate('issues');
+    return await this.gadgetModel
+      .find()
+      .populate({ path: 'brands', populate: { path: 'icon' } })
+      .populate({
+        path: 'issues',
+        populate: [{ path: 'benefits' }, { path: 'image' }]
+      })
+      .populate({ path: 'icon' })
+      .populate({ path: 'gallery' });
   }
 
   public async findAllActive(): Promise<Gadget[]> {
     return await this.gadgetModel
       .find({ isActive: true })
-      .populate('brands')
-      .populate('issues')
-      .select('-isActive');
+      .select('-isActive')
+      .populate({ path: 'icon' });
   }
 
   public async findOneByQuery(query: UpdateGadgetDto): Promise<Gadget> {
     return await this.gadgetModel
       .findOne(query)
-      .populate('brands')
-      .populate('issues')
-      .select('-isActive');
+      .populate({ path: 'brands', populate: { path: 'icon' } })
+      .populate({
+        path: 'issues',
+        populate: [{ path: 'benefits' }, { path: 'image' }]
+      })
+      .populate({ path: 'icon' })
+      .populate({ path: 'gallery' });
   }
 
   public async findOneById(id: string): Promise<Gadget> {
@@ -40,9 +51,13 @@ export class GadgetsService {
 
     const gadget = await this.gadgetModel
       .findById(id)
-      .populate('brands')
-      .populate('issues')
-      .select('-isActive');
+      .populate({ path: 'brands', populate: { path: 'icon' } })
+      .populate({
+        path: 'issues',
+        populate: [{ path: 'benefits' }, { path: 'image' }]
+      })
+      .populate({ path: 'icon' })
+      .populate({ path: 'gallery' });
 
     if (!gadget) {
       throw new NotFoundException(`Gadget with ID "${id}" was not found`);
@@ -71,9 +86,13 @@ export class GadgetsService {
       .findByIdAndUpdate(id, dto, {
         new: true
       })
-      .populate('brands')
-      .populate('issues')
-      .select('-isActive');
+      .populate({ path: 'brands', populate: { path: 'icon' } })
+      .populate({
+        path: 'issues',
+        populate: [{ path: 'benefits' }, { path: 'image' }]
+      })
+      .populate({ path: 'icon' })
+      .populate({ path: 'gallery' });
 
     return updatedGadget;
   }
