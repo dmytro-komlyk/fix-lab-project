@@ -87,7 +87,6 @@ export class BrandsController {
     @Body()
     dto: UpdateBrandDto
   ): Promise<Brand> {
-    console.log(dto);
     return await this.brandsService.update(id, dto);
   }
 

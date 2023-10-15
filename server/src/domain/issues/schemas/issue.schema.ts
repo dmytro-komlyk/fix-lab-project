@@ -1,11 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Document,
-  HydratedDocument,
-  Schema as MongooseSchema,
-  Types
-} from 'mongoose';
+import { Document, HydratedDocument, Types } from 'mongoose';
 
 import { Benefit } from 'domain/benefits/schemas/benefit.schema';
 import { Image } from 'domain/images/schemas/image.schema';
@@ -26,8 +21,7 @@ class Issue extends Document {
   @Prop({
     type: String,
     unique: true,
-    set: (v: string) => v?.trim().toLowerCase(),
-    required: true
+    set: (v: string) => v?.trim().toLowerCase()
   })
   readonly slug: string;
 
@@ -39,18 +33,6 @@ class Issue extends Document {
   @Prop({ type: String })
   readonly info: string;
 
-  @ApiProperty({
-    type: Benefit,
-    isArray: true
-  })
-  @Prop([
-    {
-      type: MongooseSchema.Types.ObjectId,
-      ref: Benefit.name
-    }
-  ])
-  readonly benefits: [Benefit];
-
   @ApiProperty({ example: 'Так виявляються приховані..' })
   @Prop({ type: String })
   readonly description: string;
@@ -59,18 +41,17 @@ class Issue extends Document {
   @Prop({ type: String, required: true })
   readonly price: string;
 
-  @ApiProperty({
-    type: Image
-  })
-  @Prop({
-    type: MongooseSchema.Types.ObjectId,
-    ref: Image.name
-  })
-  readonly image: Types.ObjectId;
-
   @ApiProperty({ type: Metadata })
   @Prop({ _id: false, type: Metadata })
   readonly metadata: Metadata;
+
+  @ApiProperty({ type: Image })
+  @Prop({ type: Types.ObjectId, ref: Image.name })
+  readonly image: Types.ObjectId;
+
+  @ApiProperty({ type: Benefit, isArray: true })
+  @Prop({ type: [{ type: Types.ObjectId, ref: Benefit.name }] })
+  readonly benefits: Array<Types.ObjectId>;
 }
 
 const IssueSchema = SchemaFactory.createForClass(Issue);
