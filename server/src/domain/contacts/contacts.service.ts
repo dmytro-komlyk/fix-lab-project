@@ -28,6 +28,16 @@ export class ContactsService {
     return contacts;
   }
 
+  public async findOneById(id: string): Promise<Contact> {
+    const contact = await this.contactModel.findById(id).populate({ path: 'image' });
+
+    if (!contact) {
+      throw new NotFoundException(`Contact with ID ${id} was not found`);
+    }
+
+    return contact;
+  }
+
   public async create(dto: CreateContactDto): Promise<Contact> {
     const createdContact = await new this.contactModel(dto).save();
 

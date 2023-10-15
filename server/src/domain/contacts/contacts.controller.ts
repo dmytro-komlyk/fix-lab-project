@@ -5,8 +5,8 @@ import {
   Get,
   Header,
   Param,
-  Put,
-  Post
+  Post,
+  Put
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
@@ -49,6 +49,14 @@ export class ContactsController {
   @Post('')
   public async create(@Body() dto: CreateContactDto): Promise<Contact> {
     return await this.contactsService.create(dto);
+  }
+
+  @ApiOperation({ summary: 'get Contact data by ID, auth reqiured*' })
+  @ApiResponse({ status: 200, type: Contact })
+  @ApiResponse({ status: 404, description: 'Contact was not found' })
+  @Get('/:id')
+  public async findBrandById(@Param('id') id: string): Promise<Contact> {
+    return await this.contactsService.findOneById(id);
   }
 
   @ApiOperation({ summary: 'update existing Contact by ID' })
