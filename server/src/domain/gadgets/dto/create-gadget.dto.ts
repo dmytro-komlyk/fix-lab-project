@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { Type } from 'class-transformer';
 import {
-  IsArray,
   IsBoolean,
   IsDefined,
   IsNotEmpty,
@@ -65,27 +64,4 @@ export class CreateGadgetDto {
   @ValidateNested()
   @Type(() => MetadataDto)
   readonly metadata?: MetadataDto;
-
-  @ApiProperty({ example: '64ef4383e46e72721c03090e' })
-  @IsOptional()
-  @IsString()
-  readonly icon?: string;
-
-  @ApiProperty({ example: ['64ef4383e46e72721c03090e'] })
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  readonly gallery?: Array<string>;
-
-  @ApiProperty({ example: ['64ef4383e46e72721c03090e'] })
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  readonly issues?: Array<string>;
-
-  @ApiProperty({ example: ['64ef4383e46e72721c03090e'] })
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  readonly brands?: Array<string>;
 }

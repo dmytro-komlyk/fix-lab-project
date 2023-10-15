@@ -33,6 +33,10 @@ class Contact extends Document {
   @Prop({ type: String, required: true })
   readonly address: string;
 
+  @ApiProperty({ type: Image })
+  @Prop({ type: Image, default: null })
+  readonly image: Image;
+
   @ApiProperty({
     example: 'Вхід через супермаркет ВЕЛМАРТ'
   })
@@ -60,10 +64,6 @@ class Contact extends Document {
   @ApiProperty({ type: Coords })
   @Prop({ _id: false, type: Coords })
   readonly coords: Coords;
-
-  @ApiProperty({ type: Image })
-  @Prop({ type: Types.ObjectId, ref: Image.name })
-  readonly image: Types.ObjectId;
 }
 
 const ContactSchema = SchemaFactory.createForClass(Contact);
