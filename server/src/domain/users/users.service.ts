@@ -39,6 +39,7 @@ export class UsersService {
     const password = await PasswordEncryptHelper(dto.password);
 
     const createdUser = await new this.userModel({ ...dto, password }).save();
+
     const user = await this.userModel
       .findOne({ login: createdUser.login })
       .select('-password');
