@@ -46,15 +46,15 @@ export class IssuesController {
   @Public()
   @Get('find-by-slug/:slug')
   public async findBySlug(@Param('slug') slug: string): Promise<Issue> {
-    const issue = await this.issuesService.findOneByQuery({
+    const result = await this.issuesService.findOneByQuery({
       slug
     });
 
-    if (!issue) {
+    if (!result) {
       throw new NotFoundException(`Issue with slug "${slug}" was not found`);
     }
 
-    return issue;
+    return result;
   }
 
   @ApiOperation({ summary: 'get all Issue data' })

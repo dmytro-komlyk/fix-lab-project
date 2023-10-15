@@ -17,6 +17,15 @@ import { MetadataDto } from 'shared/dto/metadata.dto';
 
 export class UpdateBrandDto {
   @ApiProperty({
+    example: '"651c7fafb8f1268ad2156521"',
+    description: 'Icon id'
+  })
+  @IsDefined()
+  @IsNotEmpty()
+  @IsString()
+  readonly icon?: string;
+
+  @ApiProperty({
     example: 'Apple',
     description: 'Brand title'
   })
@@ -67,9 +76,4 @@ export class UpdateBrandDto {
   @ValidateNested()
   @Type(() => MetadataDto)
   readonly metadata?: MetadataDto;
-
-  @ApiProperty({ example: '64ef4383e46e72721c03090e' })
-  @IsOptional()
-  @IsString()
-  readonly icon?: string;
 }

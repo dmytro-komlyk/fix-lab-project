@@ -14,22 +14,22 @@ export class IssuesService {
   public async findAll(): Promise<Issue[]> {
     return await this.issueModel
       .find()
-      .populate({ path: 'image' })
-      .populate({ path: 'benefits', populate: { path: 'icon' } });
+      .populate({ path: 'benefits', populate: { path: 'icon' } })
+      .populate('image');
   }
 
   public async findAllActive(): Promise<Issue[]> {
     return await this.issueModel
       .find({ isActive: true })
-      .populate({ path: 'image' })
-      .populate({ path: 'benefits', populate: { path: 'icon' } });
+      .populate({ path: 'benefits', populate: { path: 'icon' } })
+      .populate('image');
   }
 
   public async findOneByQuery(query: UpdateIssueDto): Promise<Issue> {
     return await this.issueModel
       .findOne(query)
       .select('-isActive')
-      .populate({ path: 'image' })
+      .populate('image')
       .populate({ path: 'benefits', populate: { path: 'icon' } });
   }
 
