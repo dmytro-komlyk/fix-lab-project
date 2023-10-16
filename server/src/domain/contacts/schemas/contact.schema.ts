@@ -6,16 +6,6 @@ import { Image } from 'domain/images/schemas/image.schema';
 
 export type ContactDocument = HydratedDocument<Contact>;
 
-class Coords {
-  @ApiProperty({ example: 50.44930083819644 })
-  @Prop({ type: Number })
-  readonly lang: number;
-
-  @ApiProperty({ example: 30.523043428894475 })
-  @Prop({ type: Number })
-  readonly lat: number;
-}
-
 @Schema({ versionKey: false })
 class Contact extends Document {
   @ApiProperty({ example: '64ef4383e46e72721c03090e' })
@@ -50,19 +40,23 @@ class Contact extends Document {
   readonly phones: Array<string>;
 
   @ApiProperty({ example: '10:00 - 19:30' })
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: true, default: null })
   readonly workingTime: string;
 
   @ApiProperty({ example: 'нд - вихідний' })
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: true, default: null })
   readonly workingDate: string;
 
-  @ApiProperty({ type: Coords })
-  @Prop({ _id: false, type: Coords })
-  readonly coords: Coords;
+  @ApiProperty({ example: 'https://maps.app.goo.gl/1pi9sxQl' })
+  @Prop({ type: String, default: null })
+  readonly googleMapLink: string;
+
+  @ApiProperty({ example: 'https://www.google.com/maps/embed?plugin....' })
+  @Prop({ type: String, default: null })
+  readonly googlePluginLink: string;
 
   @ApiProperty({ type: Image })
-  @Prop({ type: Types.ObjectId, ref: Image.name })
+  @Prop({ type: Types.ObjectId, ref: Image.name, default: null })
   readonly image: Types.ObjectId;
 }
 
