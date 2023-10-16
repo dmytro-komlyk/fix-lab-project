@@ -17,13 +17,12 @@ import { MetadataDto } from 'shared/dto/metadata.dto';
 
 export class CreateBrandDto {
   @ApiProperty({
-    example: '"651c7fafb8f1268ad2156521"',
-    description: 'Icon id'
+    example: false,
+    description: 'If false, will not appear on client side lists'
   })
-  @IsDefined()
-  @IsNotEmpty()
-  @IsString()
-  readonly icon: string;
+  @IsOptional()
+  @IsBoolean({ message: 'field must be a boolean' })
+  readonly isActive?: boolean;
 
   @ApiProperty({
     example: 'Apple',
@@ -47,14 +46,6 @@ export class CreateBrandDto {
   readonly slug: string;
 
   @ApiProperty({
-    example: false,
-    description: 'If false, will not appear on client side lists'
-  })
-  @IsOptional()
-  @IsBoolean({ message: 'field must be a boolean' })
-  readonly isActive?: boolean;
-
-  @ApiProperty({
     example: 'Reparing Apple phones...',
     description: 'article'
   })
@@ -74,4 +65,9 @@ export class CreateBrandDto {
   @ValidateNested()
   @Type(() => MetadataDto)
   readonly metadata?: MetadataDto;
+
+  @ApiProperty({ example: '64ef4383e46e72721c03090e' })
+  @IsOptional()
+  @IsString()
+  readonly icon?: string;
 }
