@@ -62,7 +62,7 @@ export class ContactsController {
   @ApiOperation({ summary: 'update existing Contact by ID' })
   @ApiResponse({ status: 200, type: Contact })
   @ApiResponse({ status: 404, description: 'Contact was not found' })
-  @Patch('/:id')
+  @Put('/:id')
   public async update(
     @Param('id') id: string,
     @Body() dto: UpdateContactDto
