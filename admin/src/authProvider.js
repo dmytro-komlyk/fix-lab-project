@@ -1,14 +1,9 @@
 const authProvider = {
-  register: ({ userLogin, email, password, name }) => {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append(
-      "Authorization",
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTAyZGFiNDVkZGY4ZjJiMDY1YzQwMjEiLCJsb2dpbiI6ImFkbWluIiwiaWF0IjoxNjk0Njg1OTQ0fQ.I0LLv5ihAY4OxR-h4RDfboVEO08pHrr3uUilr91poek"
-    );
+  register: async ({ userLogin, email, password, name }) => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
 
     const raw = JSON.stringify({
-      isActive: false,
       login: userLogin,
       password,
       email,
@@ -17,28 +12,31 @@ const authProvider = {
 
     const requestOptions = {
       method: "POST",
-      headers: myHeaders,
+      headers,
       body: raw,
     };
 
     return fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_API_URL}/users`,
+      `${process.env.NEXT_PUBLIC_SERVER_API_URL}/auth/register`,
       requestOptions
     )
-      .then((response) => {
+      .then(async (response) => {
+        const result = await response.text();
+
         if (!response.ok) {
           return Promise.reject("Invalid credentials");
         }
-        return response.text();
-      })
-      .then((result) => {
+
         localStorage.setItem("token", result);
-        return { redirectTo: "/#/gadgets" };
+        return { result: "ok" };
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => {
+        console.log("error", error);
+        return Promise.reject(error);
+      });
   },
 
-  login: ({ userLogin, password }) => {
+  login: async ({ userLogin, password }) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 

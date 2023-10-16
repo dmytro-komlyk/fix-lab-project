@@ -1,6 +1,6 @@
 import authProvider from "@/authProvider";
 import { useState } from "react";
-import { useLogin, useNotify } from "react-admin";
+import { useLogin, useNotify, useRedirect } from "react-admin";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { ThreeDots } from "react-loader-spinner";
 const MyAuthPage = () => {
@@ -11,6 +11,7 @@ const MyAuthPage = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const redirect = useRedirect();
 
   const login = useLogin();
   const notify = useNotify();
@@ -18,15 +19,22 @@ const MyAuthPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       if (isLoginMode) {
         await login({ userLogin, password });
       } else {
-        await authProvider.register({ userLogin, email, password, name });
+        const res = await authProvider.register({
+          userLogin,
+          email,
+          password,
+          name,
+        });
+        if (res) {
+          redirect("/");
+        }
       }
     } catch (error) {
-      notify("Неправильний логін або пароль");
+      notify("Неправильні дані авторизації");
     } finally {
       setLoading(false);
     }
