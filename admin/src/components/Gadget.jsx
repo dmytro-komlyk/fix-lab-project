@@ -38,8 +38,17 @@ const ListGadgets = () => {
 };
 
 const EditGadget = () => {
+  const transform = (data) => {
+    return {
+      ...data,
+      gallery: data.gallery.filter((image) => typeof image === "string"),
+      issues: data.issues.filter((issue) => typeof issue === "string"),
+      brands: data.brands.filter((brand) => typeof brand === "string"),
+    };
+  };
+
   return (
-    <Edit title={<TitleGadget />}>
+    <Edit title={<TitleGadget />} transform={transform}>
       <TabbedForm>
         <TabbedForm.Tab label="Контент">
           <TextInput disabled source="id" />
