@@ -1,20 +1,24 @@
 import {
   BooleanField,
   BooleanInput,
+  CheckboxGroupInput,
   Create,
   Datagrid,
   Edit,
   ImageField,
-  ImageInput,
   List,
+  RadioButtonGroupInput,
+  ReferenceArrayInput,
+  ReferenceInput,
   ReferenceManyField,
+  SelectArrayInput,
   TabbedForm,
   TextField,
   TextInput,
   required,
   useRecordContext,
 } from "react-admin";
-import { CreateIssue, ListIssues } from "./Issue";
+import { ListIssues } from "./Issue";
 
 const TitleGadget = () => {
   const record = useRecordContext();
@@ -34,14 +38,40 @@ const ListGadgets = () => {
 };
 
 const EditGadget = () => {
+  const transform = (data) => {
+    return {
+      ...data,
+      gallery: data.gallery.filter((image) => typeof image === "string"),
+      issues: data.issues.filter((issue) => typeof issue === "string"),
+      brands: data.brands.filter((brand) => typeof brand === "string"),
+    };
+  };
+
   return (
-    <Edit title={<TitleGadget />}>
+    <Edit title={<TitleGadget />} transform={transform}>
       <TabbedForm>
         <TabbedForm.Tab label="Контент">
           <TextInput disabled source="id" />
-          <ImageInput source="icon" label="Related icon">
-            <ImageField source="src" title="title" />
-          </ImageInput>
+          <ReferenceInput source="icon" label="Icon" reference="images/icons">
+            <RadioButtonGroupInput
+              optionText={
+                <ImageField
+                  source="src"
+                  title="alt"
+                  sx={{
+                    "& img": {
+                      maxWidth: 60,
+                      maxHeight: 60,
+                      objectFit: "contain",
+                    },
+                  }}
+                />
+              }
+              optionValue="id"
+            >
+              <TextField source="id" />
+            </RadioButtonGroupInput>
+          </ReferenceInput>
           <TextInput source="slug" label="Slug" validate={required()} />
           <TextInput
             source="title"
@@ -55,11 +85,37 @@ const EditGadget = () => {
             validate={required()}
             fullWidth
           />
-          <BooleanInput
-            label="isActive"
-            source="isActive"
-            defaultChecked={true}
-          />
+          <ReferenceArrayInput source="gallery" reference="images/pictures">
+            <CheckboxGroupInput
+              optionText={
+                <ImageField
+                  source="src"
+                  title="alt"
+                  sx={{
+                    "& img": {
+                      maxWidth: 250,
+                      maxHeight: 150,
+                      objectFit: "contain",
+                    },
+                  }}
+                />
+              }
+              optionValue="id"
+            />
+          </ReferenceArrayInput>
+          <ReferenceArrayInput source="issues" reference="issues">
+            <SelectArrayInput
+              optionValue="id"
+              optionText={<TextField source="title" />}
+            />
+          </ReferenceArrayInput>
+          <ReferenceArrayInput source="brands" reference="brands">
+            <SelectArrayInput
+              optionValue="id"
+              optionText={<TextField source="title" />}
+            />
+          </ReferenceArrayInput>
+          <BooleanInput label="isActive" source="isActive" />
         </TabbedForm.Tab>
         <TabbedForm.Tab label="Seo">
           <TextInput label="Title" source="metadata.title" />
@@ -81,10 +137,64 @@ const CreateGadget = () => {
     <Create>
       <TabbedForm>
         <TabbedForm.Tab label="Контент">
+          <ReferenceInput source="icon" label="Icon" reference="images/icons">
+            <RadioButtonGroupInput
+              optionText={
+                <ImageField
+                  source="src"
+                  title="alt"
+                  sx={{
+                    "& img": {
+                      maxWidth: 60,
+                      maxHeight: 60,
+                      objectFit: "contain",
+                    },
+                  }}
+                />
+              }
+              optionValue="id"
+            >
+              <TextField source="id" />
+            </RadioButtonGroupInput>
+          </ReferenceInput>
           <TextInput source="slug" label="Slug" validate={required()} />
           <TextInput source="title" label="Назва" fullWidth required />
           <TextInput source="description" label="Опис" fullWidth required />
-          <BooleanInput label="isActive" source="isActive" />
+          <ReferenceArrayInput source="gallery" reference="images/pictures">
+            <CheckboxGroupInput
+              optionText={
+                <ImageField
+                  source="src"
+                  title="alt"
+                  sx={{
+                    "& img": {
+                      maxWidth: 250,
+                      maxHeight: 150,
+                      objectFit: "contain",
+                    },
+                  }}
+                />
+              }
+              optionValue="id"
+            />
+          </ReferenceArrayInput>
+          <ReferenceArrayInput source="issues" reference="issues">
+            <SelectArrayInput
+              optionValue="id"
+              optionText={<TextField source="title" />}
+            />
+          </ReferenceArrayInput>
+          <ReferenceArrayInput source="brands" reference="brands">
+            <SelectArrayInput
+              optionValue="id"
+              optionText={<TextField source="title" />}
+            />
+          </ReferenceArrayInput>
+          <BooleanInput
+            label="isActive"
+            source="isActive"
+            defaultChecked={true}
+          />
         </TabbedForm.Tab>
         <TabbedForm.Tab label="SEO">
           <TextInput label="Title" source="metadata.title" />

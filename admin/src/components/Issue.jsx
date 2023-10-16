@@ -40,8 +40,18 @@ const ListIssues = () => {
 };
 
 const EditIssue = () => {
+  const transform = (data) => {
+    return {
+      ...data,
+      benefits: data.benefits.filter((benefit) => typeof benefit === "string"),
+    };
+  };
+
   return (
-    <Edit title={<TitleIssue text="Редагування послуги" />}>
+    <Edit
+      title={<TitleIssue text="Редагування послуги" />}
+      transform={transform}
+    >
       <TabbedForm>
         <TabbedForm.Tab label="Контент">
           <TextInput disabled source="id" />
@@ -53,7 +63,7 @@ const EditIssue = () => {
             label="Бенефіти"
             reference="benefits"
           >
-            <CheckboxGroupInput optionValue="_id" optionText="title" />
+            <CheckboxGroupInput optionValue="id" optionText="title" />
           </ReferenceArrayInput>
           <RichTextInput source="info" label="Інфо" />
           <ReferenceInput
