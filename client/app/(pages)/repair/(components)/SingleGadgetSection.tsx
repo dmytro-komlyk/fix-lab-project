@@ -13,6 +13,7 @@ import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
+import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 import type {
   IBrand,
   IGadget,
@@ -25,11 +26,13 @@ interface SingleGadgetProps {
   singleGadgetData: IGadget
   issuesData: IIssue[]
   brandData: IBrand[]
+  contactsData: IContact[]
 }
 const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
   singleGadgetData,
   issuesData,
   brandData,
+  contactsData,
 }) => {
   const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
     useState<boolean>(false)
@@ -102,14 +105,14 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                   {icon && (
                     <Image
                       className=' h-[80px]'
-                      src={`http://95.217.34.212:30000${icon}`}
+                      src={icon.src}
                       width={0}
                       height={80}
                       style={{
                         width: '100%',
                         height: 'auto',
                       }}
-                      alt={title}
+                      alt={icon.alt}
                     />
                   )}
                 </div>
@@ -127,7 +130,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                 textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
               />
             </div>
-            <CallUsCard />
+            <CallUsCard contactsData={contactsData} />
           </div>
           <div className='flex flex-col gap-8 lg:w-[737px] lg:gap-14'>
             <div className='flex flex-col'>
@@ -135,6 +138,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                 Бренди, які ремонтуємо
               </p>
               <GadgetBrandsSlider
+                contactsData={contactsData}
                 brandData={brandData}
                 gadgetData={singleGadgetData}
               />

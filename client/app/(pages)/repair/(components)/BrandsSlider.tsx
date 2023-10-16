@@ -11,13 +11,22 @@ import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
+import type { IContact } from '@/app/(server)/api/service/modules/contactService'
+import type {
+  IBrand,
+  IGadget,
+} from '@/app/(server)/api/service/modules/gadgetService'
 
-import type { BrandsProps } from './BrandsSection'
+export interface BrandsSliderProps {
+  brandData?: IBrand[]
+  gadgetData?: IGadget
+  contactsData: IContact[]
+}
 
-export const BrandsSlider: React.FC<BrandsProps> = ({
+export const BrandsSlider: React.FC<BrandsSliderProps> = ({
   brandData,
   gadgetData,
-  // sliderOption,
+  contactsData,
 }) => {
   const pathname = usePathname()
   const brandPath = pathname.split('/').pop()
@@ -137,7 +146,7 @@ export const BrandsSlider: React.FC<BrandsProps> = ({
           return (
             brandPath === item.slug && (
               <div className='ml-auto flex flex-col gap-16' key={item._id}>
-                <CallUsCard />
+                <CallUsCard contactsData={contactsData} />
                 <Button
                   text='Миттєва консультація'
                   toggleModal={toggleInstantAdviceModal}

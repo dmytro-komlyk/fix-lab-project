@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { AddressSection } from '@/app/(layouts)'
+import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
 
 import IssueSection from '../../(components)/IssueSection'
@@ -376,17 +377,18 @@ const brandData = [
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
   // const singleIssueData = await getSingleIssueData(params.issues)
-
+  const contactsData = await getAllContactsData()
   const singleGadgetData = await getSingleGadgetData(params.gadget)
   return (
     <main className='h-full flex-auto'>
       <IssueSection
+        contactsData={contactsData}
         brandData={brandData}
         issuesData={issuesData}
         singleIssueData={singleIssueData}
         singleGadgetData={singleGadgetData}
       />
-      <AddressSection />
+      <AddressSection contactsData={contactsData} />
     </main>
   )
 }

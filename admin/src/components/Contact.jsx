@@ -1,9 +1,13 @@
 import {
   ArrayInput,
+  CheckboxGroupInput,
   Datagrid,
   Edit,
+  ImageField,
   List,
-  NumberInput,
+  RadioButtonGroupInput,
+  ReferenceArrayInput,
+  ReferenceInput,
   SaveButton,
   SimpleFormIterator,
   TabbedForm,
@@ -41,29 +45,55 @@ const EditContact = () => {
           <TextInput fullWidth required label="Район" source="area" />
           <TextInput required label="Адрес" source="address" />
           <TextInput label="Комментар" source="comment" />
-          <TextInput
+          <ArrayInput
+            required
             label="Номер телефону"
             source="phones"
             helperText="В форматі +38 050 227 27 28"
-          />
+          >
+            <SimpleFormIterator>
+              <TextInput />
+            </SimpleFormIterator>
+          </ArrayInput>
           <ArrayInput required label="Станції метро" source="subways">
             <SimpleFormIterator>
               <TextInput />
             </SimpleFormIterator>
           </ArrayInput>
-
-          <NumberInput
-            required
-            label="Latitude"
-            source="coords.lat"
-            helperText="50.44930083819644"
+          <TextInput
+            fullWidth
+            label="Посилання адреси салону на карті"
+            source="googleMapLink"
           />
-          <NumberInput
-            required
-            label="Longitude"
-            source="coords.lang"
-            helperText="30.523043428894475"
+          <TextInput
+            fullWidth
+            label="Посилання адреси салону для плагіну"
+            source="googlePluginLink"
           />
+          <ReferenceInput
+            source="image"
+            label="image"
+            reference="images/pictures"
+          >
+            <RadioButtonGroupInput
+              optionText={
+                <ImageField
+                  source="src"
+                  title="alt"
+                  sx={{
+                    "& img": {
+                      maxWidth: 60,
+                      maxHeight: 60,
+                      objectFit: "contain",
+                    },
+                  }}
+                />
+              }
+              optionValue="id"
+            >
+              <TextField source="id" />
+            </RadioButtonGroupInput>
+          </ReferenceInput>
         </TabbedForm.Tab>
         <TabbedForm.Tab label="Редагувати загальні дані">
           <TextInput required label="Робочий час" source="workingTime" />

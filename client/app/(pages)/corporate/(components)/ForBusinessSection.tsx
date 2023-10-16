@@ -11,6 +11,7 @@ import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
+import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 
 import type { IBenefitItem } from './BenefitsList'
 import { BenefitsList } from './BenefitsList'
@@ -18,6 +19,7 @@ import type { IGadgetItem } from './GadgetsList'
 import { GadgetsList } from './GadgetsList'
 
 export interface IForBusinessSectionProps {
+  contactsData: IContact[]
   sectionData: {
     path: string
     info: {
@@ -34,6 +36,7 @@ export interface IForBusinessSectionProps {
 
 const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
   sectionData,
+  contactsData,
 }) => {
   const windowSize = useWindowSize()
 
@@ -84,7 +87,7 @@ const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
                 textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
               />
             </div>
-            <CallUsCard />
+            <CallUsCard contactsData={contactsData} />
           </div>
           <div className='flex flex-col gap-8'>
             <Image

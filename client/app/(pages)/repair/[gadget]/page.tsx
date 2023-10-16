@@ -5,6 +5,7 @@ import {
   CallCourierSection,
   ColaborationSection,
 } from '@/app/(layouts)'
+import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 import {
   getAllGadgetsData,
   getSingleGadgetData,
@@ -375,16 +376,18 @@ export async function generateStaticParams() {
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const singleGadgetData = await getSingleGadgetData(params.gadget)
+  const contactsData = await getAllContactsData()
   return (
     <main className='flex-auto'>
       <SingleGadgetSection
         singleGadgetData={singleGadgetData}
         issuesData={issuesData}
         brandData={brandData}
+        contactsData={contactsData}
       />
       <CallCourierSection />
       <ColaborationSection />
-      <AddressSection />
+      <AddressSection contactsData={contactsData} />
     </main>
   )
 }

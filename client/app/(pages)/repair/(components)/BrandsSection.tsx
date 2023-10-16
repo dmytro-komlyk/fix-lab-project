@@ -5,6 +5,7 @@ import Link from 'next/link'
 import React from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
+import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 import type {
   IBrand,
   IGadget,
@@ -13,11 +14,16 @@ import type {
 import { BrandsSlider } from './BrandsSlider'
 
 export interface BrandsProps {
+  contactsData: IContact[]
   brandData?: IBrand[]
   gadgetData?: IGadget
 }
 
-const BrandsSection: React.FC<BrandsProps> = ({ brandData, gadgetData }) => {
+const BrandsSection: React.FC<BrandsProps> = ({
+  brandData,
+  gadgetData,
+  contactsData,
+}) => {
   return (
     <section className='overflow-hidden'>
       <div className='container flex flex-col gap-[27px] pb-[140px] pt-[158px] max-lg:pb-[50px] lg:px-0'>
@@ -51,7 +57,7 @@ const BrandsSection: React.FC<BrandsProps> = ({ brandData, gadgetData }) => {
           {gadgetData && (
             <div className='mb-[50px] h-[80px]'>
               <Image
-                src={`http://95.217.34.212:30000${gadgetData.icon}`}
+                src={gadgetData.icon.src}
                 width={0}
                 height={80}
                 style={{
@@ -60,14 +66,18 @@ const BrandsSection: React.FC<BrandsProps> = ({ brandData, gadgetData }) => {
                   filter:
                     'brightness(0) saturate(100%) invert(13%) sepia(26%) saturate(7352%) hue-rotate(220deg) brightness(109%) contrast(113%)',
                 }}
-                alt={gadgetData.title}
+                alt={gadgetData.icon.alt}
               />
             </div>
           )}
           <h1 className='mb-[29px] font-exo_2 text-2xl font-bold leading-[1.2px] text-black-dis'>
             Бренди телефонів, які ремонтуємо у сервісному центрі FixLab
           </h1>
-          <BrandsSlider brandData={brandData} gadgetData={gadgetData} />
+          <BrandsSlider
+            contactsData={contactsData}
+            brandData={brandData}
+            gadgetData={gadgetData}
+          />
         </div>
       </div>
     </section>

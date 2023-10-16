@@ -17,7 +17,7 @@ import type { BrandsProps } from './BrandsSection'
 export const GadgetBrandsSlider: React.FC<BrandsProps> = ({
   brandData,
   gadgetData,
-  // sliderOption,
+  contactsData,
 }) => {
   const pathname = usePathname()
   const brandPath = pathname.split('/').pop()
@@ -128,7 +128,7 @@ export const GadgetBrandsSlider: React.FC<BrandsProps> = ({
           return (
             brandPath === item.slug && (
               <div className='ml-auto flex flex-col gap-16' key={item._id}>
-                <CallUsCard />
+                <CallUsCard contactsData={contactsData} />
                 <Button
                   text='Миттєва консультація'
                   toggleModal={toggleInstantAdviceModal}

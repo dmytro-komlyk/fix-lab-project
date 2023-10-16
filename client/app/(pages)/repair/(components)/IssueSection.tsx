@@ -14,6 +14,7 @@ import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
+import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 import type {
   IBrand,
   IGadget,
@@ -24,6 +25,7 @@ import { BenefitsList } from '../../corporate/(components)/BenefitsList'
 import { GadgetBrandsSlider } from './GadgetBrandsSlider'
 
 interface SingleIssueProps {
+  contactsData: IContact[]
   issuesData: IIssue[]
   singleIssueData: IIssue
   singleGadgetData: IGadget
@@ -35,6 +37,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
   singleGadgetData,
   issuesData,
   brandData,
+  contactsData,
 }) => {
   const markdown = new MarkdownIt({
     html: true,
@@ -137,7 +140,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                     textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
                   />
                 </div>
-                <CallUsCard />
+                <CallUsCard contactsData={contactsData} />
               </div>
               <div className='flex flex-col gap-8 lg:w-[737px] lg:gap-14'>
                 <div>
@@ -165,6 +168,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                       Бренди, які ремонтуємо
                     </p>
                     <GadgetBrandsSlider
+                      contactsData={contactsData}
                       brandData={brandData}
                       gadgetData={singleGadgetData}
                     />

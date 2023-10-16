@@ -2,7 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { LiaViber } from 'react-icons/lia'
 
-export const Footer = () => {
+import type { IContactsProps } from './(components)/AddressLocationCard'
+
+export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
   return (
     <footer className='bg-footer-gradient-linear-blue '>
       <div className='container relative flex flex-col items-start gap-[52px] py-14 md:flex-row md:justify-between md:px-0 xl:gap-[240px]'>
@@ -160,27 +162,27 @@ export const Footer = () => {
           </ul>
           <div className='flex flex-col items-end gap-4 md:flex-col md:items-start md:gap-[30px] lg:flex lg:items-end lg:gap-[25px]'>
             <ul className='flex flex-col gap-1'>
-              <li>
-                <a
-                  href='tel:380632272730'
-                  className='text-base font-medium leading-7 tracking-wide text-mid-green transition-colors hover:text-white-dis  focus:text-white-dis'
-                >
-                  +38 050 227 27 28
-                </a>
-              </li>
-              <li>
-                <a
-                  href='tel:380632272728'
-                  className='text-base font-medium leading-7 tracking-wide text-mid-green transition-colors hover:text-white-dis  focus:text-white-dis'
-                >
-                  +38 063 227 27 28
-                </a>
-              </li>
+              {contactsData.map(item => (
+                <li key={item._id}>
+                  {item.phones.map(phoneNumber => (
+                    <a
+                      key={phoneNumber}
+                      href={`tel:${phoneNumber.replace(/\s/g, '')}`}
+                      className='text-base font-medium leading-7 tracking-wide text-mid-green transition-colors hover:text-white-dis focus:text-white-dis'
+                    >
+                      {phoneNumber}
+                    </a>
+                  ))}
+                </li>
+              ))}
             </ul>
             <div className='flex flex-col items-start gap-1 '>
-              <span className='text-base  text-white-dis'>10:00 - 19:30</span>
-
-              <span className='text-base  text-white-dis '>нд - вихідний</span>
+              <span className='text-base  text-white-dis'>
+                {contactsData[0]?.workingTime}
+              </span>
+              <span className='text-base  text-white-dis '>
+                {contactsData[0]?.workingDate}
+              </span>
             </div>
             <ul className='flex  max-md:hidden md:flex md:gap-3'>
               <li>

@@ -6,7 +6,10 @@ export interface IGadget {
   isActive: boolean
   title: string
   description: string
-  icon: string
+  icon: {
+    alt: string
+    src: string
+  }
   image: string
   gallery: string
   metadata: {

@@ -1,6 +1,7 @@
 import { AddressSection } from '@/app/(layouts)'
 import { CallCourierSection } from '@/app/(layouts)/CallCourierSection'
 import { ColaborationSection } from '@/app/(layouts)/ColaborationSection'
+import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 import IconCourier from '@/public/icons/icon-courier.svg'
 import IconFastArrival from '@/public/icons/icon-fast-arrival.svg'
 import IconGuard from '@/public/icons/icon-guard.svg'
@@ -98,12 +99,17 @@ const sectionData = {
 }
 
 export default async function Corporate() {
+  const contactsData = await getAllContactsData()
+
   return (
     <main className='h-full flex-auto'>
-      <ForBusinessSection sectionData={sectionData} />
+      <ForBusinessSection
+        sectionData={sectionData}
+        contactsData={contactsData}
+      />
       <CallCourierSection />
       <ColaborationSection />
-      <AddressSection />
+      <AddressSection contactsData={contactsData} />
     </main>
   )
 }
