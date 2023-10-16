@@ -10,15 +10,7 @@ import {
   Length
 } from 'class-validator';
 
-export class UpdateContactDto {
-  @ApiProperty({ example: 'Голосіївський', description: 'Area title' })
-  @IsOptional()
-  @IsString()
-  @Length(1, 60, {
-    message: 'title required to be 1-60 symbols length'
-  })
-  readonly area?: string;
-
+export class CreateContactDto {
   @ApiProperty({
     example: true,
     description: 'if False - will not appear on client side'
@@ -27,19 +19,24 @@ export class UpdateContactDto {
   @IsBoolean()
   readonly isActive?: boolean;
 
+  @ApiProperty({ example: 'Голосіївський', description: 'Area title' })
+  @IsString()
+  @Length(1, 60, {
+    message: 'title required to be 1-60 symbols length'
+  })
+  readonly area: string;
+
   @ApiProperty({ example: 'Саперно-Слобідська, 10' })
-  @IsOptional()
   @IsString()
   @Length(1, 120, {
     message: 'title required to be 1-120 symbols length'
   })
-  readonly address?: string;
+  readonly address: string;
 
   @ApiProperty({ example: 'Вхід через супермаркет ВЕЛМАРТ' })
-  @IsOptional()
   @IsNotEmpty()
   @IsString()
-  readonly comment?: string;
+  readonly comment: string;
 
   @ApiProperty({ example: ['Мінська', 'Оболонь'] })
   @IsOptional()
@@ -48,22 +45,19 @@ export class UpdateContactDto {
   readonly subways?: Array<string>;
 
   @ApiProperty({ example: ['+38 050 227 27 28', '+38 050 227 27 30'] })
-  @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  readonly phones?: Array<string>;
+  readonly phones: Array<string>;
 
   @ApiProperty({ example: '10:00 - 19:30' })
-  @IsOptional()
   @IsNotEmpty()
   @IsString()
-  readonly workingTime?: string;
+  readonly workingTime: string;
 
   @ApiProperty({ example: 'нд - вихідний' })
-  @IsOptional()
   @IsNotEmpty()
   @IsString()
-  readonly workingDate?: string;
+  readonly workingDate: string;
 
   @ApiProperty({
     example: { lang: 50.44930083819644, lat: 30.523043428894475 }
@@ -71,7 +65,12 @@ export class UpdateContactDto {
   @IsOptional()
   @IsObject()
   readonly coords?: {
-    lang?: number;
-    lat?: number;
+    lang: number;
+    lat: number;
   };
+
+  @ApiProperty({ example: '64ef4383e46e72721c03090e' })
+  @IsOptional()
+  @IsString()
+  readonly image?: string;
 }
