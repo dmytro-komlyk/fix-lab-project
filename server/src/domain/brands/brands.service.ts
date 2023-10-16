@@ -12,15 +12,15 @@ export class BrandsService {
   constructor(@InjectModel(Brand.name) private readonly brandModel: Model<Brand>) {}
 
   public async findAll(): Promise<Brand[]> {
-    return await this.brandModel.find().populate({ path: 'icon' });
+    return await this.brandModel.find().populate('icon');
   }
 
   public async findAllByQuery(query: UpdateBrandDto): Promise<Brand[]> {
-    return await this.brandModel.find(query).populate({ path: 'icon' });
+    return await this.brandModel.find(query).populate('icon');
   }
 
   public async findOneByQuery(query: UpdateBrandDto): Promise<Brand> {
-    return await this.brandModel.findOne(query).populate({ path: 'icon' });
+    return await this.brandModel.findOne(query).populate('icon');
   }
 
   public async findOneById(id: string): Promise<Brand> {
@@ -28,7 +28,7 @@ export class BrandsService {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
 
-    const brand = await this.brandModel.findById(id).populate({ path: 'icon' });
+    const brand = await this.brandModel.findById(id).populate('icon');
 
     if (!brand) {
       throw new NotFoundException(`Brand with ID "${id}" was not found`);
@@ -40,11 +40,9 @@ export class BrandsService {
   public async findAllByIds(ids: string[]) {
     const objectIds = ids.map((value) => new Types.ObjectId(value));
 
-    const brands = await this.brandModel
-      .find({
-        _id: { $in: objectIds }
-      })
-      .populate({ path: 'icon' });
+    const brands = await this.brandModel.find({
+      _id: { $in: objectIds }
+    });
 
     return brands;
   }
@@ -69,7 +67,7 @@ export class BrandsService {
       .findByIdAndUpdate(id, dto, {
         new: true
       })
-      .populate({ path: 'icon' });
+      .populate('icon');
 
     return brand;
   }
