@@ -35,7 +35,8 @@ export const AddressLocationCard: React.FC<IContactsProps> = ({
           ))}
         </div>
         <a
-          href='https://goo.gl/maps/s93niPYLLkB3HXsK8'
+          href={item.googleMapLink}
+          target='_blank'
           className='mt-auto w-fit cursor-pointer border-b-[2px] border-b-white-dis font-semibold tracking-wider lg:hidden'
         >
           Подивитися на мапі
