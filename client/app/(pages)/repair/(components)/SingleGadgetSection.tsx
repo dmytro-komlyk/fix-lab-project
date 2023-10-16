@@ -58,8 +58,8 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
   const { title, icon, description, slug } = singleGadgetData
 
   return (
-    <section className=' overflow-hidden  bg-gradient-linear-blue  pb-[102px] pt-[159px] max-md:pb-14 max-md:pt-[138px]'>
-      <div className='container relative flex flex-col p-0 '>
+    <section className=' overflow-hidden  bg-gradient-linear-blue  pb-[102px] pt-[159px] max-md:pb-14 max-md:pt-[117px]'>
+      <div className='container relative flex flex-col xl:p-0'>
         <div className=' absolute left-[335px] top-[175px] max-lg:hidden'>
           <Image
             src='/background-flicker-center.svg'
@@ -97,7 +97,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
         <div className='z-[1] flex justify-between pt-[29px] max-xl:gap-8 max-lg:flex-col max-lg:gap-0  max-md:gap-0 '>
           <div className='max-xl:w-[350px] max-lg:w-full xl:max-w-[411px] '>
             <div className='flex flex-col items-start justify-between  pb-[68px]  max-xl:gap-4 max-xl:pb-[56px]  max-md:gap-8'>
-              <div className='mb-14 flex items-center justify-center gap-[18px]'>
+              <div className='flex items-center justify-center gap-[18px] xl:mb-14'>
                 <div className='flex flex-col items-start justify-center '>
                   {icon && (
                     <Image
@@ -117,7 +117,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                   {title}
                 </h2>
               </div>
-              <p className='mb-14 text-base font-[400] leading-6 tracking-[0.5px] text-white-dis'>
+              <p className='text-base font-[400] leading-6 tracking-[0.5px] text-white-dis xl:mb-14'>
                 {description}
               </p>
               <Button
@@ -149,7 +149,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                       key={item._id}
                     >
                       <Link
-                        className='flex h-[75px] items-center justify-between px-6 max-md:flex-col max-md:items-start  max-md:gap-2  max-md:py-[8px]'
+                        className='flex items-center gap-[12px] max-md:flex-col max-md:items-start max-md:justify-center  max-md:px-[16px] max-md:py-[12px] md:h-[75px] md:justify-between md:px-6'
                         href={`/repair/${slug}/${item.slug}`}
                       >
                         <p className='font-exo_2 text-xl font-semibold text-dark-blue max-md:text-lg'>

@@ -47,7 +47,7 @@ export const GadgetBrandsSlider: React.FC<BrandsProps> = ({
     initial: 0,
     breakpoints: {
       '(min-width: 390px)': {
-        slides: { perView: 2 },
+        slides: { perView: 3 },
         mode: 'free',
       },
       '(min-width: 768px)': {

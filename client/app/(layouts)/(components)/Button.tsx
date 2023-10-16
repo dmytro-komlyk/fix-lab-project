@@ -17,7 +17,11 @@ const Button: React.FC<ButtonProps> = ({
   icon,
 }) => {
   return (
-    <button type='button' onClick={toggleModal} className={`${styles}`}>
+    <button
+      type='button'
+      onClick={toggleModal}
+      className={`duration-150 ease-in-out ${styles}`}
+    >
       <p className={`${textHoverAnimation}`}>{text}</p>
       <span>{icon && <FiArrowUpRight className={icon} />}</span>
     </button>

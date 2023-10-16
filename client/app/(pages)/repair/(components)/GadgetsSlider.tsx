@@ -28,7 +28,7 @@ export const GadgetsSlider: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
               href={`/repair/${item.slug}`}
               className='keen-slider__slide hover-gadget-link flex h-[261px] flex-col justify-between rounded-2xl bg-card-repair-gradient p-8'
             >
-              <div className='relative ml-auto h-[60px] w-[60px]'>
+              <div className='relative ml-auto h-[80px] w-full max-w-[104px]'>
                 {item.icon && (
                   <Image
                     src={`http://95.217.34.212:30000${item.icon}`}
