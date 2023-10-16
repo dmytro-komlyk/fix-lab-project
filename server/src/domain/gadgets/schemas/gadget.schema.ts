@@ -2,6 +2,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document, HydratedDocument, Types } from 'mongoose';
 
+import { Type } from 'class-transformer';
+
 import { Brand } from 'domain/brands/schemas/brand.schema';
 import { Image } from 'domain/images/schemas/image.schema';
 import { Issue } from 'domain/issues/schemas/issue.schema';
@@ -35,25 +37,43 @@ class Gadget extends Document {
   @Prop({ type: String, required: true })
   readonly description: string;
 
-  @ApiProperty({ type: Metadata })
+  @ApiProperty({ example: 'public/gadget/icon.svg' })
+  @Prop({ type: String, default: null })
+  readonly icon: string;
+
+  @ApiProperty({
+    type: Metadata
+  })
   @Prop({ type: Metadata })
   readonly metadata: Metadata;
 
-  @ApiProperty({ type: Image })
-  @Prop({ type: Types.ObjectId, ref: Image.name })
-  readonly icon: Types.ObjectId;
-
-  @ApiProperty({ type: Image, isArray: true })
+  @ApiProperty({
+    type: Image,
+    isArray: true
+  })
   @Prop({ type: [{ type: Types.ObjectId, ref: Image.name }] })
-  readonly gallery: Array<Types.ObjectId>;
+  @Type(() => Image)
+  readonly gallery: Array<Image>;
 
-  @ApiProperty({ type: Brand, isArray: true })
-  @Prop({ type: [{ type: Types.ObjectId, ref: Brand.name }] })
-  readonly brands: Array<Types.ObjectId>;
+  @ApiProperty({
+    type: Brand,
+    isArray: true
+  })
+  @Prop({
+    type: [{ type: Types.ObjectId, ref: Brand.name }]
+  })
+  @Type(() => Brand)
+  readonly brands: Array<Brand>;
 
-  @ApiProperty({ type: Issue, isArray: true })
-  @Prop({ type: [{ type: Types.ObjectId, ref: Issue.name }] })
-  readonly issues: Array<Types.ObjectId>;
+  @ApiProperty({
+    type: Issue,
+    isArray: true
+  })
+  @Prop({
+    type: [{ type: Types.ObjectId, ref: Issue.name }]
+  })
+  @Type(() => Issue)
+  readonly issues: Array<Issue>;
 }
 
 const GadgetSchema = SchemaFactory.createForClass(Gadget);

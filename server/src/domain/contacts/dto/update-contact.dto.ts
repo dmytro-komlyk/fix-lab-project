@@ -74,9 +74,4 @@ export class UpdateContactDto {
     lang?: number;
     lat?: number;
   };
-
-  @ApiProperty({ example: '64ef4383e46e72721c03090e' })
-  @IsOptional()
-  @IsString()
-  readonly image?: string;
 }

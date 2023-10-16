@@ -14,34 +14,23 @@ export class GadgetsService {
   ) {}
 
   public async findAll(): Promise<Gadget[]> {
-    return await this.gadgetModel
-      .find()
-      .populate({ path: 'brands', populate: { path: 'icon' } })
-      .populate({
-        path: 'issues',
-        populate: [{ path: 'benefits' }, { path: 'image' }]
-      })
-      .populate({ path: 'icon' })
-      .populate({ path: 'gallery' });
+    return await this.gadgetModel.find().populate('brands').populate('issues');
   }
 
   public async findAllActive(): Promise<Gadget[]> {
     return await this.gadgetModel
       .find({ isActive: true })
-      .select('-isActive')
-      .populate({ path: 'icon' });
+      .populate('brands')
+      .populate('issues')
+      .select('-isActive');
   }
 
   public async findOneByQuery(query: UpdateGadgetDto): Promise<Gadget> {
     return await this.gadgetModel
       .findOne(query)
-      .populate({ path: 'brands', populate: { path: 'icon' } })
-      .populate({
-        path: 'issues',
-        populate: [{ path: 'benefits' }, { path: 'image' }]
-      })
-      .populate({ path: 'icon' })
-      .populate({ path: 'gallery' });
+      .populate('brands')
+      .populate('issues')
+      .select('-isActive');
   }
 
   public async findOneById(id: string): Promise<Gadget> {
@@ -51,13 +40,9 @@ export class GadgetsService {
 
     const gadget = await this.gadgetModel
       .findById(id)
-      .populate({ path: 'brands', populate: { path: 'icon' } })
-      .populate({
-        path: 'issues',
-        populate: [{ path: 'benefits' }, { path: 'image' }]
-      })
-      .populate({ path: 'icon' })
-      .populate({ path: 'gallery' });
+      .populate('brands')
+      .populate('issues')
+      .select('-isActive');
 
     if (!gadget) {
       throw new NotFoundException(`Gadget with ID "${id}" was not found`);
@@ -86,13 +71,9 @@ export class GadgetsService {
       .findByIdAndUpdate(id, dto, {
         new: true
       })
-      .populate({ path: 'brands', populate: { path: 'icon' } })
-      .populate({
-        path: 'issues',
-        populate: [{ path: 'benefits' }, { path: 'image' }]
-      })
-      .populate({ path: 'icon' })
-      .populate({ path: 'gallery' });
+      .populate('brands')
+      .populate('issues')
+      .select('-isActive');
 
     return updatedGadget;
   }
