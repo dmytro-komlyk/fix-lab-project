@@ -5,7 +5,7 @@ import MyAuthPage from "../components/Auth/MyAuthPage";
 import dataProvider from "../dataProvider";
 import { CreateBenefit, EditBenefit, ListBenefits } from "./Benefit";
 import { CreateBrand, EditBrand, ListBrands } from "./Brand";
-import { CreateContact, EditContact, ListContacts } from "./Contact";
+import { EditContact, ListContacts } from "./Contact";
 import { CreateGadget, EditGadget, ListGadgets } from "./Gadget";
 import { CreateImage, EditImage, ListImages } from "./Image";
 import { CreateIssue, EditIssue, ListIssues } from "./Issue";
@@ -39,12 +39,7 @@ const AdminApp = () => (
       edit={EditBrand}
       create={CreateBrand}
     />
-    <Resource
-      name="contacts"
-      list={ListContacts}
-      edit={EditContact}
-      create={CreateContact}
-    />
+    <Resource name="contacts" list={ListContacts} edit={EditContact} />
     <Resource
       name="images"
       list={ListImages}

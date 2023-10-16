@@ -10,7 +10,6 @@ import {
   RadioButtonGroupInput,
   ReferenceArrayInput,
   ReferenceInput,
-  ReferenceManyField,
   SelectArrayInput,
   TabbedForm,
   TextField,
@@ -18,7 +17,6 @@ import {
   required,
   useRecordContext,
 } from "react-admin";
-import { ListIssues } from "./Issue";
 
 const TitleGadget = () => {
   const record = useRecordContext();
@@ -121,11 +119,6 @@ const EditGadget = () => {
           <TextInput label="Title" source="metadata.title" />
           <TextInput label="Description" source="metadata.description" />
           <TextInput label="Keywords" source="metadata.keywords" />
-        </TabbedForm.Tab>
-        <TabbedForm.Tab label="Послуги">
-          <ReferenceManyField label="Послуги" reference="issues" target="id">
-            <ListIssues />
-          </ReferenceManyField>
         </TabbedForm.Tab>
       </TabbedForm>
     </Edit>
