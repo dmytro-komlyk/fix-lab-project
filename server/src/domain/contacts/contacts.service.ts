@@ -20,9 +20,9 @@ export class ContactsService {
     return contacts;
   }
 
-  public async findAllByQuery(query: UpdateContactDto): Promise<Contact[]> {
+  public async findActive(): Promise<Contact[]> {
     const contacts = await this.contactModel
-      .find({ ...query })
+      .find({ isActive: true })
       .populate({ path: 'image' });
 
     return contacts;

@@ -25,7 +25,7 @@ export class GadgetsService {
       .populate({ path: 'gallery' });
   }
 
-  public async findAllActive(): Promise<Gadget[]> {
+  public async findActive(): Promise<Gadget[]> {
     return await this.gadgetModel
       .find({ isActive: true })
       .select('-isActive')

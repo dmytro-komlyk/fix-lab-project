@@ -7,7 +7,7 @@ import {
   Param,
   Post,
   Put,
-  Res
+  Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
@@ -33,23 +33,8 @@ export class ArticlesController {
   @ApiResponse({ status: 200, type: Article, isArray: true })
   @Public()
   @Get('')
-  public async findAllActiveArticles(@Res() response: Response): Promise<Article[]> {
-    const result = await this.articlesService.findAllByQuery({ isActive: true });
-
-    response.header('Content-Range', `articles ${result.length}`);
-
-    return result;
-  }
-
-  @ApiOperation({ summary: 'get all articles' })
-  @ApiResponse({ status: 200, type: Article, isArray: true })
-  @Get('/all')
-  public async findAllArticles(@Res() response: Response): Promise<Article[]> {
-    const result = await this.articlesService.findAll();
-
-    response.header('Content-Range', `articles ${result.length}`);
-
-    return result;
+  public async findActiveArticles(): Promise<Article[]> {
+    return await this.articlesService.findActive();
   }
 
   @ApiOperation({ summary: 'public, get article by slug' })
@@ -66,7 +51,7 @@ export class ArticlesController {
     return result;
   }
 
-  @ApiOperation({ summary: 'get Article data by ID, auth reqiured*' })
+  @ApiOperation({ summary: 'get article data by ID' })
   @ApiResponse({ status: 200, type: Article })
   @ApiResponse({ status: 404, description: 'Articles was not found' })
   @Get('/:id')
@@ -74,7 +59,17 @@ export class ArticlesController {
     return await this.articlesService.findOneById(id);
   }
 
-  @ApiOperation({ summary: 'create new Article' })
+  @ApiOperation({ summary: 'get all articles' })
+  @ApiResponse({ status: 200, type: Article, isArray: true })
+  @Get('/all')
+  public async findAllArticles(@Res() response: Response): Promise<void> {
+    const result: Article[] = await this.articlesService.findAll();
+
+    response.header('Content-Range', `articles ${result.length}`);
+    response.send(result);
+  }
+
+  @ApiOperation({ summary: 'create new article' })
   @ApiResponse({ status: 200, type: Article })
   @ApiResponse({ status: 400, description: 'Incorrect content data' })
   @Post('')
@@ -85,7 +80,7 @@ export class ArticlesController {
     return await this.articlesService.create(dto);
   }
 
-  @ApiOperation({ summary: 'update existing Article by ID' })
+  @ApiOperation({ summary: 'update existing article by ID' })
   @ApiResponse({ status: 200, type: Article })
   @ApiResponse({ status: 404, description: 'Article was not found' })
   @Put('/:id')
@@ -97,7 +92,7 @@ export class ArticlesController {
     return await this.articlesService.update(id, dto);
   }
 
-  @ApiOperation({ summary: 'remove permanently Article by ID' })
+  @ApiOperation({ summary: 'remove permanently article by ID' })
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, description: 'Article was not found' })
   @Delete('/:id')

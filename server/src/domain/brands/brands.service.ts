@@ -15,8 +15,8 @@ export class BrandsService {
     return await this.brandModel.find().populate({ path: 'icon' });
   }
 
-  public async findAllByQuery(query: UpdateBrandDto): Promise<Brand[]> {
-    return await this.brandModel.find(query).populate({ path: 'icon' });
+  public async findActive(): Promise<Brand[]> {
+    return await this.brandModel.find({ isActive: true }).populate({ path: 'icon' });
   }
 
   public async findOneByQuery(query: UpdateBrandDto): Promise<Brand> {

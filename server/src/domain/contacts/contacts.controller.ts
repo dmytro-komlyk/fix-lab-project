@@ -3,13 +3,14 @@ import {
   Controller,
   Delete,
   Get,
-  Header,
   Param,
   Post,
-  Put
+  Put,
+  Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
+import { Response } from 'express';
 
 import { ISuccessDelete } from 'interfaces/success-delete.interface';
 
@@ -27,31 +28,32 @@ import { ROUTES } from 'constants/routes.constants';
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {}
 
-  @ApiOperation({ summary: 'find all active Contacts' })
+  @ApiOperation({ summary: 'public, find all active contacts' })
   @ApiResponse({ status: 200, type: Contact, isArray: true })
   @Public()
   @Get('')
-  public async findAllActiveContacts(): Promise<Contact[]> {
-    return await this.contactsService.findAllByQuery({ isActive: true });
+  public async findActiveContacts(): Promise<Contact[]> {
+    return await this.contactsService.findActive();
   }
 
-  @ApiOperation({ summary: 'find all Contacts' })
+  @ApiOperation({ summary: 'find all contacts' })
   @ApiResponse({ status: 200, type: Contact, isArray: true })
   @Get('/all')
-  @Header('Access-Control-Expose-Headers', 'Content-Range')
-  @Header('Content-Range', 'posts 0-24/319')
-  public async findAll(): Promise<Contact[]> {
-    return await this.contactsService.findAll();
+  public async findAll(@Res() response: Response): Promise<void> {
+    const result: Contact[] = await this.contactsService.findAll();
+
+    response.header('Content-Range', `contacts ${result.length}`);
+    response.send(result);
   }
 
-  @ApiOperation({ summary: 'create new Contact' })
+  @ApiOperation({ summary: 'create new contact' })
   @ApiResponse({ status: 200, type: Contact })
   @Post('')
   public async create(@Body() dto: CreateContactDto): Promise<Contact> {
     return await this.contactsService.create(dto);
   }
 
-  @ApiOperation({ summary: 'get Contact data by ID, auth reqiured*' })
+  @ApiOperation({ summary: 'get contact data by ID' })
   @ApiResponse({ status: 200, type: Contact })
   @ApiResponse({ status: 404, description: 'Contact was not found' })
   @Get('/:id')
@@ -59,7 +61,7 @@ export class ContactsController {
     return await this.contactsService.findOneById(id);
   }
 
-  @ApiOperation({ summary: 'update existing Contact by ID' })
+  @ApiOperation({ summary: 'update existing contact by ID' })
   @ApiResponse({ status: 200, type: Contact })
   @ApiResponse({ status: 404, description: 'Contact was not found' })
   @Put('/:id')
@@ -70,7 +72,7 @@ export class ContactsController {
     return await this.contactsService.update(id, dto);
   }
 
-  @ApiOperation({ summary: 'remove permanently Contact by ID' })
+  @ApiOperation({ summary: 'remove permanently contact by ID' })
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, description: 'Contact was not found' })
   @Delete('/:id')

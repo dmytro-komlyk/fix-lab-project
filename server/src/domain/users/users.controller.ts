@@ -45,7 +45,7 @@ export class UsersController {
     return await this.usersService.create(dto);
   }
 
-  @ApiOperation({ summary: 'update existing Contact by ID' })
+  @ApiOperation({ summary: 'update existing user by ID' })
   @ApiResponse({ status: 200, type: User })
   @ApiResponse({ status: 404, description: 'Contact was not found' })
   @Patch('/:id')
@@ -56,7 +56,7 @@ export class UsersController {
     return await this.usersService.update(id, dto);
   }
 
-  @ApiOperation({ summary: 'remove permanently User by ID' })
+  @ApiOperation({ summary: 'remove permanently user by ID' })
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, description: 'User was not found' })
   @Delete('/:id')
@@ -66,7 +66,7 @@ export class UsersController {
     return { status: 204, result: 'success' };
   }
 
-  @ApiOperation({ summary: 'Create first admin' })
+  @ApiOperation({ summary: 'create first admin' })
   @ApiResponse({ status: 204, type: User })
   @Public()
   @Get('/init/:key')

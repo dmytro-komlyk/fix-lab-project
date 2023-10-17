@@ -17,8 +17,10 @@ export class ArticlesService {
     return await this.articleModel.find().populate({ path: 'preview' });
   }
 
-  public async findAllByQuery(query: UpdateArticleDto): Promise<Article[]> {
-    return await this.articleModel.find(query).populate({ path: 'preview' });
+  public async findActive(): Promise<Article[]> {
+    return await this.articleModel
+      .find({ isActive: true })
+      .populate({ path: 'preview' });
   }
 
   public async findOneByQuery(query: UpdateArticleDto): Promise<Article> {

@@ -3,13 +3,14 @@ import {
   Controller,
   Delete,
   Get,
-  Header,
   Param,
   Post,
-  Put
+  Put,
+  Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
+import { Response } from 'express';
 
 import { ISuccessDelete } from 'interfaces/success-delete.interface';
 
@@ -27,24 +28,25 @@ import { ROUTES } from 'constants/routes.constants';
 export class BenefitsController {
   constructor(private readonly benefitsService: BenefitsService) {}
 
-  @ApiOperation({ summary: 'get all active benefits' })
+  @ApiOperation({ summary: 'public, get all active benefits' })
   @ApiResponse({ status: 200, type: Benefit, isArray: true })
   @Public()
   @Get('')
-  public async findAllActiveBenefits(): Promise<Benefit[]> {
-    return await this.benefitsService.findAllByQuery({ isActive: true });
+  public async findActiveBenefits(): Promise<Benefit[]> {
+    return await this.benefitsService.findActive();
   }
 
-  @ApiOperation({ summary: 'get Benefits data, auth reqiured*' })
+  @ApiOperation({ summary: 'get benefits data' })
   @ApiResponse({ status: 200, type: Benefit, isArray: true })
   @Get('/all')
-  @Header('Access-Control-Expose-Headers', 'Content-Range')
-  @Header('Content-Range', 'posts 0-24/319')
-  public async findAllBenefits(): Promise<Benefit[]> {
-    return await this.benefitsService.findAll();
+  public async findAllBenefits(@Res() response: Response): Promise<void> {
+    const result: Benefit[] = await this.benefitsService.findAll();
+
+    response.header('Content-Range', `benefits ${result.length}`);
+    response.send(result);
   }
 
-  @ApiOperation({ summary: 'get Benefit data by ID, auth reqiured*' })
+  @ApiOperation({ summary: 'get benefit data by ID' })
   @ApiResponse({ status: 200, type: Benefit })
   @ApiResponse({ status: 404, description: 'Benefits was not found' })
   @Get('/:id')
@@ -52,7 +54,7 @@ export class BenefitsController {
     return await this.benefitsService.findOneById(id);
   }
 
-  @ApiOperation({ summary: 'create new Benefit' })
+  @ApiOperation({ summary: 'create new benefit' })
   @ApiResponse({ status: 200, type: Benefit })
   @ApiResponse({ status: 400, description: 'Incorrect content data' })
   @Post('')
@@ -63,7 +65,7 @@ export class BenefitsController {
     return await this.benefitsService.create(dto);
   }
 
-  @ApiOperation({ summary: 'update existing Benefit by ID' })
+  @ApiOperation({ summary: 'update existing benefit by ID' })
   @ApiResponse({ status: 200, type: Benefit })
   @ApiResponse({ status: 404, description: 'Benefit was not found' })
   @Put('/:id')
@@ -75,7 +77,7 @@ export class BenefitsController {
     return await this.benefitsService.update(id, dto);
   }
 
-  @ApiOperation({ summary: 'remove permanently Benefit by ID' })
+  @ApiOperation({ summary: 'remove permanently benefit by ID' })
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, description: 'Benefit was not found' })
   @Delete('/:id')
