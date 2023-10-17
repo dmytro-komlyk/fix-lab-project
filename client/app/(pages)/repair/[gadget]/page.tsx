@@ -6,11 +6,7 @@ import {
   ColaborationSection,
 } from '@/app/(layouts)'
 import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
-import {
-  getAllGadgetsData,
-  getSingleGadgetData,
-} from '@/app/(server)/api/service/modules/gadgetService'
-import { getAllIssuesData } from '@/app/(server)/api/service/modules/issueService'
+import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
 
 import SingleGadgetSection from '../(components)/SingleGadgetSection'
 
@@ -248,16 +244,6 @@ const brandData = [
     },
   },
 ]
-
-export async function generateStaticParams() {
-  const gadgets = await getAllGadgetsData()
-  const issues = await getAllIssuesData()
-
-  return gadgets.map(gadget => ({
-    gadget: gadget.slug,
-    issues: issues.map(issue => issue.slug),
-  }))
-}
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const singleGadgetData = await getSingleGadgetData(params.gadget)

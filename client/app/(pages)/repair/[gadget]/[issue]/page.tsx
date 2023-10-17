@@ -1,9 +1,6 @@
 import { AddressSection } from '@/app/(layouts)'
 import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
-import {
-  getAllGadgetsData,
-  getSingleGadgetData,
-} from '@/app/(server)/api/service/modules/gadgetService'
+import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
 import {
   getAllIssuesData,
   getSingleIssueData,
@@ -18,15 +15,6 @@ interface IndexProps {
   }
 }
 
-export async function generateStaticParams() {
-  const gadgets = await getAllGadgetsData()
-  const issues = await getAllIssuesData()
-
-  return gadgets.map(gadget => ({
-    gadget: gadget.slug,
-    issues: issues.map(issue => issue.slug),
-  }))
-}
 const brandData = [
   {
     _id: '1',
@@ -274,3 +262,17 @@ const Index: React.FC<IndexProps> = async ({ params }) => {
   )
 }
 export default Index
+
+export async function generateStaticParams({
+  params,
+}: {
+  params: { gadget: string }
+}) {
+  const issues = await getAllIssuesData()
+  const gadget = await getSingleGadgetData(params.gadget)
+
+  return issues.map(item => ({
+    gadget: gadget.slug,
+    issue: item.slug,
+  }))
+}
