@@ -31,6 +31,7 @@ export class IssuesController {
 
   @ApiOperation({ summary: 'public, find all active issues' })
   @ApiResponse({ status: 200, type: Issue, isArray: true })
+  @Public()
   @Get('')
   public async findAll(): Promise<Issue[]> {
     return await this.issuesService.findAllActive();
