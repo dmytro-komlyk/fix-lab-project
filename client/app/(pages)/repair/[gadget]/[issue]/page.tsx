@@ -1,10 +1,10 @@
 import { AddressSection } from '@/app/(layouts)'
 import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
+import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
 import {
-  getAllGadgetsData,
-  getSingleGadgetData,
-} from '@/app/(server)/api/service/modules/gadgetService'
-import { getSingleIssueData } from '@/app/(server)/api/service/modules/issueService'
+  getAllIssuesData,
+  getSingleIssueData,
+} from '@/app/(server)/api/service/modules/issueService'
 
 import IssueSection from '../../(components)/IssueSection'
 
@@ -16,13 +16,10 @@ interface IndexProps {
 }
 
 export async function generateStaticParams() {
-  const gadgets = await getAllGadgetsData()
-  return gadgets.map(gadget => [
-    {
-      gadget: gadget.slug,
-    },
-    { issue: gadget.issues.map(({ slug }) => slug) },
-  ])
+  const issues = await getAllIssuesData()
+  return issues.map(issue => ({
+    issue: issue.slug,
+  }))
 }
 
 const brandData = [
