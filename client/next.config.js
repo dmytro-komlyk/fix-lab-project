@@ -5,6 +5,7 @@ const nextConfig = {
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
   },
   images: {
+    domains: ['95.217.34.212'],
     remotePatterns: [
       {
         protocol: 'http',
