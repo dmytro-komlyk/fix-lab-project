@@ -32,6 +32,7 @@ export class IssuesController {
     summary: 'No-auth* find all active Issues'
   })
   @ApiResponse({ status: 200, type: Issue, isArray: true })
+  @Public()
   @Get('')
   public async findAll(): Promise<Issue[]> {
     return await this.issuesService.findAllActive();
