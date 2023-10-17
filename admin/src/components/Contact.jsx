@@ -1,13 +1,12 @@
 import {
   ArrayInput,
-  CheckboxGroupInput,
   Datagrid,
   Edit,
   ImageField,
   List,
   RadioButtonGroupInput,
-  ReferenceArrayInput,
   ReferenceInput,
+  ReferenceManyField,
   SaveButton,
   SimpleFormIterator,
   TabbedForm,
@@ -16,7 +15,6 @@ import {
   Toolbar,
   useRecordContext,
 } from "react-admin";
-
 const TitleContact = () => {
   const record = useRecordContext();
   return <span>Контакт {record ? `"${record.area}"` : ""}</span>;
@@ -70,6 +68,9 @@ const EditContact = () => {
             label="Посилання адреси салону для плагіну"
             source="googlePluginLink"
           />
+          <ReferenceManyField label="Image" reference="contacts" target="_id">
+            <ImageField label="Зображення" source="image.src" />
+          </ReferenceManyField>
           <ReferenceInput
             source="image"
             label="image"
