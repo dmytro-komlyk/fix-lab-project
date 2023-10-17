@@ -10,6 +10,7 @@ import {
   getAllGadgetsData,
   getSingleGadgetData,
 } from '@/app/(server)/api/service/modules/gadgetService'
+import { getAllIssuesData } from '@/app/(server)/api/service/modules/issueService'
 
 import SingleGadgetSection from '../(components)/SingleGadgetSection'
 
@@ -250,8 +251,11 @@ const brandData = [
 
 export async function generateStaticParams() {
   const gadgets = await getAllGadgetsData()
+  const issues = await getAllIssuesData()
+
   return gadgets.map(gadget => ({
     gadget: gadget.slug,
+    issues: issues.map(issue => issue.slug),
   }))
 }
 
