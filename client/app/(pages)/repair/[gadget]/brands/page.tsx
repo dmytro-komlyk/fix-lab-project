@@ -1,8 +1,8 @@
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
+import { getAllBrandsData } from '@/app/(server)/api/service/modules/brandService'
 import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
 
-import { getAllBrandsData } from '@/app/(server)/api/service/modules/brandService'
 import BrandsSection from '../../(components)/BrandsSection'
 
 interface IndexProps {

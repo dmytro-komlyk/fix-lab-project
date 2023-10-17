@@ -21,9 +21,14 @@ export interface BrandsProps {
     }
     brands: IBrand[]
   }
+  brandData?: IBrand
 }
 
-const BrandsSection: React.FC<BrandsProps> = ({ gadgetData, contactsData }) => {
+const BrandsSection: React.FC<BrandsProps> = ({
+  gadgetData,
+  contactsData,
+  brandData,
+}) => {
   return (
     <section className='overflow-hidden'>
       <div className='container flex flex-col gap-[27px] pb-[140px] pt-[158px] max-lg:pb-[50px] lg:px-0'>
@@ -50,7 +55,7 @@ const BrandsSection: React.FC<BrandsProps> = ({ gadgetData, contactsData }) => {
             </Link>
           )}
           <p className='text-base font-[300] text-dark-blue/50'>
-            Бренди які ми ремонтуємо
+            {brandData?.title}
           </p>
         </div>
         <div className='mb-8 flex flex-col items-start'>
@@ -73,7 +78,11 @@ const BrandsSection: React.FC<BrandsProps> = ({ gadgetData, contactsData }) => {
           <h1 className='mb-[29px] font-exo_2 text-2xl font-bold leading-[1.2px] text-black-dis'>
             Бренди телефонів, які ремонтуємо у сервісному центрі FixLab
           </h1>
-          <BrandsSlider contactsData={contactsData} gadgetData={gadgetData} />
+          <BrandsSlider
+            contactsData={contactsData}
+            gadgetData={gadgetData}
+            brandData={brandData}
+          />
         </div>
       </div>
     </section>

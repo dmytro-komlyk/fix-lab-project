@@ -2,16 +2,15 @@ import { AnimatePresence } from 'framer-motion'
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
 
+import RenderMarkdown from '@/app/(components)/RenderMarkdown'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 import type { IBrand } from '@/app/(server)/api/service/modules/gadgetService'
-import RenderMarkdown from '@/app/(components)/RenderMarkdown'
 
 export interface BrandsSliderProps {
   gadgetData: {
@@ -19,15 +18,14 @@ export interface BrandsSliderProps {
     brands: IBrand[]
   }
   contactsData: IContact[]
+  brandData?: IBrand
 }
 
 export const BrandsSlider: React.FC<BrandsSliderProps> = ({
   gadgetData,
   contactsData,
+  brandData,
 }) => {
-  const pathname = usePathname()
-  const brandPath = pathname.split('/').pop()
-
   // Modal window
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
     useState<boolean>(false)
@@ -80,10 +78,10 @@ export const BrandsSlider: React.FC<BrandsSliderProps> = ({
             {gadgetData.brands.map((item, index) => {
               const { alt, src } = item.icon
               const selectedTabClass =
-                brandPath === item.slug ||
+                brandData?.slug === item.slug ||
                 (index === 0 &&
-                  brandPath !== item.slug &&
-                  brandPath !== gadgetData?.slug)
+                  brandData?.slug !== item.slug &&
+                  brandData?.slug !== gadgetData?.slug)
                   ? ' bg-dark-grey flex  h-[128px]  max-w-[128px]  items-center justify-center rounded-[50%] shadow-brand'
                   : ' flex h-[128px] min-w-[128px] max-w-[128px]  items-center justify-center rounded-[50%] transition-all hover:shadow-brand  focus:shadow-brand'
 
@@ -122,21 +120,14 @@ export const BrandsSlider: React.FC<BrandsSliderProps> = ({
             </div>
           )}
           <div className='flex w-full justify-between pt-[52px]'>
-            <div className='flex max-w-[852px] gap-16  max-lg:flex-col lg:gap-32'>
-              {gadgetData.brands?.map(item => (
-                <div
-                  key={item._id}
-                  className={`${
-                    brandPath === item.slug ? 'flex max-w-[852px]' : 'hidden'
-                  }`}
-                >
-                  <RenderMarkdown markdown={item.article} />
-                </div>
-              ))}
-            </div>
+            {brandData?.article && (
+              <div className='flex max-w-[852px] gap-16  max-lg:flex-col lg:gap-32'>
+                <RenderMarkdown markdown={brandData?.article} />
+              </div>
+            )}
             {gadgetData?.brands?.map(item => {
               return (
-                brandPath === item.slug && (
+                brandData?.slug === item.slug && (
                   <div className='ml-auto flex flex-col gap-16' key={item._id}>
                     <CallUsCard contactsData={contactsData} />
                     <Button

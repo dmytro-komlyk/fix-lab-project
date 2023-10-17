@@ -1,4 +1,5 @@
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
+import { getSingleBrandData } from '@/app/(server)/api/service/modules/brandService'
 import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
 
@@ -15,10 +16,14 @@ interface IndexProps {
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const gadgetData = await getSingleGadgetData(params.gadget)
   const contactsData = await getAllContactsData()
-  // const brandData = await getSingleBrandData(params.brand)
+  const brandData = await getSingleBrandData(params.brand)
   return (
     <main className='h-full flex-auto'>
-      <BrandsSection contactsData={contactsData} gadgetData={gadgetData} />
+      <BrandsSection
+        contactsData={contactsData}
+        gadgetData={gadgetData}
+        brandData={brandData}
+      />
       <ColaborationSection />
       <AddressSection contactsData={contactsData} />
     </main>

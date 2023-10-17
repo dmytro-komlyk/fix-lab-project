@@ -7,14 +7,13 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
 
+import RenderMarkdown from '@/app/(components)/RenderMarkdown'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
-
-import RenderMarkdown from '@/app/(components)/RenderMarkdown'
-import { IContact } from '@/app/(server)/api/service/modules/contactService'
-import { IBrand } from '@/app/(server)/api/service/modules/gadgetService'
+import type { IContact } from '@/app/(server)/api/service/modules/contactService'
+import type { IBrand } from '@/app/(server)/api/service/modules/gadgetService'
 
 export interface BrandsSliderProps {
   gadgetData: {
