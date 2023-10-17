@@ -28,7 +28,6 @@ interface SingleGadgetProps {
 }
 const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
   singleGadgetData,
-  brandData,
   contactsData,
 }) => {
   const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
@@ -131,39 +130,46 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
           </div>
           <div className='flex flex-col gap-8 lg:w-[737px] lg:gap-14'>
             <div className='flex flex-col'>
-              <p className=' mb-[18px] font-exo_2 text-xl font-semibold leading-[0.7] text-white-dis'>
-                Бренди, які ремонтуємо
-              </p>
-              <GadgetBrandsSlider
-                contactsData={contactsData}
-                brandData={brandData}
-                gadgetData={singleGadgetData}
-              />
-              <p className='mb-8 mt-[47px] font-exo_2 text-xl font-semibold leading-[0.7] text-white-dis'>
-                Послуги
-              </p>
-              <ul className='mb-14'>
-                {singleGadgetData.issues?.map(item => {
-                  return (
-                    <li
-                      className='hover:op border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl hover:opacity-100 focus:opacity-100'
-                      key={item._id}
-                    >
-                      <Link
-                        className='flex items-center gap-[12px] max-md:flex-col max-md:items-start max-md:justify-center  max-md:px-[16px] max-md:py-[12px] md:h-[75px] md:justify-between md:px-6'
-                        href={`/repair/${slug}/${item.slug}`}
-                      >
-                        <p className='font-exo_2 text-xl font-semibold text-dark-blue max-md:text-lg'>
-                          {item.title}
-                        </p>
-                        <p className='text-md font-[400] text-black-dis'>
-                          {item.price}
-                        </p>
-                      </Link>
-                    </li>
-                  )
-                })}
-              </ul>
+              {singleGadgetData?.brands.length > 0 && (
+                <>
+                  <p className=' mb-[18px] font-exo_2 text-xl font-semibold leading-[0.7] text-white-dis'>
+                    Бренди, які ремонтуємо
+                  </p>
+                  <GadgetBrandsSlider
+                    contactsData={contactsData}
+                    gadgetData={singleGadgetData}
+                  />
+                </>
+              )}
+              {singleGadgetData.issues.length > 0 && (
+                <>
+                  <p className='mb-8 font-exo_2 text-xl font-semibold leading-[0.7] text-white-dis'>
+                    Послуги
+                  </p>
+                  <ul className='mb-14'>
+                    {singleGadgetData.issues?.map(item => {
+                      return (
+                        <li
+                          className='hover:op border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl hover:opacity-100 focus:opacity-100'
+                          key={item._id}
+                        >
+                          <Link
+                            className='flex items-center gap-[12px] max-md:flex-col max-md:items-start max-md:justify-center  max-md:px-[16px] max-md:py-[12px] md:h-[75px] md:justify-between md:px-6'
+                            href={`/repair/${slug}/${item.slug}`}
+                          >
+                            <p className='font-exo_2 text-xl font-semibold text-dark-blue max-md:text-lg'>
+                              {item.title}
+                            </p>
+                            <p className='text-md font-[400] text-black-dis'>
+                              {item.price}
+                            </p>
+                          </Link>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </>
+              )}
               <Button
                 text='Розрахувати вартість ремонту'
                 toggleModal={toggleCostRepairModal}

@@ -26,11 +26,11 @@ export interface IBrand {
   slug: string
   isActive: boolean
   title: string
+  article: string
   icon: {
     src: string
     alt: string
   }
-  article: string
   metadata: {
     title: string
     description: string

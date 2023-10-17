@@ -6,24 +6,24 @@ import React from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
-import type {
-  IBrand,
-  IGadget,
-} from '@/app/(server)/api/service/modules/gadgetService'
+import type { IBrand } from '@/app/(server)/api/service/modules/gadgetService'
 
 import { BrandsSlider } from './BrandsSlider'
 
 export interface BrandsProps {
   contactsData: IContact[]
-  brandData?: IBrand[]
-  gadgetData?: IGadget
+  gadgetData: {
+    title: string
+    slug: string
+    icon: {
+      alt: string
+      src: string
+    }
+    brands: IBrand[]
+  }
 }
 
-const BrandsSection: React.FC<BrandsProps> = ({
-  brandData,
-  gadgetData,
-  contactsData,
-}) => {
+const BrandsSection: React.FC<BrandsProps> = ({ gadgetData, contactsData }) => {
   return (
     <section className='overflow-hidden'>
       <div className='container flex flex-col gap-[27px] pb-[140px] pt-[158px] max-lg:pb-[50px] lg:px-0'>
@@ -73,11 +73,7 @@ const BrandsSection: React.FC<BrandsProps> = ({
           <h1 className='mb-[29px] font-exo_2 text-2xl font-bold leading-[1.2px] text-black-dis'>
             Бренди телефонів, які ремонтуємо у сервісному центрі FixLab
           </h1>
-          <BrandsSlider
-            contactsData={contactsData}
-            brandData={brandData}
-            gadgetData={gadgetData}
-          />
+          <BrandsSlider contactsData={contactsData} gadgetData={gadgetData} />
         </div>
       </div>
     </section>

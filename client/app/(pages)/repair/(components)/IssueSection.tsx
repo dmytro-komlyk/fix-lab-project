@@ -34,7 +34,6 @@ interface SingleIssueProps {
 const IssueSection: React.FC<SingleIssueProps> = ({
   singleIssueData,
   singleGadgetData,
-  brandData,
   contactsData,
 }) => {
   const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
@@ -156,7 +155,6 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                     </p>
                     <GadgetBrandsSlider
                       contactsData={contactsData}
-                      brandData={brandData}
                       gadgetData={singleGadgetData}
                     />
                   </div>
