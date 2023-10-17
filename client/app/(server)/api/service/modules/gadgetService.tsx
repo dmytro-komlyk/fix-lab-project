@@ -43,6 +43,7 @@ export interface IIssue {
   isActive: boolean
   slug: string
   title: string
+  info: string
   description: string
   price: string
   image: {
@@ -57,7 +58,7 @@ export interface IIssue {
     keywords: string
   }
   richText: string
-  info: {
+  benefits: {
     id: number
     icon: {
       src: string

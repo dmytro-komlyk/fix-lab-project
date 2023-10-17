@@ -1,22 +1,28 @@
-import React from 'react'
-
-import {
-  AddressSection,
-  CallCourierSection,
-  ColaborationSection,
-} from '@/app/(layouts)'
+import { AddressSection } from '@/app/(layouts)'
 import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 import {
   getAllGadgetsData,
   getSingleGadgetData,
 } from '@/app/(server)/api/service/modules/gadgetService'
+import { getSingleIssueData } from '@/app/(server)/api/service/modules/issueService'
 
-import SingleGadgetSection from '../(components)/SingleGadgetSection'
+import IssueSection from '../../(components)/IssueSection'
 
 interface IndexProps {
   params: {
+    issue: string
     gadget: string
   }
+}
+
+export async function generateStaticParams() {
+  const gadgets = await getAllGadgetsData()
+  return gadgets.map(gadget => [
+    {
+      gadget: gadget.slug,
+    },
+    { issue: gadget.issues.map(({ slug }) => slug) },
+  ])
 }
 
 const brandData = [
@@ -248,28 +254,21 @@ const brandData = [
   },
 ]
 
-export async function generateStaticParams() {
-  const gadgets = await getAllGadgetsData()
-  return gadgets.map(gadget => ({
-    gadget: gadget.slug,
-  }))
-}
-
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const singleGadgetData = await getSingleGadgetData(params.gadget)
+  const singleIssueData = await getSingleIssueData(params.issue)
   const contactsData = await getAllContactsData()
+  const singleGadgetData = await getSingleGadgetData(params.gadget)
+
   return (
-    <main className='flex-auto'>
-      <SingleGadgetSection
-        singleGadgetData={singleGadgetData}
-        brandData={brandData}
+    <main className='h-full flex-auto'>
+      <IssueSection
         contactsData={contactsData}
+        brandData={brandData}
+        singleIssueData={singleIssueData}
+        singleGadgetData={singleGadgetData}
       />
-      <CallCourierSection />
-      <ColaborationSection />
       <AddressSection contactsData={contactsData} />
     </main>
   )
 }
-
 export default Index

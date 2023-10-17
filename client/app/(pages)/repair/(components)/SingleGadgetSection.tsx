@@ -17,20 +17,17 @@ import type { IContact } from '@/app/(server)/api/service/modules/contactService
 import type {
   IBrand,
   IGadget,
-  IIssue,
 } from '@/app/(server)/api/service/modules/gadgetService'
 
 import { GadgetBrandsSlider } from './GadgetBrandsSlider'
 
 interface SingleGadgetProps {
   singleGadgetData: IGadget
-  issuesData: IIssue[]
   brandData: IBrand[]
   contactsData: IContact[]
 }
 const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
   singleGadgetData,
-  issuesData,
   brandData,
   contactsData,
 }) => {
@@ -146,7 +143,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                 Послуги
               </p>
               <ul className='mb-14'>
-                {issuesData?.map(item => {
+                {singleGadgetData.issues?.map(item => {
                   return (
                     <li
                       className='hover:op border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl hover:opacity-100 focus:opacity-100'

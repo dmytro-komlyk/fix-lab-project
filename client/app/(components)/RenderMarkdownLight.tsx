@@ -3,7 +3,7 @@ import MarkdownIt from 'markdown-it'
 const customStyle = `
 <style>
 .markdown-content {
-  color:#0B122F;
+  color:#fff;
 }
 
 .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6 {
@@ -55,11 +55,11 @@ const customStyle = `
 </style>
 `
 
-interface RenderMarkdownProps {
+interface RenderMarkdownLightProps {
   markdown: string
 }
 
-const RenderMarkdown = ({ markdown }: RenderMarkdownProps) => {
+const RenderMarkdownLight = ({ markdown }: RenderMarkdownLightProps) => {
   const renderMarkdown = new MarkdownIt({
     html: true,
   })
@@ -75,4 +75,4 @@ const RenderMarkdown = ({ markdown }: RenderMarkdownProps) => {
   )
 }
 
-export default RenderMarkdown
+export default RenderMarkdownLight

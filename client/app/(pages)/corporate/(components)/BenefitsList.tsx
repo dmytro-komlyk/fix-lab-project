@@ -2,14 +2,10 @@ import Image from 'next/image'
 import React from 'react'
 
 export interface IBenefitItem {
-  id: number
   icon: {
     src: string
     alt: string
-    height: number
-    width: number
   }
-  alt: string
   title: string
 }
 
@@ -23,15 +19,14 @@ export const BenefitsList: React.FC<IBenefitsListProps> = ({ items }) => {
       {items?.map((item: IBenefitItem) => {
         return (
           <div
-            key={item.id}
+            key={item.title}
             className='flex max-h-[104px] w-[110px] flex-col items-center justify-between gap-[14px] rounded-2xl bg-light-grey px-[13px] py-[14px]'
           >
             <Image
-              className=''
               src={item.icon.src}
               width={26}
               height={30}
-              alt={item.alt}
+              alt={item.icon.alt}
             />
             <p className='text-center text-xs text-dark-blue'>{item.title}</p>
           </div>

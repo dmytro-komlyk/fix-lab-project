@@ -2,13 +2,13 @@
 
 /* eslint-disable no-underscore-dangle */
 import { AnimatePresence } from 'framer-motion'
-import MarkdownIt from 'markdown-it'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCallback, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
+import RenderMarkdownLight from '@/app/(components)/RenderMarkdownLight'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
@@ -26,7 +26,6 @@ import { GadgetBrandsSlider } from './GadgetBrandsSlider'
 
 interface SingleIssueProps {
   contactsData: IContact[]
-  issuesData: IIssue[]
   singleIssueData: IIssue
   singleGadgetData: IGadget
   brandData: IBrand[]
@@ -35,13 +34,9 @@ interface SingleIssueProps {
 const IssueSection: React.FC<SingleIssueProps> = ({
   singleIssueData,
   singleGadgetData,
-  issuesData,
   brandData,
   contactsData,
 }) => {
-  const markdown = new MarkdownIt({
-    html: true,
-  })
   const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
     useState<boolean>(false)
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
@@ -125,14 +120,12 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                   <h2 className='font-exo_2 text-xl font-semibold leading-7 text-white-dis lg:text-2xl lg:font-bold lg:leading-10'>
                     {singleIssueData.title}
                   </h2>
-                  <BenefitsList items={singleIssueData.info} />
-                  <div
-                    // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={{
-                      __html: markdown.render(singleIssueData.description),
-                    }}
-                    className='text-base font-[400] text-white-dis'
-                  />
+                  {singleIssueData.benefits && (
+                    <BenefitsList items={singleIssueData.benefits} />
+                  )}
+                  <p className='text-base font-[400] text-white-dis'>
+                    <RenderMarkdownLight markdown={singleIssueData.info} />
+                  </p>
                   <Button
                     text='Миттєва консультація'
                     toggleModal={toggleInstantAdviceModal}
@@ -147,20 +140,14 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                   <Image
                     className='min-h-[245px] w-full rounded-2xl object-cover md:max-h-[340px]'
                     src={singleIssueData.image.src}
-                    width={singleIssueData.image.width}
-                    height={singleIssueData.image.height}
+                    width={737}
+                    height={360}
                     alt={singleIssueData?.image.alt}
                     priority
                   />
                 </div>
                 <div className='flex flex-col gap-8'>
-                  <div
-                    // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={{
-                      __html: markdown.render(singleIssueData.richText),
-                    }}
-                    className='gap-6 text-base font-[400] text-white-dis'
-                  />
+                  <RenderMarkdownLight markdown={singleIssueData.description} />
                 </div>
                 <div className='flex flex-col gap-14'>
                   <div>
@@ -179,7 +166,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                     </p>
 
                     <ul>
-                      {issuesData?.map(item => {
+                      {singleGadgetData.issues.map(item => {
                         return (
                           <li
                             key={item._id}
