@@ -7,13 +7,14 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Response as Res
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
 import { Response } from 'express';
 
-import { ISuccessDelete } from 'interfaces/success-delete.interface';
+import { ISuccessDelete } from 'shared/interfaces/success-delete.interface';
 
 import { ArticlesService } from './articles.service';
 
@@ -21,6 +22,7 @@ import { Article } from './schemas/article.schema';
 
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
+import { PaginationDto } from 'shared/dto/pagination.dto';
 
 import { ROUTES } from 'constants/routes.constants';
 
@@ -30,11 +32,24 @@ export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @ApiOperation({ summary: 'public, get all active articles' })
+  @ApiQuery({ type: PaginationDto })
   @ApiResponse({ status: 200, type: Article, isArray: true })
   @Public()
   @Get('')
-  public async findActiveArticles(): Promise<Article[]> {
-    return await this.articlesService.findActive();
+  public async findActiveArticles(
+    @Res() response: Response,
+    @Query() { page, limit }: PaginationDto
+  ): Promise<void> {
+    const articles = await this.articlesService.findWithPagination(
+      { page, limit },
+      { isActive: true }
+    );
+
+    response.header(
+      'Content-Range',
+      `articles ${articles.rangeStart}-${articles.rangeEnd}/${articles.totalItems}`
+    );
+    response.send(articles);
   }
 
   @ApiOperation({ summary: 'public, get article by slug' })
@@ -51,22 +66,29 @@ export class ArticlesController {
     return result;
   }
 
+  @ApiOperation({ summary: 'get all articles' })
+  @ApiQuery({ type: PaginationDto })
+  @ApiResponse({ status: 200, type: Article })
+  @Get('/all')
+  public async findAllArticles(
+    @Res() response: Response,
+    @Query() { page, limit }: PaginationDto
+  ): Promise<void> {
+    const articles = await this.articlesService.findWithPagination({ page, limit });
+
+    response.header(
+      'Content-Range',
+      `articles ${articles.rangeStart}-${articles.rangeEnd}/${articles.totalItems}`
+    );
+    response.send(articles);
+  }
+
   @ApiOperation({ summary: 'get article data by ID' })
   @ApiResponse({ status: 200, type: Article })
   @ApiResponse({ status: 404, description: 'Articles was not found' })
   @Get('/:id')
   public async findArticleById(@Param('id') id: string): Promise<Article> {
     return await this.articlesService.findOneById(id);
-  }
-
-  @ApiOperation({ summary: 'get all articles' })
-  @ApiResponse({ status: 200, type: Article, isArray: true })
-  @Get('/all')
-  public async findAllArticles(@Res() response: Response): Promise<void> {
-    const result: Article[] = await this.articlesService.findAll();
-
-    response.header('Content-Range', `articles ${result.length}`);
-    response.send(result);
   }
 
   @ApiOperation({ summary: 'create new article' })

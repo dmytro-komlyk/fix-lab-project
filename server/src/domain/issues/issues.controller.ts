@@ -13,7 +13,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
 import { Response } from 'express';
 
-import { ISuccessDelete } from 'interfaces/success-delete.interface';
+import { ISuccessDelete } from 'shared/interfaces/success-delete.interface';
 
 import { IssuesService } from './issues.service';
 

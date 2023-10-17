@@ -11,7 +11,7 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
 
-import { ISuccessDelete } from 'interfaces/success-delete.interface';
+import { ISuccessDelete } from 'shared/interfaces/success-delete.interface';
 
 import { UsersService } from './users.service';
 
@@ -71,7 +71,7 @@ export class UsersController {
   @Public()
   @Get('/init/:key')
   public async createFirstAdmin(
-    @Param('key') key,
+    @Param('key') key: string,
     @Query() query: CreateUserDto
   ): Promise<User> {
     return await this.usersService.createFirstAdmin(key, query);

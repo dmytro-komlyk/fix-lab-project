@@ -2,10 +2,13 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
+import { IPaginationAnswer } from 'shared/interfaces/pagination-answer.interface';
+
 import { Article } from './schemas/article.schema';
 
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
+import { PaginationDto } from 'shared/dto/pagination.dto';
 
 @Injectable()
 export class ArticlesService {
@@ -13,14 +16,36 @@ export class ArticlesService {
     @InjectModel(Article.name) private readonly articleModel: Model<Article>
   ) {}
 
-  public async findAll(): Promise<Article[]> {
-    return await this.articleModel.find().populate({ path: 'preview' });
-  }
+  public async findWithPagination(
+    { page, limit }: PaginationDto,
+    query?: UpdateArticleDto
+  ): Promise<IPaginationAnswer<Article>> {
+    const result: IPaginationAnswer<Article> = {
+      itemsCount: 0,
+      totalItems: 0,
+      totalPages: 0,
+      rangeStart: 0,
+      rangeEnd: 0,
+      items: []
+    };
 
-  public async findActive(): Promise<Article[]> {
-    return await this.articleModel
-      .find({ isActive: true })
+    const totalArticles = await this.articleModel.find(query);
+
+    result.totalItems = totalArticles.length;
+    result.totalPages = Math.ceil(totalArticles.length / limit);
+
+    const articles = await this.articleModel
+      .find(query)
+      .limit(limit)
+      .skip(limit * (page - 1))
       .populate({ path: 'preview' });
+
+    result.items = articles;
+    result.itemsCount = articles.length;
+    result.rangeStart = articles.length ? limit * (page - 1) : 0;
+    result.rangeEnd = articles.length ? result.rangeStart + result.itemsCount : 0;
+
+    return result;
   }
 
   public async findOneByQuery(query: UpdateArticleDto): Promise<Article> {
