@@ -10,6 +10,7 @@ import { GadgetsModule } from './gadgets/gadgets.module';
 import { ImagesModule } from './images/images.module';
 import { IssuesModule } from './issues/issues.module';
 import { UsersModule } from './users/users.module';
+import { ArticlesModule } from './articles/articles.module';
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { UsersModule } from './users/users.module';
     BenefitsModule,
     BrandsModule,
     ContactsModule,
-    ImagesModule
+    ImagesModule,
+    ArticlesModule
   ],
   controllers: [],
   providers: []

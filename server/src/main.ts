@@ -16,7 +16,10 @@ import { PREFIX } from 'constants/routes.constants';
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.enableCors({
-    origin: '*'
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Range',
+    exposedHeaders: 'Content-Range'
   });
 
   app.setGlobalPrefix(PREFIX);

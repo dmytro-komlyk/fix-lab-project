@@ -15,7 +15,7 @@ import {
 
 import { MetadataDto } from 'shared/dto/metadata.dto';
 
-export class CreateBrandDto {
+export class CreateArticleDto {
   @ApiProperty({
     example: false,
     description: 'If false, will not appear on client side lists'
@@ -25,8 +25,17 @@ export class CreateBrandDto {
   readonly isActive?: boolean;
 
   @ApiProperty({
-    example: 'Apple',
-    description: 'Brand title'
+    example: 'remont-playstation-v-kyevi',
+    description: 'Article URL'
+  })
+  @IsDefined()
+  @IsNotEmpty()
+  @IsString()
+  readonly slug: string;
+
+  @ApiProperty({
+    example: 'Як самостійно прискорити роботу ноутбука',
+    description: 'Article title'
   })
   @IsDefined()
   @IsNotEmpty()
@@ -37,27 +46,15 @@ export class CreateBrandDto {
   readonly title: string;
 
   @ApiProperty({
-    example: 'xiaomi',
-    description: 'Brand URL'
+    example: '<p>Reparing <span>Apple</span> phones...</p>',
+    description: 'article richtext'
   })
   @IsDefined()
   @IsNotEmpty()
   @IsString()
-  readonly slug: string;
+  readonly text: string;
 
-  @ApiProperty({
-    example: 'Reparing Apple phones...',
-    description: 'article'
-  })
-  @IsOptional()
-  @IsDefined()
-  @IsNotEmpty()
-  @IsString()
-  readonly article: string;
-
-  @ApiProperty({
-    type: MetadataDto
-  })
+  @ApiProperty({ type: MetadataDto })
   @IsOptional()
   @IsDefined()
   @IsObject()
@@ -69,5 +66,5 @@ export class CreateBrandDto {
   @ApiProperty({ example: '64ef4383e46e72721c03090e' })
   @IsOptional()
   @IsString()
-  readonly icon?: string;
+  readonly preview?: string;
 }
