@@ -39,7 +39,7 @@ export class ContactsController {
   @ApiOperation({ summary: 'find all contacts' })
   @ApiResponse({ status: 200, type: Contact, isArray: true })
   @Get('/all')
-  public async findAll(@Res() response: Response): Promise<void> {
+  public async findAllContacts(@Res() response: Response): Promise<void> {
     const result: Contact[] = await this.contactsService.findAll();
 
     response.header('Content-Range', `contacts ${result.length}`);
@@ -49,7 +49,7 @@ export class ContactsController {
   @ApiOperation({ summary: 'create new contact' })
   @ApiResponse({ status: 200, type: Contact })
   @Post('')
-  public async create(@Body() dto: CreateContactDto): Promise<Contact> {
+  public async createContact(@Body() dto: CreateContactDto): Promise<Contact> {
     return await this.contactsService.create(dto);
   }
 
@@ -65,7 +65,7 @@ export class ContactsController {
   @ApiResponse({ status: 200, type: Contact })
   @ApiResponse({ status: 404, description: 'Contact was not found' })
   @Put('/:id')
-  public async update(
+  public async updateContact(
     @Param('id') id: string,
     @Body() dto: UpdateContactDto
   ): Promise<Contact> {
@@ -76,7 +76,7 @@ export class ContactsController {
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, description: 'Contact was not found' })
   @Delete('/:id')
-  public async remove(@Param('id') id: string): Promise<ISuccessDelete> {
+  public async removeContact(@Param('id') id: string): Promise<ISuccessDelete> {
     await this.contactsService.remove(id);
 
     return { status: 204, result: 'success' };

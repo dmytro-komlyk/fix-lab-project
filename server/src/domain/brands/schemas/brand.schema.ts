@@ -33,9 +33,7 @@ class Brand extends Document {
   @Prop({ type: String })
   readonly article: string;
 
-  @ApiProperty({
-    type: Metadata
-  })
+  @ApiProperty({ type: Metadata })
   @Prop({ type: Metadata })
   readonly metadata: Metadata;
 
