@@ -39,6 +39,10 @@ export class BrandsController {
 
   @ApiOperation({ summary: 'public, get brand by slug' })
   @ApiResponse({ status: 200, type: Brand, isArray: true })
+  @ApiResponse({
+    status: 404,
+    description: 'Brand with slug was not found'
+  })
   @Public()
   @Get('find-by-slug/:slug')
   public async findBrandBySlug(@Param('slug') slug: string): Promise<Brand> {
@@ -71,7 +75,7 @@ export class BrandsController {
 
   @ApiOperation({ summary: 'create new brand' })
   @ApiResponse({ status: 200, type: Brand })
-  @ApiResponse({ status: 400, description: 'Incorrect content data' })
+  @ApiResponse({ status: 422, description: 'Slug is already exists' })
   @Post('')
   public async createBrand(
     @Body()

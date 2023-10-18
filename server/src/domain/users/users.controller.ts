@@ -38,7 +38,7 @@ export class UsersController {
   @ApiResponse({ status: 200, type: User })
   @ApiResponse({ status: 400, description: 'Incorrect content data' })
   @Post('')
-  public async createuser(
+  public async createUser(
     @Body()
     dto: CreateUserDto
   ): Promise<User> {

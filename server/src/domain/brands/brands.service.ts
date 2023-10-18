@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
@@ -53,7 +57,9 @@ export class BrandsService {
     const foundBrand = await this.brandModel.findOne({ slug: dto.slug });
 
     if (foundBrand) {
-      throw new BadRequestException(`Brand with slug "${dto.slug}" already exists`);
+      throw new UnprocessableEntityException(
+        `Brand with slug "${dto.slug}" already exists`
+      );
     }
 
     const createdBrand = await new this.brandModel(dto).save();
