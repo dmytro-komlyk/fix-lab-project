@@ -45,6 +45,12 @@ export class UpdateArticleDto {
   })
   readonly title?: string;
 
+  @ApiProperty({ example: 'Reparing Apple phones...' })
+  @IsDefined()
+  @IsNotEmpty()
+  @IsString()
+  readonly preview?: string;
+
   @ApiProperty({
     example: '<p>Reparing <span>Apple</span> phones...</p>',
     description: 'article richtext'
@@ -66,5 +72,5 @@ export class UpdateArticleDto {
   @ApiProperty({ example: '64ef4383e46e72721c03090e' })
   @IsOptional()
   @IsString()
-  readonly preview?: string;
+  readonly image?: string;
 }

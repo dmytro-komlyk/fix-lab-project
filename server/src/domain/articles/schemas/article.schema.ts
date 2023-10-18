@@ -29,6 +29,10 @@ class Article extends Document {
   @Prop({ type: String, required: true })
   readonly title: string;
 
+  @ApiProperty({ example: 'Reparing Apple phones...' })
+  @Prop({ type: String, required: true })
+  readonly preview: string;
+
   @ApiProperty({ example: '<p>Reparing <span>Apple</span> phones...</p>' })
   @Prop({ type: String, required: true })
   readonly text: string;
@@ -39,7 +43,7 @@ class Article extends Document {
 
   @ApiProperty({ type: Image })
   @Prop({ type: Types.ObjectId, ref: Image.name, default: null })
-  readonly preview: Types.ObjectId;
+  readonly image: Types.ObjectId;
 }
 
 const ArticleSchema = SchemaFactory.createForClass(Article);

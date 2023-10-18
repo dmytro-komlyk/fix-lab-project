@@ -54,6 +54,12 @@ export class CreateArticleDto {
   @IsString()
   readonly text: string;
 
+  @ApiProperty({ example: 'Reparing Apple phones...' })
+  @IsDefined()
+  @IsNotEmpty()
+  @IsString()
+  readonly preview: string;
+
   @ApiProperty({ type: MetadataDto })
   @IsOptional()
   @IsDefined()
@@ -66,5 +72,5 @@ export class CreateArticleDto {
   @ApiProperty({ example: '64ef4383e46e72721c03090e' })
   @IsOptional()
   @IsString()
-  readonly preview?: string;
+  readonly image?: string;
 }
