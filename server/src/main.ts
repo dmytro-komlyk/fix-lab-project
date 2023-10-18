@@ -27,9 +27,7 @@ import { PREFIX } from 'constants/routes.constants';
   app.useGlobalFilters(new MongoErrorsFilter());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-  app.useStaticAssets(join(__dirname, '..', 'public'), {
-    prefix: '/public'
-  });
+  app.useStaticAssets(join(__dirname, '../..', 'public'), { prefix: '/public' });
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
