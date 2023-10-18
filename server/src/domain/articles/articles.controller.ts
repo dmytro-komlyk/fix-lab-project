@@ -10,7 +10,7 @@ import {
   Query,
   Response as Res
 } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
 import { Response } from 'express';
 
@@ -32,7 +32,6 @@ export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @ApiOperation({ summary: 'public, get all active articles' })
-  @ApiQuery({ type: PaginationDto })
   @ApiResponse({ status: 200, type: Article, isArray: true })
   @Public()
   @Get('')
@@ -67,7 +66,6 @@ export class ArticlesController {
   }
 
   @ApiOperation({ summary: 'get all articles' })
-  @ApiQuery({ type: PaginationDto })
   @ApiResponse({ status: 200, type: Article })
   @Get('/all')
   public async findAllArticles(
