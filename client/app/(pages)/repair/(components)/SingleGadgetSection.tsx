@@ -13,23 +13,22 @@ import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
+import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 import type {
   IBrand,
   IGadget,
-  IIssue,
 } from '@/app/(server)/api/service/modules/gadgetService'
 
 import { GadgetBrandsSlider } from './GadgetBrandsSlider'
 
 interface SingleGadgetProps {
   singleGadgetData: IGadget
-  issuesData: IIssue[]
   brandData: IBrand[]
+  contactsData: IContact[]
 }
 const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
   singleGadgetData,
-  issuesData,
-  brandData,
+  contactsData,
 }) => {
   const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
     useState<boolean>(false)
@@ -102,14 +101,14 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                   {icon && (
                     <Image
                       className=' h-[80px]'
-                      src={`http://95.217.34.212:30000${icon}`}
+                      src={icon.src}
                       width={0}
                       height={80}
                       style={{
                         width: '100%',
                         height: 'auto',
                       }}
-                      alt={title}
+                      alt={icon.alt}
                     />
                   )}
                 </div>
@@ -127,42 +126,50 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                 textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
               />
             </div>
-            <CallUsCard />
+            <CallUsCard contactsData={contactsData} />
           </div>
           <div className='flex flex-col gap-8 lg:w-[737px] lg:gap-14'>
             <div className='flex flex-col'>
-              <p className=' mb-[18px] font-exo_2 text-xl font-semibold leading-[0.7] text-white-dis'>
-                Бренди, які ремонтуємо
-              </p>
-              <GadgetBrandsSlider
-                brandData={brandData}
-                gadgetData={singleGadgetData}
-              />
-              <p className='mb-8 mt-[47px] font-exo_2 text-xl font-semibold leading-[0.7] text-white-dis'>
-                Послуги
-              </p>
-              <ul className='mb-14'>
-                {issuesData?.map(item => {
-                  return (
-                    <li
-                      className='hover:op border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl hover:opacity-100 focus:opacity-100'
-                      key={item._id}
-                    >
-                      <Link
-                        className='flex items-center gap-[12px] max-md:flex-col max-md:items-start max-md:justify-center  max-md:px-[16px] max-md:py-[12px] md:h-[75px] md:justify-between md:px-6'
-                        href={`/repair/${slug}/${item.slug}`}
-                      >
-                        <p className='font-exo_2 text-xl font-semibold text-dark-blue max-md:text-lg'>
-                          {item.title}
-                        </p>
-                        <p className='text-md font-[400] text-black-dis'>
-                          {item.price}
-                        </p>
-                      </Link>
-                    </li>
-                  )
-                })}
-              </ul>
+              {singleGadgetData?.brands.length > 0 && (
+                <>
+                  <p className=' mb-[18px] font-exo_2 text-xl font-semibold leading-[0.7] text-white-dis'>
+                    Бренди, які ремонтуємо
+                  </p>
+                  <GadgetBrandsSlider
+                    contactsData={contactsData}
+                    gadgetData={singleGadgetData}
+                  />
+                </>
+              )}
+              {singleGadgetData.issues.length > 0 && (
+                <>
+                  <p className='mb-8 font-exo_2 text-xl font-semibold leading-[0.7] text-white-dis'>
+                    Послуги
+                  </p>
+                  <ul className='mb-14'>
+                    {singleGadgetData.issues?.map(item => {
+                      return (
+                        <li
+                          className='hover:op border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl hover:opacity-100 focus:opacity-100'
+                          key={item._id}
+                        >
+                          <Link
+                            className='flex items-center gap-[12px] max-md:flex-col max-md:items-start max-md:justify-center  max-md:px-[16px] max-md:py-[12px] md:h-[75px] md:justify-between md:px-6'
+                            href={`/repair/${slug}/${item.slug}`}
+                          >
+                            <p className='font-exo_2 text-xl font-semibold text-dark-blue max-md:text-lg'>
+                              {item.title}
+                            </p>
+                            <p className='text-md font-[400] text-black-dis'>
+                              {item.price}
+                            </p>
+                          </Link>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </>
+              )}
               <Button
                 text='Розрахувати вартість ремонту'
                 toggleModal={toggleCostRepairModal}

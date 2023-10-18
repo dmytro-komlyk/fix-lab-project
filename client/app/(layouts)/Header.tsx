@@ -9,6 +9,7 @@ import { FaBars } from 'react-icons/fa'
 import { FiMapPin } from 'react-icons/fi'
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
 
+import type { IContactsProps } from './(components)/AddressLocationCard'
 import Button from './(components)/Button'
 import CourierModal from './(components)/CourierModal'
 import MobileMenu from './(components)/MobileMenu'
@@ -18,19 +19,19 @@ const blogIdRegex = /\/blog\/\d+/
 const brandsSinglePageRegex = /^\/repair\/([^/]+)\/brands\/([^/]+)\/?$/
 const brandsPageRegex = /^\/repair\/([^/]+)\/brands\/?$/
 
-export const Header: React.FC = () => {
+export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
   const pathname = usePathname()
   const toggleDropdownRegionRef = useRef<HTMLDivElement>(null)
   const toggleDropdownPhoneRef = useRef<HTMLUListElement>(null)
-  const itemsRegion: Array<string> = ['Голосіївський', 'Оболонський']
 
   const [showModal, setShowModal] = useState<boolean>(false)
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
   const [isOpenItem, setIsOpenItem] = useState<boolean>(false)
   const [isScrolled, setIsScrolled] = useState<boolean>(false)
-  const [selectedRegionItem, setSelectedRegionItem] =
-    useState<string>('Голосіївський')
+  const [selectedRegionItem, setSelectedRegionItem] = useState<string>(
+    `${contactsData[0]?.area}`,
+  )
 
   const toggleSuccessSubmitModal = useCallback(() => {
     setSubmitSuccess(prev => !prev)
@@ -170,9 +171,9 @@ export const Header: React.FC = () => {
             )}
             <AnimatePresence>
               {isOpenItem &&
-                itemsRegion.map(
+                contactsData.map(
                   item =>
-                    selectedRegionItem !== item && (
+                    selectedRegionItem !== item.area && (
                       <motion.div
                         initial={{ opacity: 0, y: -5 }}
                         animate={{
@@ -185,9 +186,9 @@ export const Header: React.FC = () => {
                           opacity: 0,
                           transition: { duration: 0.1 },
                         }}
-                        key={item}
+                        key={item._id}
                         onClick={() => {
-                          handleItemClick(item)
+                          handleItemClick(item.area)
                           toggleDropDown()
                         }}
                         className='absolute bottom-[-48px] left-[-2px] flex w-[196px] flex-col items-center  justify-center gap-2 rounded-b-xl  bg-mid-green  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
@@ -195,10 +196,10 @@ export const Header: React.FC = () => {
                         <button
                           type='button'
                           onClick={toggleDropDown}
-                          key={item}
+                          key={item.area}
                           className='select-none py-3 text-base font-semibold text-dark-blue'
                         >
-                          {item}
+                          {item.area}
                         </button>
                       </motion.div>
                     ),
@@ -246,26 +247,26 @@ export const Header: React.FC = () => {
           <div className='mr-[31px] flex flex-col items-center max-md:m-0'>
             <p className='flex flex-row items-center  gap-1'>
               <span className='whitespace-nowrap text-sm leading-6  text-[rgba(248,_252,_255,_0.56)]'>
-                10:00 - 19:30
+                {contactsData[0]?.workingTime}
               </span>
               <span className='whitespace-nowrap text-sm  leading-6 text-[rgba(248,_252,_255,_0.56)]'>
                 |
               </span>
               <span className='w-1/2 whitespace-nowrap  text-sm text-[rgba(248,_252,_255,_0.56)]'>
-                нд - вихідний
+                {contactsData[0]?.workingDate}
               </span>
             </p>
             <a
               href={`tel:${
-                selectedRegionItem === 'Голосіївський'
-                  ? '+380632272728'
-                  : '+380502272728'
+                selectedRegionItem === contactsData[0]?.area
+                  ? contactsData[0]?.phones.join('').replace(/\s/g, '')
+                  : contactsData[1]?.phones.join('').replace(/\s/g, '')
               }`}
               className='whitespace-nowrap text-md leading-none tracking-[2px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
             >
-              {selectedRegionItem === 'Голосіївський'
-                ? '+38 063 227 27 28'
-                : '+38 050 227 27 28'}
+              {selectedRegionItem === contactsData[0]?.area
+                ? contactsData[0]?.phones.join('')
+                : contactsData[1]?.phones.join('')}
             </a>
           </div>
 
@@ -307,10 +308,12 @@ export const Header: React.FC = () => {
             )}
             <li>
               <a
-                href='tel:380632272728'
+                href={`tel:${contactsData[0]?.phones
+                  .join('')
+                  .replace(/\s/g, '')}`}
                 className='text-base font-normal leading-none  tracking-[0.45px] text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px]'
               >
-                +38 063 227 27 28
+                {contactsData[0]?.phones}
               </a>
             </li>
             <AnimatePresence>
@@ -330,10 +333,12 @@ export const Header: React.FC = () => {
                   className='absolute left-[0px] top-[27px]'
                 >
                   <a
-                    href='tel:+380502272728'
+                    href={`tel:${contactsData[1]?.phones
+                      .join('')
+                      .replace(/\s/g, '')}`}
                     className='whitespace-nowrap text-base font-normal leading-tight tracking-[0.45px]  text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px] '
                   >
-                    +38 050 227 27 28
+                    {contactsData[1]?.phones}
                   </a>
                 </motion.li>
               )}

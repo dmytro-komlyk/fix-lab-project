@@ -1,13 +1,18 @@
-import { AddressSection, ColaborationSection } from '@/app/(layouts)'
+import { AddressSection } from '@/app/(layouts)'
+import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
+import {
+  getAllIssuesData,
+  getSingleIssueData,
+} from '@/app/(server)/api/service/modules/issueService'
 
-import BrandsSection from '../../../(components)/BrandsSection'
+import IssueSection from '../../(components)/IssueSection'
 
 interface IndexProps {
   params: {
+    issue: string
     gadget: string
   }
-  searchParams: any
 }
 
 const brandData = [
@@ -240,14 +245,34 @@ const brandData = [
 ]
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const gadgetData = await getSingleGadgetData(params.gadget)
+  const singleIssueData = await getSingleIssueData(params.issue)
+  const contactsData = await getAllContactsData()
+  const singleGadgetData = await getSingleGadgetData(params.gadget)
 
   return (
     <main className='h-full flex-auto'>
-      <BrandsSection brandData={brandData} gadgetData={gadgetData} />
-      <ColaborationSection />
-      <AddressSection />
+      <IssueSection
+        contactsData={contactsData}
+        brandData={brandData}
+        singleIssueData={singleIssueData}
+        singleGadgetData={singleGadgetData}
+      />
+      <AddressSection contactsData={contactsData} />
     </main>
   )
 }
 export default Index
+
+export async function generateStaticParams({
+  params,
+}: {
+  params: { gadget: string }
+}) {
+  const issues = await getAllIssuesData()
+  const gadget = await getSingleGadgetData(params.gadget)
+
+  return issues.map(item => ({
+    gadget: gadget.slug,
+    issue: item.slug,
+  }))
+}

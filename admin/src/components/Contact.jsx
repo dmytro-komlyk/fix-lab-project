@@ -1,19 +1,20 @@
 import {
   ArrayInput,
-  BooleanInput,
-  Create,
   Datagrid,
   Edit,
+  ImageField,
   List,
-  NumberInput,
-  SimpleForm,
+  RadioButtonGroupInput,
+  ReferenceInput,
+  ReferenceManyField,
+  SaveButton,
   SimpleFormIterator,
   TabbedForm,
   TextField,
   TextInput,
+  Toolbar,
   useRecordContext,
 } from "react-admin";
-
 const TitleContact = () => {
   const record = useRecordContext();
   return <span>Контакт {record ? `"${record.area}"` : ""}</span>;
@@ -21,104 +22,87 @@ const TitleContact = () => {
 
 const ListContacts = () => {
   return (
-    <List title="Contacts">
-      <Datagrid rowClick="edit">
-        <TextField source="area" label="Район" />
+    <List title="Контакти">
+      <Datagrid bulkActionButtons={false} rowClick="edit">
+        <TextField source="area" label="Список контактів" />
       </Datagrid>
     </List>
   );
 };
 
-const EditContact = () => (
-  <Edit title={<TitleContact />}>
-    <TabbedForm>
-      <TabbedForm.Tab label="Seo">
-        <TextInput label="Title" source="area" />
-      </TabbedForm.Tab>
-    </TabbedForm>
-    {/* <TextInput fullWidth required label="Район" source="area" /> */}
-    {/* <TextInput required label="Адрес" source="address" />
-      <TextInput label="Комментар" source="comment" /> */}
+const EditContact = () => {
+  const UserEditToolbar = (props) => (
+    <Toolbar {...props}>
+      <SaveButton />
+    </Toolbar>
+  );
+  return (
+    <Edit title={<TitleContact />}>
+      <TabbedForm toolbar={<UserEditToolbar />}>
+        <TabbedForm.Tab label="Редагувати контакт">
+          <TextInput fullWidth required label="Район" source="area" />
+          <TextInput required label="Адрес" source="address" />
+          <TextInput label="Комментар" source="comment" />
+          <ArrayInput
+            required
+            label="Номер телефону"
+            source="phones"
+            helperText="В форматі +38 050 227 27 28"
+          >
+            <SimpleFormIterator>
+              <TextInput />
+            </SimpleFormIterator>
+          </ArrayInput>
+          <ArrayInput required label="Станції метро" source="subways">
+            <SimpleFormIterator>
+              <TextInput />
+            </SimpleFormIterator>
+          </ArrayInput>
+          <TextInput
+            fullWidth
+            label="Посилання адреси салону на карті"
+            source="googleMapLink"
+          />
+          <TextInput
+            fullWidth
+            label="Посилання адреси салону для плагіну"
+            source="googlePluginLink"
+          />
+          <ReferenceManyField label="Image" reference="contacts" target="_id">
+            <ImageField label="Зображення" source="image.src" />
+          </ReferenceManyField>
+          <ReferenceInput
+            source="image"
+            label="image"
+            reference="images/pictures"
+          >
+            <RadioButtonGroupInput
+              optionText={
+                <ImageField
+                  source="src"
+                  title="alt"
+                  sx={{
+                    "& img": {
+                      maxWidth: 60,
+                      maxHeight: 60,
+                      objectFit: "contain",
+                    },
+                  }}
+                />
+              }
+              optionValue="id"
+            >
+              <TextField source="id" />
+            </RadioButtonGroupInput>
+          </ReferenceInput>
+        </TabbedForm.Tab>
+        <TabbedForm.Tab label="Редагувати загальні дані">
+          <TextInput required label="Робочий час" source="workingTime" />
+          <TextInput required label="Робочі дні" source="workingDate" />
+        </TabbedForm.Tab>
+      </TabbedForm>
+    </Edit>
+  );
+};
 
-    {/* <ArrayInput required label="Станції метро" source="subways">
-        <SimpleFormIterator>
-          <TextInput />
-        </SimpleFormIterator>
-      </ArrayInput>
-
-      <ArrayInput
-        required
-        label="Номера телефонів"
-        source="phones"
-        helperText="В форматі +38 050 227 27 28"
-      >
-        <SimpleFormIterator>
-          <TextInput />
-        </SimpleFormIterator>
-      </ArrayInput> */}
-    {/* 
-      <TextInput required label="Робочий час" source="workingTime" />
-      <TextInput required label="Робочі дні" source="workingDate" /> */}
-
-    {/* <NumberInput
-        required
-        label="Latitude"
-        source="coords.lat"
-        helperText="50.44930083819644"
-      />
-      <NumberInput
-        required
-        label="Longitude"
-        source="coords.lang"
-        helperText="30.523043428894475"
-      /> */}
-    {/* <BooleanInput label="Is Active" source="isActive" defaultValue={true} /> */}
-  </Edit>
-);
-
-const CreateContact = () => (
-  <Create>
-    <SimpleForm>
-      <TextInput fullWidth required label="Район" source="area" />
-      <TextInput required label="Адрес" source="address" />
-      <TextInput label="Комментар" source="comment" />
-
-      <ArrayInput required label="Станції метро" source="subways">
-        <SimpleFormIterator>
-          <TextInput />
-        </SimpleFormIterator>
-      </ArrayInput>
-
-      <ArrayInput
-        required
-        label="Номера телефонів"
-        source="phones"
-        helperText="В форматі +38 050 227 27 28"
-      >
-        <SimpleFormIterator>
-          <TextInput />
-        </SimpleFormIterator>
-      </ArrayInput>
-
-      <TextInput required label="Робочий час" source="workingTime" />
-      <TextInput required label="Робочі дні" source="workingDate" />
-      <NumberInput
-        required
-        label="Latitude"
-        source="coords.lat"
-        helperText="50.44930083819644"
-        step={1}
-      />
-      <NumberInput
-        required
-        label="Longitude"
-        source="coords.lang"
-        helperText="30.523043428894475"
-        step={1}
-      />
-      <BooleanInput label="Активувати" source="isActive" defaultValue={true} />
-    </SimpleForm>
-  </Create>
-);
-
-export { CreateContact, EditContact, ListContacts };
+export { EditContact, ListContacts };

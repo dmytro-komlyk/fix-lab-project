@@ -15,7 +15,6 @@ export const GadgetsSlider: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
     slides: { perView: 1.15, spacing: 16 },
   })
   const size = useWindowSize()
-
   return size.width > 767 ? (
     <GadgetsList gadgetsData={gadgetsData} />
   ) : (
@@ -30,11 +29,7 @@ export const GadgetsSlider: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
             >
               <div className='relative ml-auto h-[80px] w-full max-w-[104px]'>
                 {item.icon && (
-                  <Image
-                    src={`http://95.217.34.212:30000${item.icon}`}
-                    fill
-                    alt={item.title}
-                  />
+                  <Image src={item.icon.src} fill alt={item.icon.alt} />
                 )}
               </div>
               <div className='text-white-dis'>

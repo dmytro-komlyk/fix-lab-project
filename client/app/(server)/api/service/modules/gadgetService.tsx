@@ -6,7 +6,10 @@ export interface IGadget {
   isActive: boolean
   title: string
   description: string
-  icon: string
+  icon: {
+    alt: string
+    src: string
+  }
   image: string
   gallery: string
   metadata: {
@@ -23,11 +26,11 @@ export interface IBrand {
   slug: string
   isActive: boolean
   title: string
+  article: string
   icon: {
     src: string
     alt: string
   }
-  article: string
   metadata: {
     title: string
     description: string
@@ -40,6 +43,7 @@ export interface IIssue {
   isActive: boolean
   slug: string
   title: string
+  info: string
   description: string
   price: string
   image: {
@@ -54,7 +58,7 @@ export interface IIssue {
     keywords: string
   }
   richText: string
-  info: {
+  benefits: {
     id: number
     icon: {
       src: string

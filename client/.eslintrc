@@ -6,6 +6,7 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
+    "no-underscore-dangle": "off",
     "prettier/prettier": [
       "error",
       {
@@ -35,6 +36,7 @@
         "project": "./tsconfig.json"
       },
       "rules": {
+        "no-underscore-dangle": "off",
         "prettier/prettier": [
           "error",
           {

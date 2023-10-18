@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
 
 import { Footer, Header } from './(layouts)'
+import { getAllContactsData } from './(server)/api/service/modules/contactService'
 
 const inter = Inter({
   weight: ['300', '400', '700', '500', '600'],
@@ -35,11 +36,12 @@ export const metadata: Metadata = {
   description: 'FixLab - мережа студій ремонту твоєї техніки',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const contactsData = await getAllContactsData()
   return (
     <html
       lang='uk'
@@ -47,9 +49,9 @@ export default function RootLayout({
     >
       <body className='h-full'>
         <div className='flex min-h-full flex-col'>
-          <Header />
+          <Header contactsData={contactsData} />
           {children}
-          <Footer />
+          <Footer contactsData={contactsData} />
         </div>
       </body>
     </html>
