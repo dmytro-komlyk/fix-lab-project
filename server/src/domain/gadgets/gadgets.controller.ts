@@ -3,16 +3,17 @@ import {
   Controller,
   Delete,
   Get,
-  Header,
   NotFoundException,
   Param,
   Post,
-  Put
+  Put,
+  Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
+import { Response } from 'express';
 
-import { ISuccessDelete } from 'interfaces/success-delete.interface';
+import { ISuccessDelete } from 'shared/interfaces/success-delete.interface';
 
 import { GadgetsService } from './gadgets.service';
 
@@ -28,15 +29,15 @@ import { ROUTES } from 'constants/routes.constants';
 export class GadgetsController {
   constructor(private readonly gadetsService: GadgetsService) {}
 
-  @ApiOperation({ summary: 'No-auth* get all Gadgets' })
+  @ApiOperation({ summary: 'public, get all gadgets' })
   @ApiResponse({ status: 200, type: Gadget, isArray: true })
   @Public()
   @Get('')
-  public async findAllActiveGadgets(): Promise<Gadget[]> {
-    return await this.gadetsService.findAllActive();
+  public async findActiveGadgets(): Promise<Gadget[]> {
+    return await this.gadetsService.findActive();
   }
 
-  @ApiOperation({ summary: 'No-auth* get Gadget by slug' })
+  @ApiOperation({ summary: 'public, get gadget by slug' })
   @ApiResponse({ status: 200, type: Gadget, isArray: true })
   @ApiResponse({
     status: 404,
@@ -44,7 +45,7 @@ export class GadgetsController {
   })
   @Public()
   @Get('find-by-slug/:slug')
-  public async findBySlug(@Param('slug') slug: string): Promise<Gadget> {
+  public async findGadgetBySlug(@Param('slug') slug: string): Promise<Gadget> {
     const result = await this.gadetsService.findOneByQuery({
       slug
     });
@@ -56,16 +57,17 @@ export class GadgetsController {
     return result;
   }
 
-  @ApiOperation({ summary: 'get all Gadets data' })
+  @ApiOperation({ summary: 'get all gadets data' })
   @ApiResponse({ status: 200, type: Gadget, isArray: true })
   @Get('/all')
-  @Header('Access-Control-Expose-Headers', 'Content-Range')
-  @Header('Content-Range', 'posts 0-24/319')
-  public async findAllGadgets(): Promise<Gadget[]> {
-    return await this.gadetsService.findAll();
+  public async findAllGadgets(@Res() response: Response): Promise<void> {
+    const result: Gadget[] = await this.gadetsService.findAll();
+
+    response.header('Content-Range', `gadgets ${result.length}`);
+    response.send(result);
   }
 
-  @ApiOperation({ summary: 'get Gadget data by ID' })
+  @ApiOperation({ summary: 'get gadget data by ID' })
   @ApiResponse({ status: 200, type: Gadget })
   @ApiResponse({
     status: 404,
@@ -76,7 +78,7 @@ export class GadgetsController {
     return await this.gadetsService.findOneById(id);
   }
 
-  @ApiOperation({ summary: 'create new Gadget' })
+  @ApiOperation({ summary: 'create new gadget' })
   @ApiResponse({ status: 200, type: Gadget })
   @ApiResponse({
     status: 400,
@@ -90,7 +92,7 @@ export class GadgetsController {
     return await this.gadetsService.create(dto);
   }
 
-  @ApiOperation({ summary: 'update existing Gadget by ID' })
+  @ApiOperation({ summary: 'update existing gadget by ID' })
   @ApiResponse({ status: 200, type: Gadget })
   @ApiResponse({
     status: 404,
@@ -105,7 +107,7 @@ export class GadgetsController {
   }
 
   @ApiOperation({
-    summary: 'remove permanently Gadget by ID'
+    summary: 'remove permanently gadget by ID'
   })
   @ApiResponse({ status: 204 })
   @ApiResponse({

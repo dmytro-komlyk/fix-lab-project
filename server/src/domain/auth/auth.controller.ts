@@ -23,11 +23,8 @@ export class AuthController {
     private readonly usersService: UsersService
   ) {}
 
-  @ApiOperation({ summary: 'Get token with login and password' })
-  @ApiResponse({
-    status: 200,
-    type: String
-  })
+  @ApiOperation({ summary: 'get token with login and password' })
+  @ApiResponse({ status: 200, type: String })
   @ApiResponse({ status: 401 })
   @Public()
   @Post('/login')
@@ -36,18 +33,12 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'create new user' })
-  @ApiResponse({
-    status: 200,
-    type: String
-  })
+  @ApiResponse({ status: 200, type: String })
   @ApiResponse({ status: 400, description: 'Incorrect content data' })
   @ApiResponse({ status: 422, description: 'User was not created' })
   @Public()
   @Post('/register')
-  public async register(
-    @Body()
-    dto: RegisterDto
-  ): Promise<string> {
+  public async register(@Body() dto: RegisterDto): Promise<string> {
     const user = await this.usersService.create({ isActive: true, ...dto });
 
     if (!user) {

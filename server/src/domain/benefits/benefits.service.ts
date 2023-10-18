@@ -17,8 +17,8 @@ export class BenefitsService {
     return await this.benefitModel.find().populate('icon');
   }
 
-  public async findAllByQuery(query: UpdateBenefitDto): Promise<Benefit[]> {
-    return await this.benefitModel.find(query).populate('icon');
+  public async findActive(): Promise<Benefit[]> {
+    return await this.benefitModel.find({ isActive: true }).populate('icon');
   }
 
   public async findOneById(id: string): Promise<Benefit> {

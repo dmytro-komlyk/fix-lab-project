@@ -3,16 +3,17 @@ import {
   Controller,
   Delete,
   Get,
-  Header,
   NotFoundException,
   Param,
   Post,
-  Put
+  Put,
+  Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public } from 'decorators/public.decorator';
+import { Response } from 'express';
 
-import { ISuccessDelete } from 'interfaces/success-delete.interface';
+import { ISuccessDelete } from 'shared/interfaces/success-delete.interface';
 
 import { IssuesService } from './issues.service';
 
@@ -28,16 +29,15 @@ import { ROUTES } from 'constants/routes.constants';
 export class IssuesController {
   constructor(private readonly issuesService: IssuesService) {}
 
-  @ApiOperation({
-    summary: 'No-auth* find all active Issues'
-  })
+  @ApiOperation({ summary: 'public, find all active issues' })
   @ApiResponse({ status: 200, type: Issue, isArray: true })
+  @Public()
   @Get('')
   public async findAll(): Promise<Issue[]> {
     return await this.issuesService.findAllActive();
   }
 
-  @ApiOperation({ summary: 'No-auth* get Gadget by slug' })
+  @ApiOperation({ summary: 'public, get gadget by slug' })
   @ApiResponse({ status: 200, type: Issue, isArray: true })
   @ApiResponse({
     status: 404,
@@ -57,16 +57,17 @@ export class IssuesController {
     return issue;
   }
 
-  @ApiOperation({ summary: 'get all Issue data' })
+  @ApiOperation({ summary: 'get all issue data' })
   @ApiResponse({ status: 200, type: Issue, isArray: true })
   @Get('/all')
-  @Header('Access-Control-Expose-Headers', 'Content-Range')
-  @Header('Content-Range', 'posts 0-24/319')
-  public async findAllIssues(): Promise<Issue[]> {
-    return await this.issuesService.findAll();
+  public async findAllIssues(@Res() response: Response): Promise<void> {
+    const result: Issue[] = await this.issuesService.findAll();
+
+    response.header('Content-Range', `issues ${result.length}`);
+    response.send(result);
   }
 
-  @ApiOperation({ summary: 'get Issue data by ID' })
+  @ApiOperation({ summary: 'get issue data by ID' })
   @ApiResponse({ status: 200, type: Issue })
   @ApiResponse({ status: 404, description: 'Issue was not found' })
   @Public()
@@ -75,7 +76,7 @@ export class IssuesController {
     return await this.issuesService.findOneById(id);
   }
 
-  @ApiOperation({ summary: 'create new Issue' })
+  @ApiOperation({ summary: 'create new issue' })
   @ApiResponse({ status: 200, type: Issue })
   @ApiResponse({
     status: 400,
@@ -89,7 +90,7 @@ export class IssuesController {
     return await this.issuesService.create(dto);
   }
 
-  @ApiOperation({ summary: 'update existing Issue by ID' })
+  @ApiOperation({ summary: 'update existing issue by ID' })
   @ApiResponse({ status: 200, type: Issue })
   @ApiResponse({
     status: 404,
@@ -105,7 +106,7 @@ export class IssuesController {
   }
 
   @ApiOperation({
-    summary: 'remove permanently Issue by ID'
+    summary: 'remove permanently issue by ID'
   })
   @ApiResponse({ status: 204 })
   @ApiResponse({
