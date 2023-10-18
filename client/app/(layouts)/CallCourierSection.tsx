@@ -31,7 +31,11 @@ export const CallCourierSection: React.FC = () => {
         }  max-lg:justify-center  max-md:py-14`}
       >
         <div>
-          <div className=' absolute bottom-[250px] left-[23px] max-xl:bottom-[235px] max-lg:bottom-[342px] max-lg:left-[0] max-md:bottom-[337px] max-md:left-[50%] max-md:translate-x-[-50%] '>
+          <div
+            data-aos='fade-right'
+            data-aos-offset='100'
+            className=' absolute bottom-[250px] left-[23px] max-xl:bottom-[235px] max-lg:bottom-[342px] max-lg:left-[0] max-md:bottom-[337px] max-md:left-[50%] max-md:translate-x-[-50%] '
+          >
             <Image
               className=' h-auto w-[480px] max-xl:w-[380px] max-md:min-w-[244px]'
               src='/images/courier-section/group-car.svg'
@@ -69,7 +73,11 @@ export const CallCourierSection: React.FC = () => {
             priority
           />
         </div>
-        <div className='z-[1] justify-between max-lg:flex max-lg:flex-col max-md:gap-[281px]'>
+        <div
+          data-aos='fade-up'
+          data-aos-offset='100'
+          className='z-[1]  justify-between max-lg:flex max-lg:flex-col max-md:gap-[281px]'
+        >
           <div className='flex flex-col gap-3.5 md:mb-8 '>
             <p className='text-xl font-[400] leading-9 text-dark-blue max-md:text-xl max-sm:text-lg'>
               Не треба ламати плани!
