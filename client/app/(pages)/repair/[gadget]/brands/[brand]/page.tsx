@@ -1,5 +1,8 @@
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
-import { getSingleBrandData } from '@/app/(server)/api/service/modules/brandService'
+import {
+  getAllBrandsData,
+  getSingleBrandData,
+} from '@/app/(server)/api/service/modules/brandService'
 import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
 
@@ -30,3 +33,16 @@ const Index: React.FC<IndexProps> = async ({ params }) => {
   )
 }
 export default Index
+export async function generateStaticParams({
+  params,
+}: {
+  params: { gadget: string }
+}) {
+  const brands = await getAllBrandsData()
+  const gadget = await getSingleGadgetData(params.gadget)
+
+  return brands.map(item => ({
+    gadget: gadget.slug,
+    brand: item.slug,
+  }))
+}

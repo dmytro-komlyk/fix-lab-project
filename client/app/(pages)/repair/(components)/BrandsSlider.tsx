@@ -2,6 +2,7 @@ import { AnimatePresence } from 'framer-motion'
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
 
 import RenderMarkdown from '@/app/(components)/RenderMarkdown'
@@ -26,6 +27,9 @@ export const BrandsSlider: React.FC<BrandsSliderProps> = ({
   contactsData,
   brandData,
 }) => {
+  const pathname = usePathname().split('/')
+  const isBrandPage = pathname[pathname.length - 1]
+
   // Modal window
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
     useState<boolean>(false)
@@ -120,10 +124,16 @@ export const BrandsSlider: React.FC<BrandsSliderProps> = ({
             </div>
           )}
           <div className='flex w-full justify-between pt-[52px]'>
-            {brandData?.article && (
+            {isBrandPage === 'brands' ? (
               <div className='flex max-w-[852px] gap-16  max-lg:flex-col lg:gap-32'>
-                <RenderMarkdown markdown={brandData?.article} />
+                <RenderMarkdown markdown={gadgetData?.brands[0]?.article} />
               </div>
+            ) : (
+              brandData?.article && (
+                <div className='flex max-w-[852px] gap-16  max-lg:flex-col lg:gap-32'>
+                  <RenderMarkdown markdown={brandData?.article} />
+                </div>
+              )
             )}
             {gadgetData?.brands?.map(item => {
               return (

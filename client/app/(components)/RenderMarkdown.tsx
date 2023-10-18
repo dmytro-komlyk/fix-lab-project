@@ -56,7 +56,7 @@ const customStyle = `
 `
 
 interface RenderMarkdownProps {
-  markdown: string
+  markdown?: string
 }
 
 const RenderMarkdown = ({ markdown }: RenderMarkdownProps) => {
@@ -65,13 +65,15 @@ const RenderMarkdown = ({ markdown }: RenderMarkdownProps) => {
   })
 
   return (
-    <span
-      className='markdown-content'
-      // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{
-        __html: customStyle + renderMarkdown.render(markdown),
-      }}
-    />
+    markdown && (
+      <span
+        className='markdown-content'
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: customStyle + renderMarkdown.render(markdown),
+        }}
+      />
+    )
   )
 }
 
