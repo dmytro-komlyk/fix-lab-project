@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const apiUrl = `http://95.217.34.212:30000/api` // замінити на NEXT_PUBLIC_SERVER_URL
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL // замінити на NEXT_PUBLIC_SERVER_URL
 
 export default async function fetchDataFromServer(url: string) {
   try {
