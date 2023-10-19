@@ -8,6 +8,8 @@ import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetSe
 
 import BrandsSection from '../../../(components)/BrandsSection'
 
+export const revalidate = 60
+
 interface IndexProps {
   params: {
     gadget: string
