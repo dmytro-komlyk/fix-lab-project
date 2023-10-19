@@ -4,6 +4,7 @@ on:
   pull_request:
     types:
       - closed
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -22,18 +23,17 @@ jobs:
             cd fix-lab
             echo ${{ secrets.REGISTRY_TOKEN  }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
-            if [[ "${{ contains(github.event.pull_request.labels.*.name, 'backend') }}" == "true" ]]
-            then
+            if [[ "${{ contains(github.event.pull_request.labels.*.name, 'backend') }}" == "true" ]]; then
                 docker rm $(docker stop $(docker ps -a -q --filter ancestor=ghcr.io/iryna-gry/prod-fixlab-server:latest ))
                 docker rmi ghcr.io/iryna-gry/prod-fixlab-server:latest
+            fi
 
-            if [[ "${{ contains(github.event.pull_request.labels.*.name, 'frontend-client') }}" == "true" ]]
-            then
+            if [[ "${{ contains(github.event.pull_request.labels.*.name, 'frontend-client') }}" == "true" ]]; then
                 docker rm $(docker stop $(docker ps -a -q --filter ancestor=ghcr.io/iryna-gry/prod-fixlab-client:latest ))
                 docker rmi ghcr.io/iryna-gry/prod-fixlab-client:latest
+            fi
 
-            if [[ "${{ contains(github.event.pull_request.labels.*.name, 'frontend-admin') }}" == "true" ]]
-            then
+            if [[ "${{ contains(github.event.pull_request.labels.*.name, 'frontend-admin') }}" == "true" ]]; then
                 docker rm $(docker stop $(docker ps -a -q --filter ancestor=ghcr.io/iryna-gry/prod-fixlab-admin:latest ))
                 docker rmi ghcr.io/iryna-gry/prod-fixlab-admin:latest
             fi
