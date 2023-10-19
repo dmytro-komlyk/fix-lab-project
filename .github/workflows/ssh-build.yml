@@ -2,8 +2,7 @@ name: CI/CD Build Pipeline # The name of the workflow
 
 on:
   pull_request:
-    branches:
-      - "*"
+    types: [labeled]
   workflow_dispatch:
 
 env:
