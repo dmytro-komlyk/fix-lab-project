@@ -33,62 +33,61 @@ const ContactsSection: React.FC<IContactsProps> = ({ contactsData }) => {
                 Приїхати до нас
               </p>
             </div>
-            {contactsData.map(item => {
-              return (
-                <div
-                  key={item._id}
-                  className='mb-14 flex flex-col gap-[20px] max-lg:mb-6'
-                >
-                  <div>
-                    <p className='font-semibold text-black-dis '>
-                      {item.address}
-                    </p>
-                    {item.comment && (
-                      <p className='tracking-[0.45px]'>{item.comment}</p>
-                    )}
+            <div className='flex flex-col gap-14 max-lg:gap-6'>
+              {contactsData.map(item => {
+                return (
+                  <div key={item._id} className='flex flex-col gap-[20px] '>
+                    <div className=''>
+                      <p className='font-semibold text-black-dis '>
+                        {item.address}
+                      </p>
+                      {item.comment && (
+                        <p className='tracking-[0.45px]'>{item.comment}</p>
+                      )}
+                    </div>
+                    <div className='flex items-center gap-4'>
+                      {item.subways.length > 1 ? (
+                        <ul className=' flex flex-col gap-[8px]'>
+                          {item.subways.map(subway => (
+                            <li
+                              key={subway}
+                              className='flex items-center gap-[17px]'
+                            >
+                              <Image
+                                src='/icons/kyiv_metro_logo_2015.svg'
+                                width={24}
+                                height={18}
+                                alt='Kyiv metro logo'
+                              />
+                              <p className='tracking-[0.45px]'>{subway}</p>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <>
+                          <Image
+                            src='/icons/kyiv_metro_logo_2015.svg'
+                            width={24}
+                            height={16}
+                            alt='Kyiv metro logo'
+                          />
+                          <p className='tracking-[0.45px]'>{item.subways[0]}</p>
+                        </>
+                      )}
+                    </div>
+                    {item.phones.map(phone => (
+                      <a
+                        key={phone}
+                        className='font-medium leading-none tracking-[1.7px] text-dark-blue transition-opacity  hover:opacity-70 focus:opacity-70'
+                        href={`tel:${phone.replace(/\s/g, '')}`}
+                      >
+                        {phone}
+                      </a>
+                    ))}
                   </div>
-                  <div className='flex items-center gap-4'>
-                    {item.subways.length > 1 ? (
-                      <ul className=' flex flex-col gap-[8px]'>
-                        {item.subways.map(subway => (
-                          <li
-                            key={subway}
-                            className='flex items-center gap-[17px]'
-                          >
-                            <Image
-                              src='/icons/kyiv_metro_logo_2015.svg'
-                              width={24}
-                              height={18}
-                              alt='Kyiv metro logo'
-                            />
-                            <p className='tracking-[0.45px]'>{subway}</p>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <>
-                        <Image
-                          src='/icons/kyiv_metro_logo_2015.svg'
-                          width={24}
-                          height={16}
-                          alt='Kyiv metro logo'
-                        />
-                        <p className='tracking-[0.45px]'>{item.subways[0]}</p>
-                      </>
-                    )}
-                  </div>
-                  {item.phones.map(phone => (
-                    <a
-                      key={phone}
-                      className='font-medium leading-none tracking-[1.7px] text-dark-blue transition-opacity  hover:opacity-70 focus:opacity-70'
-                      href={`tel:${phone.replace(/\s/g, '')}`}
-                    >
-                      {phone}
-                    </a>
-                  ))}
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
           </div>
           <div className='max-w-[200px]'>
             <div className='mb-[45px] flex  items-center gap-2 max-lg:mb-8 max-md:mb-[30px]'>

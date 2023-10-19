@@ -14,16 +14,12 @@ import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
-import type {
-  IBrand,
-  IGadget,
-} from '@/app/(server)/api/service/modules/gadgetService'
+import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
 
 import { GadgetBrandsSlider } from './GadgetBrandsSlider'
 
 interface SingleGadgetProps {
   singleGadgetData: IGadget
-  brandData: IBrand[]
   contactsData: IContact[]
 }
 const SingleGadgetSection: React.FC<SingleGadgetProps> = ({

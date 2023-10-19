@@ -26,9 +26,13 @@ export const BrokenSection: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
   }, [setShowInstantAdviceModal])
 
   return (
-    <section className='section md:mb-[-50px] lg:mb-[-100px] xl:mb-[-150px]'>
+    <section className='section z-[1] md:mb-[-50px] lg:mb-[-100px] xl:mb-[-150px]'>
       <div className='container'>
-        <div className='justify-between gap-8 md:flex'>
+        <div
+          data-aos='fade-up'
+          data-aos-offset='100'
+          className='relative z-[1] justify-between gap-8 md:flex'
+        >
           <div className='mb-8 max-w-[270px] md:mb-0'>
             <h3 className='mb-8 font-exo_2 text-xl font-bold leading-normal text-light-blue md:text-2xl'>
               Що зламалося?

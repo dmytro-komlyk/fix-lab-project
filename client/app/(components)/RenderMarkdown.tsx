@@ -6,10 +6,19 @@ const customStyle = `
   color:#0B122F;
 }
 
-.markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+.markdown-content strong {
+font-family: ['var(--font-exo-2)'];
+font-size: 24px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
 }
 
 .markdown-content p {
+  font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 150%; 
 }
 
 .markdown-content a {

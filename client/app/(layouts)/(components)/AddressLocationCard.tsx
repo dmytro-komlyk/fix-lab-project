@@ -11,6 +11,8 @@ export const AddressLocationCard: React.FC<IContactsProps> = ({
 }) => {
   return contactsData.map(item => (
     <li
+      data-aos='zoom-in'
+      data-aos-offset='50'
       key={item._id}
       className='group mb-8 flex h-[286px] w-full justify-between overflow-hidden rounded-xl bg-card-gradient-blue text-base transition-colors delay-75 duration-300 ease-in-out hover:bg-card-gradient-hover lg:mb-0 lg:h-[240px] xl:h-[265px]'
     >

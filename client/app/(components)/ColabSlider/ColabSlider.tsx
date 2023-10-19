@@ -67,11 +67,13 @@ export const ColabSlider = () => {
             </h3>
             <div className='absolute -bottom-3 left-0 h-6 w-6 rounded-full bg-gradient-linear-green' />
           </li>
-        ))}{' '}
+        ))}
       </ul>
       <ul className='flex gap-6'>
         {colabData.map(item => (
           <li
+            data-aos='zoom-in'
+            data-aos-offset='50'
             key={item.id}
             className='h-[475px] w-[302px] rounded-2xl border border-l-light-green p-8 font-inter text-white-dis lg:h-[420px]'
           >
