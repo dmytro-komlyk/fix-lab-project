@@ -22,6 +22,18 @@ jobs:
           script: |
             cd fix-lab
             echo ${{ secrets.REGISTRY_TOKEN  }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-            docker compose -f docker-compose.prod-ci.yml -p fix-lab-prod down --rmi all
+
+            if [[ ${{contains(github.event.pull_request.labels.*.name, 'backend')}} ]]; then
+                docker rm $(docker stop $(docker ps -a -q --filter ancestor=ghcr.io/iryna-gry/prod-fixlab-server:latest ))
+                docker rmi ghcr.io/iryna-gry/prod-fixlab-server:latest
+
+            if [[ ${{contains(github.event.pull_request.labels.*.name, 'frontend-client')}} ]]; then
+                docker rm $(docker stop $(docker ps -a -q --filter ancestor=ghcr.io/iryna-gry/prod-fixlab-client:latest ))
+                docker rmi ghcr.io/iryna-gry/prod-fixlab-client:latest
+
+            if [[ ${{contains(github.event.pull_request.labels.*.name, 'frontend-admin')}} ]]; then
+                docker rm $(docker stop $(docker ps -a -q --filter ancestor=ghcr.io/iryna-gry/prod-fixlab-admin:latest ))
+                docker rmi ghcr.io/iryna-gry/prod-fixlab-admin:latest
+
             docker compose -f docker-compose.prod-ci.yml -p fix-lab-prod pull
             docker compose -f docker-compose.prod-ci.yml -p fix-lab-prod up -d
