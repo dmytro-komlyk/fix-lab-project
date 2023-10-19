@@ -2,7 +2,8 @@ name: CI/CD Build Pipeline # The name of the workflow
 
 on:
   pull_request:
-    types: [labeled]
+    branches:
+      - "*"
   workflow_dispatch:
 
 env:
@@ -45,7 +46,7 @@ jobs:
             ghcr.io/iryna-gry/prod-fixlab-server:latest
 
       - name: "Build Client"
-        if: ${{ github.event.label.name == 'frontend-client' }}
+        if: contains(github.event.pull_request.labels.*.name, 'frontend-client')
         uses: docker/build-push-action@v4
         with:
           context: ./client
