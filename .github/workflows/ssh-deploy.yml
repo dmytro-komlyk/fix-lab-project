@@ -2,9 +2,8 @@ name: CI/CD Deploy Pipeline # The name of the workflow
 
 on:
   pull_request:
-    branches:
-      - "*"
-  workflow_dispatch:
+    types:
+      - closed
 
 jobs:
   deploy:
@@ -12,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Run deploy on SSH"
-        if: ${{ github.event.action == 'closed' && github.event.pull_request.merged == true }}
+        if: github.event.pull_request.merged == true
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -23,17 +22,20 @@ jobs:
             cd fix-lab
             echo ${{ secrets.REGISTRY_TOKEN  }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
-            if [[ ${{contains(github.event.pull_request.labels.*.name, 'backend')}} ]]; then
-                docker rm $(docker stop $(docker ps -a -q --filter ancestor=ghcr.io/iryna-gry/prod-fixlab-server:latest ))
-                docker rmi ghcr.io/iryna-gry/prod-fixlab-server:latest
+            if (${{contains(github.event.pull_request.labels.*.name, 'backend')}}) {
+              docker rm $(docker stop $(docker ps -a -q --filter ancestor=ghcr.io/iryna-gry/prod-fixlab-server:latest ))
+              docker rmi ghcr.io/iryna-gry/prod-fixlab-server:latest
+            }
 
-            if [[ ${{contains(github.event.pull_request.labels.*.name, 'frontend-client')}} ]]; then
-                docker rm $(docker stop $(docker ps -a -q --filter ancestor=ghcr.io/iryna-gry/prod-fixlab-client:latest ))
-                docker rmi ghcr.io/iryna-gry/prod-fixlab-client:latest
+            if (${{contains(github.event.pull_request.labels.*.name, 'frontend-client')}}) {
+              docker rm $(docker stop $(docker ps -a -q --filter ancestor=ghcr.io/iryna-gry/prod-fixlab-client:latest ))
+              docker rmi ghcr.io/iryna-gry/prod-fixlab-client:latest
+            }
 
-            if [[ ${{contains(github.event.pull_request.labels.*.name, 'frontend-admin')}} ]]; then
-                docker rm $(docker stop $(docker ps -a -q --filter ancestor=ghcr.io/iryna-gry/prod-fixlab-admin:latest ))
-                docker rmi ghcr.io/iryna-gry/prod-fixlab-admin:latest
+            if (${{contains(github.event.pull_request.labels.*.name, 'frontend-admin')}}) {
+              docker rm $(docker stop $(docker ps -a -q --filter ancestor=ghcr.io/iryna-gry/prod-fixlab-admin:latest ))
+              docker rmi ghcr.io/iryna-gry/prod-fixlab-admin:latest
+            }
 
             docker compose -f docker-compose.prod-ci.yml -p fix-lab-prod pull
             docker compose -f docker-compose.prod-ci.yml -p fix-lab-prod up -d
