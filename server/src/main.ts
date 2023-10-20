@@ -17,8 +17,10 @@ import { PREFIX } from 'constants/routes.constants';
 
   app.enableCors({
     origin: '*',
-    methods: 'GET,PUT,POST,DELETE',
-    allowedHeaders: 'Content-Range',
+    methods: 'GET, PUT, POST, DELETE, OPTIONS',
+    credentials: true,
+    allowedHeaders:
+      'Authorization, Content-Type, Accept, Range, Referer, User-Agent',
     exposedHeaders: 'Content-Range'
   });
 
