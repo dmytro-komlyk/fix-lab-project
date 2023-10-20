@@ -15,7 +15,7 @@ const SliderItem: React.FC<ISliderItem> = ({
       href={link}
       className='flex h-[148px] w-full max-w-[120px] flex-col items-center justify-between rounded-2xl bg-white-dis px-5 py-[18px] transition hover:cursor-pointer hover:bg-light-grey'
     >
-      <Image src={src} height={60} className='w-auto' alt={alt} />
+      {src && <Image src={src} height={60} className='w-auto' alt={alt} />}
       <h4 className='text-center font-inter text-base leading-5 text-dark-blue'>
         {title}
       </h4>

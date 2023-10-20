@@ -45,13 +45,15 @@ export const AddressLocationCard: React.FC<IContactsProps> = ({
         href={item.googleMapLink}
         target='_blank'
       >
-        <Image
-          className='aspect-square bg-cover bg-center object-cover lg:aspect-[1/1.05]'
-          src={item.image.src}
-          alt={item.image.alt}
-          width={600}
-          height={546}
-        />
+        {item.image.src && (
+          <Image
+            className='aspect-square bg-cover bg-center object-cover lg:aspect-[1/1.05]'
+            src={item.image.src}
+            alt={item.image.alt}
+            width={600}
+            height={546}
+          />
+        )}
       </Link>
     </li>
   ))

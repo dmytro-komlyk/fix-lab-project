@@ -22,12 +22,14 @@ export const BenefitsList: React.FC<IBenefitsListProps> = ({ items }) => {
             key={item.title}
             className='flex max-h-[104px] w-[110px] flex-col items-center justify-between gap-[14px] rounded-2xl bg-light-grey px-[13px] py-[14px]'
           >
-            <Image
-              src={item.icon.src}
-              width={26}
-              height={30}
-              alt={item.icon.alt}
-            />
+            {item.icon.src && (
+              <Image
+                src={item.icon.src}
+                width={26}
+                height={30}
+                alt={item.icon.alt}
+              />
+            )}
             <p className='text-center text-xs text-dark-blue'>{item.title}</p>
           </div>
         )
