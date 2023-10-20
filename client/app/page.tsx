@@ -12,7 +12,7 @@ export default async function Home() {
   const gadgetsData = await getAllGadgetsData()
   const contactsData = await getAllContactsData()
   return (
-    <main className='flex-auto'>
+    <main className='flex-auto relative'>
       <HeroSection />
       <BrokenSection gadgetsData={gadgetsData} />
       <CallCourierSection />

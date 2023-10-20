@@ -21,7 +21,7 @@
     @apply xl:max-w-7xl;
   }
   .outline-text {
-    color: white; /* Unfortunately you can't use transparent here … */
+    color: white;
     text-shadow:
       -1px -1px 0 #fff,
       1px -1px 0 #fff,
@@ -31,7 +31,6 @@
 
   .section {
     @apply py-14 my-0 w-full;
-    /* @apply lg:py-lg; !!! Помилка webpack.cache !!!  */
   }
   .button {
     @apply cursor-pointer;
