@@ -1,14 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: config => ({
-    ...config,
-    watchOptions: {
-      ...config.watchOptions,
-      poll: 800,
-      aggregateTimeout: 300,
-    },
-  }),
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.watchOptions = {
+        poll: 60000, // 60 seconds in milliseconds
+        aggregateTimeout: 300,
+      }
+    }
 
+    return config
+  },
   env: {
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
     NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
