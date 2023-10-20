@@ -44,13 +44,15 @@ export const GadgetsList: React.FC<IGadgetsListProps> = ({ items }) => {
             className='flex max-w-[270px] shrink grow basis-9/12 items-center gap-[20px] lg:basis-auto'
           >
             <div className='w-1/5'>
-              <Image
-                className='mx-auto my-0'
-                src={item.icon.src}
-                width={item.icon.width}
-                height={item.icon.height}
-                alt={item.alt}
-              />
+              {item.icon.src && (
+                <Image
+                  className='mx-auto my-0'
+                  src={item.icon.src}
+                  width={item.icon.width}
+                  height={item.icon.height}
+                  alt={item.alt}
+                />
+              )}
             </div>
             <p className='w-4/5 max-w-[205px] hyphens-auto font-exo_2 text-xl leading-6 text-[#F8FCFF]'>
               {item.title}

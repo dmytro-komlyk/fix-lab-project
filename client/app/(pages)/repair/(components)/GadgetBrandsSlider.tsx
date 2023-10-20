@@ -93,13 +93,15 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
                     className='flex h-[77px] min-w-[77px] max-w-[77px]  items-center justify-center rounded-[50%] bg-white-dis transition-all hover:shadow-brandLight  focus:shadow-brandLight'
                     href={`/repair/${gadgetData?.slug}/brands/${item.slug}`}
                   >
-                    <Image
-                      src={src}
-                      alt={alt}
-                      width={0}
-                      height={0}
-                      className='h-[40px] w-[32px]'
-                    />
+                    {src && (
+                      <Image
+                        src={src}
+                        alt={alt}
+                        width={0}
+                        height={0}
+                        className='h-[40px] w-[32px]'
+                      />
+                    )}
                   </Link>
                 </div>
               )

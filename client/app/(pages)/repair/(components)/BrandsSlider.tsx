@@ -99,13 +99,15 @@ export const BrandsSlider: React.FC<BrandsSliderProps> = ({
                     className={selectedTabClass}
                     href={`/repair/${gadgetData?.slug}/brands/${item.slug}`}
                   >
-                    <Image
-                      src={src}
-                      alt={alt}
-                      width={0}
-                      height={0}
-                      className='h-[92px] w-[75px]'
-                    />
+                    {src && (
+                      <Image
+                        src={src}
+                        alt={alt}
+                        width={0}
+                        height={0}
+                        className='h-[92px] w-[75px]'
+                      />
+                    )}
                   </Link>
                 </div>
               )
