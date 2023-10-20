@@ -117,7 +117,9 @@ export const HeroSection = () => {
         className='mb-8 flex w-[156px] flex-col items-center rounded-2xl bg-pros-bg px-[18px] py-6 drop-shadow-pros'
         key={item.alt}
       >
-        <Image src={item.src} alt={item.alt} width={68} height={68} />
+        {item.src && (
+          <Image src={item.src} alt={item.alt} width={68} height={68} />
+        )}
         <p className='font-base mt-6 text-center leading-5 tracking-tight text-dark-blue'>
           {item.title}
         </p>

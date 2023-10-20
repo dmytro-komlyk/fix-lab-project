@@ -61,18 +61,20 @@ const BrandsSection: React.FC<BrandsProps> = ({
         <div className='mb-8 flex flex-col items-start'>
           {gadgetData && (
             <div className='mb-[50px] h-[80px]'>
-              <Image
-                src={gadgetData.icon.src}
-                width={0}
-                height={80}
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  filter:
-                    'brightness(0) saturate(100%) invert(13%) sepia(26%) saturate(7352%) hue-rotate(220deg) brightness(109%) contrast(113%)',
-                }}
-                alt={gadgetData.icon.alt}
-              />
+              {brandData?.icon && (
+                <Image
+                  src={gadgetData.icon.src}
+                  width={0}
+                  height={80}
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    filter:
+                      'brightness(0) saturate(100%) invert(13%) sepia(26%) saturate(7352%) hue-rotate(220deg) brightness(109%) contrast(113%)',
+                  }}
+                  alt={gadgetData.icon.alt}
+                />
+              )}
             </div>
           )}
           <h1 className='mb-[29px] font-exo_2 text-2xl font-bold leading-[1.2px] text-black-dis'>
