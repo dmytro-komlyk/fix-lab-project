@@ -95,6 +95,8 @@ export const ColabSlider = () => {
       <div ref={ref} className='keen-slider'>
         {colabData.map(item => (
           <div
+            data-aos='zoom-in'
+            data-aos-offset='50'
             key={item.id}
             className='keen-slider__slide flex h-[475px] w-[302px] flex-col gap-5 rounded-2xl border-[1px] border-l-light-green p-[30px] font-inter text-white-dis'
           >

@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL // замінити на NEXT_PUBLIC_SERVER_URL
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
 
 export default async function fetchDataFromServer(url: string) {
   try {
     const res = await fetch(`${apiUrl}${url}`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 0 },
     })
 
     if (!res.ok) {

@@ -140,7 +140,7 @@ export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
             <div
               ref={toggleDropdownRegionRef}
               onClick={toggleDropDown}
-              className={` select-text-none relative mr-[63px] flex h-[48px] min-w-[196px]  cursor-pointer items-center justify-center border-[2px] border-mid-green  ${
+              className={` select-text-none relative mr-[63px] flex h-[48px] min-w-[196px] cursor-pointer items-center  justify-center border-[2px] border-mid-green transition-all duration-300  ${
                 isOpenItem ? 'rounded-t-2xl' : 'rounded-2xl'
               } `}
             >
@@ -179,23 +179,25 @@ export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
                     item =>
                       selectedRegionItem !== item.area && (
                         <motion.div
-                          initial={{ opacity: 0, y: -5 }}
+                          initial={{
+                            opacity: 0,
+                            y: -5,
+                          }}
                           animate={{
                             opacity: 1,
                             y: 0,
-                            transition: { duration: 0.1 },
+                            transition: { duration: 0.3 },
                           }}
                           exit={{
-                            y: -5,
                             opacity: 0,
-                            transition: { duration: 0.1 },
+                            transition: { duration: 0.3 },
                           }}
                           key={item._id}
                           onClick={() => {
                             handleItemClick(item.area)
                             toggleDropDown()
                           }}
-                          className='absolute bottom-[-48px] left-[-2px] flex w-[196px] flex-col items-center  justify-center gap-2 rounded-b-xl  bg-mid-green  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
+                          className='absolute bottom-[-48px] left-[-2px] z-10 flex w-[196px] flex-col items-center  justify-center gap-2 rounded-b-xl  bg-mid-green  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
                         >
                           <button
                             type='button'
