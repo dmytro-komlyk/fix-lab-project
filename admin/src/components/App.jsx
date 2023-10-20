@@ -16,32 +16,32 @@ const AdminApp = () => (
     authProvider={authProvider}
   >
     <Resource
-      name="gadgets"
+      name='gadgets'
       list={ListGadgets}
       edit={EditGadget}
       create={CreateGadget}
     />
     <Resource
-      name="issues"
+      name='issues'
       list={ListIssues}
       edit={EditIssue}
       create={CreateIssue}
     />
     <Resource
-      name="benefits"
+      name='benefits'
       list={ListBenefits}
       edit={EditBenefit}
       create={CreateBenefit}
     />
     <Resource
-      name="brands"
+      name='brands'
       list={ListBrands}
       edit={EditBrand}
       create={CreateBrand}
     />
-    <Resource name="contacts" list={ListContacts} edit={EditContact} />
+    <Resource name='contacts' list={ListContacts} edit={EditContact} />
     <Resource
-      name="images"
+      name='images'
       list={ListImages}
       create={CreateImage}
       edit={EditImage}

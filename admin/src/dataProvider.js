@@ -28,16 +28,24 @@ const saveFileInStorage = ({ resource, type, alt, file }) => {
 
 const addUploadFeature = (dataProvider) => ({
   ...dataProvider,
-  getList: (resource, params) =>
-    dataProvider.getList(`${resource}/all`, params).then(({ data }) => ({
+  getList: (resource, params) => {
+    console.log({ "getList()": resource, params });
+    return dataProvider.getList(`${resource}/all`, params).then(({ data }) => ({
       data: data.map(({ _id, ...rest }) => ({ id: _id, _id, ...rest })),
       total: data.length,
-    })),
+    }));
+  },
 
   getMany: (resource, params) => {
-    return dataProvider.getMany(`${resource}/all`, params).then(({ data }) => ({
-      data: data.map(({ _id, ...rest }) => ({ id: _id, _id, ...rest })),
-    }));
+    const modifiedParams = { filter: "" };
+
+    // console.log({ resource, params, modifiedParams });
+
+    return dataProvider
+      .getMany(`${resource}/all`, modifiedParams)
+      .then(({ data }) => ({
+        data: data.map(({ _id, ...rest }) => ({ id: _id, _id, ...rest })),
+      }));
   },
 
   getOne: (resource, params) =>
