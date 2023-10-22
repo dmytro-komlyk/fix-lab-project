@@ -1,12 +1,13 @@
--# Build Stage
--FROM node:18-alpine AS runner
--WORKDIR /app/client
--COPY package*.json ./
--COPY .env.example ./.env
--RUN npm ci
-ー
--COPY . .
--RUN npm run build
+# Build Stage
+FROM node:18-alpine AS runner
+WORKDIR /app/client
+COPY package*.json ./
+COPY .env.example ./.env
+RUN npm ci
+
+COPY . .
+
+RUN npm run build
 
 # Production Stage
 FROM node:18-alpine AS production
