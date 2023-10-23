@@ -12,7 +12,7 @@ const CallUsCard: React.FC<IContactsProps> = ({ contactsData }) => {
       <ul className='flex flex-col items-center gap-[15px]'>
         {contactsData.map(item => (
           <li key={item._id} className='flex flex-col items-center'>
-            <p className='font-[400] text-black-dis'>{item.area}р-н</p>
+            <p className='font-[400] text-black-dis'>{item.area} р-н</p>
             {item.phones.map(phone => (
               <a
                 key={phone}

@@ -7,9 +7,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
 
-import RenderMarkdown from '@/app/(components)/RenderMarkdown'
-import Button from '@/app/(layouts)/(components)/Button'
-import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
@@ -79,7 +76,7 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
   return (
     <>
       {gadgetData?.brands.length > 0 && (
-        <>
+        <div className='mb-[56px]'>
           <div ref={sliderRef} className='keen-slider flex '>
             {gadgetData.brands.map(item => {
               const { alt, src } = item.icon
@@ -118,36 +115,7 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
               <div className='absolute left-0 top-[-14px] h-[4px] w-full rounded-full bg-white-dis/50' />
             </div>
           )}
-          <div className='flex w-full justify-between '>
-            <div className='flex max-w-[852px] gap-16  max-lg:flex-col lg:gap-32'>
-              {gadgetData.brands?.map(item => (
-                <div
-                  key={item._id}
-                  className={`${
-                    brandPath === item.slug ? 'flex max-w-[852px]' : 'hidden'
-                  }`}
-                >
-                  <RenderMarkdown markdown={item.article} />
-                </div>
-              ))}
-            </div>
-            {gadgetData.brands?.map(item => {
-              return (
-                brandPath === item.slug && (
-                  <div className='ml-auto flex flex-col gap-16' key={item._id}>
-                    <CallUsCard contactsData={contactsData} />
-                    <Button
-                      text='Миттєва консультація'
-                      toggleModal={toggleInstantAdviceModal}
-                      styles='group relative flex min-w-[256px] py-4 items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
-                      textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
-                    />
-                  </div>
-                )
-              )
-            })}
-          </div>
-        </>
+        </div>
       )}
       <AnimatePresence>
         {showInstantAdviceModal && (
