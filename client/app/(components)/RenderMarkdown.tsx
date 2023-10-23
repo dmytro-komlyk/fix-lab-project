@@ -54,10 +54,10 @@ line-height: 150%;
   padding: 8px;
 }
 
-.markdown-content img {
-  width: 100%;
-  height: auto;
-}
+// .markdown-content img {
+//   width: 100%;
+//   height: auto;
+// }
 
 
 

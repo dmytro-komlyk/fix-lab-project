@@ -17,7 +17,6 @@ import LaptopImage from '../../public/icons/pop-laptop.svg'
 import MatrixImage from '../../public/icons/pop-matrix.svg'
 import PowerImage from '../../public/icons/pop-power.svg'
 import SmartphoneImage from '../../public/icons/pop-smartphone.svg'
-import { AOSInit } from '../(components)/AOSInit'
 import { CommonButton } from '../(components)/CommonButton'
 import CostRepairModal from './(components)/CostRepairModal'
 import { HeroSlider } from './(components)/HeroSlider'
@@ -128,7 +127,6 @@ export const HeroSection = () => {
 
   return (
     <section className='section xl:bg-herp-xl w-full bg-dark-blue bg-hero-xl py-0 md:bg-hero-md lg:bg-hero-lg xl:bg-hero-xl'>
-      <AOSInit />
       <div className='lg h-full w-full bg-mscope-img bg-mscope-sm bg-no-repeat pb-[80px] pt-[156px] md:container md:bg-mscope-md md:pt-[162px] lg:bg-mscope-lg xl:bg-mscope-xl xl:px-0'>
         <div
           data-aos='fade-up'

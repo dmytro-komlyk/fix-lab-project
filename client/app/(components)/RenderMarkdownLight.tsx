@@ -55,11 +55,9 @@ line-height: 150%;
 }
 
 .markdown-content-light img {
-  width: 100%;
+  max-width: 330px;
   height: auto;
 }
-
-
 
 </style>
 `

@@ -131,7 +131,9 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                   <p className=' mb-[18px] font-exo_2 text-xl font-semibold leading-[0.7] text-white-dis'>
                     Бренди, які ремонтуємо
                   </p>
-                  <GadgetBrandsSlider gadgetData={singleGadgetData} />
+                  <div className='mb-[56px]'>
+                    <GadgetBrandsSlider gadgetData={singleGadgetData} />
+                  </div>
                 </>
               )}
               {singleGadgetData.issues.length > 0 && (
