@@ -15,7 +15,6 @@ import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 import type {
-  IBrand,
   IGadget,
   IIssue,
 } from '@/app/(server)/api/service/modules/gadgetService'
@@ -62,7 +61,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
 
   return (
     singleIssueData && (
-      <section className='overflow-hidden pb-[102px] max-md:pb-[39px] pt-[159px] max-md:pt-[117px] bg-gradient-linear-blue'>
+      <section className='overflow-hidden bg-gradient-linear-blue pb-[102px] pt-[159px] max-md:pb-[39px] max-md:pt-[117px]'>
         <div className='container relative  xl:px-0'>
           <div className=' absolute left-[335px] top-[175px] hidden lg:block'>
             <Image
