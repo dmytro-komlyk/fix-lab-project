@@ -5,7 +5,7 @@ import SingleArticlePage from '../(components)/SingleArticlePage'
 export default async function Blog() {
   const contactsData = await getAllContactsData()
   return (
-    <main className='flex-auto relative'>
+    <main className='flex-auto'>
       <SingleArticlePage contactsData={contactsData} />
     </main>
   )
