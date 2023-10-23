@@ -10,6 +10,7 @@ import Button from '@/app/(layouts)/(components)/Button'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 
+import { GadgetsList } from './GadgetsList'
 import { GadgetsSlider } from './GadgetsSlider'
 
 const GadgetsSection: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
@@ -27,8 +28,8 @@ const GadgetsSection: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
   }, [setShowInstantAdviceModal])
 
   return (
-    <section className='section py-[120px] max-md:pb-[56px] max-md:pt-[120px]'>
-      <div className='container flex flex-col gap-6 lg:px-0'>
+    <section className='pb-[104px] pt-[163px] max-md:pb-14 max-md:pt-[120px]'>
+      <div className='container flex flex-col lg:px-0'>
         <div className='flex items-center gap-1'>
           <Link
             className='flex items-center gap-1 text-base font-[400] text-dark-blue'
@@ -41,12 +42,12 @@ const GadgetsSection: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
             Ремонт
           </p>
         </div>
-        <div className='flex justify-between gap-8 max-md:flex-col'>
-          <div className='flex w-[300px] flex-col gap-6 max-md:w-full'>
-            <h3 className='font-exo_2 text-xl font-bold leading-normal text-light-blue md:text-2xl'>
+        <div className='mt-[30px] flex justify-between max-lg:flex-col md:gap-6'>
+          <div className='flex  flex-col max-lg:w-full max-md:w-full'>
+            <h3 className='mb-[24px] font-exo_2 text-xl font-bold leading-normal text-light-blue md:text-2xl'>
               Що зламалося?
             </h3>
-            <div className='flex flex-col gap-4 text-base font-normal'>
+            <div className='mb-8 flex flex-col gap-[24px] text-base font-normal max-lg:gap-1 xl:max-w-[280px]'>
               <p>
                 У нас є багато варіантів, як подарувати друге життя вашому
                 гаджету.
@@ -64,7 +65,14 @@ const GadgetsSection: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
               textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
             />
           </div>
-          <GadgetsSlider gadgetsData={gadgetsData} />
+          <div className='relative z-[2] '>
+            <div className='flex max-md:hidden'>
+              <GadgetsList gadgetsData={gadgetsData} />
+            </div>
+            <div className='flex md:hidden'>
+              <GadgetsSlider gadgetsData={gadgetsData} />
+            </div>
+          </div>
         </div>
       </div>
       {showInstantAdviceModal && (

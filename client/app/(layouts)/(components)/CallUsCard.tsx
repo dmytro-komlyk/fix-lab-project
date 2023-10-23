@@ -4,7 +4,7 @@ import type { IContactsProps } from './AddressLocationCard'
 
 const CallUsCard: React.FC<IContactsProps> = ({ contactsData }) => {
   return (
-    <div className='flex w-[302px] flex-col items-center justify-center rounded-[15px] bg-white-dis px-[38px] py-8 opacity-80 shadow-lg max-lg:hidden'>
+    <div className='flex w-[302px] flex-col items-center justify-center rounded-[15px] bg-white-dis px-[38px] py-8 opacity-80 shadow-brand max-lg:hidden'>
       <p className='relative mb-3 font-exo_2 text-xl font-semibold text-dark-blue'>
         <TbPhone className=' absolute left-[-26px] top-[7px]' size={24} />
         Подзвонити нам

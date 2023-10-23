@@ -3,7 +3,8 @@
 import { AnimatePresence } from 'framer-motion'
 import React, { useCallback, useState } from 'react'
 
-import GadgetsSlider from '../(pages)/repair/(components)/slider'
+import { GadgetsList } from '../(pages)/repair/(components)/GadgetsList'
+import { GadgetsSlider } from '../(pages)/repair/(components)/GadgetsSlider'
 import type { IGadget } from '../(server)/api/service/modules/gadgetService'
 import Button from './(components)/Button'
 import InstantAdviceModal from './(components)/InstantAdviceModal'
@@ -24,39 +25,44 @@ export const BrokenSection: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
   const toggleInstantAdviceModal = useCallback(() => {
     setShowInstantAdviceModal(prev => !prev)
   }, [setShowInstantAdviceModal])
-
   return (
-    <section className='section z-[1] md:mb-[-50px] lg:mb-[-100px] xl:mb-[-150px]'>
-      <div className='container'>
+    <section className='z-[1] pb-[39px] pt-[102px] max-md:pt-[43px] md:mb-[-50px] lg:mb-[-100px] xl:mb-[-150px]'>
+      <div className='container lg:px-0 '>
         <div
           data-aos='fade-up'
           data-aos-offset='100'
-          className='relative z-[1] justify-between gap-8 md:flex'
+          className='flex justify-between max-lg:flex-col md:gap-6'
         >
-          <div className='mb-8 max-w-[270px] md:mb-0'>
-            <h3 className='mb-8 font-exo_2 text-xl font-bold leading-normal text-light-blue md:text-2xl'>
+          <div className='flex  flex-col  max-lg:w-full max-md:w-full'>
+            <h3 className='mb-[24px] font-exo_2 text-xl font-bold leading-normal text-light-blue md:text-2xl'>
               Що зламалося?
             </h3>
-            <p className='mb-4'>
-              У нас є багато варіантів, як подарувати друге життя вашому
-              гаджету.
-            </p>
-            <p className='mb-4'>
-              Обирайте потрібний пристрій, що зламався, та дізнавайтесь ціни на
-              ремонт.
-            </p>
-            <p className='mb-8'>
-              Або ж, економте час, залишайте заявку на консультацію.
-            </p>
+            <div className='mb-8 flex flex-col gap-[16px]  text-base font-normal max-md:w-[350px] md:gap-[23px] xl:max-w-[280px]'>
+              <p>
+                У нас є багато варіантів, як подарувати друге життя вашому
+                гаджету.
+              </p>
+              <p>
+                Обирайте потрібний пристрій, що зламався, та дізнавайтесь ціни
+                на ремонт.
+              </p>
+              <p>Або ж, економте час, залишайте заявку на консультацію.</p>
+            </div>
             <Button
               text='Миттєва консультація'
               toggleModal={toggleInstantAdviceModal}
-              styles='group relative flex min-w-[256px] min-h-[56px]  items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
-              textHoverAnimation='py-5 text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
+              styles='group relative flex max-w-[256px] mb-8 py-4 items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+              textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
             />
           </div>
-
-          <GadgetsSlider gadgetsData={gadgetsData} />
+          <div className='relative z-10 mr-[-16px] md:mr-0'>
+            <div className='flex max-md:hidden'>
+              <GadgetsList gadgetsData={gadgetsData} />
+            </div>
+            <div className='flex md:hidden'>
+              <GadgetsSlider gadgetsData={gadgetsData} />
+            </div>
+          </div>
         </div>
       </div>
       {showInstantAdviceModal && (

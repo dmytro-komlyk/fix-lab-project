@@ -23,15 +23,23 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
   const [sliderRef, instanceRef] = useKeenSlider<HTMLElement>({
     initial: 0,
     breakpoints: {
+      '(min-width: 300px)': {
+        slides: { perView: 2 },
+        mode: 'free',
+      },
       '(min-width: 390px)': {
         slides: { perView: 3 },
         mode: 'free',
       },
       '(min-width: 768px)': {
-        slides: { perView: 5 },
+        slides: { perView: 7 },
         mode: 'free',
       },
       '(min-width: 1100px)': {
+        slides: { perView: 5 },
+        mode: 'free-snap',
+      },
+      '(min-width: 1440px)': {
         slides: { perView: 7 },
         mode: 'free-snap',
       },
@@ -43,7 +51,6 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
       setLoaded(true)
     },
   })
-
   const filled = instanceRef?.current?.track.details.maxIdx || 1
 
   return (
@@ -59,7 +66,7 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
                 className='keen-slider__slide max-w-[77px] p-[14px]'
               >
                 <Link
-                  className='flex h-[77px] min-w-[77px] max-w-[77px]  items-center justify-center rounded-[50%] bg-white-dis transition-all hover:shadow-brandLight  focus:shadow-brandLight'
+                  className='flex h-[77px] max-w-[77px] items-center  justify-center rounded-[50%] bg-white-dis transition-all hover:shadow-brandLight focus:shadow-brandLight  xl:min-w-[77px]'
                   href={`/repair/${gadgetData?.slug}/brands/${item.slug}`}
                 >
                   {src && (
