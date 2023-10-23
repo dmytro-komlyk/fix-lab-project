@@ -27,7 +27,6 @@ interface SingleIssueProps {
   contactsData: IContact[]
   singleIssueData: IIssue
   singleGadgetData: IGadget
-  brandData: IBrand[]
 }
 
 const IssueSection: React.FC<SingleIssueProps> = ({
@@ -63,8 +62,8 @@ const IssueSection: React.FC<SingleIssueProps> = ({
 
   return (
     singleIssueData && (
-      <section className='overflow-hidden bg-gradient-linear-blue'>
-        <div className='container relative pb-[39px] pt-[158px] xl:px-0'>
+      <section className='overflow-hidden pb-[102px] max-md:pb-[39px] pt-[159px] max-md:pt-[117px] bg-gradient-linear-blue'>
+        <div className='container relative  xl:px-0'>
           <div className=' absolute left-[335px] top-[175px] hidden lg:block'>
             <Image
               src='/background-flicker-center.svg'

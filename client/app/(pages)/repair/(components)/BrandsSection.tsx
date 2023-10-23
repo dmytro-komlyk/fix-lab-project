@@ -60,7 +60,7 @@ const BrandsSection: React.FC<BrandsProps> = ({
 
   return (
     <section className='overflow-hidden'>
-      <div className='container flex flex-col gap-[27px] pb-[140px] pt-[158px] max-xl:px-0 max-lg:pb-[50px]'>
+      <div className='container flex flex-col gap-[27px] pb-[140px] pt-[159px] lg:px-0 max-lg:pb-[50px]  max-md:pt-[117px]'>
         <div className='flex flex-wrap items-center gap-1'>
           <Link
             className='flex items-center gap-1 text-base font-[400] text-dark-blue'
