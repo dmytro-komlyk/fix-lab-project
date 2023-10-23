@@ -48,6 +48,8 @@ export default async function RootLayout({
       className={`${inter.variable} ${manrope.variable} ${exo2.variable} ${gugi.variable} h-full`}
     >
       <body className='h-full'>
+        {/* <AOSInit /> */}
+
         <div className='flex min-h-full flex-col'>
           <Header contactsData={contactsData} />
           {children}

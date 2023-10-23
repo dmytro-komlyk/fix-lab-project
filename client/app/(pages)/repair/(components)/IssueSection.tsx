@@ -122,9 +122,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                   {singleIssueData.benefits && (
                     <BenefitsList items={singleIssueData.benefits} />
                   )}
-                  <p className='text-base font-[400] text-white-dis'>
-                    <RenderMarkdownLight markdown={singleIssueData.info} />
-                  </p>
+                  <RenderMarkdownLight markdown={singleIssueData.info} />
                   <Button
                     text='Миттєва консультація'
                     toggleModal={toggleInstantAdviceModal}
@@ -137,7 +135,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
               <div className='flex flex-col gap-8 lg:w-[737px] lg:gap-14'>
                 <div>
                   <Image
-                    className='min-h-[245px] w-full rounded-2xl object-cover md:max-h-[340px]'
+                    className='min-h-[245px]  max-w-full rounded-2xl object-cover max-md:w-[360px] md:max-h-[360px]'
                     src={singleIssueData.image.src}
                     width={737}
                     height={360}
@@ -145,18 +143,15 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                     priority
                   />
                 </div>
-                <div className='flex flex-col gap-8'>
+                <div className='flex flex-col gap-8 max-md:w-[360px]'>
                   <RenderMarkdownLight markdown={singleIssueData.description} />
                 </div>
                 <div className='flex flex-col gap-14'>
-                  <div>
+                  <div className='max-md:w-[360px]'>
                     <p className='mb-8 font-exo_2 text-xl font-semibold text-white-dis'>
                       Бренди, які ремонтуємо
                     </p>
-                    <GadgetBrandsSlider
-                      contactsData={contactsData}
-                      gadgetData={singleGadgetData}
-                    />
+                    <GadgetBrandsSlider gadgetData={singleGadgetData} />
                   </div>
                   <div>
                     <p className='mb-8 font-exo_2 text-xl font-semibold text-white-dis'>
