@@ -4,12 +4,10 @@ import { AnimatePresence } from 'framer-motion'
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
 
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 import type { IBrand } from '@/app/(server)/api/service/modules/gadgetService'
 
 export interface BrandsSliderProps {
@@ -17,17 +15,11 @@ export interface BrandsSliderProps {
     slug: string
     brands: IBrand[]
   }
-  contactsData: IContact[]
 }
 
 export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
   gadgetData,
-  contactsData,
 }) => {
-  const pathname = usePathname()
-  const brandPath = pathname.split('/').pop()
-
-  // Modal window
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
     useState<boolean>(false)
 
