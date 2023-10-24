@@ -38,7 +38,7 @@ export class ArticlesService {
       .find(query)
       .limit(limit)
       .skip(limit * (page - 1))
-      .populate({ path: 'preview' });
+      .populate({ path: 'image' });
 
     result.items = articles;
     result.itemsCount = articles.length;
@@ -49,7 +49,7 @@ export class ArticlesService {
   }
 
   public async findOneByQuery(query: UpdateArticleDto): Promise<Article> {
-    return await this.articleModel.findOne(query).populate({ path: 'preview' });
+    return await this.articleModel.findOne(query).populate({ path: 'image' });
   }
 
   public async findOneById(id: string): Promise<Article> {
@@ -57,9 +57,7 @@ export class ArticlesService {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
 
-    const article = await this.articleModel
-      .findById(id)
-      .populate({ path: 'preview' });
+    const article = await this.articleModel.findById(id).populate({ path: 'image' });
 
     if (!article) {
       throw new NotFoundException(`Article with ID "${id}" was not found`);
@@ -90,7 +88,7 @@ export class ArticlesService {
       .findByIdAndUpdate(id, dto, {
         new: true
       })
-      .populate({ path: 'preview' });
+      .populate({ path: 'image' });
 
     return article;
   }
