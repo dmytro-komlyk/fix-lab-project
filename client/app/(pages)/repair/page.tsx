@@ -8,7 +8,7 @@ export default async function Repair() {
   const gadgetsData = await getAllGadgetsData()
   const contactsData = await getAllContactsData()
   return (
-    <main className='flex-auto lg:pt-[56px]'>
+    <main className='flex-auto'>
       <GadgetsSection gadgetsData={gadgetsData} />
       <ColaborationSection />
       <AddressSection contactsData={contactsData} />

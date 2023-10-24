@@ -49,7 +49,7 @@ export const CallCourierSection: React.FC = () => {
             </p>
           </div>
           <Image
-            className=' absolute bottom-[72px] left-[51px] h-auto w-[420px] max-xl:w-[320px] max-lg:bottom-[191px] max-lg:left-[15px] max-md:bottom-[237px] max-md:left-[50%] max-md:w-[251px] max-md:translate-x-[-50%] '
+            className=' absolute bottom-[72px] left-[51px] h-auto w-[420px] max-xl:bottom-[93px] max-xl:w-[320px] max-lg:bottom-[191px] max-lg:left-[15px] max-md:bottom-[237px] max-md:left-[50%] max-md:w-[251px] max-md:translate-x-[-50%] '
             src='/images/courier-section/group-bottom.svg'
             alt='FixLab logo'
             width={420}
@@ -94,9 +94,9 @@ export const CallCourierSection: React.FC = () => {
               Ми самі заберемо гаджет на дослідження та подаруємо йому життя
             </p>
             <Button
-              text='Викликати курʼєра'
+              text='Потрібен курʼєр'
               toggleModal={toggleCourierModal}
-              styles='group relative flex min-w-[256px] py-4 items-center justify-center rounded-2xl bg-dark-blue transition-colors  hover:bg-black-dis focus:bg-black-dis  max-md:w-full'
+              styles='group relative flex min-w-[244px] py-4 items-center justify-center rounded-2xl bg-dark-blue transition-colors  hover:bg-black-dis focus:bg-black-dis  max-md:w-full'
               textHoverAnimation='text-base font-semibold tracking-wide text-white-dis group-hover:animate-hoverBtnOut animate-hoverBtnIn'
             />
           </div>

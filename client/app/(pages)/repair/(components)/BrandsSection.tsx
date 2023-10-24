@@ -40,6 +40,8 @@ const BrandsSection: React.FC<BrandsProps> = ({
   const brandPath = pathname.split('/').pop()
   const pathSegments = pathname.split('/')
   const isBrandPage = pathSegments[pathSegments.length - 1]
+  const gadgetTitleArr = brandData?.title?.split(' ')
+  const gadgetText = gadgetTitleArr?.[gadgetTitleArr.length - 2] ?? ''
 
   // Modal window
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
@@ -58,7 +60,7 @@ const BrandsSection: React.FC<BrandsProps> = ({
 
   return (
     <section className='overflow-hidden'>
-      <div className='container flex flex-col gap-[27px] pb-[140px] pt-[158px] max-lg:pb-[50px] lg:px-0'>
+      <div className='container flex flex-col gap-[27px] pb-[140px] pt-[159px] max-lg:pb-[50px] max-md:pt-[117px]  lg:px-0'>
         <div className='flex flex-wrap items-center gap-1'>
           <Link
             className='flex items-center gap-1 text-base font-[400] text-dark-blue'
@@ -104,14 +106,14 @@ const BrandsSection: React.FC<BrandsProps> = ({
               )}
             </div>
           )}
-          <h1 className='mb-[29px] font-exo_2 text-2xl font-bold leading-[1.2px] text-black-dis'>
-            Бренди телефонів, які ремонтуємо у сервісному центрі FixLab
+          <h1 className='mb-[29px] font-exo_2 text-2xl font-bold text-black-dis lg:leading-[1.2px]'>
+            Бренди {gadgetText}, які ремонтуємо у сервісному центрі FixLab
           </h1>
           <div className='container mb-[56px] p-0'>
             <BrandsSlider gadgetData={gadgetData} brandData={brandData} />
           </div>
           <div className='flex w-full justify-between gap-16  max-lg:flex-col lg:gap-32'>
-            <div className='flex   w-[852px] max-xl:max-w-[852px]'>
+            <div className='flex max-xl:w-[600px] max-lg:w-full xl:w-[852px]'>
               {gadgetData.brands?.map(item => (
                 <div
                   key={item._id}
@@ -130,7 +132,7 @@ const BrandsSection: React.FC<BrandsProps> = ({
                 </div>
               )}
             </div>
-            <div className='ml-auto flex flex-col gap-16'>
+            <div className='ml-auto flex flex-col gap-16 max-lg:hidden'>
               <CallUsCard contactsData={contactsData} />
               <Button
                 text='Миттєва консультація'

@@ -28,15 +28,23 @@ export const BrandsSlider: React.FC<BrandsSliderProps> = ({
   const [sliderRef, instanceRef] = useKeenSlider<HTMLElement>({
     initial: 0,
     breakpoints: {
-      '(min-width: 390px)': {
+      '(min-width: 300px)': {
+        slides: { perView: 1 },
+        mode: 'free',
+      },
+      '(min-width: 365px)': {
         slides: { perView: 2 },
         mode: 'free',
       },
       '(min-width: 768px)': {
-        slides: { perView: 5 },
+        slides: { perView: 4 },
         mode: 'free',
       },
       '(min-width: 1100px)': {
+        slides: { perView: 5 },
+        mode: 'free-snap',
+      },
+      '(min-width: 1440px)': {
         slides: { perView: 7 },
         mode: 'free-snap',
       },

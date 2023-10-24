@@ -96,7 +96,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                 <div className='flex flex-col items-start justify-center '>
                   {icon && (
                     <Image
-                      className=' h-[80px]'
+                      className='h-[80px]'
                       src={icon.src}
                       width={0}
                       height={80}
@@ -124,14 +124,14 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
             </div>
             <CallUsCard contactsData={contactsData} />
           </div>
-          <div className='flex flex-col gap-8 lg:w-[737px] lg:gap-14'>
+          <div className='flex flex-col gap-8 max-xl:w-[600px] max-lg:w-full lg:gap-14 xl:w-[737px]'>
             <div className='flex flex-col'>
               {singleGadgetData?.brands.length > 0 && (
                 <>
                   <p className=' mb-[18px] font-exo_2 text-xl font-semibold leading-[0.7] text-white-dis'>
                     Бренди, які ремонтуємо
                   </p>
-                  <div className='mb-[56px]'>
+                  <div className='mb-[46px]'>
                     <GadgetBrandsSlider gadgetData={singleGadgetData} />
                   </div>
                 </>
