@@ -2,9 +2,10 @@
 
 import 'keen-slider/keen-slider.min.css'
 
+import { AnimatePresence, motion } from 'framer-motion'
 import { useKeenSlider } from 'keen-slider/react'
 import type { ReactNode } from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { SliderItem } from './SliderItem'
 import { SliderProgressBar } from './SliderProgressBar'
@@ -13,6 +14,8 @@ import type { IHeroSlider } from './types'
 const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [loaded, setLoaded] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
   const [sliderRef, instanceRef] = useKeenSlider<HTMLUListElement>({
     initial: 0,
     mode: 'free',
@@ -80,17 +83,67 @@ const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
     return null
   }
 
+  useEffect(() => {
+    if (instanceRef) {
+      setIsLoading(true)
+    }
+  }, [instanceRef])
+
   return (
     <>
-      <ul
-        ref={sliderRef}
-        className='keen-slider ml-4 overflow-hidden pb-[28px] pt-[15px] md:ml-0 md:pb-[20px] md:pt-[24px]'
-      >
-        {renderSlides()}
-      </ul>
+      <AnimatePresence>
+        {!isLoading ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 1,
+              transition: { duration: 0.1 },
+            }}
+            exit={{
+              opacity: 0,
+              transition: { duration: 0.1 },
+            }}
+            className='flex h-[197px] items-center justify-center'
+          />
+        ) : (
+          <motion.ul
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+              transition: { duration: 0.3 },
+            }}
+            exit={{
+              opacity: 0,
+              transition: { duration: 0.3 },
+            }}
+            ref={sliderRef}
+            className='keen-slider ml-4 overflow-hidden pb-[28px] pt-[15px] md:ml-0 md:pb-[20px] md:pt-[24px]'
+          >
+            {renderSlides()}
+          </motion.ul>
+        )}
+      </AnimatePresence>
+
       {loaded && instanceRef && (
         <>
-          <div className='block w-full px-4 md:hidden md:px-0'>
+          <motion.div
+            initial={{
+              scale: 0,
+              opacity: 0,
+            }}
+            animate={{
+              scale: 1,
+              opacity: 1,
+              transition: { duration: 0.3 },
+            }}
+            exit={{
+              opacity: 0,
+              transition: { duration: 0.3 },
+            }}
+            className='block w-full px-4 md:hidden md:px-0'
+          >
             <SliderProgressBar
               progress={currentSlide}
               max={
@@ -98,7 +151,7 @@ const HeroSlider = ({ data }: IHeroSlider): ReactNode => {
                 instanceRef?.current.track.details.slides.length
               }
             />
-          </div>
+          </motion.div>
 
           <div className='hidden items-center justify-center md:flex '>
             {renderSteps()}

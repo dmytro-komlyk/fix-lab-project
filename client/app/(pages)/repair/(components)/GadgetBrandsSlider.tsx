@@ -1,9 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 
+import { AnimatePresence, motion } from 'framer-motion'
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import type { IBrand } from '@/app/(server)/api/service/modules/gadgetService'
 
@@ -20,6 +21,7 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
   // Keen Slider
   const [currentSlide, setCurrentSlide] = useState(0)
   const [loaded, setLoaded] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [sliderRef, instanceRef] = useKeenSlider<HTMLElement>({
     initial: 0,
     breakpoints: {
@@ -53,10 +55,30 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
   })
   const filled = instanceRef?.current?.track.details.maxIdx || 1
 
-  return (
-    gadgetData?.brands.length > 0 && (
-      <>
-        <div ref={sliderRef} className='keen-slider flex '>
+  useEffect(() => {
+    if (instanceRef) {
+      setIsLoading(true)
+    }
+  }, [instanceRef])
+
+  return gadgetData?.brands.length > 0 && isLoading ? (
+    <>
+      <AnimatePresence>
+        <motion.div
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+            transition: { duration: 0.3 },
+          }}
+          exit={{
+            opacity: 0,
+            transition: { duration: 0.3 },
+          }}
+          ref={sliderRef}
+          className='keen-slider flex '
+        >
           {gadgetData.brands.map(item => {
             const { alt, src } = item.icon
 
@@ -82,19 +104,21 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
               </div>
             )
           })}
+        </motion.div>
+      </AnimatePresence>
+      {loaded && instanceRef && (
+        <div className='relative mt-8'>
+          <div
+            className='absolute left-0 top-[-14px] z-10 h-[4px] rounded-full bg-white-dis transition-width'
+            style={{
+              width: `${(100 / filled) * currentSlide}%`,
+            }}
+          />
+          <div className='absolute left-0 top-[-14px] h-[4px] w-full rounded-full bg-white-dis/50' />
         </div>
-        {loaded && instanceRef && (
-          <div className='relative mt-8'>
-            <div
-              className='absolute left-0 top-[-14px] z-10 h-[4px] rounded-full bg-white-dis transition-width'
-              style={{
-                width: `${(100 / filled) * currentSlide}%`,
-              }}
-            />
-            <div className='absolute left-0 top-[-14px] h-[4px] w-full rounded-full bg-white-dis/50' />
-          </div>
-        )}
-      </>
-    )
+      )}
+    </>
+  ) : (
+    <div className='flex h-[137px] items-center justify-center' />
   )
 }
