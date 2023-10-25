@@ -1,14 +1,12 @@
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
-import {
-  // getAllBrandsData,
-  getSingleBrandData,
-} from '@/app/(server)/api/service/modules/brandService'
-import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
-import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
+// import {
+//   getSingleBrandData,
+// } from '@/app/(server)/api/service/modules/brandService'
+// import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
+// import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
+import fetchDataSSR from '@/app/(server)/api/service/helpers/fetchDataSSR'
 
 import BrandsSection from '../../../(components)/BrandsSection'
-
-export const revalidate = 60
 
 interface IndexProps {
   params: {
@@ -19,9 +17,15 @@ interface IndexProps {
 }
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const gadgetData = await getSingleGadgetData(params.gadget)
-  const contactsData = await getAllContactsData()
-  const brandData = await getSingleBrandData(params.brand)
+  const gadgetData = await fetchDataSSR(
+    `/gadgets/find-by-slug/${params.gadget}`,
+  )
+  const contactsData = await fetchDataSSR('/contacts')
+  const brandData = await fetchDataSSR(`/brands/find-by-slug/${params.brand}`)
+
+  // const gadgetData = await getSingleGadgetData(params.gadget)
+  // const contactsData = await getAllContactsData()
+  // const brandData = await getSingleBrandData(params.brand)
   return (
     <main className='h-full flex-auto'>
       <BrandsSection
@@ -36,15 +40,16 @@ const Index: React.FC<IndexProps> = async ({ params }) => {
 }
 export default Index
 
+// !!!!!!!!!!!!!!!!!!!!!!!!! Протрібно для SSG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 // export async function generateStaticParams({
 //   params,
 // }: {
 //   params: { gadget: string }
 // }) {
-//   const brands = await getAllBrandsData()
-//   const gadget = await getSingleGadgetData(params.gadget)
-
-//   return brands.map(item => ({
+//   // const gadget = await getSingleGadgetData(params.gadget)
+//   const gadget = await fetchDataSSR(`/gadgets/find-by-slug/${params.gadget}`)
+//   return gadget.brands.map((item: { slug: string }) => ({
 //     gadget: gadget.slug,
 //     brand: item.slug,
 //   }))
