@@ -42,7 +42,7 @@ const GadgetsSection: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
             Ремонт
           </p>
         </div>
-        <div className='mt-[30px] flex justify-between max-lg:flex-col md:gap-6'>
+        <div className='mt-[30px] flex justify-between gap-6 max-lg:flex-col'>
           <div className='flex  flex-col max-lg:w-full max-md:w-full'>
             <h3 className='mb-[24px] font-exo_2 text-xl font-bold leading-normal text-light-blue md:text-2xl'>
               Що зламалося?
