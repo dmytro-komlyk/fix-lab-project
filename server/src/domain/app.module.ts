@@ -15,10 +15,14 @@ import { ImagesModule } from './images/images.module';
 import { IssuesModule } from './issues/issues.module';
 import { UsersModule } from './users/users.module';
 
+import { STATIC_FOLDER } from 'constants/routes.constants';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    ServeStaticModule.forRoot({ rootPath: path.resolve(__dirname, 'static') }),
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, '../../..', STATIC_FOLDER)
+    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
