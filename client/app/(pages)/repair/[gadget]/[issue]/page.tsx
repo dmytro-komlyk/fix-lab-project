@@ -1,8 +1,7 @@
 import { AddressSection } from '@/app/(layouts)'
-// import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
-// import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
-// import { getSingleIssueData } from '@/app/(server)/api/service/modules/issueService'
-import fetchDataSSR from '@/app/(server)/api/service/helpers/fetchDataSSR'
+import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
+import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
+import { getSingleIssueData } from '@/app/(server)/api/service/modules/issueService'
 
 import IssueSection from '../../(components)/IssueSection'
 
@@ -14,16 +13,9 @@ interface IndexProps {
 }
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const singleIssueData = await fetchDataSSR(
-    `/issues/find-by-slug/${params.issue}`,
-  )
-  const contactsData = await fetchDataSSR('/contacts')
-  const singleGadgetData = await fetchDataSSR(
-    `/gadgets/find-by-slug/${params.gadget}`,
-  )
-  // const singleIssueData = await getSingleIssueData(params.issue)
-  // const contactsData = await getAllContactsData()
-  // const singleGadgetData = await getSingleGadgetData(params.gadget)
+  const singleIssueData = await getSingleIssueData(params.issue)
+  const contactsData = await getAllContactsData()
+  const singleGadgetData = await getSingleGadgetData(params.gadget)
 
   return (
     <main className='h-full flex-auto'>
@@ -45,9 +37,7 @@ export default Index
 // }: {
 //   params: { gadget: string }
 // }) {
-//   const gadget = await fetchDataSSR(`/gadgets/find-by-slug/${params.gadget}`)
-
-//   // const gadget = await getSingleGadgetData(params.gadget)
+//   const gadget = await getSingleGadgetData(params.gadget)
 //   return gadget.issues.map((item: { slug: string }) => ({
 //     gadget: gadget.slug,
 //     issue: item.slug,

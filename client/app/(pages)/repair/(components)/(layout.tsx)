@@ -1,8 +1,6 @@
-// import fetchDataSSR from '@/app/(server)/api/service/helpers/fetchDataSSR'
 // // import { getAllGadgetsData } from '@/app/(server)/api/service/modules/gadgetService'
 
 // export async function generateStaticParams() {
-//   const gadgets = await fetchDataSSR(`/gadgets`)
 
 //   // const gadgets = await getAllGadgetsData()
 //   return gadgets.map((item: { slug: string }) => ({
@@ -18,4 +16,4 @@
 //   return <div>{children}</div>
 // }
 
-// !!!!!!!!!!!!!!!!!!!!!!!!! layout.tsx протрібен для SSG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!! layout.tsx протрібен для SSG перемістити в /repair!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

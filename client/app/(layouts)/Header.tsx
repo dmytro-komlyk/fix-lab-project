@@ -106,6 +106,7 @@ export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
         isScrolled ||
         pathname === '/repair' ||
         pathname === '/contacts' ||
+        pathname === '/blog' ||
         blogIdRegex.test(pathname) ||
         brandsPageRegex.test(pathname) ||
         brandsSinglePageRegex.test(pathname)

@@ -5,9 +5,8 @@ import {
   CallCourierSection,
   ColaborationSection,
 } from '@/app/(layouts)'
-// import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
-// import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
-import fetchDataSSR from '@/app/(server)/api/service/helpers/fetchDataSSR'
+import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
+import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
 
 import SingleGadgetSection from '../(components)/SingleGadgetSection'
 
@@ -18,12 +17,8 @@ interface IndexProps {
 }
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const singleGadgetData = await fetchDataSSR(
-    `/gadgets/find-by-slug/${params.gadget}`,
-  )
-  const contactsData = await fetchDataSSR('/contacts')
-  // const singleGadgetData = await getSingleGadgetData(params.gadget)
-  // const contactsData = await getAllContactsData()
+  const singleGadgetData = await getSingleGadgetData(params.gadget)
+  const contactsData = await getAllContactsData()
   return (
     <main className='flex-auto'>
       <SingleGadgetSection
