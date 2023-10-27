@@ -1,5 +1,6 @@
 import { getAllGadgetsData } from '@/app/(server)/api/service/modules/gadgetService'
 
+export const dynamicParams = true // true | false,
 export async function generateStaticParams() {
   const gadgets = await getAllGadgetsData()
   return gadgets.map((item: { slug: string }) => ({
