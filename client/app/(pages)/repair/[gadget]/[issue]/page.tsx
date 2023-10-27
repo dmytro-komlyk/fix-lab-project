@@ -32,14 +32,14 @@ export default Index
 
 // !!!!!!!!!!!!!!!!!!!!!!!!! Протрібно для SSG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-// export async function generateStaticParams({
-//   params,
-// }: {
-//   params: { gadget: string }
-// }) {
-//   const gadget = await getSingleGadgetData(params.gadget)
-//   return gadget.issues.map((item: { slug: string }) => ({
-//     gadget: gadget.slug,
-//     issue: item.slug,
-//   }))
-// }
+export async function generateStaticParams({
+  params,
+}: {
+  params: { gadget: string }
+}) {
+  const gadget = await getSingleGadgetData(params.gadget)
+  return gadget.issues.map((item: { slug: string }) => ({
+    gadget: gadget.slug,
+    issue: item.slug,
+  }))
+}
