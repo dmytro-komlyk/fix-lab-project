@@ -24,9 +24,7 @@ export default async function fetchDataFromServer(url: string) {
 
 // export default async function fetchDataFromServer(url: string) {
 //   try {
-//     const res = await fetch(`http://95.217.34.212:30000/api${url}`, {
-//       next: { revalidate: 0 },
-//     })
+//     const res = await fetch(`http://95.217.34.212:30000/api${url}`)
 
 //     if (!res.ok) {
 //       throw new Error(res.status.toString() + res.statusText)

@@ -32,7 +32,7 @@ const Index: React.FC<IndexProps> = async ({ params }) => {
 export default Index
 
 // !!!!!!!!!!!!!!!!!!!!!!!!! Протрібно для SSG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+export const dynamicParams = true // true | false,
 export async function generateStaticParams({
   params,
 }: {
