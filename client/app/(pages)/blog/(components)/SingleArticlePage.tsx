@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import { BiMap } from 'react-icons/bi'
 import { MdKeyboardArrowRight } from 'react-icons/md'
+import { TbPhone } from 'react-icons/tb'
 
 import RenderMarkdown from '@/app/(components)/RenderMarkdown'
 import Button from '@/app/(layouts)/(components)/Button'
@@ -64,10 +65,10 @@ const SingleArticlePage: React.FC<ISingleArticleProps> = ({ contactsData }) => {
             height={480}
             alt='Kyiv metro logo'
           />
-          <div className='mb-[104px]'>
+          <div className='mb-[104px] max-md:mb-[56px]'>
             <RenderMarkdown markdown={article} />
           </div>
-          <div className='flex w-full justify-between gap-6'>
+          <div className='flex w-full justify-between gap-6 max-md:hidden'>
             <div className='w-[410px]'>
               <p className='mb-[32px] font-exo_2 text-2xl font-bold text-dark-blue  max-lg:text-xl max-lg:font-semibold max-md:mb-[47px]  xl:leading-[57px]'>
                 Тут можна залишити заявку на ремонт у сервісному центрі FixLab
@@ -79,11 +80,11 @@ const SingleArticlePage: React.FC<ISingleArticleProps> = ({ contactsData }) => {
               <Button
                 text='Миттєва консультація'
                 toggleModal={toggleInstantAdviceModal}
-                styles='group relative max-lg:hidden flex min-w-[256px] py-[17px] items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+                styles='group relative max-md:hidden flex min-w-[256px] py-[17px] items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
                 textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
               />
             </div>
-            <div className='flex max-w-[342px] flex-col'>
+            <div className='flex  max-w-[342px] flex-col'>
               <div className='mb-[45px] flex items-center gap-2 max-lg:mb-[26px]'>
                 <BiMap color='#04268B' size={24} />
                 <p className='font-exo_2 text-xl font-semibold tracking-[0.45px] text-dark-blue  max-lg:text-lg '>
@@ -148,6 +149,36 @@ const SingleArticlePage: React.FC<ISingleArticleProps> = ({ contactsData }) => {
                 })}
               </div>
             </div>
+          </div>
+          <div className=' flex w-full flex-col items-start justify-center   md:hidden'>
+            <div className='mb-[17px] flex items-center justify-center gap-2'>
+              <TbPhone className='text-dark-blue' size={24} />
+              <p className='relative font-exo_2 text-xl font-semibold text-dark-blue'>
+                Подзвонити нам
+              </p>
+            </div>
+            <ul className='mb-[30px] flex flex-col items-center gap-[13px]'>
+              {contactsData.map(item => (
+                <li key={item._id} className='flex flex-col items-center'>
+                  <p className='font-[400] text-black-dis'>{item.area} р-н</p>
+                  {item.phones.map(phone => (
+                    <a
+                      key={phone}
+                      href={`tel:${phone.replace(/\s/g, '')}`}
+                      className=' font-[500] leading-7 tracking-[1.56px] text-dark-blue  transition-opacity hover:opacity-70  focus:opacity-70'
+                    >
+                      {phone}
+                    </a>
+                  ))}
+                </li>
+              ))}
+            </ul>
+            <Button
+              text='Миттєва консультація'
+              toggleModal={toggleInstantAdviceModal}
+              styles='group relative md:hidden flex min-w-[256px] py-[17px] items-center justify-center rounded-2xl bg-mid-green transition-colors  hover:bg-mid-blue focus:bg-mid-blue  max-md:w-full'
+              textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
+            />
           </div>
         </div>
       </div>

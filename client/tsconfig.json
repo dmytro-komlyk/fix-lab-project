@@ -48,11 +48,5 @@
     ]
   },
   "exclude": ["./out/**/*", "./node_modules/**/*"],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "app/(pages)/repair/(layout.tsx)"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
 }

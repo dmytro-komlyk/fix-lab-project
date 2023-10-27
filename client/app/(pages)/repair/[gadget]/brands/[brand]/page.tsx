@@ -1,10 +1,7 @@
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
-// import {
-//   getSingleBrandData,
-// } from '@/app/(server)/api/service/modules/brandService'
-// import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
-// import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
-import fetchDataSSR from '@/app/(server)/api/service/helpers/fetchDataSSR'
+import { getSingleBrandData } from '@/app/(server)/api/service/modules/brandService'
+import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
+import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
 
 import BrandsSection from '../../../(components)/BrandsSection'
 
@@ -17,15 +14,9 @@ interface IndexProps {
 }
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const gadgetData = await fetchDataSSR(
-    `/gadgets/find-by-slug/${params.gadget}`,
-  )
-  const contactsData = await fetchDataSSR('/contacts')
-  const brandData = await fetchDataSSR(`/brands/find-by-slug/${params.brand}`)
-
-  // const gadgetData = await getSingleGadgetData(params.gadget)
-  // const contactsData = await getAllContactsData()
-  // const brandData = await getSingleBrandData(params.brand)
+  const gadgetData = await getSingleGadgetData(params.gadget)
+  const contactsData = await getAllContactsData()
+  const brandData = await getSingleBrandData(params.brand)
   return (
     <main className='h-full flex-auto'>
       <BrandsSection
@@ -47,8 +38,7 @@ export default Index
 // }: {
 //   params: { gadget: string }
 // }) {
-//   // const gadget = await getSingleGadgetData(params.gadget)
-//   const gadget = await fetchDataSSR(`/gadgets/find-by-slug/${params.gadget}`)
+//   const gadget = await getSingleGadgetData(params.gadget)
 //   return gadget.brands.map((item: { slug: string }) => ({
 //     gadget: gadget.slug,
 //     brand: item.slug,
