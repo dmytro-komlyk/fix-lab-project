@@ -1,7 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { Transform } from 'class-transformer';
-import { IsDefined, IsNotEmpty, IsNumber, Min } from 'class-validator';
+import {
+  IsDefined,
+  IsIn,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  Min
+} from 'class-validator';
+
+import { SORTING } from 'constants/sort.constants';
 
 export class PaginationDto {
   @ApiProperty({ example: 2 })
@@ -19,4 +28,10 @@ export class PaginationDto {
   @IsNumber()
   @Min(1)
   readonly limit: number;
+
+  @ApiProperty({ example: 'desc' })
+  @IsOptional()
+  @Transform(({ value }) => value.toLowerCase())
+  @IsIn(SORTING)
+  readonly sort?: string;
 }

@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model, SortOrder, Types } from 'mongoose';
 
 import { IPaginationAnswer } from 'shared/interfaces/pagination-answer.interface';
 
@@ -17,7 +17,7 @@ export class ArticlesService {
   ) {}
 
   public async findWithPagination(
-    { page, limit }: PaginationDto,
+    { page, limit, sort }: PaginationDto,
     query?: UpdateArticleDto
   ): Promise<IPaginationAnswer<Article>> {
     const result: IPaginationAnswer<Article> = {
@@ -36,9 +36,11 @@ export class ArticlesService {
 
     const articles = await this.articleModel
       .find(query)
+      .sort({ updatedAt: sort as SortOrder })
       .limit(limit)
       .skip(limit * (page - 1))
-      .populate({ path: 'image' });
+      .populate({ path: 'image' })
+      .select(['-createdAt', '-updatedAt']);
 
     result.items = articles;
     result.itemsCount = articles.length;
