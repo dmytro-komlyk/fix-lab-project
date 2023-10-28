@@ -9,6 +9,8 @@ RUN npm run build
 # Production Stage
 FROM node:18-alpine as production
 WORKDIR /app/admin
+COPY --from=runner /app/admin/next.config.js ./
+COPY --from=runner /app/admin/out ./out
 COPY --from=runner /app/admin/package.json ./package.json
 COPY --from=runner /app/admin/node_modules ./node_modules
 COPY --from=runner /app/admin/.next ./.next
