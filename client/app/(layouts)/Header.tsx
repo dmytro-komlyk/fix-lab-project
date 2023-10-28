@@ -83,8 +83,11 @@ export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
   useEffect(() => {
     const handleScroll = () => {
       const isScroll = window.scrollY > 0
-      setIsScrolled(isScroll)
-      window.localStorage.setItem('isScrolled', JSON.stringify(isScrolled))
+
+      if (isScrolled !== isScroll) {
+        setIsScrolled(isScroll)
+        window.localStorage.setItem('isScrolled', JSON.stringify(isScroll))
+      }
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -92,7 +95,8 @@ export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [isScrolled])
+  }, [setIsScrolled, isScrolled])
+
   const toggleMobileMenu = useCallback(() => {
     setMobileMenuOpen(prev => !prev)
   }, [])

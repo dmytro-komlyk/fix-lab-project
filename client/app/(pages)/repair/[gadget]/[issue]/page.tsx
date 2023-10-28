@@ -1,4 +1,5 @@
 import { AddressSection } from '@/app/(layouts)'
+import fetchServerSide from '@/app/(server)/api/service/helpers/fetchServerSide'
 import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
 import { getSingleIssueData } from '@/app/(server)/api/service/modules/issueService'
@@ -31,13 +32,13 @@ const Index: React.FC<IndexProps> = async ({ params }) => {
 export default Index
 
 // !!!!!!!!!!!!!!!!!!!!!!!!! Протрібно для SSG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-export const dynamicParams = true // true | false,
 export async function generateStaticParams({
   params,
 }: {
   params: { gadget: string }
 }) {
-  const gadget = await getSingleGadgetData(params.gadget)
+  const url = `/gadgets/find-by-slug/${params.gadget}`
+  const gadget = await fetchServerSide(url)
   return gadget.issues.map((item: { slug: string }) => ({
     gadget: gadget.slug,
     issue: item.slug,
