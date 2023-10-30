@@ -29,7 +29,10 @@ export class GadgetsService {
     return await this.gadgetModel
       .find({ isActive: true })
       .select('-isActive')
-      .populate({ path: 'icon' });
+      .populate({ path: 'icon' })
+      .populate({ path: 'brands' })
+      .populate({ path: 'issues' })
+      .populate({ path: 'gallery' });
   }
 
   public async findOneByQuery(query: UpdateGadgetDto): Promise<Gadget> {
