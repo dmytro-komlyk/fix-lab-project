@@ -154,3 +154,26 @@
     opacity: 1;
   }
 }
+/* Add this to your existing CSS or create a new stylesheet */
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.pagination li {
+  margin-right: 5px;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.pagination button:hover,
+.pagination button.active {
+  background-color: #eee;
+}

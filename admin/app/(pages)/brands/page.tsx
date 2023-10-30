@@ -27,13 +27,15 @@ const BrandsPage = async () => {
                     href={`/brands/${item._id}`}
                   >
                     <div className='flex items-center gap-2 py-2'>
-                      <Image
-                        className='h-[40px] w-[40px] object-center opacity-100'
-                        alt={item.icon.alt}
-                        src={item.icon.src}
-                        width={0}
-                        height={0}
-                      />
+                      {item.icon && (
+                        <Image
+                          className='h-[40px] w-[40px] object-center opacity-100'
+                          alt={item.icon.alt}
+                          src={item.icon.src}
+                          width={0}
+                          height={0}
+                        />
+                      )}
                       <p>{item.title}</p>
                     </div>
                   </Link>
