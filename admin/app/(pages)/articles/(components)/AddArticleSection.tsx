@@ -7,6 +7,7 @@
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 
@@ -30,13 +31,10 @@ const AddArticleSection = () => {
     description: '',
     keywords: '',
   })
-  const [selectedImage, setSelectedImage] = useLocalStorage<File | null>(
-    'addArticleSelectedImage',
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [contentImage, setContentImage] = useState<string | ArrayBuffer | null>(
     null,
   )
-  const [contentImage, setContentImage] = useLocalStorage<
-    string | ArrayBuffer | null
-  >('addArticleContentImage', null)
 
   const [contentArticle, setContentArticle] = useLocalStorage<string | ''>(
     'addArticleContentArticle',
