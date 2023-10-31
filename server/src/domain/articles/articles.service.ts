@@ -17,7 +17,7 @@ export class ArticlesService {
   ) {}
 
   public async findWithPagination(
-    { page, limit, sort }: PaginationDto,
+    { page = 1, limit = 1000000, sort = 'desc' }: PaginationDto,
     query?: UpdateArticleDto
   ): Promise<IPaginationAnswer<Article>> {
     const result: IPaginationAnswer<Article> = {
