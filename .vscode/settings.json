@@ -30,5 +30,6 @@
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  } // Don't run prettier for files listed in .gitignore
+  },
+  "cSpell.words": ["tawk"] // Don't run prettier for files listed in .gitignore
 }

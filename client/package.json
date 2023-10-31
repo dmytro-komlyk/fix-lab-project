@@ -19,6 +19,7 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
+    "@tawk.to/tawk-messenger-react": "^2.0.2",
     "@tinymce/tinymce-react": "^4.3.0",
     "aos": "^2.3.4",
     "axios": "^1.4.0",

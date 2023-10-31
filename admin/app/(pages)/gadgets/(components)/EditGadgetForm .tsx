@@ -3,7 +3,9 @@
 'use client'
 
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 import deleteData from '@/app/(server)/api/service/admin/deleteData'
 import { sendPutRequest } from '@/app/(server)/api/service/admin/sendPutRequest'
@@ -29,6 +31,7 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
   issuesData,
   brandsData,
 }) => {
+  const router = useRouter()
   const [newGadgetData, setNewGadgetData] = useState({ ...gadgetData })
   const [selectedIcon, setSelectedIcon] = useState<File | null>(null)
   const [newIcon, setNewIcon] = useState<string | ArrayBuffer | null>(null)
@@ -56,7 +59,23 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
     }
   }
 
-  async function handleImageUpload() {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.files && e.currentTarget.files.length > 0) {
+      const file = e.currentTarget.files[0]
+
+      if (file) {
+        setSelectedIcon(file)
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          setNewIcon(reader.result as string | ArrayBuffer | null)
+        }
+
+        reader.readAsDataURL(file)
+      }
+    }
+  }
+
+  const handleImageUpload = async () => {
     try {
       if (selectedIcon) {
         const response = await uploadImg({
@@ -114,7 +133,14 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
 
           if (response.status === 200) {
             await handleImageSave(uploadResponse.data._id)
-            window.location.reload()
+            toast.success(`Оновлення збережено!`, {
+              style: {
+                borderRadius: '10px',
+                background: 'grey',
+                color: '#fff',
+              },
+            })
+            router.refresh()
           } else {
             console.error('Error updating contact data')
           }
@@ -122,32 +148,32 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
           console.error('Error uploading image')
         }
       } else {
-        await sendPutRequest(`/gadgets/${newGadgetData._id}`, {
+        const res = await sendPutRequest(`/gadgets/${newGadgetData._id}`, {
           ...newGadgetData,
           icon: gadgetData.icon._id || '',
           gallery: newGadgetData.gallery.map(item => item._id) || [],
           issues: newGadgetData.issues.map(item => item._id) || [],
           brands: newGadgetData.brands.map(item => item._id) || [],
         })
+        if (res.status === 200) {
+          toast.success(`Оновлення збережено!`, {
+            style: {
+              borderRadius: '10px',
+              background: 'grey',
+              color: '#fff',
+            },
+          })
+        }
       }
     } catch (error) {
       console.error('Error:', error)
-    }
-  }
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.files && e.currentTarget.files.length > 0) {
-      const file = e.currentTarget.files[0]
-
-      if (file) {
-        setSelectedIcon(file)
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          setNewIcon(reader.result as string | ArrayBuffer | null)
-        }
-
-        reader.readAsDataURL(file)
-      }
+      toast.error(`Помилка оновлення...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
     }
   }
 
@@ -161,13 +187,15 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
                 Іконка(svg)
               </p>
               {!newIcon ? (
-                <Image
-                  className='h-[140px] w-[220px]  object-center'
-                  src={gadgetData.icon.src}
-                  width={300}
-                  height={200}
-                  alt={gadgetData.icon.alt}
-                />
+                gadgetData.icon && (
+                  <Image
+                    className='h-[140px] w-[220px]  object-center'
+                    src={gadgetData?.icon.src}
+                    width={300}
+                    height={200}
+                    alt={gadgetData?.icon.alt}
+                  />
+                )
               ) : (
                 <div>
                   <Image
@@ -192,11 +220,12 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
                 SEO налаштування
               </p>
               <label
-                htmlFor='metadata'
+                htmlFor='metadata title'
                 className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
               >
                 Seo title
                 <input
+                  required
                   className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='metadata'
@@ -206,11 +235,12 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
                 />
               </label>
               <label
-                htmlFor='metadata'
+                htmlFor='metadata description'
                 className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
               >
                 Seo description
                 <input
+                  required
                   className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='metadata'
@@ -220,11 +250,12 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
                 />
               </label>
               <label
-                htmlFor='metadata'
+                htmlFor='metadata keywords'
                 className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
               >
                 Seo keywords
                 <input
+                  required
                   className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='metadata'
@@ -242,6 +273,7 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
             Заголовок
             <input
               required
+              maxLength={60}
               className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               type='text'
               name='title'
