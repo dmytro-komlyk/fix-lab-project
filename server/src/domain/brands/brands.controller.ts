@@ -34,6 +34,7 @@ export class BrandsController {
   @Public()
   @Get('')
   public async findActiveBrands(): Promise<Brand[]> {
+    console.log({ test });
     return await this.brandsService.findActive();
   }
 

@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 import { useContainer } from 'class-validator';
+import { TrpcRouter } from 'domain/trpc/trpc.router';
 import { join } from 'path';
 
 import { AppModule } from 'domain/app.module';
@@ -35,6 +36,9 @@ import { PREFIX, PUBLIC_FOLDER } from 'constants/routes.constants';
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   SwaggerHelper(app);
+
+  const trpc = app.get(TrpcRouter);
+  trpc.applyMiddleware(app);
 
   await app.listen(process.env.PORT);
 })();
