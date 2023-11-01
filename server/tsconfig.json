@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": false,
+    "strictNullChecks": true,
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -12,7 +15,6 @@
     "baseUrl": "./src",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,

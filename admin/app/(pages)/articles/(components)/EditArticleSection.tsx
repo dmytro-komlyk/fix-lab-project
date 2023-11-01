@@ -6,6 +6,7 @@
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import useLocalStorage from '@/app/(hooks)/useLocalStorage '
@@ -27,14 +28,8 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
     `editNewArticleData${articleData._id}`,
     { ...articleData },
   )
-  const [selectedImage, setSelectedImage] = useLocalStorage<File | null>(
-    `editSelectedImage${articleData._id}`,
-    null,
-  )
-  const [newImage, setNewImage] = useLocalStorage<string | ArrayBuffer | null>(
-    `editNewImage${articleData._id}`,
-    null,
-  )
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [newImage, setNewImage] = useState<string | ArrayBuffer | null>(null)
   const [newArticle, setNewArticle] = useLocalStorage<string | ''>(
     `editNewArticle${articleData._id}`,
     articleData.text || '',
@@ -42,7 +37,7 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
   const clearState = () => {
     setNewArticleData({ ...newArticleData })
     if (selectedImage) {
-      selectedImage(null)
+      setSelectedImage(null)
     }
     setNewImage(null)
     setNewArticle(newArticle)

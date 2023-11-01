@@ -13,6 +13,7 @@ import { ContactsModule } from './contacts/contacts.module';
 import { GadgetsModule } from './gadgets/gadgets.module';
 import { ImagesModule } from './images/images.module';
 import { IssuesModule } from './issues/issues.module';
+import { TrpcModule } from './trpc/trpc.module';
 import { UsersModule } from './users/users.module';
 
 import { STATIC_FOLDER } from 'constants/routes.constants';
@@ -35,6 +36,7 @@ import { STATIC_FOLDER } from 'constants/routes.constants';
         }
       })
     }),
+    TrpcModule,
     UsersModule,
     AuthModule,
     GadgetsModule,

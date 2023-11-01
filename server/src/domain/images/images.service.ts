@@ -39,7 +39,7 @@ export class ImagesService {
     return image;
   }
 
-  public async update(id: string, dto: AddImageDto): Promise<Image> {
+  public async update(id: string, dto: AddImageDto): Promise<Image | null> {
     await this.findOneById(id);
 
     const image = await this.imageModel.findByIdAndUpdate(id, dto, {
