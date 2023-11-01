@@ -29,34 +29,34 @@ export class TrpcRouter {
   ) {}
 
   appRouter = this.trpc.router({
-    getGadgets: this.trpc.procedure.query(async (): Promise<Gadget[]> => {
+    getGadgetsQuery: this.trpc.procedure.query(async (): Promise<Gadget[]> => {
       return await this.gadgetsService.findActive();
     }),
-    getGadgetBySlug: this.trpc.procedure
+    getGadgetBySlugQuery: this.trpc.procedure
       .input(z.object({ slug: z.string() }))
       .query(async ({ input }): Promise<Gadget | null> => {
         return await this.gadgetsService.findOneByQuery({ ...input });
       }),
 
-    getIssues: this.trpc.procedure.query(async (): Promise<Issue[]> => {
+    getIssuesQuery: this.trpc.procedure.query(async (): Promise<Issue[]> => {
       return await this.issuesService.findAllActive();
     }),
-    getIssueBySlug: this.trpc.procedure
+    getIssueBySlugQuery: this.trpc.procedure
       .input(z.object({ slug: z.string() }))
       .query(async ({ input }): Promise<Issue | null> => {
         return await this.issuesService.findOneByQuery({ ...input });
       }),
 
-    getBrands: this.trpc.procedure.query(async (): Promise<Brand[]> => {
+    getBrandsQuery: this.trpc.procedure.query(async (): Promise<Brand[]> => {
       return await this.brandsService.findActive();
     }),
-    getBrandBySlug: this.trpc.procedure
+    getBrandBySlugQuery: this.trpc.procedure
       .input(z.object({ slug: z.string() }))
       .query(async ({ input }): Promise<Brand | null> => {
         return await this.brandsService.findOneByQuery({ ...input });
       }),
 
-    getArticles: this.trpc.procedure
+    getArticlesQuery: this.trpc.procedure
       .input(
         z.object({
           page: z.number().optional(),
@@ -67,13 +67,13 @@ export class TrpcRouter {
       .query(async ({ input }): Promise<IPaginationAnswer<Article>> => {
         return await this.articlesService.findWithPagination({ ...input }, {});
       }),
-    getArticleBySlug: this.trpc.procedure
+    getArticleBySlugQuery: this.trpc.procedure
       .input(z.object({ slug: z.string() }))
       .query(async ({ input }): Promise<Article | null> => {
         return await this.articlesService.findOneByQuery({ ...input });
       }),
 
-    getContacts: this.trpc.procedure.query(async (): Promise<Contact[]> => {
+    getContactsQuery: this.trpc.procedure.query(async (): Promise<Contact[]> => {
       return await this.contactsService.findActive();
     })
   });
