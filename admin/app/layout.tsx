@@ -5,7 +5,7 @@ import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 
 import Dashboard from './(layouts)/(components)/Dashboard'
-import NextUiProvider from './(providers)/nextUiProvider'
+import Providers from './(providers)/Providers'
 
 const inter = Inter({
   weight: ['300', '400', '700', '500', '600'],
@@ -48,13 +48,13 @@ export default function RootLayout({
       className={`${inter.variable} ${manrope.variable} ${exo2.variable} ${gugi.variable} h-full`}
     >
       <body className='h-[100vh]'>
-        <NextUiProvider>
+        <Providers>
           <Toaster />
           <div className='flex'>
             <Dashboard />
             <div className='h-[100vh] w-full pl-[400px]'>{children}</div>
           </div>
-        </NextUiProvider>
+        </Providers>
       </body>
     </html>
   )
