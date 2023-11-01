@@ -34,7 +34,6 @@ export class BrandsController {
   @Public()
   @Get('')
   public async findActiveBrands(): Promise<Brand[]> {
-    console.log({ test });
     return await this.brandsService.findActive();
   }
 
@@ -93,7 +92,7 @@ export class BrandsController {
     @Param('id') id: string,
     @Body()
     dto: UpdateBrandDto
-  ): Promise<Brand> {
+  ): Promise<Brand | null> {
     return await this.brandsService.update(id, dto);
   }
 

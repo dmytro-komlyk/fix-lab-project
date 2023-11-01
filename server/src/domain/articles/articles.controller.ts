@@ -67,7 +67,10 @@ export class ArticlesController {
     @Res() response: Response,
     @Query() paginationDto: PaginationDto
   ): Promise<void> {
-    const articles = await this.articlesService.findWithPagination(paginationDto);
+    const articles = await this.articlesService.findWithPagination(
+      paginationDto,
+      {}
+    );
 
     response.header(
       'Content-Range',
@@ -103,7 +106,7 @@ export class ArticlesController {
     @Param('id') id: string,
     @Body()
     dto: UpdateArticleDto
-  ): Promise<Article> {
+  ): Promise<Article | null> {
     return await this.articlesService.update(id, dto);
   }
 

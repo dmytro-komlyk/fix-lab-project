@@ -13,7 +13,7 @@ import { SwaggerHelper } from 'helpers/swagger.helper';
 
 import { PREFIX, PUBLIC_FOLDER } from 'constants/routes.constants';
 
-(async () => {
+(async (): Promise<void> => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.enableCors({
@@ -40,5 +40,5 @@ import { PREFIX, PUBLIC_FOLDER } from 'constants/routes.constants';
   const trpc = app.get(TrpcRouter);
   trpc.applyMiddleware(app);
 
-  await app.listen(process.env.PORT);
+  await app.listen(process.env.PORT ?? 4000);
 })();

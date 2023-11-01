@@ -13,7 +13,7 @@ export class TrpcRouter {
     })
   });
 
-  async applyMiddleware(app: INestApplication) {
+  async applyMiddleware(app: INestApplication): Promise<void> {
     app.use(
       '/trpc',
       trpcExpress.createExpressMiddleware({ router: this.appRouter })
