@@ -18,7 +18,7 @@ export class ArticlesService {
 
   public async findWithPagination(
     { page = 1, limit = 1000000, sort = 'desc' }: PaginationDto,
-    query?: UpdateArticleDto
+    query: UpdateArticleDto
   ): Promise<IPaginationAnswer<Article>> {
     const result: IPaginationAnswer<Article> = {
       itemsCount: 0,
@@ -50,7 +50,7 @@ export class ArticlesService {
     return result;
   }
 
-  public async findOneByQuery(query: UpdateArticleDto): Promise<Article> {
+  public async findOneByQuery(query: UpdateArticleDto): Promise<Article | null> {
     return await this.articleModel.findOne(query).populate({ path: 'image' });
   }
 
@@ -83,7 +83,7 @@ export class ArticlesService {
     return article;
   }
 
-  public async update(id: string, dto: UpdateArticleDto): Promise<Article> {
+  public async update(id: string, dto: UpdateArticleDto): Promise<Article | null> {
     await this.findOneById(id);
 
     const article = await this.articleModel

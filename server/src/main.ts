@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 import { useContainer } from 'class-validator';
+import { TrpcRouter } from 'domain/trpc/trpc.router';
 import { join } from 'path';
 
 import { AppModule } from 'domain/app.module';
@@ -12,7 +13,7 @@ import { SwaggerHelper } from 'helpers/swagger.helper';
 
 import { PREFIX, PUBLIC_FOLDER } from 'constants/routes.constants';
 
-(async () => {
+(async (): Promise<void> => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.enableCors({
@@ -36,5 +37,8 @@ import { PREFIX, PUBLIC_FOLDER } from 'constants/routes.constants';
 
   SwaggerHelper(app);
 
-  await app.listen(process.env.PORT);
+  const trpc = app.get(TrpcRouter);
+  trpc.applyMiddleware(app);
+
+  await app.listen(process.env.PORT ?? 4000);
 })();

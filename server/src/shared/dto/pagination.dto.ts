@@ -11,18 +11,18 @@ export class PaginationDto {
   @IsOptional()
   @IsNumber()
   @Min(1)
-  readonly page?: number;
+  readonly page?: number | undefined;
 
   @ApiProperty({ example: 10 })
   @Transform(({ value }) => parseInt(value))
   @IsOptional()
   @IsNumber()
   @Min(1)
-  readonly limit?: number;
+  readonly limit?: number | undefined;
 
   @ApiProperty({ example: 'desc' })
   @IsOptional()
   @Transform(({ value }) => value.toLowerCase())
   @IsIn(SORTING)
-  readonly sort?: string;
+  readonly sort?: string | undefined;
 }
