@@ -2,6 +2,7 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
+import { Toaster } from 'react-hot-toast'
 
 import Dashboard from './(layouts)/(components)/Dashboard'
 import NextUiProvider from './(providers)/nextUiProvider'
@@ -48,6 +49,7 @@ export default function RootLayout({
     >
       <body className='h-[100vh]'>
         <NextUiProvider>
+          <Toaster />
           <div className='flex'>
             <Dashboard />
             <div className='h-[100vh] w-full pl-[400px]'>{children}</div>

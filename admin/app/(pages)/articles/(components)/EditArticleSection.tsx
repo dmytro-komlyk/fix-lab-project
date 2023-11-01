@@ -7,7 +7,9 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
+import useLocalStorage from '@/app/(hooks)/useLocalStorage '
 import deleteData from '@/app/(server)/api/service/admin/deleteData'
 import { sendPutRequest } from '@/app/(server)/api/service/admin/sendPutRequest'
 import uploadImg from '@/app/(server)/api/service/admin/uploadImg'
@@ -22,12 +24,25 @@ interface IArticleAdminProps {
 
 const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
   const router = useRouter()
-  const [newArticleData, setNewArticleData] = useState({ ...articleData })
+  const [newArticleData, setNewArticleData] = useLocalStorage(
+    `editNewArticleData${articleData._id}`,
+    { ...articleData },
+  )
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [newImage, setNewImage] = useState<string | ArrayBuffer | null>(null)
-  const [newArticle, setNewArticle] = useState<string | ''>(
+  const [newArticle, setNewArticle] = useLocalStorage<string | ''>(
+    `editNewArticle${articleData._id}`,
     articleData.text || '',
   )
+  const clearState = () => {
+    setNewArticleData({ ...newArticleData })
+    if (selectedImage) {
+      setSelectedImage(null)
+    }
+    setNewImage(null)
+    setNewArticle(newArticle)
+  }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
 
@@ -70,6 +85,14 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
 
           if (response.status === 200) {
             await handleImageSave(uploadResponse.data._id)
+            toast.success(`Оновлення збережено!`, {
+              style: {
+                borderRadius: '10px',
+                background: 'grey',
+                color: '#fff',
+              },
+            })
+            clearState()
             router.refresh()
           } else {
             console.error('Error updating contact data')
@@ -83,9 +106,24 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
           image: articleData.image._id || '',
           article: newArticle,
         })
+        toast.success(`Оновлення збережено!`, {
+          style: {
+            borderRadius: '10px',
+            background: 'grey',
+            color: '#fff',
+          },
+        })
       }
+      clearState()
     } catch (error) {
       console.error('Error:', error)
+      toast.error(`Помилка...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
     }
   }
 

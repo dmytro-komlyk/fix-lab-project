@@ -39,13 +39,15 @@ export function DraggableBrandItem({
       className='flex w-full cursor-grab items-center justify-between gap-2 border-b-[0.5px] border-dark-blue bg-white-dis opacity-60   first:rounded-t-xl last:rounded-b-xl '
     >
       <div className='flex items-center gap-2 p-4'>
-        <Image
-          className='h-[40px] w-[40px] object-center opacity-100'
-          alt={item.icon.alt}
-          src={item.icon.src}
-          width={0}
-          height={0}
-        />
+        {item.icon && (
+          <Image
+            className='h-[40px] w-[40px] object-center opacity-100'
+            alt={item.icon.alt}
+            src={item.icon.src}
+            width={0}
+            height={0}
+          />
+        )}
         <p className='font-exo_2 text-md font-semibold text-dark-blue max-md:text-lg '>
           {item?.title || 'No title'}
         </p>

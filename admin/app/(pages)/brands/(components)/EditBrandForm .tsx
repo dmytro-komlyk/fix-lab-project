@@ -140,13 +140,15 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
         <div className='flex w-[400px] flex-col'>
           <div className='relative'>
             {!newIcon ? (
-              <Image
-                className='h-auto w-[100px]  object-center'
-                src={brandData.icon.src}
-                width={100}
-                height={100}
-                alt={brandData.icon.alt}
-              />
+              brandData.icon && (
+                <Image
+                  className='h-auto w-[100px]  object-center'
+                  src={brandData.icon.src}
+                  width={100}
+                  height={100}
+                  alt={brandData?.icon.alt || ''}
+                />
+              )
             ) : (
               <div>
                 <Image

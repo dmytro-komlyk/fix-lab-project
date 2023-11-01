@@ -179,13 +179,15 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
               key={item._id}
             >
               <div className='flex items-center gap-2 p-4'>
-                <Image
-                  className='h-[40px] w-[40px] object-center opacity-100'
-                  alt={item.icon.alt}
-                  src={item.icon.src}
-                  width={0}
-                  height={0}
-                />
+                {item.icon && (
+                  <Image
+                    className='h-[40px] w-[40px] object-center opacity-100'
+                    alt={item.icon?.alt || item.title}
+                    src={item.icon.src}
+                    width={0}
+                    height={0}
+                  />
+                )}
                 <p className='font-exo_2 text-md font-semibold text-dark-blue max-md:text-lg '>
                   {item?.title || 'No title'}
                 </p>

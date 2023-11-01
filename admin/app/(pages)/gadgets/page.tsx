@@ -8,7 +8,7 @@ const GadgetsPage = async () => {
 
   return (
     <main className='flex flex-auto'>
-      <section className='h-[100vh] w-full overflow-hidden bg-footer-gradient-linear-blue py-[60px]'>
+      <section className=' flex w-full justify-center bg-footer-gradient-linear-blue py-[60px]'>
         <div className='relative flex flex-col items-center justify-center'>
           <GadgetsList gadgetsData={gadgetsData} />
         </div>

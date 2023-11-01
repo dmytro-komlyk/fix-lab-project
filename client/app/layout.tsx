@@ -3,6 +3,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
 
+import TawkChat from './(components)/TawkChat'
 import { Footer, Header } from './(layouts)'
 import { getAllContactsData } from './(server)/api/service/modules/contactService'
 
@@ -53,6 +54,9 @@ export default async function RootLayout({
         <div className='flex min-h-full flex-col'>
           <Header contactsData={contactsData} />
           {children}
+          <div className='absolute bottom-8 right-8 z-50'>
+            <TawkChat />
+          </div>
           <Footer contactsData={contactsData} />
         </div>
       </body>
