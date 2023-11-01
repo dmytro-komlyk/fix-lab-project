@@ -34,13 +34,16 @@ const SignIn = () => {
         })
         router.push('/gadgets')
       } else {
-        toast.error(`Помилка авторизації! Перевірте дані логіну чи паролю...`, {
-          style: {
-            borderRadius: '10px',
-            background: 'grey',
-            color: '#fff',
+        toast.error(
+          `Помилка авторизації!!! Перевірте дані логіну чи паролю...`,
+          {
+            style: {
+              borderRadius: '10px',
+              background: 'grey',
+              color: '#fff',
+            },
           },
-        })
+        )
       }
     } finally {
       setLoading(false)
