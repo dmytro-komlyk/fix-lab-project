@@ -42,6 +42,7 @@ module.exports = {
       'mid-green': '#00CC73',
       'light-grey': '#F8FCFFC2',
       'mid-grey': '#92999C',
+      'blue-crayola': '#C8D3EF',
       'modal-overlay': 'rgba(0, 0, 0, 0.25)',
       'pros-bg': 'rgba(248, 252, 255, 0.76)',
     },
@@ -80,6 +81,8 @@ module.exports = {
         'mscope-xl': 'top calc(50% + 35px) right calc(50% - 32px)',
       },
       backgroundImage: {
+        'card-blog': 
+        'linear-gradient(180deg, rgba(200, 211, 239, 0) 75.52%, rgba(200, 211, 239, 0.78) 100%)',
         'card-repair-gradient':
           'linear-gradient(192.07deg, #06278B -22.68%, #0D3DCE 112.47%)',
         'gradient-radial-blue':
