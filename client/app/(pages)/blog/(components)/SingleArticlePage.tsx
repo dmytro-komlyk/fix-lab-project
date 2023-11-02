@@ -12,13 +12,18 @@ import RenderMarkdown from '@/app/(components)/RenderMarkdown'
 import Button from '@/app/(layouts)/(components)/Button'
 import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
 import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
+import type { IPost } from '@/app/(server)/api/service/modules/articlesService'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 
 export interface ISingleArticleProps {
   contactsData: IContact[]
+  articleData: IPost
 }
 
-const SingleArticlePage: React.FC<ISingleArticleProps> = ({ contactsData }) => {
+const SingleArticlePage: React.FC<ISingleArticleProps> = ({
+  contactsData,
+  articleData,
+}) => {
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
     useState<boolean>(false)
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
@@ -31,8 +36,7 @@ const SingleArticlePage: React.FC<ISingleArticleProps> = ({ contactsData }) => {
   const toggleInstantAdviceModal = useCallback(() => {
     setShowInstantAdviceModal(prev => !prev)
   }, [setShowInstantAdviceModal])
-  const article =
-    '<p><strong>Симптоми несправності материнської плати смартфона чи планшета</strong></p><ul><li><p>Смарфон / планшет самовільно перезавантажується;</p></li><li><p>Гаджет часто зависає;</p></li><li><p>Телефон не заряджається;</p></li><li><p>Смартфон не вмикається;</p></li><li><p>Швидко розряджається батарея;</p></li><li><p>Не бачить мережу чи sim-карту;</p></li><li><p>Не ловить Wi-Fi чи Bluetooth;</p></li><li><p>Смартфон / планшет гріється під час роботи або заряджання.</p></li></ul><p></p><p>Так само причиною некоректної роботи смартфона може бути потрапляння на нього рідини. Якщо Ви залили телефон – відразу ж несіть його на чистку і відновлення. Не намагайтесь висушити його в рисі чи на батареї. Чим пізніше залитий гаджет потрапить на робочий стіл майстра, тим дорожче буде ремонт. Адже за цей час там може утворитися багато іржі та корозії і як результат —менша ймовірність успішного ремонту телефону після потрапляння води.</p>'
+
   return (
     <section className=' overflow-hidden bg-white-dis  pb-[102px] pt-[159px] max-md:pb-14 max-md:pt-[117px]'>
       <div className='container relative flex flex-col xl:p-0'>
@@ -50,23 +54,25 @@ const SingleArticlePage: React.FC<ISingleArticleProps> = ({ contactsData }) => {
             <p> Блог</p> <MdKeyboardArrowRight size={25} />
           </Link>
 
-          <p className='text-base font-[400]  text-dark-blue opacity-70'>
-            article title
+          <p className='line-clamp-1 text-base font-[400] text-dark-blue opacity-70'>
+            {articleData.title}
           </p>
         </div>
         <div className='flex max-w-[954px] flex-col '>
           <h2 className='mb-[56px] font-exo_2 text-2xl font-bold  max-lg:text-xl max-lg:font-semibold max-md:mb-[47px]  xl:leading-[57px]'>
-            Title article
+            {articleData.title}
           </h2>
-          <Image
-            className='mb-[56px] min-h-[245px] w-full  object-cover md:max-h-[480px]'
-            src='/images/for-business-table.png'
-            width={924}
-            height={480}
-            alt='Kyiv metro logo'
-          />
+          {articleData.image && (
+            <Image
+              className='mb-[56px] min-h-[245px] w-full  object-cover md:max-h-[480px]'
+              src={articleData.image.src}
+              width={924}
+              height={480}
+              alt={articleData.image.alt}
+            />
+          )}
           <div className='mb-[104px] max-md:mb-[56px]'>
-            <RenderMarkdown markdown={article} />
+            <RenderMarkdown markdown={articleData.text} />
           </div>
           <div className='flex w-full justify-between gap-6 max-md:hidden'>
             <div className='w-[410px]'>

@@ -2,12 +2,13 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import type {
-  IBlog,
-  IPost,
+import {
+  getAllPosts,
+  type IBlog,
 } from '@/app/(server)/api/service/modules/articlesService'
 
 import PaginationControls from './PaginationControls'
@@ -17,26 +18,29 @@ interface IBlogProps {
 }
 
 const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
+  const [articles, setArticles] = useState([...postsData.items])
   const searchParams = useSearchParams()
+
   const currentPage =
     typeof searchParams.get('page') === 'string'
       ? Number(searchParams.get('page'))
       : 1
 
-  const paginate = (
-    pageNumber: number,
-    postCount: number,
-    items: IPost[] = [],
-  ) => {
-    const startIndex = (pageNumber - 1) * postCount
-    return items.slice(startIndex, startIndex + postCount)
-  }
+  const router = useRouter()
 
-  const paginatedPosts = paginate(
-    currentPage,
-    postsData.itemsCount,
-    postsData.items,
-  )
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getAllPosts({ currentPage })
+        setArticles([...res.items])
+      } catch (error) {
+        throw new Error('Error fetching data')
+      }
+    }
+
+    fetchData()
+  }, [currentPage, router])
+
   return (
     <section className='overflow-hidden bg-gradient-linear-blue'>
       <div className='container flex flex-col gap-14 pb-[70px] pt-[158px] max-lg:pb-[50px] lg:px-0'>
@@ -58,7 +62,7 @@ const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
         </div>
         <h2 className='font-exo_2 text-2xl font-bold text-white-dis'>Блог</h2>
         <div className='flex flex-wrap justify-center gap-6 space-x-0'>
-          {paginatedPosts.map(post => {
+          {articles.map(post => {
             return (
               <Link key={post._id} href={`/blog/${post.slug}`}>
                 <div className='flex max-h-[500px] max-w-[410px] flex-col rounded-2xl bg-blue-crayola'>
@@ -73,7 +77,7 @@ const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
                     <h2 className='font-exo_2 text-xl font-semibold'>
                       {post.title}
                     </h2>
-                    <p className='line-clamp-2 text-ellipsis text-base font-normal'>
+                    <p className='line-clamp-3 text-ellipsis text-base font-normal'>
                       {post.preview}
                     </p>
                   </div>

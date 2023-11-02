@@ -44,6 +44,7 @@ const SuccessSubmitBanner: React.FC<SuccessSubmitBannerProps> = ({
           onClick={onBackdropCloseModal}
         >
           <button
+            aria-label='Закрити вікно успішного надсилання форми'
             type='button'
             className=' white-dis-700 absolute right-[13px] top-[14px] text-center'
             onClick={toggleSuccessSubmitModal}
