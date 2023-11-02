@@ -39,6 +39,7 @@ const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
     }
 
     fetchData()
+    router.refresh()
   }, [currentPage, router])
 
   return (
