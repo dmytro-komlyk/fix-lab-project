@@ -1,4 +1,5 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
@@ -36,10 +37,9 @@
     "isolatedModules": true,
     "incremental": true,
 
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@/public/*": ["./public/*"]
+      "@/*": ["./admin/*"],
+      "@/public/*": ["./public/admin/*"]
     },
     "plugins": [
       {
