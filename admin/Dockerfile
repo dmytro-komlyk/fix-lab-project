@@ -1,6 +1,7 @@
 FROM node:18-alpine as runner
 WORKDIR /app/admin
 COPY package*.json ./
+COPY tsconfig*.json ./
 COPY .env.example ./.env
 RUN npm install
 COPY . .
