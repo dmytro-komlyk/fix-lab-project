@@ -13,7 +13,10 @@
     "paths": {
       "*": ["./server/*"],
       "@app/*": ["./server/src/*"],
-      "@domain/*": ["./server/src/domain/*"]
+      "@domain/*": ["./server/src/domain/*"],
+      "@shared/*": ["./server/src/shared/*"],
+      "@filters/*": ["./server/src/filters/*"],
+      "@helpers/*": ["./server/src/helpers/*"]
     }
   }
 }

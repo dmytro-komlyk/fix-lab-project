@@ -8,8 +8,8 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import { ContactsController } from './contacts.controller';
 import { ContactsService } from './contacts.service';
 
+import { Image, ImageSchema } from '@domain/images/schemas/image.schema';
 import { Contact, ContactSchema } from './schemas/contact.schema';
-import { Image, ImageSchema } from '@app/domain/images/schemas/image.schema';
 
 import { ContactStubDto } from './dto/contact-stub.dto';
 
