@@ -1,7 +1,12 @@
-export default function Blog() {
+import { getAllPosts } from '@/app/(server)/api/service/modules/articlesService'
+
+import MainBlogSection from './(components)/MainBlogSection'
+
+export default async function Blog() {
+  const postsData = await getAllPosts()
   return (
     <main className='flex-auto'>
-      <h1>Blog 111</h1>
+      <MainBlogSection postsData={postsData} />
     </main>
   )
 }
