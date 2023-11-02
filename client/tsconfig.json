@@ -39,7 +39,9 @@
 
     "paths": {
       "@/*": ["./client/*"],
-      "@/public/*": ["./client/public/*"]
+      "@/public/*": ["./client/public/*"],
+      "@server/*": ["./server/src/*"],
+      "@trpc/*": ["./server/src/domain/trpc/*"]
     },
     "plugins": [
       {

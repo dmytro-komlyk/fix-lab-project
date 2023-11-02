@@ -10,10 +10,10 @@ import {
   Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Public } from 'decorators/public.decorator';
+import { Public } from '@app/decorators/public.decorator';
 import { Response } from 'express';
 
-import { ISuccessDelete } from 'shared/interfaces/success-delete.interface';
+import { ISuccessDelete } from '@app/shared/interfaces/success-delete.interface';
 
 import { IssuesService } from './issues.service';
 
@@ -22,7 +22,7 @@ import { Issue } from './schemas/issue.schema';
 import { CreateIssueDto } from './dto/create-issue.dto';
 import { UpdateIssueDto } from './dto/update-issue.dto';
 
-import { ROUTES } from 'constants/routes.constants';
+import { ROUTES } from '@app/constants/routes.constants';
 
 @ApiTags(ROUTES.issues)
 @Controller(ROUTES.issues)

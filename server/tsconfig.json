@@ -1,8 +1,9 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../tsconfig",
   "compilerOptions": {
     "module": "commonjs",
     "strict": false,
+    "strictNullChecks": true,
     "declaration": true,
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
@@ -10,7 +11,9 @@
     "sourceMap": true,
     "outDir": "./dist",
     "paths": {
-      "*": ["./server/src/*"]
+      "*": ["./server/*"],
+      "@app/*": ["./server/src/*"],
+      "@domain/*": ["./server/src/domain/*"]
     }
   }
 }

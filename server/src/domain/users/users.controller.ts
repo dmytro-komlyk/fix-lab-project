@@ -9,9 +9,9 @@ import {
   Query
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Public } from 'decorators/public.decorator';
+import { Public } from '@app/decorators/public.decorator';
 
-import { ISuccessDelete } from 'shared/interfaces/success-delete.interface';
+import { ISuccessDelete } from '@app/shared/interfaces/success-delete.interface';
 
 import { UsersService } from './users.service';
 
@@ -20,7 +20,7 @@ import { User } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-import { ROUTES } from 'constants/routes.constants';
+import { ROUTES } from '@app/constants/routes.constants';
 
 @ApiTags(ROUTES.users)
 @Controller(ROUTES.users)

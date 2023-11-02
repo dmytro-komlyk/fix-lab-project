@@ -38,8 +38,11 @@
     "incremental": true,
 
     "paths": {
+      "*": ["./admin/*"],
       "@/*": ["./admin/*"],
-      "@/public/*": ["./public/admin/*"]
+      "@/public/*": ["./public/admin/*"],
+      "@server/*": ["./server/src/*"],
+      "@trpc/*": ["./server/src/domain/trpc/*"]
     },
     "plugins": [
       {
