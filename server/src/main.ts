@@ -8,8 +8,8 @@ import { join } from 'path';
 
 import { AppModule } from '@domain/app.module';
 
-import { MongoErrorsFilter } from '@app/filters/mongo-errors.filter';
-import { SwaggerHelper } from '@app/helpers/swagger.helper';
+import { MongoErrorsFilter } from '@filters/mongo-errors.filter';
+import { SwaggerHelper } from '@helpers/swagger.helper';
 
 import { PREFIX, PUBLIC_FOLDER } from '@app/constants/routes.constants';
 

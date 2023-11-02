@@ -1,7 +1,7 @@
 import { INestApplication, Injectable } from '@nestjs/common';
 import * as trpcExpress from '@trpc/server/adapters/express';
 
-import { IPaginationAnswer } from '@app/shared/interfaces/pagination-answer.interface';
+import { IPaginationAnswer } from '@shared/interfaces/pagination-answer.interface';
 import { z } from 'zod';
 
 import { ArticlesService } from '@domain/articles/articles.service';
