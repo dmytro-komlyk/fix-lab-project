@@ -34,8 +34,8 @@ jobs:
         if: contains(github.event.pull_request.labels.*.name, 'backend')
         uses: docker/build-push-action@v4
         with:
-          context: ./server
           target: production
+          file: ./docker/Dockerfile.server
           secrets: |
             MONGO_DB_AUTH_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
             MONGO_DB_AUTH_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
@@ -49,8 +49,8 @@ jobs:
         if: contains(github.event.pull_request.labels.*.name, 'frontend-client')
         uses: docker/build-push-action@v4
         with:
-          context: ./client
           target: production
+          file: ./docker/Dockerfile.client
           push: true
           tags: |
             ghcr.io/iryna-gry/prod-fixlab-client:latest
@@ -59,8 +59,8 @@ jobs:
         if: contains(github.event.pull_request.labels.*.name, 'frontend-admin')
         uses: docker/build-push-action@v4
         with:
-          context: ./admin
           target: production
+          file: ./docker/Dockerfile.admin
           push: true
           tags: |
             ghcr.io/iryna-gry/prod-fixlab-admin:latest
