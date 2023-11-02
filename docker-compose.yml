@@ -36,9 +36,8 @@ services:
 
   admin:
     build:
-      context: ./admin
       target: production
-      dockerfile: Dockerfile
+      dockerfile: ./docker/Dockerfile.admin
     container_name: admin
     restart: unless-stopped
     env_file: ./admin/.env
@@ -51,15 +50,13 @@ services:
 
   client:
     build:
-      context: ./client
       target: production
-      dockerfile: Dockerfile
+      dockerfile: ./docker/Dockerfile.client
     container_name: client
     restart: unless-stopped
     env_file: ./client/.env
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_SERVER_API_KEY=
     ports:
       - "30001:3001"
     networks:
@@ -67,9 +64,8 @@ services:
 
   server:
     build:
-      context: ./server
       target: production
-      dockerfile: Dockerfile
+      dockerfile: ./docker/Dockerfile.server
     container_name: server
     restart: unless-stopped
     env_file: ./server/.env
@@ -78,6 +74,7 @@ services:
       - MONGO_DB_LINK=mongodb://mongo:27017
       - MONGO_DB_AUTH_USERNAME=
       - MONGO_DB_AUTH_PASSWORD=
+      - MONGO_DB_NAME=
       - SECRET=
       - D_ADMIN_KEY=
     volumes:

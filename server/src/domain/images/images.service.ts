@@ -14,7 +14,7 @@ export class ImagesService {
     return await this.imageModel.find();
   }
 
-  public async findAllByType({ type }): Promise<Image[]> {
+  public async findAllByType({ type }: { type: string }): Promise<Image[]> {
     return await this.imageModel.find({ type });
   }
 

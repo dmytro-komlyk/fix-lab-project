@@ -1,16 +1,20 @@
 # Build Stage
-FROM node:18-alpine AS runner
+FROM node:latest AS runner
+WORKDIR /app
+COPY tsconfig*.json ./
+
 WORKDIR /app/client
-COPY package*.json ./
-COPY .env.example ./.env
+COPY client/package*.json ./
+COPY client/tsconfig*.json ./
+COPY client/.env.example ./.env
 RUN npm ci
 
-COPY . .
+COPY client .
 
 RUN npm run build
 
 # Production Stage
-FROM node:18-alpine AS production
+FROM node:latest AS production
 WORKDIR /app/client
 
 # Copy artifacts from the "runner" stage

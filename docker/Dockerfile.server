@@ -1,0 +1,29 @@
+FROM node:18-alpine AS runner
+WORKDIR /app
+COPY tsconfig*.json ./
+
+WORKDIR /app/server
+COPY server/package*.json ./
+COPY server/tsconfig*.json ./
+COPY server/.env.example ./.env
+RUN npm install
+
+COPY server .
+
+RUN npm run build
+
+FROM node:18-alpine as production
+WORKDIR /app/server
+ENV NODE_ENV=production
+# COPY server/package*.json ./
+# COPY server/tsconfig*.json ./
+# COPY server/.env.example ./.env
+# RUN npm install
+# COPY server .
+COPY --from=runner /app/server/package*.json ./
+COPY --from=runner /app/server/dist ./dist
+COPY --from=runner /app/server/node_modules ./node_modules
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start:prod"]

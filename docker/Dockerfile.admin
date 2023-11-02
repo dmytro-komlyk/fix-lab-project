@@ -1,13 +1,19 @@
-FROM node:18-alpine as runner
+FROM node:latest as runner
+WORKDIR /app
+COPY tsconfig*.json ./
+
 WORKDIR /app/admin
-COPY package*.json ./
-COPY .env.example ./.env
+COPY admin/package*.json ./
+COPY admin/tsconfig*.json ./
+COPY admin/.env.example ./.env
 RUN npm install
-COPY . .
+
+COPY admin .
+
 RUN npm run build
 
 # Production Stage
-FROM node:18-alpine as production
+FROM node:latest as production
 WORKDIR /app/admin
 COPY --from=runner /app/admin/next.config.js ./
 COPY --from=runner /app/admin/out ./out
