@@ -5,9 +5,8 @@ import {
   CallCourierSection,
   ColaborationSection,
 } from '@/app/(layouts)'
-import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
-import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
 
+import { trpc } from '@/app/trpc'
 import SingleGadgetSection from '../(components)/SingleGadgetSection'
 
 interface IndexProps {
@@ -17,8 +16,11 @@ interface IndexProps {
 }
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const singleGadgetData = await getSingleGadgetData(params.gadget)
-  const contactsData = await getAllContactsData()
+  // const singleGadgetData = await getSingleGadgetData(params.gadget)
+  // const contactsData = await getAllContactsData()
+
+  const singleGadgetData = await trpc.getGadgetBySlugQuery.query({slug: params.gadget})
+  const contactsData = await trpc.getContactsQuery.query()
   return (
     <main className='flex-auto'>
       <SingleGadgetSection

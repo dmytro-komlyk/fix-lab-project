@@ -5,7 +5,7 @@ import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
 
 import TawkChat from './(components)/TawkChat'
 import { Footer, Header } from './(layouts)'
-import { getAllContactsData } from './(server)/api/service/modules/contactService'
+import { trpc } from './trpc'
 
 const inter = Inter({
   weight: ['300', '400', '700', '500', '600'],
@@ -42,7 +42,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const contactsData = await getAllContactsData()
+  // const contactsData = await getAllContactsData()
+  const contactsData = await trpc.getContactsQuery.query()
   return (
     <html
       lang='uk'

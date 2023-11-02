@@ -21,6 +21,8 @@
   "dependencies": {
     "@tawk.to/tawk-messenger-react": "^2.0.2",
     "@tinymce/tinymce-react": "^4.3.0",
+    "@trpc/client": "^10.43.1",
+    "@trpc/server": "^10.43.1",
     "aos": "^2.3.4",
     "axios": "^1.4.0",
     "formik": "^2.4.2",

@@ -5,12 +5,13 @@ import {
   ColaborationSection,
   HeroSection,
 } from './(layouts)'
-import { getAllContactsData } from './(server)/api/service/modules/contactService'
-import { getAllGadgetsData } from './(server)/api/service/modules/gadgetService'
+import { trpc } from './trpc'
 
 export default async function Home() {
-  const gadgetsData = await getAllGadgetsData()
-  const contactsData = await getAllContactsData()
+  // const gadgetsData = await getAllGadgetsData()
+  // const contactsData = await getAllContactsData()
+    const gadgetsData = await trpc.getGadgetsQuery.query()
+  const contactsData = await trpc.getContactsQuery.query()
   return (
     <main className='relative flex-auto'>
       <HeroSection />
