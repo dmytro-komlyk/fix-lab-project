@@ -11,7 +11,7 @@ import { AppModule } from '@domain/app.module';
 import { MongoErrorsFilter } from '@filters/mongo-errors.filter';
 import { SwaggerHelper } from '@helpers/swagger.helper';
 
-import { PREFIX, PUBLIC_FOLDER } from '@app/constants/routes.constants';
+import { PREFIX, PUBLIC_FOLDER } from '@server/constants/routes.constants';
 
 (async (): Promise<void> => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);

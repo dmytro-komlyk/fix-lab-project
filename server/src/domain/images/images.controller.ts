@@ -25,7 +25,7 @@ import { FileStorageHelper } from '@helpers/file-storage.helper';
 
 import { AddImageDto } from './dto/add-image.dto';
 
-import { ROUTES } from '@app/constants/routes.constants';
+import { ROUTES } from '@server/constants/routes.constants';
 
 @ApiTags(ROUTES.images)
 @Controller(ROUTES.images)

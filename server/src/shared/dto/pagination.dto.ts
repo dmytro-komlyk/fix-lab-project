@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsIn, IsNumber, IsOptional, Min } from 'class-validator';
 
-import { SORTING } from '@app/constants/sort.constants';
+import { SORTING } from '@server/constants/sort.constants';
 
 export class PaginationDto {
   @ApiProperty({ example: 2 })

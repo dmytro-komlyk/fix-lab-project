@@ -1,12 +1,12 @@
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-import { PREFIX } from '@app/constants/routes.constants';
+import { PREFIX } from '@server/constants/routes.constants';
 import {
   SWAGGER_DESCRIPTION,
   SWAGGER_TITLE,
   SWAGGER_VERSION
-} from '@app/constants/swagger.constants';
+} from '@server/constants/swagger.constants';
 
 export const SwaggerHelper = (app: INestApplication): void => {
   const config = new DocumentBuilder()

@@ -16,7 +16,7 @@ import { IssuesModule } from './issues/issues.module';
 import { TrpcModule } from './trpc/trpc.module';
 import { UsersModule } from './users/users.module';
 
-import { STATIC_FOLDER } from '@app/constants/routes.constants';
+import { STATIC_FOLDER } from '@server/constants/routes.constants';
 
 @Module({
   imports: [

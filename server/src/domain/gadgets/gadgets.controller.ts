@@ -1,4 +1,3 @@
-import { Public } from '@app/decorators/public.decorator';
 import {
   Body,
   Controller,
@@ -11,6 +10,7 @@ import {
   Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Public } from '@server/decorators/public.decorator';
 import { Response } from 'express';
 
 import { ISuccessDelete } from '@shared/interfaces/success-delete.interface';
@@ -22,7 +22,7 @@ import { Gadget } from './schemas/gadget.schema';
 import { CreateGadgetDto } from './dto/create-gadget.dto';
 import { UpdateGadgetDto } from './dto/update-gadget.dto';
 
-import { ROUTES } from '@app/constants/routes.constants';
+import { ROUTES } from '@server/constants/routes.constants';
 
 @ApiTags(ROUTES.gadgets)
 @Controller(ROUTES.gadgets)

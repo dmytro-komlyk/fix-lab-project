@@ -37,12 +37,6 @@
     "isolatedModules": true,
     "incremental": true,
 
-    "paths": {
-      "@/*": ["./client/*"],
-      "@/public/*": ["./client/public/*"],
-      "@server/*": ["./server/src/*"],
-      "@trpc/*": ["./server/src/domain/trpc/*"]
-    },
     "plugins": [
       {
         "name": "next"

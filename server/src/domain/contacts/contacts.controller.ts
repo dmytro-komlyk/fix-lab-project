@@ -1,4 +1,3 @@
-import { Public } from '@app/decorators/public.decorator';
 import {
   Body,
   Controller,
@@ -10,6 +9,7 @@ import {
   Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Public } from '@server/decorators/public.decorator';
 import { Response } from 'express';
 
 import { ISuccessDelete } from '@shared/interfaces/success-delete.interface';
@@ -21,7 +21,7 @@ import { Contact } from './schemas/contact.schema';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 
-import { ROUTES } from '@app/constants/routes.constants';
+import { ROUTES } from '@server/constants/routes.constants';
 
 @ApiTags(ROUTES.contacts)
 @Controller(ROUTES.contacts)

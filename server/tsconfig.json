@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
     "strict": false,
@@ -9,14 +9,6 @@
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
     "sourceMap": true,
-    "outDir": "./dist",
-    "paths": {
-      "*": ["./server/*"],
-      "@app/*": ["./server/src/*"],
-      "@domain/*": ["./server/src/domain/*"],
-      "@shared/*": ["./server/src/shared/*"],
-      "@filters/*": ["./server/src/filters/*"],
-      "@helpers/*": ["./server/src/helpers/*"]
-    }
+    "outDir": "./dist"
   }
 }
