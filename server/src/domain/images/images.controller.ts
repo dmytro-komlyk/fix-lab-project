@@ -15,13 +15,13 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { ISuccessDelete } from '@app/shared/interfaces/success-delete.interface';
+import { ISuccessDelete } from '@shared/interfaces/success-delete.interface';
 
 import { ImagesService } from './images.service';
 
 import { Image } from './schemas/image.schema';
 
-import { FileStorageHelper } from '@app/helpers/file-storage.helper';
+import { FileStorageHelper } from '@helpers/file-storage.helper';
 
 import { AddImageDto } from './dto/add-image.dto';
 

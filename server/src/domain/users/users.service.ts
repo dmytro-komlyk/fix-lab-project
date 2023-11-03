@@ -10,7 +10,7 @@ import { Model, Types } from 'mongoose';
 
 import { User } from './schemas/user.schema';
 
-import { PasswordEncryptHelper } from '@app/helpers/password-encrypt.helper';
+import { PasswordEncryptHelper } from '@helpers/password-encrypt.helper';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';

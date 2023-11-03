@@ -1,3 +1,4 @@
+import { Public } from '@app/decorators/public.decorator';
 import {
   Body,
   Controller,
@@ -11,18 +12,17 @@ import {
   Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Public } from '@app/decorators/public.decorator';
 import { Response } from 'express';
 
-import { ISuccessDelete } from '@app/shared/interfaces/success-delete.interface';
+import { ISuccessDelete } from '@shared/interfaces/success-delete.interface';
 
 import { ArticlesService } from './articles.service';
 
 import { Article } from './schemas/article.schema';
 
+import { PaginationDto } from '@shared/dto/pagination.dto';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { PaginationDto } from '@app/shared/dto/pagination.dto';
 
 import { ROUTES } from '@app/constants/routes.constants';
 

@@ -9,8 +9,8 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import { BrandsController } from './brands.controller';
 import { BrandsService } from './brands.service';
 
+import { Image, ImageSchema } from '@domain/images/schemas/image.schema';
 import { Brand, BrandSchema } from './schemas/brand.schema';
-import { Image, ImageSchema } from '@app/domain/images/schemas/image.schema';
 
 import { BrandStubDto } from './dto/brand-stub.dto';
 
