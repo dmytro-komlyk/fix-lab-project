@@ -5,13 +5,14 @@ import {
   ColaborationSection,
   HeroSection,
 } from './(layouts)'
+import { IContact } from './(server)/api/service/modules/contactService'
+import { IGadget } from './(server)/api/service/modules/gadgetService'
 import { trpc } from './trpc'
 
 export default async function Home() {
   // const gadgetsData = await getAllGadgetsData()
   // const contactsData = await getAllContactsData()
-  const gadgetsData = await trpc.getGadgetsQuery.query()
-  const contactsData = await trpc.getContactsQuery.query()
+  const gadgetsData = await trpc.getGadgetsQuery.query() as IGadget[]
 
   return (
     <main className='relative flex-auto'>
