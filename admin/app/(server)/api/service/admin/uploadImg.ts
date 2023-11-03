@@ -1,5 +1,6 @@
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
+import { getSession } from 'next-auth/react'
 
 interface UploadFileParams {
   fileInput: File
@@ -9,10 +10,16 @@ interface UploadFileParams {
 
 const uploadImg = async ({ fileInput, alt, type }: UploadFileParams) => {
   const url = `http://95.217.34.212:30000/api/images/upload-${type}`
+  const session = await getSession()
+
+  if (session?.user.token === undefined) {
+    throw new Error('Headers are undefined')
+  }
+
   const config: AxiosRequestConfig = {
     headers: {
       'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTAyZGFiNDVkZGY4ZjJiMDY1YzQwMjEiLCJsb2dpbiI6ImFkbWluIiwiaWF0IjoxNjk0Njg1OTQ0fQ.I0LLv5ihAY4OxR-h4RDfboVEO08pHrr3uUilr91poek`,
+      Authorization: `Bearer ${session.user.token}`,
     },
   }
 

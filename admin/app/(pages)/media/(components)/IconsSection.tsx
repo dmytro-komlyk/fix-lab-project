@@ -44,12 +44,11 @@ const IconsSection: React.FC<IIconsProps> = ({ iconsData }) => {
               height={240}
             />
             <p>{item.alt}</p>
-            <button type='button' onClick={() => handleDeleteIcon(item._id)}>
-              <MdDelete
-                size={25}
-                className='absolute right-3 top-3 transition-colors hover:fill-[red] focus:fill-[red]'
-              />
-            </button>
+            <MdDelete
+              onClick={() => handleDeleteIcon(item._id)}
+              size={25}
+              className='absolute right-3 top-3 transition-colors hover:fill-[red] focus:fill-[red]'
+            />
           </li>
         ))}
       </ul>

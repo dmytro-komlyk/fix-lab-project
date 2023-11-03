@@ -4,13 +4,13 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
+import { HiLockClosed } from 'react-icons/hi'
 
 const Dashboard = () => {
   const session = useSession()
-
   return (
     <div className='fixed left-0 flex h-[100vh] w-[400px] shrink flex-col justify-between  bg-[#09338F] pt-12'>
-      <div className='relative ml-8 flex flex-col'>
+      <div className='relative ml-8 mr-2 flex flex-col'>
         <Link
           href='/'
           className='mb-8 flex transition-opacity hover:opacity-80  focus:opacity-80'
@@ -24,7 +24,7 @@ const Dashboard = () => {
             priority
           />
         </Link>
-        {session.data && (
+        {session.data?.user.name && (
           <AnimatePresence>
             <motion.ul
               initial={{ opacity: 0, translateX: -300 }}
@@ -42,75 +42,88 @@ const Dashboard = () => {
             >
               <li>
                 <Link
-                  href='/gadgets'
-                  className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
-                >
-                  Гаджети
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href='/issues'
-                  className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
-                >
-                  Послуги
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href='/benefits'
-                  className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
-                >
-                  Послуги сервісного обслуговування
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href='/brands'
-                  className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
-                >
-                  Бренди
-                </Link>
-              </li>
-              <li>
-                <Link
                   href='/articles'
-                  className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
+                  className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
                 >
                   Блог
                 </Link>
               </li>
               <li>
                 <Link
-                  href='/contacts'
-                  className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
+                  href='/gadgets'
+                  className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
+                >
+                  Гаджети
+                </Link>
+              </li>
+              <li className='flex items-center justify-between gap-2 opacity-70'>
+                <Link
+                  href='/issues'
+                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
+                >
+                  Послуги
+                </Link>
+                <HiLockClosed size={30} color='#fff' />
+              </li>
+              <li className='flex items-center justify-between gap-2 opacity-70'>
+                <Link
+                  href='/#'
+                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
+                >
+                  Послуги сер/обс
+                </Link>
+                <HiLockClosed size={30} color='#fff' />
+              </li>
+              <li className='flex items-center justify-between gap-2 opacity-70'>
+                <Link
+                  href='/#'
+                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
+                >
+                  Бренди
+                </Link>
+                <HiLockClosed size={30} color='#fff' />
+              </li>
+
+              <li className='flex items-center justify-between gap-2 opacity-70'>
+                <Link
+                  href='/#'
+                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Контакти
                 </Link>
+                <HiLockClosed size={30} color='#fff' />
               </li>
-              <li>
+              <li className='flex items-center justify-between gap-2 opacity-70'>
                 <Link
-                  href='/media'
-                  className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
+                  href='/#'
+                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Медіа
                 </Link>
+                <HiLockClosed size={30} color='#fff' />
               </li>
             </motion.ul>
           </AnimatePresence>
         )}
       </div>
-      {!session.data && (
-        <Link
-          href='/signin'
-          className='m m-4 justify-center rounded-2xl bg-mid-green p-2 text-center font-exo_2 text-2xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
-        >
-          Логін
-        </Link>
-      )}
-      {session.data && (
+      {!session.data?.user.name ? (
+        <div className='m-4 flex flex-col gap-4'>
+          <Link
+            href='/authentication/signin'
+            className='m  justify-center rounded-2xl bg-mid-green p-2 text-center font-exo_2 text-2xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
+          >
+            Логін
+          </Link>
+          <Link
+            href='/authentication/signup'
+            className='m  justify-center rounded-2xl bg-mid-green p-2 text-center font-exo_2 text-2xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
+          >
+            Реєстрація
+          </Link>
+        </div>
+      ) : (
         <button
-          type='submit'
+          type='button'
           onClick={() => signOut({ callbackUrl: '/' })}
           className='m m-4 justify-center rounded-2xl bg-mid-green p-2 text-center font-exo_2 text-2xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
         >

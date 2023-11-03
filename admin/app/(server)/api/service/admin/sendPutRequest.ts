@@ -1,5 +1,6 @@
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
+import { getSession } from 'next-auth/react'
 
 interface ApiResponse {
   data(data: any): unknown
@@ -10,10 +11,16 @@ export const sendPutRequest = async (
   endpoint: string,
   data: any,
 ): Promise<ApiResponse> => {
+  const session = await getSession()
+
+  if (session?.user.token === undefined) {
+    throw new Error('Headers are undefined')
+  }
+
   const config: AxiosRequestConfig = {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTFmMTNiZDQ4ZDUxZGY2OTMxY2QxMjYiLCJsb2dpbiI6ImFkbWluMSIsImlhdCI6MTY5NzcyMDk0N30.k84ARQO5rlKDtJPLmzTJoRRsTKnVxbLiXFQjE0A6Rgo`,
+      Authorization: `Bearer ${session.user.token}`,
     },
   }
 
