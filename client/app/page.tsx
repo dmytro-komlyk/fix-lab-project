@@ -13,6 +13,7 @@ export default async function Home() {
   // const gadgetsData = await getAllGadgetsData()
   // const contactsData = await getAllContactsData()
   const gadgetsData = await trpc.getGadgetsQuery.query() as IGadget[]
+  const contactsData = await trpc.getContactsQuery.query() as IContact[]
 
   return (
     <main className='relative flex-auto'>
