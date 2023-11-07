@@ -86,7 +86,7 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
                 className='keen-slider__slide max-w-[77px] p-[14px]'
               >
                 <Link
-                  className='flex h-[77px] max-w-[77px] items-center  justify-center rounded-[50%] bg-white-dis transition-all hover:shadow-brandLight focus:shadow-brandLight  xl:min-w-[77px]'
+                  className='bg-white-dis hover:shadow-brandLight focus:shadow-brandLight flex  h-[77px] max-w-[77px] items-center justify-center rounded-[50%] transition-all  xl:min-w-[77px]'
                   href={`/repair/${gadgetData?.slug}/brands/${item.slug}`}
                 >
                   {item.icon && (
@@ -107,12 +107,12 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
       {loaded && instanceRef && (
         <div className='relative mt-8'>
           <div
-            className='absolute left-0 top-[-14px] z-10 h-[4px] rounded-full bg-white-dis transition-width'
+            className='bg-white-dis transition-width absolute left-0 top-[-14px] z-10 h-[4px] rounded-full'
             style={{
               width: `${(100 / filled) * currentSlide}%`,
             }}
           />
-          <div className='absolute left-0 top-[-14px] h-[4px] w-full rounded-full bg-white-dis/50' />
+          <div className='bg-white-dis/50 absolute left-0 top-[-14px] h-[4px] w-full rounded-full' />
         </div>
       )}
     </>

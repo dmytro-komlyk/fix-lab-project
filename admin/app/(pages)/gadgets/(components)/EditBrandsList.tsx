@@ -192,15 +192,11 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
                   {item?.title || 'No title'}
                 </p>
               </div>
-              <button
-                type='button'
+              <IoMdAddCircle
                 onClick={() => handleAddBrandItemClick(item)}
-              >
-                <IoMdAddCircle
-                  className='mr-4 cursor-pointer text-dark-blue  transition-colors hover:text-mid-green focus:text-mid-green'
-                  size={35}
-                />
-              </button>
+                className='mr-4 cursor-pointer text-dark-blue  transition-colors hover:text-mid-green focus:text-mid-green'
+                size={35}
+              />
             </li>
           ))}
         </ul>

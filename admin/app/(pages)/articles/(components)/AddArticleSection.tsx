@@ -160,7 +160,6 @@ const AddArticleSection = () => {
       }
     }
   }
-  console.log(selectedImage)
   const handleImageUpload = async () => {
     try {
       if (selectedImage) {
@@ -249,6 +248,7 @@ const AddArticleSection = () => {
                   <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                     Seo title
                     <input
+                      required
                       className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                       type='text'
                       name='title'
@@ -259,6 +259,7 @@ const AddArticleSection = () => {
                   <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                     Seo description
                     <input
+                      required
                       className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                       type='text'
                       name='description'
@@ -271,6 +272,7 @@ const AddArticleSection = () => {
                   <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                     Seo keywords
                     <input
+                      required
                       className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                       type='text'
                       name='keywords'

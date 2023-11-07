@@ -1,13 +1,16 @@
 'use client'
 
+import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import { signIn, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import type { FormEventHandler } from 'react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { ThreeCircles } from 'react-loader-spinner'
 
-const SignIn = () => {
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
+const SignUp = () => {
   const [loading, setLoading] = useState(false)
   const session = useSession()
   const router = useRouter()
@@ -18,21 +21,23 @@ const SignIn = () => {
 
     try {
       const formData = new FormData(event.currentTarget)
-      const res = await signIn('credentials', {
+      const res = await axios.post(`${apiUrl}/users`, {
+        name: formData.get('name'),
         login: formData.get('login'),
+        email: formData.get('email'),
         password: formData.get('password'),
-        redirect: false,
+        isActive: true,
       })
 
-      if (res && !res.error) {
-        toast.success(`Вітаємо в FixLab Admin Panel!`, {
+      if (res.status === 201) {
+        toast.success(`Адміна успішно зареєстровано!`, {
           style: {
             borderRadius: '10px',
             background: 'grey',
             color: '#fff',
           },
         })
-        router.push('/gadgets')
+        router.push('/auth/signin')
       } else {
         toast.error(
           `Помилка авторизації!!! Перевірте дані логіну чи паролю...`,
@@ -67,7 +72,7 @@ const SignIn = () => {
     !session.data && (
       <div className='flex flex-col items-center justify-center '>
         <h3 className='mb-8 text-center font-exo_2 text-2xl font-semibold leading-[29px] text-white-dis'>
-          Логін
+          Реєстрація
         </h3>
         <form
           className='flex flex-col items-center justify-center gap-6'
@@ -76,9 +81,23 @@ const SignIn = () => {
           <input
             className='h-[58px] w-[402px] rounded-2xl px-6 py-2'
             type='text'
+            name='name'
+            required
+            placeholder="Ім'я"
+          />
+          <input
+            className='h-[58px] w-[402px] rounded-2xl px-6 py-2'
+            type='text'
             name='login'
             required
             placeholder='Логін'
+          />
+          <input
+            className='h-[58px] w-[402px] rounded-2xl px-6 py-2'
+            type='text'
+            name='email'
+            required
+            placeholder='Email'
           />
           <input
             className='h-[58px] w-[402px] rounded-2xl px-6 py-2'
@@ -108,7 +127,7 @@ const SignIn = () => {
                 />
               </div>
             ) : (
-              'Увійти'
+              'Зареєструватися'
             )}
           </button>
         </form>
@@ -117,4 +136,4 @@ const SignIn = () => {
   )
 }
 
-export default SignIn
+export default SignUp
