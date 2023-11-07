@@ -42,17 +42,13 @@ export function DraggableIssueItem({
       </p>
       <div className='flex items-center gap-2'>
         <GoGrabber className='text-dark-blue' size={35} />
-        <button
-          type='button'
+        <IoIosRemoveCircle
           onClick={() => {
             onRemove(item)
           }}
-        >
-          <IoIosRemoveCircle
-            className='mr-4 cursor-pointer text-dark-blue transition-colors hover:text-[red] focus:text-[red]'
-            size={35}
-          />
-        </button>
+          className='mr-4 cursor-pointer text-dark-blue transition-colors hover:text-[red] focus:text-[red]'
+          size={35}
+        />
       </div>
     </li>
   )

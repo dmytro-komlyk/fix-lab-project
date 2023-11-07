@@ -89,7 +89,6 @@ export const BrandsSlider: React.FC<BrandsSliderProps> = ({
               className='keen-slider flex overflow-x-hidden '
             >
               {gadgetData.brands.map(item => {
-                const { alt, src } = item.icon
                 const selectedTabClass =
                   brandData?.slug === item.slug || isBrandsPage === 'brands'
                     ? ' bg-dark-grey flex  h-[128px]  max-w-[128px]  items-center justify-center rounded-[50%] shadow-brand'
@@ -105,10 +104,10 @@ export const BrandsSlider: React.FC<BrandsSliderProps> = ({
                       className={selectedTabClass}
                       href={`/repair/${gadgetData?.slug}/brands/${item.slug}`}
                     >
-                      {src && (
+                      {item.icon && (
                         <Image
-                          src={src}
-                          alt={alt}
+                          src={item.icon.src}
+                          alt={item.icon.alt}
                           width={0}
                           height={0}
                           className='h-[92px] w-[75px]'
@@ -124,7 +123,7 @@ export const BrandsSlider: React.FC<BrandsSliderProps> = ({
           {loaded && instanceRef && (
             <div className='relative w-full'>
               <div
-                className='absolute left-0 top-[-2px] z-10 h-[4px] rounded-full bg-mid-grey transition-width'
+                className='bg-mid-grey transition-width absolute left-0 top-[-2px] z-10 h-[4px] rounded-full'
                 style={{
                   width: `${(100 / filled) * currentSlide}%`,
                 }}

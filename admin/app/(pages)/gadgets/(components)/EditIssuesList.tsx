@@ -181,17 +181,13 @@ const EditIssuesList: React.FC<IIssuesProps> = ({
               <p className='p-4 font-exo_2 text-md font-semibold text-dark-blue max-md:text-lg'>
                 {item?.title || 'No title'}
               </p>
-              <button
-                type='button'
+              <IoMdAddCircle
                 onClick={() => {
                   handleAddIssueItemClick(item)
                 }}
-              >
-                <IoMdAddCircle
-                  className='mr-4 cursor-pointer text-dark-blue  transition-colors hover:text-mid-green focus:text-mid-green'
-                  size={35}
-                />
-              </button>
+                className='mr-4 cursor-pointer text-dark-blue  transition-colors hover:text-mid-green focus:text-mid-green'
+                size={35}
+              />
             </li>
           ))}
         </ul>

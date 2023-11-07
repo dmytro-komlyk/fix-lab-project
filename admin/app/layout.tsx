@@ -36,8 +36,7 @@ export const metadata: Metadata = {
   title: 'FixLab - ремонт твоєї техніки',
   description: 'FixLab - мережа студій ремонту твоєї техніки',
 }
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
@@ -48,8 +47,8 @@ export default function RootLayout({
       className={`${inter.variable} ${manrope.variable} ${exo2.variable} ${gugi.variable} h-full`}
     >
       <body className='h-[100vh]'>
+        <Toaster />
         <Providers>
-          <Toaster />
           <div className='flex'>
             <Dashboard />
             <div className='h-[100vh] w-full pl-[400px]'>{children}</div>

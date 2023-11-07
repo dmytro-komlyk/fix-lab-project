@@ -104,7 +104,7 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
         await sendPutRequest(`/articles/${newArticleData._id}`, {
           ...newArticleData,
           image: articleData.image._id || '',
-          article: newArticle,
+          text: newArticle,
         })
         toast.success(`Оновлення збережено!`, {
           style: {
@@ -114,6 +114,7 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
           },
         })
       }
+      router.refresh()
       clearState()
     } catch (error) {
       console.error('Error:', error)
