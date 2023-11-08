@@ -119,6 +119,7 @@ const CourierModal: React.FC<CourierModalProps> = ({
           className='relative max-w-[414px] flex-col items-center justify-center rounded-2xl bg-[#00cc73] p-[50px] max-md:px-[30px] max-sm:px-4'
         >
           <button
+            aria-label='Відкрити модалку викликати курєра'
             type='button'
             className=' white-dis-700 absolute right-[13px] top-[14px] text-center'
             onClick={toggleCourierModal}

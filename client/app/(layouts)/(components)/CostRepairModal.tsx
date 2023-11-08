@@ -122,6 +122,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
           className='relative max-w-[414px]  flex-col items-center justify-start rounded-2xl bg-[#00cc73] px-14 py-12 max-md:px-[30px] max-sm:px-4'
         >
           <button
+            aria-label='Відкрити модалку розрахувати вартість'
             type='button'
             className=' white-dis-700 absolute right-[13px] top-[14px] text-center'
             onClick={toggleCostRepairModal}

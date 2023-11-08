@@ -1,4 +1,5 @@
 import fetchDataFromServer from '../helpers/fetchDataFromServer'
+import fetchServerSide from '../helpers/fetchServerSide'
 
 export interface IPost {
   _id: string
@@ -28,12 +29,16 @@ export interface IBlog {
   rangeEnd: number
 }
 
-export const getAllPosts = async (): Promise<IBlog> => {
-  const endpoint = `/articles`
-  return fetchDataFromServer(endpoint)
+export const getAllPosts = async ({
+  currentPage,
+}: {
+  currentPage: number
+}): Promise<IBlog> => {
+  const endpoint = `/articles?page=${currentPage}&limit=9&sort=desc`
+  return fetchServerSide(endpoint)
 }
 
-export const getSinglePost = async (slug: string): Promise<IBlog> => {
+export const getSinglePost = async (slug: string): Promise<IPost> => {
   const endpoint = `/articles/find-by-slug/${slug}`
   return fetchDataFromServer(endpoint)
 }
