@@ -123,7 +123,7 @@ export const BrandsSlider: React.FC<BrandsSliderProps> = ({
           {loaded && instanceRef && (
             <div className='relative w-full'>
               <div
-                className='bg-mid-grey transition-width absolute left-0 top-[-2px] z-10 h-[4px] rounded-full'
+                className='absolute left-0 top-[-2px] z-10 h-[4px] rounded-full bg-mid-grey transition-width'
                 style={{
                   width: `${(100 / filled) * currentSlide}%`,
                 }}
