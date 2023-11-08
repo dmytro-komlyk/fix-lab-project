@@ -3,7 +3,6 @@ import { getAllContactsData } from '@/app/(server)/api/service/modules/contactSe
 
 import SingleArticlePage from '../(components)/SingleArticlePage'
 
-export const runtime = 'edge' // 'nodejs' (default) | 'edge'
 interface BlogProps {
   params: {
     article: string

@@ -1,8 +1,6 @@
-import { getAllPosts } from '@/app/(server)/api/service/modules/articlesService' // 'nodejs' (default) | 'edge'
+import { getAllPosts } from '@/app/(server)/api/service/modules/articlesService'
 
 import MainBlogSection from './(components)/MainBlogSection'
-
-export const runtime = 'edge'
 
 export default async function Blog({
   searchParams: { page },
