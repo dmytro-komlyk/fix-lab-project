@@ -75,8 +75,8 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
 
   const handleSubmit = async (values: MyFormValues) => {
     try {
-      const TOKEN = '5560792411:AAErGG70RTKBdZklSlOT_TdJTMUROf_8rYU'
-      const CHAT_ID = '-1001952047976'
+      const TOKEN = '6885833498:AAFGobowRzxbtdyFjqORjMKMDQPSdPSCA1c'
+      const CHAT_ID = '-1006885833498'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
       let message = `<b>Скільки коштуватиме ремонт?</b>\n`

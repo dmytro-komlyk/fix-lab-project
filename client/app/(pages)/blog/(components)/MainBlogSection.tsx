@@ -1,15 +1,14 @@
 'use client'
 
+import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import {
-  getAllPosts,
-  type IBlog,
-} from '@/app/(server)/api/service/modules/articlesService'
+import type { IBlog } from '@/app/(server)/api/service/modules/articlesService'
+import { getAllPostsSSR } from '@/app/(server)/api/service/modules/articlesService'
 
 import PaginationControls from './PaginationControls'
 
@@ -31,7 +30,7 @@ const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getAllPosts({ currentPage })
+        const res = await getAllPostsSSR({ currentPage })
         setArticles([...res.items])
       } catch (error) {
         throw new Error('Error fetching data')
@@ -44,7 +43,7 @@ const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
 
   return (
     <section className='overflow-hidden bg-gradient-linear-blue'>
-      <div className='container flex flex-col gap-14 pb-[70px] pt-[158px] max-lg:pb-[50px] lg:px-0'>
+      <div className='container flex flex-col gap-7 pb-[70px] pt-[158px] max-lg:pb-[50px] lg:px-0'>
         <div className='flex flex-wrap items-center gap-1'>
           <Link
             className='flex items-center text-base font-[400] text-mid-blue transition-opacity  hover:opacity-70 focus:opacity-70'
@@ -62,37 +61,47 @@ const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
           </Link>
         </div>
         <h2 className='font-exo_2 text-2xl font-bold text-white-dis'>Блог</h2>
-        <div className='flex flex-wrap justify-center gap-6 space-x-0'>
-          {articles.map(post => {
-            return (
-              <Link key={post._id} href={`/blog/${post.slug}`}>
-                <div className='flex max-h-[500px] max-w-[410px] flex-col rounded-2xl bg-blue-crayola'>
-                  <Image
-                    className='h-[275px] rounded-t-2xl object-cover'
-                    src={post.image.src}
-                    width={410}
-                    height={275}
-                    alt={post.image.alt}
-                  />
-                  <div className='flex flex-col gap-4 p-6'>
-                    <h2 className='font-exo_2 text-xl font-semibold'>
-                      {post.title}
-                    </h2>
-                    <p className='line-clamp-3 text-ellipsis text-base font-normal'>
-                      {post.preview}
-                    </p>
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { duration: 0.3 } }}
+            exit={{ opacity: 0, transition: { duration: 0.3 } }}
+            className='flex flex-wrap justify-center gap-6 space-x-0 lg:gap-y-14'
+          >
+            {articles.map(post => {
+              return (
+                <Link key={post._id} href={`/blog/${post.slug}`}>
+                  <div className='flex max-h-[515px] max-w-[410px] flex-col rounded-2xl bg-blue-crayola transition-transform duration-300 hover:scale-[1.03]  focus:scale-[1.03] xl:w-[410px]'>
+                    <Image
+                      className='h-[278px] rounded-t-2xl object-cover'
+                      src={post.image.src}
+                      width={410}
+                      height={278}
+                      alt={post.image.alt}
+                    />
+                    <div className='flex flex-col gap-4 p-6'>
+                      <h2 className='line-clamp-3 font-exo_2 text-xl font-semibold'>
+                        {post.title}
+                      </h2>
+                      <p className='relative  line-clamp-4 text-ellipsis text-base font-normal'>
+                        <span className='absolute bottom-0 z-10 h-[245px] w-full bg-card-blog' />
+                        {post.preview}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
-        <div className='flex flex-col items-center gap-2'>
-          <PaginationControls
-            currentPage={currentPage}
-            totalPages={postsData.totalPages}
-          />
-        </div>
+                </Link>
+              )
+            })}
+          </motion.div>
+        </AnimatePresence>
+        {postsData.totalPages > 1 && (
+          <div className='flex flex-col items-center gap-2'>
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={postsData.totalPages}
+            />
+          </div>
+        )}
       </div>
     </section>
   )
