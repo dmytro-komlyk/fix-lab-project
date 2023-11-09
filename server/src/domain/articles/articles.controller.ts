@@ -11,20 +11,20 @@ import {
   Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Public } from 'decorators/public.decorator';
+import { Public } from '@server/decorators/public.decorator';
 import { Response } from 'express';
 
-import { ISuccessDelete } from 'shared/interfaces/success-delete.interface';
+import { ISuccessDelete } from '@shared/interfaces/success-delete.interface';
 
 import { ArticlesService } from './articles.service';
 
 import { Article } from './schemas/article.schema';
 
+import { PaginationDto } from '@shared/dto/pagination.dto';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { PaginationDto } from 'shared/dto/pagination.dto';
 
-import { ROUTES } from 'constants/routes.constants';
+import { ROUTES } from '@server/constants/routes.constants';
 
 @ApiTags(ROUTES.articles)
 @Controller(ROUTES.articles)

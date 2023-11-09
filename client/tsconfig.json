@@ -37,10 +37,6 @@
     "isolatedModules": true,
     "incremental": true,
 
-    "paths": {
-      "@/*": ["./client/*"],
-      "@/public/*": ["./client/public/*"]
-    },
     "plugins": [
       {
         "name": "next"

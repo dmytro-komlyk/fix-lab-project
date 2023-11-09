@@ -10,10 +10,10 @@ import {
   Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Public } from 'decorators/public.decorator';
+import { Public } from '@server/decorators/public.decorator';
 import { Response } from 'express';
 
-import { ISuccessDelete } from 'shared/interfaces/success-delete.interface';
+import { ISuccessDelete } from '../../shared/interfaces/success-delete.interface';
 
 import { BrandsService } from './brands.service';
 
@@ -22,7 +22,7 @@ import { Brand } from './schemas/brand.schema';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
 
-import { ROUTES } from 'constants/routes.constants';
+import { ROUTES } from '@server/constants/routes.constants';
 
 @ApiTags(ROUTES.brands)
 @Controller(ROUTES.brands)
