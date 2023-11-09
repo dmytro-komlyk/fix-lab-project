@@ -1,9 +1,9 @@
 'use client'
 
-import Link from 'next/link'
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs'
 
 interface PaginationControlsProps {
+  handlePageChange: (page: number) => void
   currentPage: number
   totalPages: number
 }
@@ -11,6 +11,7 @@ interface PaginationControlsProps {
 const PaginationControls: React.FC<PaginationControlsProps> = ({
   currentPage,
   totalPages,
+  handlePageChange,
 }) => {
   const pageNumbers: number[] = []
 
@@ -24,32 +25,40 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   return (
     <div className='flex items-center space-x-8 lg:ml-auto'>
       {currentPage - 1 >= 1 && (
-        <Link href={`/blog?page=${currentPage - 1}`}>
+        <button
+          type='button'
+          aria-label='next'
+          onClick={() => handlePageChange(currentPage - 1)}
+        >
           <BsArrowLeftCircle size={20} color='white' />
-        </Link>
+        </button>
       )}
 
       {pageNumbers.map(page => {
         return (
-          <Link
+          <button
+            type='button'
             className={
               page === currentPage
                 ? 'text-md font-bold text-white-dis'
                 : 'text-md font-bold text-white-dis opacity-60'
             }
             key={page}
-            href={`/blog?page=${page}`}
+            onClick={() => handlePageChange(page)}
           >
-            {' '}
-            {page}{' '}
-          </Link>
+            {page}
+          </button>
         )
       })}
 
       {currentPage + 1 <= totalPages && (
-        <Link href={`/blog?page=${currentPage + 1}`}>
+        <button
+          type='button'
+          aria-label='next'
+          onClick={() => handlePageChange(currentPage + 1)}
+        >
           <BsArrowRightCircle size={20} color='white' />
-        </Link>
+        </button>
       )}
     </div>
   )
