@@ -5,7 +5,7 @@
 export default async function fetchServerSide(url: string) {
   try {
     const res = await fetch(`http://95.217.34.212:30000/api${url}`, {
-      next: { revalidate: 0 },
+      cache: 'force-cache',
     })
 
     if (!res.ok) {
