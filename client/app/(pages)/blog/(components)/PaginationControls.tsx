@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs'
 
 interface PaginationControlsProps {
@@ -13,6 +14,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   totalPages,
   handlePageChange,
 }) => {
+  const router = useRouter()
   const pageNumbers: number[] = []
 
   for (let i: number = currentPage - 1; i <= currentPage + 1; i += 1) {
@@ -28,7 +30,11 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
         <button
           type='button'
           aria-label='next'
-          onClick={() => handlePageChange(currentPage - 1)}
+          onClick={() => {
+            router.push(`/blog?page=${currentPage - 1}`)
+
+            handlePageChange(currentPage - 1)
+          }}
         >
           <BsArrowLeftCircle size={20} color='white' />
         </button>
@@ -44,7 +50,10 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
                 : 'text-md font-bold text-white-dis opacity-60'
             }
             key={page}
-            onClick={() => handlePageChange(page)}
+            onClick={() => {
+              router.push(`/blog?page=${page}`)
+              handlePageChange(page)
+            }}
           >
             {page}
           </button>
@@ -55,7 +64,10 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
         <button
           type='button'
           aria-label='next'
-          onClick={() => handlePageChange(currentPage + 1)}
+          onClick={() => {
+            router.push(`/blog?page=${currentPage + 1}`)
+            handlePageChange(currentPage + 1)
+          }}
         >
           <BsArrowRightCircle size={20} color='white' />
         </button>

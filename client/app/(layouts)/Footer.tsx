@@ -40,7 +40,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
-                href='/repair/telefon/brands/apple'
+                href='/repair/telefon/brands/apple-phone'
               >
                 Ремонт iphone
               </Link>
@@ -48,7 +48,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
-                href='/#'
+                href='/repair/telefon/brands/xiaomi-phone'
               >
                 Ремонт xiaomi
               </Link>
@@ -56,7 +56,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
-                href='/#'
+                href='/repair/telefon/brands/huawei-phone'
               >
                 Ремонт huawei
               </Link>
@@ -64,7 +64,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
-                href='/#'
+                href='/repair/telefon/brands/samsung-phone'
               >
                 Ремонт samsung
               </Link>
@@ -72,7 +72,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
-                href='/#'
+                href='/repair/noutbuk'
               >
                 Ремонт ноутбуків
               </Link>
@@ -80,7 +80,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             <li>
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
-                href='/#'
+                href='/repair/dzhojstik'
               >
                 Ремонт dualsense
               </Link>
