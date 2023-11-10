@@ -1,5 +1,5 @@
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
-import fetchServerSide from '@/app/(server)/api/service/helpers/fetchServerSide'
+import fetchDataFromServer from '@/app/(server)/api/service/helpers/fetchDataFromServer'
 import { getSingleBrandData } from '@/app/(server)/api/service/modules/brandService'
 import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
@@ -39,7 +39,7 @@ export async function generateStaticParams({
   params: { gadget: string }
 }) {
   const url = `/gadgets/find-by-slug/${params.gadget}`
-  const gadget = await fetchServerSide(url)
+  const gadget = await fetchDataFromServer(url)
   return gadget.brands.map((item: { slug: string }) => ({
     gadget: gadget.slug,
     brand: item.slug,

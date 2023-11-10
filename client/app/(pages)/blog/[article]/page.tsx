@@ -1,3 +1,4 @@
+import fetchDataFromServer from '@/app/(server)/api/service/helpers/fetchDataFromServer'
 import { getSinglePost } from '@/app/(server)/api/service/modules/articlesService'
 import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 
@@ -23,3 +24,12 @@ const Blog: React.FC<BlogProps> = async ({ params }) => {
 }
 
 export default Blog
+
+export async function generateStaticParams() {
+  const url = `/articles`
+  const articlesData = await fetchDataFromServer(url)
+
+  return articlesData.items.map((item: { slug: string }) => ({
+    article: item.slug,
+  }))
+}

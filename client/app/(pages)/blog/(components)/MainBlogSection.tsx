@@ -3,8 +3,8 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import type { IBlog } from '@/app/(server)/api/service/modules/articlesService'
@@ -18,32 +18,35 @@ interface IBlogProps {
 
 const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
   const [articles, setArticles] = useState([...postsData.items])
-  const searchParams = useSearchParams()
-
-  const currentPage =
-    typeof searchParams.get('page') === 'string'
-      ? Number(searchParams.get('page'))
-      : 1
-
+  const [currentPage, setCurrentPage] = useState(1)
+  const listRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    if (listRef.current) {
+      listRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       try {
         const res = await getAllPostsSSR({ currentPage })
-        setArticles([...res.items])
+        setArticles(res.items)
+        router.push(`/blog?page=${currentPage}`)
       } catch (error) {
-        throw new Error('Error fetching data')
+        throw new Error('Fetch error')
       }
     }
-
     fetchData()
-    router.refresh()
   }, [currentPage, router])
 
   return (
     <section className='overflow-hidden bg-gradient-linear-blue'>
-      <div className='container flex flex-col gap-7 pb-[70px] pt-[158px] max-lg:pb-[50px] lg:px-0'>
+      <div
+        ref={listRef}
+        className='container flex flex-col gap-7 pb-[70px] pt-[158px] max-lg:pb-[50px] lg:px-0'
+      >
         <div className='flex flex-wrap items-center gap-1'>
           <Link
             className='flex items-center text-base font-[400] text-mid-blue transition-opacity  hover:opacity-70 focus:opacity-70'
@@ -99,6 +102,7 @@ const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
             <PaginationControls
               currentPage={currentPage}
               totalPages={postsData.totalPages}
+              handlePageChange={handlePageChange}
             />
           </div>
         )}
