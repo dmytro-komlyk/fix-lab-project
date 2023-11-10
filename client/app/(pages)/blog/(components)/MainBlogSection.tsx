@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import type { IBlog } from '@/app/(server)/api/service/modules/articlesService'
@@ -20,27 +20,19 @@ const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const listRef = useRef<HTMLDivElement>(null)
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = async (page: number) => {
     setCurrentPage(page)
-    if (listRef.current) {
-      listRef.current.scrollIntoView({ behavior: 'smooth' })
+
+    try {
+      const res = await getAllPostsSSR({ currentPage: page })
+      setArticles(res.items)
+      if (listRef.current) {
+        listRef.current.scrollIntoView({ behavior: 'smooth' })
+      }
+    } catch (error) {
+      throw new Error('Fetch error')
     }
   }
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await getAllPostsSSR({ currentPage })
-        setArticles(res.items)
-      } catch (error) {
-        throw new Error('Fetch error')
-      }
-    }
-    if (!currentPage) {
-      return
-    }
-    fetchData()
-  }, [currentPage])
 
   return (
     <section className='overflow-hidden bg-gradient-linear-blue'>
