@@ -16,7 +16,7 @@ interface IBlogProps {
 }
 
 const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
-  const [articles, setArticles] = useState([...postsData.items])
+  const [articles, setArticles] = useState(postsData.items)
   const [currentPage, setCurrentPage] = useState(1)
   const listRef = useRef<HTMLDivElement>(null)
 
@@ -35,6 +35,9 @@ const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
       } catch (error) {
         throw new Error('Fetch error')
       }
+    }
+    if (!currentPage) {
+      return
     }
     fetchData()
   }, [currentPage])
