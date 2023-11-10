@@ -31,7 +31,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
           type='button'
           aria-label='next'
           onClick={() => {
-            router.push(`/blog?page=${currentPage - 1}`)
+            router.push(`/blog/${currentPage - 1}`)
 
             handlePageChange(currentPage - 1)
           }}
@@ -46,13 +46,14 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
             type='button'
             className={
               page === currentPage
-                ? 'text-md font-bold text-white-dis'
-                : 'text-md font-bold text-white-dis opacity-60'
+                ? 'text-md text-white-dis font-bold'
+                : 'text-md text-white-dis font-bold opacity-60'
             }
             key={page}
             onClick={() => {
-              router.push(`/blog?page=${page}`)
+              router.push(`/blog/${page}`)
               handlePageChange(page)
+              router.refresh()
             }}
           >
             {page}
@@ -65,7 +66,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
           type='button'
           aria-label='next'
           onClick={() => {
-            router.push(`/blog?page=${currentPage + 1}`)
+            router.push(`/blog/${currentPage + 1}`)
             handlePageChange(currentPage + 1)
           }}
         >

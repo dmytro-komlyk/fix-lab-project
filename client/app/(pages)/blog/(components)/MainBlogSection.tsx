@@ -7,7 +7,6 @@ import { useRef, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import type { IBlog } from '@/app/(server)/api/service/modules/articlesService'
-import { getAllPostsSSR } from '@/app/(server)/api/service/modules/articlesService'
 
 import PaginationControls from './PaginationControls'
 
@@ -16,21 +15,13 @@ interface IBlogProps {
 }
 
 const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
-  const [articles, setArticles] = useState(postsData.items)
   const [currentPage, setCurrentPage] = useState(1)
   const listRef = useRef<HTMLDivElement>(null)
 
   const handlePageChange = async (page: number) => {
     setCurrentPage(page)
-
-    try {
-      const res = await getAllPostsSSR({ currentPage: page })
-      setArticles(res.items)
-      if (listRef.current) {
-        listRef.current.scrollIntoView({ behavior: 'smooth' })
-      }
-    } catch (error) {
-      throw new Error('Fetch error')
+    if (listRef.current) {
+      listRef.current.scrollIntoView({ behavior: 'smooth' })
     }
   }
 
@@ -64,9 +55,9 @@ const MainBlogSection: React.FC<IBlogProps> = ({ postsData }) => {
             exit={{ opacity: 0, transition: { duration: 0.3 } }}
             className='flex flex-wrap justify-center gap-6 space-x-0 lg:gap-y-14'
           >
-            {articles.map(post => {
+            {postsData.items.map(post => {
               return (
-                <Link key={post._id} href={`/blog/${post.slug}`}>
+                <Link key={post._id} href={`/blog/${currentPage}/${post.slug}`}>
                   <div className='flex max-h-[515px] max-w-[410px] flex-col rounded-2xl bg-blue-crayola transition-transform duration-300 hover:scale-[1.03]  focus:scale-[1.03] xl:w-[410px]'>
                     <Image
                       className='h-[278px] rounded-t-2xl object-cover'
