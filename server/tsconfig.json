@@ -3,14 +3,25 @@
   "compilerOptions": {
     "module": "commonjs",
     "strict": false,
+    "strictNullChecks": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "declaration": true,
     "removeComments": true,
+    "strictBindCallApply": true,
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
     "paths": {
-      "*": ["./server/src/*"]
+      "*": ["./server/src/*"],
+      "@server/*": ["./server/*"],
+      "@domain/*": ["./server/src/domain/*"],
+      "@shared/*": ["./server/src/shared/*"],
+      "@filters/*": ["./server/src/filters/*"],
+      "@helpers/*": ["./server/src/helpers/*"],
+      "@constants/*": ["./server/src/constants/*"],
+      "@decorators/*": ["./server/src/decorators/*"]
     }
   }
 }

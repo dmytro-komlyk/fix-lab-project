@@ -9,10 +9,10 @@ import {
   Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Public } from 'decorators/public.decorator';
+import { Public } from '@decorators/public.decorator';
 import { Response } from 'express';
 
-import { ISuccessDelete } from 'shared/interfaces/success-delete.interface';
+import { ISuccessDelete } from '@shared/interfaces/success-delete.interface';
 
 import { BenefitsService } from './benefits.service';
 
@@ -21,7 +21,7 @@ import { Benefit } from './schemas/benefit.schema';
 import { CreateBenefitDto } from './dto/create-benefit.dto';
 import { UpdateBenefitDto } from './dto/update-benefit.dto';
 
-import { ROUTES } from 'constants/routes.constants';
+import { ROUTES } from '@constants/routes.constants';
 
 @ApiTags(ROUTES.benefits)
 @Controller(ROUTES.benefits)
