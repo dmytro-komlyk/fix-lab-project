@@ -15,7 +15,7 @@ import CourierModal from './(components)/CourierModal'
 import MobileMenu from './(components)/MobileMenu'
 import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
 
-const blogIdRegex = /^\/blog\/([^/]+)\/?$/
+const blogIdRegex = /^\/blog\/([^/]+)\/([^/]+)\/?$/
 const brandsSinglePageRegex = /^\/repair\/([^/]+)\/brands\/([^/]+)\/?$/
 const brandsPageRegex = /^\/repair\/([^/]+)\/brands\/?$/
 
