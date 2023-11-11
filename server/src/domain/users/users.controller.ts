@@ -12,8 +12,6 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { ISuccessDelete } from '@shared/interfaces/success-delete.interface';
-
 import { UsersService } from './users.service';
 import { NotificationsService } from '@domain/notifications/notifications.service';
 
@@ -64,10 +62,8 @@ export class UsersController {
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, description: 'User was not found' })
   @Delete('/:id')
-  public async removeUserById(@Param('id') id: string): Promise<ISuccessDelete> {
+  public async removeUserById(@Param('id') id: string): Promise<void> {
     await this.usersService.remove(id);
-
-    return { status: 204, result: 'success' };
   }
 
   @ApiOperation({ summary: 'send email for user with new password' })

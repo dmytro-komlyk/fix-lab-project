@@ -1,3 +1,4 @@
+import { Public } from '@decorators/public.decorator';
 import {
   Body,
   Controller,
@@ -9,10 +10,7 @@ import {
   Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Public } from '@decorators/public.decorator';
 import { Response } from 'express';
-
-import { ISuccessDelete } from '@shared/interfaces/success-delete.interface';
 
 import { ContactsService } from './contacts.service';
 
@@ -76,9 +74,7 @@ export class ContactsController {
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, description: 'Contact was not found' })
   @Delete('/:id')
-  public async removeContact(@Param('id') id: string): Promise<ISuccessDelete> {
+  public async removeContact(@Param('id') id: string): Promise<void> {
     await this.contactsService.remove(id);
-
-    return { status: 204, result: 'success' };
   }
 }

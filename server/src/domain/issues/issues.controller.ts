@@ -1,3 +1,4 @@
+import { Public } from '@decorators/public.decorator';
 import {
   Body,
   Controller,
@@ -10,10 +11,7 @@ import {
   Response as Res
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Public } from '@decorators/public.decorator';
 import { Response } from 'express';
-
-import { ISuccessDelete } from '@shared/interfaces/success-delete.interface';
 
 import { IssuesService } from './issues.service';
 
@@ -114,9 +112,7 @@ export class IssuesController {
     description: 'Issue was not found'
   })
   @Delete('/:id')
-  public async remove(@Param('id') id: string): Promise<ISuccessDelete> {
+  public async remove(@Param('id') id: string): Promise<void> {
     await this.issuesService.remove(id);
-
-    return { status: 204, result: 'success' };
   }
 }
