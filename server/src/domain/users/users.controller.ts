@@ -1,10 +1,10 @@
-import { Public } from '../../decorators/public.decorator';
-import { UserId } from '../../decorators/userId.decorator';
+import { Public } from '@decorators/public.decorator';
 import {
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -20,6 +20,7 @@ import { User } from './schemas/user.schema';
 import { PasswordGeneratorHelper } from '@helpers/password-generator.helper';
 
 import { CreateUserDto } from './dto/create-user.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 import { ROUTES } from '@constants/routes.constants';
@@ -68,10 +69,20 @@ export class UsersController {
 
   @ApiOperation({ summary: 'send email for user with new password' })
   @ApiResponse({ status: 204 })
-  @Post('/reset-password')
-  public async renewPassword(@UserId() userId: string): Promise<void> {
+  @Public()
+  @Get('/reset-password')
+  public async renewPassword(@Query() { email }: ResetPasswordDto): Promise<void> {
     const updatedPassword = PasswordGeneratorHelper();
-    const user = await this.usersService.update(userId, {
+    const userFound = await this.usersService.findOneByQuery({
+      email,
+      isActive: true
+    });
+
+    if (!userFound || !userFound.token) {
+      throw new NotFoundException(`User with email ${email} was not found!`);
+    }
+
+    const user = await this.usersService.update(userFound.id, {
       password: updatedPassword,
       token: null
     });
