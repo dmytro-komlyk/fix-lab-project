@@ -4,7 +4,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 import { TrpcRouter } from '@domain/trpc/trpc.router';
 import { useContainer } from 'class-validator';
-import { join } from 'path';
 
 import { AppModule } from '@domain/app.module';
 
@@ -29,7 +28,7 @@ import { PREFIX, PUBLIC_FOLDER } from '@constants/routes.constants';
   app.useGlobalFilters(new MongoErrorsFilter());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-  app.useStaticAssets(join(__dirname, '../..', PUBLIC_FOLDER), {
+  app.useStaticAssets(`${process.cwd()}/${PUBLIC_FOLDER}`, {
     prefix: `/${PUBLIC_FOLDER}`
   });
 
