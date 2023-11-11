@@ -1,22 +1,16 @@
-'use client'
-
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { BsArrowLeftCircle, BsArrowRightCircle } from 'react-icons/bs'
 
 interface PaginationControlsProps {
-  handlePageChange: (page: number) => void
-  currentPage: number
   totalPages: number
+  currentPage: number
 }
 
 const PaginationControls: React.FC<PaginationControlsProps> = ({
-  currentPage,
   totalPages,
-  handlePageChange,
+  currentPage,
 }) => {
-  const router = useRouter()
   const pageNumbers: number[] = []
-
   for (let i: number = currentPage - 1; i <= currentPage + 1; i += 1) {
     if (i > totalPages) break
     if (i > 0) {
@@ -27,50 +21,32 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   return (
     <div className='flex items-center space-x-8 lg:ml-auto'>
       {currentPage - 1 >= 1 && (
-        <button
-          type='button'
-          aria-label='next'
-          onClick={() => {
-            router.push(`/blog?page=${currentPage - 1}`)
-
-            handlePageChange(currentPage - 1)
-          }}
-        >
+        <Link passHref href={`/blog/${currentPage - 1}`}>
           <BsArrowLeftCircle size={20} color='white' />
-        </button>
+        </Link>
       )}
 
       {pageNumbers.map(page => {
         return (
-          <button
-            type='button'
+          <Link
+            passHref
+            key={page}
+            href={`/blog/${page}`}
             className={
               page === currentPage
                 ? 'text-md font-bold text-white-dis'
                 : 'text-md font-bold text-white-dis opacity-60'
             }
-            key={page}
-            onClick={() => {
-              router.push(`/blog?page=${page}`)
-              handlePageChange(page)
-            }}
           >
             {page}
-          </button>
+          </Link>
         )
       })}
 
       {currentPage + 1 <= totalPages && (
-        <button
-          type='button'
-          aria-label='next'
-          onClick={() => {
-            router.push(`/blog?page=${currentPage + 1}`)
-            handlePageChange(currentPage + 1)
-          }}
-        >
+        <Link href={`/blog/${currentPage + 1}`} passHref>
           <BsArrowRightCircle size={20} color='white' />
-        </button>
+        </Link>
       )}
     </div>
   )
