@@ -27,14 +27,6 @@ const Blog: React.FC<BlogProps> = async ({ params }) => {
 
 export default Blog
 
-// export async function generateStaticParams() {
-//   const articlesData = await fetchDataFromServer('/articles')
-
-//   return articlesData.items.map((item: { slug: string }) => ({
-//     article: item.slug,
-//   }))
-// }
-
 export async function generateStaticParams({
   params,
 }: {
