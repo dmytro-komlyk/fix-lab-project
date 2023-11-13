@@ -1,7 +1,10 @@
-import { getSinglePost } from '@/app/(server)/api/service/modules/articlesService'
+import {
+  getPosts,
+  getSinglePost,
+} from '@/app/(server)/api/service/modules/articlesService'
 import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 
-import SingleArticlePage from '../(components)/SingleArticlePage'
+import SingleArticlePage from '../../(components)/SingleArticlePage'
 
 interface BlogProps {
   params: {
@@ -23,3 +26,16 @@ const Blog: React.FC<BlogProps> = async ({ params }) => {
 }
 
 export default Blog
+
+export async function generateStaticParams({
+  params,
+}: {
+  params: { page: string }
+}) {
+  const currentPage = typeof params.page === 'string' ? Number(params.page) : 1
+  const articlesData = await getPosts({ currentPage })
+
+  return articlesData.items.map((item: { slug: string }) => ({
+    article: item.slug,
+  }))
+}

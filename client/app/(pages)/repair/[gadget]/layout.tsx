@@ -1,8 +1,8 @@
-import fetchServerSide from '@/app/(server)/api/service/helpers/fetchServerSide'
+import fetchDataFromServer from '@/app/(server)/api/service/helpers/fetchDataFromServer'
 
 export async function generateStaticParams() {
   const url = `/gadgets`
-  const gadgets = await fetchServerSide(url)
+  const gadgets = await fetchDataFromServer(url)
   return gadgets.map((item: { slug: string }) => ({
     gadget: item.slug,
   }))

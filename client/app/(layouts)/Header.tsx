@@ -15,7 +15,7 @@ import CourierModal from './(components)/CourierModal'
 import MobileMenu from './(components)/MobileMenu'
 import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
 
-const blogIdRegex = /^\/blog\/([^/]+)\/?$/
+const blogIdRegex = /^\/blog\/([^/]+)\/([^/]+)\/?$/
 const brandsSinglePageRegex = /^\/repair\/([^/]+)\/brands\/([^/]+)\/?$/
 const brandsPageRegex = /^\/repair\/([^/]+)\/brands\/?$/
 
@@ -110,7 +110,6 @@ export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
         isScrolled ||
         pathname === '/repair' ||
         pathname === '/contacts' ||
-        pathname === '/blog' ||
         blogIdRegex.test(pathname) ||
         brandsPageRegex.test(pathname) ||
         brandsSinglePageRegex.test(pathname)

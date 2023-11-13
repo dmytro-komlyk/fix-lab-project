@@ -1,5 +1,5 @@
 import { AddressSection } from '@/app/(layouts)'
-import fetchServerSide from '@/app/(server)/api/service/helpers/fetchServerSide'
+import fetchDataFromServer from '@/app/(server)/api/service/helpers/fetchDataFromServer'
 import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
 import { getSingleIssueData } from '@/app/(server)/api/service/modules/issueService'
@@ -38,7 +38,7 @@ export async function generateStaticParams({
   params: { gadget: string }
 }) {
   const url = `/gadgets/find-by-slug/${params.gadget}`
-  const gadget = await fetchServerSide(url)
+  const gadget = await fetchDataFromServer(url)
   return gadget.issues.map((item: { slug: string }) => ({
     gadget: gadget.slug,
     issue: item.slug,
