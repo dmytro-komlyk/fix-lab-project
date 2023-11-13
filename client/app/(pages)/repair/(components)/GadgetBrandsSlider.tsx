@@ -80,8 +80,6 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
           className='keen-slider flex '
         >
           {gadgetData.brands.map(item => {
-            const { alt, src } = item.icon
-
             return (
               <div
                 key={item._id}
@@ -91,10 +89,10 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
                   className='flex h-[77px] max-w-[77px] items-center  justify-center rounded-[50%] bg-white-dis transition-all hover:shadow-brandLight focus:shadow-brandLight  xl:min-w-[77px]'
                   href={`/repair/${gadgetData?.slug}/brands/${item.slug}`}
                 >
-                  {src && (
+                  {item.icon && (
                     <Image
-                      src={src}
-                      alt={alt}
+                      src={item.icon.src}
+                      alt={item.icon.alt}
                       width={0}
                       height={0}
                       className='h-[40px] w-[32px]'

@@ -3,11 +3,18 @@ FROM node:latest AS runner
 WORKDIR /app
 COPY tsconfig*.json ./
 
+WORKDIR /app/server
+COPY server/package*.json ./
+COPY server/tsconfig*.json ./
+RUN npm install
+
+COPY server .
+
 WORKDIR /app/client
 COPY client/package*.json ./
 COPY client/tsconfig*.json ./
 COPY client/.env.example ./.env
-RUN npm ci
+RUN npm install
 
 COPY client .
 

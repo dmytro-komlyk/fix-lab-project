@@ -65,8 +65,8 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
 
   const handleSubmit = async (values: MyFormValues) => {
     try {
-      const TOKEN = '5560792411:AAErGG70RTKBdZklSlOT_TdJTMUROf_8rYU'
-      const CHAT_ID = '-1001952047976'
+      const TOKEN = '6885833498:AAFGobowRzxbtdyFjqORjMKMDQPSdPSCA1c'
+      const CHAT_ID = '-1006885833498'
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
       let message = `<b>Миттєва консультація</b>\n`
@@ -110,6 +110,7 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
           className='relative max-w-[414px]  flex-col items-center justify-start rounded-2xl bg-[#00cc73] p-14 max-md:px-[30px] max-sm:px-4'
         >
           <button
+            aria-label='Відкрити модалку миттєва консультація'
             type='button'
             className=' white-dis-700 absolute right-[13px] top-[14px] text-center'
             onClick={toggleInstantAdviceModal}

@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
+import useLocalStorage from '@/app/(hooks)/useLocalStorage '
 import deleteData from '@/app/(server)/api/service/admin/deleteData'
 import { sendPutRequest } from '@/app/(server)/api/service/admin/sendPutRequest'
 import uploadImg from '@/app/(server)/api/service/admin/uploadImg'
@@ -32,7 +33,12 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
   brandsData,
 }) => {
   const router = useRouter()
-  const [newGadgetData, setNewGadgetData] = useState({ ...gadgetData })
+  const [newGadgetData, setNewGadgetData] = useLocalStorage(
+    `newGadgetData${gadgetData._id}`,
+    {
+      ...gadgetData,
+    },
+  )
   const [selectedIcon, setSelectedIcon] = useState<File | null>(null)
   const [newIcon, setNewIcon] = useState<string | ArrayBuffer | null>(null)
   const [activeTab, setActiveTab] = useState<'issues' | 'brands'>('issues')

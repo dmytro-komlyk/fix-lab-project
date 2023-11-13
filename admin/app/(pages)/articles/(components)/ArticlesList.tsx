@@ -1,12 +1,6 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable react/button-has-type */
-/* eslint-disable no-console */
-
 import Link from 'next/link'
-import { FaEdit } from 'react-icons/fa'
+import { FaEdit, FaEye } from 'react-icons/fa'
 
-import AddArticleSection from './AddArticleSection'
 import RemoveArticles from './RemoveArticles'
 
 export interface IArticle {
@@ -38,7 +32,6 @@ interface ArticlesListProps {
 const ArticlesList: React.FC<ArticlesListProps> = ({ articlesData }) => {
   return (
     <div className=' flex flex-col items-center justify-center gap-8 pb-12'>
-      <AddArticleSection />
       <div className=' flex w-full flex-col items-center justify-center gap-8'>
         <ul className='flex w-full flex-col shadow-2xl'>
           {articlesData.items.map((item: IArticle) => (
@@ -50,8 +43,14 @@ const ArticlesList: React.FC<ArticlesListProps> = ({ articlesData }) => {
                 <h3 className='font-semibold text-dark-blue md:text-base xl:text-xl'>
                   {item.title}
                 </h3>
-                <div className='relative ml-4 flex items-center gap-2'>
+                <div className='relative ml-4 flex items-center justify-center gap-4'>
                   <Link href={`/articles/${item._id}`}>
+                    <FaEye
+                      className='transition-colors hover:fill-mid-green focus:fill-mid-green'
+                      size={30}
+                    />
+                  </Link>
+                  <Link href={`/articles/${item._id}/edit`}>
                     <FaEdit
                       className='transition-colors hover:fill-mid-green focus:fill-mid-green'
                       size={30}

@@ -2,9 +2,11 @@
 
 // SSR //
 
-export default async function fetchDataFromServer(url: string) {
+export default async function fetchServerSide(url: string) {
   try {
-    const res = await fetch(`http://95.217.34.212:30000/api${url}`)
+    const res = await fetch(`http://95.217.34.212:30000/api${url}`, {
+      next: { revalidate: 0 },
+    })
 
     if (!res.ok) {
       throw new Error(res.status.toString() + res.statusText)

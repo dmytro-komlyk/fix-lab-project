@@ -65,6 +65,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               />
             </Link>
             <button
+              aria-label='Відкрити мобільне меню'
               type='button'
               className='white-dis-700 text-center'
               onClick={toggleMobileMenu}

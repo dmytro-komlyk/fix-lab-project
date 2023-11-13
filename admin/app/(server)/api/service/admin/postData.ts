@@ -1,11 +1,18 @@
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
+import { getSession } from 'next-auth/react'
 
 const postData = async (endpoint: string, data: any) => {
+  const session = await getSession()
+
+  if (session?.user.token === undefined) {
+    throw new Error('Headers are undefined')
+  }
+
   const config: AxiosRequestConfig = {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTFmMTNiZDQ4ZDUxZGY2OTMxY2QxMjYiLCJsb2dpbiI6ImFkbWluMSIsImlhdCI6MTY5NzY5MzQwM30.h74Ti0AAfwalNXb1i0iswcuIw2X49SPeeEJOlKIbVLw`,
+      Authorization: `Bearer ${session.user.token}`,
     },
   }
   if (!endpoint) {

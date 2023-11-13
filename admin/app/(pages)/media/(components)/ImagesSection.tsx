@@ -44,12 +44,11 @@ const ImagesSection: React.FC<IImagesProps> = ({ imagesData }) => {
               height={240}
             />
             <p>{item.alt}</p>
-            <button type='button' onClick={() => handleDeleteImage(item._id)}>
-              <MdDelete
-                size={25}
-                className='absolute bottom-3 right-0 transition-colors hover:fill-[red] focus:fill-[red]'
-              />
-            </button>
+            <MdDelete
+              onClick={() => handleDeleteImage(item._id)}
+              size={25}
+              className='absolute bottom-3 right-0 transition-colors hover:fill-[red] focus:fill-[red]'
+            />
           </li>
         ))}
       </ul>

@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document, HydratedDocument } from 'mongoose';
+import type { Multer } from 'multer';
 
 export type ImageDocument = HydratedDocument<Image>;
 
@@ -11,7 +12,7 @@ class Image extends Document {
 
   @ApiProperty({ example: 'buffer......' })
   @Prop({ type: Object })
-  readonly file: Express.Multer.File;
+  readonly file: Multer;
 
   @ApiProperty({ example: '/public/image_path' })
   @Prop({ type: String })
