@@ -3,14 +3,13 @@
   "compilerOptions": {
     "module": "commonjs",
     "strict": false,
+    "strictNullChecks": true,
     "declaration": true,
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
     "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
-    "paths": {
-      "*": ["./server/src/*"]
-    }
+    "types": ["node", "jest", "multer"]
   }
 }

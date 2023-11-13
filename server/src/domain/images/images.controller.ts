@@ -15,17 +15,17 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { ISuccessDelete } from 'shared/interfaces/success-delete.interface';
+import { ISuccessDelete } from '@shared/interfaces/success-delete.interface';
 
 import { ImagesService } from './images.service';
 
 import { Image } from './schemas/image.schema';
 
-import { FileStorageHelper } from 'helpers/file-storage.helper';
+import { FileStorageHelper } from '@helpers/file-storage.helper';
 
 import { AddImageDto } from './dto/add-image.dto';
 
-import { ROUTES } from 'constants/routes.constants';
+import { ROUTES } from '@server/constants/routes.constants';
 
 @ApiTags(ROUTES.images)
 @Controller(ROUTES.images)

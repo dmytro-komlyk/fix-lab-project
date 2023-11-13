@@ -7,11 +7,11 @@
     "resolveJsonModule": true,
     "removeComments": true,
     "preserveConstEnums": true,
+    "strictPropertyInitialization": false,
     "strict": true,
     "alwaysStrict": true,
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
-
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -19,28 +19,20 @@
     "noUnusedParameters": true,
     "allowUnreachableCode": false,
     "noFallthroughCasesInSwitch": true,
-
     "target": "es5",
     "outDir": "out",
     "declaration": true,
     "sourceMap": true,
     "downlevelIteration": true,
-
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "allowJs": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-
     "jsx": "preserve",
     "noEmit": true,
     "isolatedModules": true,
     "incremental": true,
-
-    "paths": {
-      "@/*": ["./client/*"],
-      "@/public/*": ["./client/public/*"]
-    },
     "plugins": [
       {
         "name": "next"

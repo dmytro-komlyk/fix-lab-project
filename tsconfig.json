@@ -5,15 +5,22 @@
     "emitDecoratorMetadata": true,
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": true,
+    "strictNullChecks": false,
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@server/*": ["./server/src/*"],
+      "*": ["./*"],
+      "@/*": ["./client/*"],
+      "@admin/*": ["./admin/*"],
       "@client/*": ["./client/*"],
-      "@admin/*": ["./admin/*"]
+      "@server/*": ["./server/src/*"],
+      "@domain/*": ["./server/src/domain/*"],
+      "@shared/*": ["./server/src/shared/*"],
+      "@filters/*": ["./server/src/filters/*"],
+      "@helpers/*": ["./server/src/helpers/*"],
+      "@trpc/*": ["./server/src/domain/trpc/*"]
     }
   }
 }

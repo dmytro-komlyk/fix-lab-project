@@ -3,9 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 
 import * as bcrypt from 'bcrypt';
 
-import { UsersService } from 'domain/users/users.service';
+import { UsersService } from '@domain/users/users.service';
 
-import { User } from 'domain/users/schemas/user.schema';
+import { User } from '@domain/users/schemas/user.schema';
 
 import { LoginDto } from './dto/login.dto';
 
@@ -30,8 +30,7 @@ export class AuthService {
 
     const passwordValid = await bcrypt.compare(password, user.password);
 
-    if (!user || !passwordValid)
-      throw new NotFoundException('User was not found');
+    if (!user || !passwordValid) throw new NotFoundException('User was not found');
 
     return user;
   }

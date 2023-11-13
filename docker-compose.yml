@@ -46,7 +46,7 @@ services:
     ports:
       - "30002:3002"
     networks:
-      - frontend
+      - client
 
   client:
     build:
@@ -60,7 +60,7 @@ services:
     ports:
       - "30001:3001"
     networks:
-      - frontend
+      - client
 
   server:
     build:
@@ -82,7 +82,7 @@ services:
     ports:
       - 30000:3000
     networks:
-      - frontend
+      - client
       - backend
     depends_on:
       - mongo
@@ -90,7 +90,7 @@ services:
       - mongo
 
 networks:
-  frontend:
+  client:
     driver: bridge
   backend:
     driver: bridge

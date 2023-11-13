@@ -1,6 +1,5 @@
+import { authConfig } from 'app/(utils)/authOptions'
 import { getServerSession } from 'next-auth'
-
-import { authConfig } from '../../auth/[...nextauth]/route'
 
 export default async function getData(url: string) {
   const session = await getServerSession(authConfig)

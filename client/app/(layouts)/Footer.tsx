@@ -89,7 +89,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
           <ul className='flex flex-col gap-[29px] md:hidden'>
             <li>
               <Link
-                className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase '
+                className='bg-white-dis flex h-12 w-12 items-center justify-center rounded-[50%] uppercase '
                 href='/#'
               >
                 <Image
@@ -103,7 +103,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             </li>
             <li>
               <Link
-                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase '
+                className='bg-white-dis flex h-12  w-12 items-center justify-center rounded-[50%] uppercase '
                 href='/#'
               >
                 <Image
@@ -117,7 +117,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             </li>
             <li>
               <Link
-                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase '
+                className='bg-white-dis flex h-12  w-12 items-center justify-center rounded-[50%] uppercase '
                 href='/#'
               >
                 <LiaViber size={28} fill='#8c5da7' />
@@ -130,7 +130,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             <li>
               <Link
                 href='/repair'
-                className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-base font-semibold  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Ремонт
               </Link>
@@ -138,7 +138,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             <li>
               <Link
                 href='/contacts'
-                className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-base font-semibold  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Контакти
               </Link>
@@ -146,7 +146,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             <li>
               <Link
                 href='/blog'
-                className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-base font-semibold  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Блог
               </Link>
@@ -154,7 +154,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             <li>
               <Link
                 href='/corporate'
-                className='text-base font-semibold capitalize text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-base font-semibold capitalize  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Для бізнесу
               </Link>
@@ -168,7 +168,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
                     <a
                       key={phoneNumber}
                       href={`tel:${phoneNumber.replace(/\s/g, '')}`}
-                      className='text-base font-medium leading-7 tracking-wide text-mid-green transition-colors hover:text-white-dis focus:text-white-dis'
+                      className='text-mid-green hover:text-white-dis focus:text-white-dis text-base font-medium leading-7 tracking-wide transition-colors'
                     >
                       {phoneNumber}
                     </a>
@@ -177,17 +177,17 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
               ))}
             </ul>
             <div className='flex flex-col items-start gap-1 '>
-              <span className='text-base  text-white-dis'>
+              <span className='text-white-dis  text-base'>
                 {contactsData[0]?.workingTime}
               </span>
-              <span className='text-base  text-white-dis '>
+              <span className='text-white-dis  text-base '>
                 {contactsData[0]?.workingDate}
               </span>
             </div>
             <ul className='flex  max-md:hidden md:flex md:gap-3'>
               <li>
                 <Link
-                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
+                  className='bg-white-dis flex h-12 w-12 items-center justify-center rounded-[50%] transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
                   href='/#'
                   aria-label='Соціальні мережі'
                   target='_blank'
@@ -203,7 +203,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
               </li>
               <li>
                 <Link
-                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
+                  className='bg-white-dis flex h-12 w-12 items-center justify-center rounded-[50%] transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
                   href='/#'
                   target='_blank'
                   aria-label='Соціальні мережі'
@@ -219,7 +219,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
               </li>
               <li>
                 <Link
-                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
+                  className='bg-white-dis flex h-12 w-12 items-center justify-center rounded-[50%] transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
                   href='/#'
                   aria-label='Соціальні мережі'
                   target='_blank'
