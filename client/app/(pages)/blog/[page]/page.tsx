@@ -1,4 +1,3 @@
-import fetchDataFromServer from '@/app/(server)/api/service/helpers/fetchDataFromServer'
 import { getPosts } from '@/app/(server)/api/service/modules/articlesService'
 
 import MainBlogSection from '../(components)/MainBlogSection'
@@ -13,14 +12,14 @@ export default async function Blog({ params }: { params: { page: string } }) {
   )
 }
 
-export async function generateStaticParams() {
-  const url = `/articles`
-  const articlesData = await fetchDataFromServer(url)
-  const currentPage = Array.from(
-    { length: articlesData.totalPages },
-    (_, index) => (index + 1).toString(),
-  )
-  return currentPage.map(item => ({
-    page: item,
-  }))
-}
+// export async function generateStaticParams() {
+//   const url = `/articles`
+//   const articlesData = await fetchDataFromServer(url)
+//   const currentPage = Array.from(
+//     { length: articlesData.totalPages },
+//     (_, index) => (index + 1).toString(),
+//   )
+//   return currentPage.map(item => ({
+//     page: item,
+//   }))
+// }
