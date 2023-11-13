@@ -41,7 +41,6 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
               <Link
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/repair/telefon/brands/apple-phone'
-
               >
                 Ремонт iphone
               </Link>
@@ -56,10 +55,8 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             </li>
             <li>
               <Link
-
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/repair/telefon/brands/huawei-phone'
-
               >
                 Ремонт huawei
               </Link>
@@ -74,7 +71,6 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             </li>
             <li>
               <Link
-
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/repair/noutbuk'
               >
@@ -83,11 +79,8 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
             </li>
             <li>
               <Link
-                className='text-white-dis text-center text-base font-semibold uppercase tracking-wide  transition-opacity hover:opacity-80  focus:opacity-80'
-                href='/#'
                 className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/repair/dzhojstik'
-
               >
                 Ремонт dualsense
               </Link>
