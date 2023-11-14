@@ -1,8 +1,11 @@
+import { trpc } from 'client/app/trpc'
+
 import { AddressSection } from '@/app/(layouts)'
-import fetchDataFromServer from '@/app/(server)/api/service/helpers/fetchDataFromServer'
-import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
-import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
-import { getSingleIssueData } from '@/app/(server)/api/service/modules/issueService'
+import type { IContact } from '@/app/(server)/api/service/modules/contactService'
+import type {
+  IGadget,
+  IIssue,
+} from '@/app/(server)/api/service/modules/gadgetService'
 
 import IssueSection from '../../(components)/IssueSection'
 
@@ -14,9 +17,13 @@ interface IndexProps {
 }
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const singleIssueData = await getSingleIssueData(params.issue)
-  const contactsData = await getAllContactsData()
-  const singleGadgetData = await getSingleGadgetData(params.gadget)
+  const singleIssueData = (await trpc.getIssueBySlugQuery.query({
+    slug: params.issue,
+  })) as IIssue
+  const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
+  const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({
+    slug: params.gadget,
+  })) as IGadget
 
   return (
     <main className='h-full flex-auto'>
@@ -31,16 +38,16 @@ const Index: React.FC<IndexProps> = async ({ params }) => {
 }
 export default Index
 
-// !!!!!!!!!!!!!!!!!!!!!!!!! Протрібно для SSG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-export async function generateStaticParams({
-  params,
-}: {
-  params: { gadget: string }
-}) {
-  const url = `/gadgets/find-by-slug/${params.gadget}`
-  const gadget = await fetchDataFromServer(url)
-  return gadget.issues.map((item: { slug: string }) => ({
-    gadget: gadget.slug,
-    issue: item.slug,
-  }))
-}
+// export async function generateStaticParams({
+//   params,
+// }: {
+//   params: { gadget: string }
+// }) {
+//   const gadgetData = (await trpc.getGadgetBySlugQuery.query({
+//     slug: params.gadget,
+//   })) as IGadget
+//   return gadgetData.issues.map((item: { slug: string }) => ({
+//     gadget: gadgetData.slug,
+//     issue: item.slug,
+//   }))
+// }

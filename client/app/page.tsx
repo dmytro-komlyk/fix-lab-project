@@ -10,8 +10,6 @@ import type { IGadget } from './(server)/api/service/modules/gadgetService'
 import { trpc } from './trpc'
 
 export default async function Home() {
-  // const gadgetsData = await getAllGadgetsData()
-  // const contactsData = await getAllContactsData()
   const gadgetsData = (await trpc.getGadgetsQuery.query()) as IGadget[]
   const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
 

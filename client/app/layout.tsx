@@ -43,7 +43,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // const contactsData = await getAllContactsData()
   const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
   return (
     <html
