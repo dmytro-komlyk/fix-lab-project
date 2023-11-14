@@ -9,8 +9,7 @@
     "build-stats": "cross-env ANALYZE=true npm run build",
     "build-prod": "run-s clean build",
     "clean": "rimraf .next .swc out coverage",
-    "lint": "",
-    "format": "next lint --fix && prettier '**/*.{json,yaml}' --write --ignore-path .gitignore",
+    "lint": "next lint",
     "check-types": "tsc --noEmit --pretty && tsc --project cypress --noEmit --pretty",
     "test": "jest",
     "commit": "cz",
@@ -19,9 +18,12 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.36.1",
     "@tawk.to/tawk-messenger-react": "^2.0.2",
     "@tinymce/tinymce-react": "^4.3.0",
     "@trpc/client": "^10.43.1",
+    "@trpc/next": "^10.43.3",
+    "@trpc/react-query": "^10.43.3",
     "@trpc/server": "^10.43.1",
     "aos": "^2.3.4",
     "axios": "^1.4.0",
@@ -42,7 +44,8 @@
     "remark-gfm": "^4.0.0",
     "swiper": "^10.0.4",
     "tinymce": "^6.6.2",
-    "yup": "^1.2.0"
+    "yup": "^1.2.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.7",

@@ -109,7 +109,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
       animate={{ opacity: 1, transition: { duration: 0.1 } }}
       exit={{ opacity: 0, transition: { duration: 0.1 } }}
       ref={modalRef}
-      className='fixed left-0 top-0 z-50  h-full w-full overflow-y-auto overflow-x-hidden bg-modal-overlay'
+      className='bg-modal-overlay fixed left-0 top-0  z-50 h-full w-full overflow-y-auto overflow-x-hidden'
     >
       <div
         onClick={onBackdropCloseModal}
@@ -128,11 +128,11 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
             onClick={toggleCostRepairModal}
           >
             <AiOutlineCloseCircle
-              className='h-[26px] w-[26px] fill-white-dis  transition-opacity  hover:opacity-80 focus:opacity-80'
+              className='fill-white-dis h-[26px] w-[26px]  transition-opacity  hover:opacity-80 focus:opacity-80'
               aria-hidden='true'
             />
           </button>
-          <h3 className='mb-8 text-center font-exo_2 text-xl font-semibold leading-[30px] text-white-dis '>
+          <h3 className='font-exo_2 text-white-dis mb-8 text-center text-xl font-semibold leading-[30px] '>
             Скільки коштуватиме ремонт?
           </h3>
           <Formik
