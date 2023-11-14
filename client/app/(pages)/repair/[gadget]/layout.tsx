@@ -1,12 +1,9 @@
-import fetchDataFromServer from '@/app/(server)/api/service/helpers/fetchDataFromServer'
-
-export async function generateStaticParams() {
-  const url = `/gadgets`
-  const gadgets = await fetchDataFromServer(url)
-  return gadgets.map((item: { slug: string }) => ({
-    gadget: item.slug,
-  }))
-}
+// export async function generateStaticParams() {
+//   const gadgetsData = (await trpc.getGadgetsQuery.query()) as IGadget[]
+//   return gadgetsData.map((item: { slug: string }) => ({
+//     gadget: item.slug,
+//   }))
+// }
 
 export default async function RootLayout({
   children,
@@ -15,5 +12,3 @@ export default async function RootLayout({
 }) {
   return <div>{children}</div>
 }
-
-// !!!!!!!!!!!!!!!!!!!!!!!!! layout.tsx протрібен для SSG перемістити в /[gadget]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

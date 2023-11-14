@@ -1,8 +1,11 @@
+import { trpc } from 'client/app/trpc'
+
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
-import fetchDataFromServer from '@/app/(server)/api/service/helpers/fetchDataFromServer'
-import { getSingleBrandData } from '@/app/(server)/api/service/modules/brandService'
-import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
-import { getSingleGadgetData } from '@/app/(server)/api/service/modules/gadgetService'
+import type { IContact } from '@/app/(server)/api/service/modules/contactService'
+import type {
+  IBrand,
+  IGadget,
+} from '@/app/(server)/api/service/modules/gadgetService'
 
 import BrandsSection from '../../../(components)/BrandsSection'
 
@@ -15,14 +18,18 @@ interface IndexProps {
 }
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const gadgetData = await getSingleGadgetData(params.gadget)
-  const contactsData = await getAllContactsData()
-  const brandData = await getSingleBrandData(params.brand)
+  const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({
+    slug: params.gadget,
+  })) as IGadget
+  const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
+  const brandData = (await trpc.getBrandBySlugQuery.query({
+    slug: params.brand,
+  })) as IBrand
   return (
     <main className='h-full flex-auto'>
       <BrandsSection
         contactsData={contactsData}
-        gadgetData={gadgetData}
+        gadgetData={singleGadgetData}
         brandData={brandData}
       />
       <ColaborationSection />
@@ -32,16 +39,16 @@ const Index: React.FC<IndexProps> = async ({ params }) => {
 }
 export default Index
 
-// !!!!!!!!!!!!!!!!!!!!!!!!! Протрібно для SSG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-export async function generateStaticParams({
-  params,
-}: {
-  params: { gadget: string }
-}) {
-  const url = `/gadgets/find-by-slug/${params.gadget}`
-  const gadget = await fetchDataFromServer(url)
-  return gadget.brands.map((item: { slug: string }) => ({
-    gadget: gadget.slug,
-    brand: item.slug,
-  }))
-}
+// export async function generateStaticParams({
+//   params,
+// }: {
+//   params: { gadget: string }
+// }) {
+//   const gadgetData = (await trpc.getGadgetBySlugQuery.query({
+//     slug: params.gadget,
+//   })) as IGadget
+//   return gadgetData.brands.map((item: { slug: string }) => ({
+//     gadget: gadgetData.slug,
+//     brand: item.slug,
+//   }))
+// }

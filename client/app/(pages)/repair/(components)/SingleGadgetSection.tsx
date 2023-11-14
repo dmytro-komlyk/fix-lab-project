@@ -51,7 +51,6 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
   }, [])
 
   const { title, icon, description, slug } = singleGadgetData
-
   return (
     <section className=' overflow-hidden  bg-gradient-linear-blue  pb-[102px] pt-[159px] max-md:pb-14 max-md:pt-[117px]'>
       <div className='container relative flex flex-col xl:p-0'>

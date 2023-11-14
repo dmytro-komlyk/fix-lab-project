@@ -18,9 +18,6 @@ interface IndexProps {
 }
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  // const singleGadgetData = await getSingleGadgetData(params.gadget)
-  // const contactsData = await getAllContactsData()
-
   const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({
     slug: params.gadget,
   })) as IGadget
