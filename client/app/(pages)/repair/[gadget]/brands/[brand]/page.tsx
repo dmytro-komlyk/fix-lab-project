@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { trpc } from 'client/app/trpc'
 
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
