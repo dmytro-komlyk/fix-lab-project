@@ -12,6 +12,21 @@ interface BlogProps {
   }
 }
 
+export const dynamicParams = true
+
+export async function generateStaticParams({
+  params,
+}: {
+  params: { page: string }
+}) {
+  const currentPage = typeof params.page === 'string' ? Number(params.page) : 1
+  const articlesData = await getPosts({ currentPage })
+
+  return articlesData.items.map((item: { slug: string }) => ({
+    article: item.slug,
+  }))
+}
+
 const Blog: React.FC<BlogProps> = async ({ params }) => {
   const contactsData = await getAllContactsData()
   const articleData = await getSinglePost(params.article)
@@ -26,16 +41,3 @@ const Blog: React.FC<BlogProps> = async ({ params }) => {
 }
 
 export default Blog
-
-export async function generateStaticParams({
-  params,
-}: {
-  params: { page: string }
-}) {
-  const currentPage = typeof params.page === 'string' ? Number(params.page) : 1
-  const articlesData = await getPosts({ currentPage })
-
-  return articlesData.items.map((item: { slug: string }) => ({
-    article: item.slug,
-  }))
-}
