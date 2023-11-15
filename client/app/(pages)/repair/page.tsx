@@ -7,6 +7,8 @@ import { AddressSection, ColaborationSection } from '@/app/(layouts)'
 
 import GadgetsSection from './(components)/GadgetsSection'
 
+export const revalidate = 3600
+
 const Repair = async () => {
   const gadgetsData = (await trpc.getGadgetsQuery.query()) as IGadget[]
   const contactsData = (await trpc.getContactsQuery.query()) as IContact[]

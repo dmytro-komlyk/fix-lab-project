@@ -17,6 +17,8 @@ interface IndexProps {
   }
 }
 
+export const revalidate = 3600
+
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({
     slug: params.gadget,
