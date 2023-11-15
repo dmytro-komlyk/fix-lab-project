@@ -8,6 +8,9 @@ const nextConfig = {
     domains: ['95.217.34.212'],
     unoptimized: true,
   },
+  serverRuntimeConfig: {
+    apiURL: 'http://95.217.34.212:30000/trpc',
+  },
 }
 
 module.exports = nextConfig
