@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import type { IContact } from 'client/app/(server)/api/service/modules/contactService'
 import type { IGadget } from 'client/app/(server)/api/service/modules/gadgetService'
 import { trpc } from 'client/app/trpc'

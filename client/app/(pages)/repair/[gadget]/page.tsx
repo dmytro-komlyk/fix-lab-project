@@ -2,7 +2,11 @@ import type { IContact } from 'client/app/(server)/api/service/modules/contactSe
 import type { IGadget } from 'client/app/(server)/api/service/modules/gadgetService'
 import React from 'react'
 
-import { AddressSection } from '@/app/(layouts)'
+import {
+  AddressSection,
+  CallCourierSection,
+  ColaborationSection,
+} from '@/app/(layouts)'
 import { trpc } from '@/app/trpc'
 
 import SingleGadgetSection from '../(components)/SingleGadgetSection'
@@ -24,8 +28,8 @@ const Index: React.FC<IndexProps> = async ({ params }) => {
         singleGadgetData={singleGadgetData}
         contactsData={contactsData}
       />
-      {/* <CallCourierSection />
-      <ColaborationSection /> */}
+      <CallCourierSection />
+      <ColaborationSection />
       <AddressSection contactsData={contactsData} />
     </main>
   )
