@@ -17,6 +17,7 @@ import LaptopImage from '../../public/icons/pop-laptop.svg'
 import MatrixImage from '../../public/icons/pop-matrix.svg'
 import PowerImage from '../../public/icons/pop-power.svg'
 import SmartphoneImage from '../../public/icons/pop-smartphone.svg'
+import HeroPhone from '../../public/images/phone-hero.png'
 import { CommonButton } from '../(components)/CommonButton'
 import CostRepairModal from './(components)/CostRepairModal'
 import { HeroSlider } from './(components)/HeroSlider'
@@ -27,72 +28,72 @@ const DATA = {
     {
       link: '#',
       src: SmartphoneImage,
-      alt: 'Замінити дисплей',
+      alt: 'Дисплей',
       title: 'Замінити дисплей',
     },
     {
       link: '#',
       src: PowerImage,
-      alt: 'Замінити батарею',
+      alt: 'Батарея',
       title: 'Замінити батарею',
     },
     {
       link: '#',
       src: ChargingImage,
-      alt: 'Замінити розʼєм',
+      alt: 'Розʼєм',
       title: 'Замінити розʼєм',
     },
     {
       link: '#',
       src: KeyboardImage,
-      alt: 'Замінити клавіатуру',
+      alt: 'Клавіатура',
       title: 'Замінити клавіатуру',
     },
     {
       link: '#',
       src: MatrixImage,
-      alt: 'Замінити матрицю',
+      alt: 'матрицю',
       title: 'Замінити матрицю',
     },
     {
       link: '#',
       src: LaptopImage,
-      alt: 'Апгрейд ноутбуку',
+      alt: 'Ноутбук',
       title: 'Апгрейд ноутбуку',
     },
     {
       link: '#',
       src: JoystickImage,
-      alt: 'Ремонт джойстиків',
+      alt: 'ДжойстиК',
       title: 'Ремонт джойстиків',
     },
     {
       link: '#',
       src: BoomboxImage,
-      alt: 'Ремонт колонок',
+      alt: 'Колонка',
       title: 'Ремонт колонок',
     },
     {
       link: '#',
       src: EbookImage,
-      alt: 'Ремонт читалок',
+      alt: 'Читалка',
       title: 'Ремонт читалок',
     },
   ],
   pros: [
     {
       src: IconZoom,
-      alt: 'Безкоштовна діагностика',
+      alt: 'Лупа',
       title: 'Безкоштовна діагностика',
     },
     {
       src: IconGuard,
-      alt: 'Гарантія до 6 місяців',
+      alt: 'Щит',
       title: 'Гарантія до 6 місяців',
     },
     {
       src: IconScredriver,
-      alt: 'Швидкий ремонт',
+      alt: 'Викрутка',
       title: 'Швидкий ремонт',
     },
   ],
@@ -127,7 +128,14 @@ export const HeroSection = () => {
 
   return (
     <section className='section xl:bg-herp-xl w-full bg-dark-blue bg-hero-xl py-0 md:bg-hero-md lg:bg-hero-lg xl:bg-hero-xl'>
-      <div className='lg h-full w-full bg-mscope-img bg-mscope-sm bg-no-repeat pb-[80px] pt-[156px] md:container max-md:pb-[30px] md:bg-mscope-md md:pt-[162px] lg:bg-mscope-lg xl:bg-mscope-xl xl:px-0'>
+      <div className='lg relative h-full w-full bg-mscope-img bg-mscope-sm bg-no-repeat pb-[80px] pt-[156px] md:container max-md:pb-[30px] md:bg-mscope-md md:pt-[162px] lg:bg-mscope-lg xl:bg-mscope-xl xl:px-0'>
+        <Image
+          className='absolute left-[51%] top-[58%] max-w-[300px] -translate-x-1/2 -translate-y-1/2 text-white-dis max-xl:left-[48%] max-xl:top-[55%]  max-md:left-[44%] max-md:top-[54%] max-md:hidden  max-[430px]:left-[44%] max-[430px]:top-[54%] max-[430px]:w-[170px]'
+          width={246}
+          height={93}
+          src={HeroPhone}
+          alt='arrow'
+        />
         <div
           data-aos='fade-up'
           className='relative flex flex-col md:px-4 xl:px-0'

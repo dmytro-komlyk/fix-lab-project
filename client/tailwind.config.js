@@ -81,8 +81,8 @@ module.exports = {
         'mscope-xl': 'top calc(50% + 35px) right calc(50% - 32px)',
       },
       backgroundImage: {
-        'card-blog': 
-        'linear-gradient(180deg, rgba(200, 211, 239, 0) 75.52%, rgba(200, 211, 239, 0.78) 100%)',
+        'card-blog':
+          'linear-gradient(180deg, rgba(200, 211, 239, 0) 75.52%, rgba(200, 211, 239, 0.78) 100%)',
         'card-repair-gradient':
           'linear-gradient(192.07deg, #06278B -22.68%, #0D3DCE 112.47%)',
         'gradient-radial-blue':

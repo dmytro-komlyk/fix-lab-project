@@ -1,13 +1,9 @@
 /* eslint-disable no-console */
 
-// const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
-
-// SSG //
-
 export default async function fetchDataFromServer(url: string) {
   try {
-    const res = await fetch(`http://95.217.34.212:30000/api${url}`, {
-      next: { revalidate: 60 },
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}${url}`, {
+      next: { tags: ['blog-posts'], revalidate: 60 },
     })
 
     if (!res.ok) {

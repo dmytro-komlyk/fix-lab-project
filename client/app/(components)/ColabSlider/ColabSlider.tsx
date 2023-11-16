@@ -1,7 +1,7 @@
 'use client'
 
 import { useKeenSlider } from 'keen-slider/react'
-import React from 'react'
+import Image from 'next/image'
 
 import { useWindowSize } from '../../(hooks)/useWindowResize'
 
@@ -87,7 +87,7 @@ export const ColabSlider = () => {
               {item.subtext}
             </p>
           </li>
-        ))}{' '}
+        ))}
       </ul>
     </div>
   ) : (
@@ -101,7 +101,13 @@ export const ColabSlider = () => {
             className='keen-slider__slide flex h-[475px] w-[302px] flex-col gap-5 rounded-2xl border-[1px] border-l-light-green p-[30px] font-inter text-white-dis'
           >
             <div className='h-[86px]'>
-              <img src={`/${item.icon}`} className='block' alt={item.title} />
+              <Image
+                width={0}
+                height={0}
+                src={`/${item.icon}`}
+                className='block'
+                alt={item.title}
+              />
             </div>
             <h3 className='w-3/4 font-exo_2 text-lg font-semibold leading-tight text-white-dis'>
               {item.title}
