@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { notFound } from 'next/navigation'
 
 // const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
 
@@ -11,7 +12,7 @@ export default async function fetchDataFromServer(url: string) {
     })
 
     if (!res.ok) {
-      throw new Error(res.status.toString() + res.statusText)
+      notFound()
     }
 
     return await res.json()
