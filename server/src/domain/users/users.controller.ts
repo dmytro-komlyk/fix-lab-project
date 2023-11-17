@@ -1,3 +1,4 @@
+import { Public } from '@decorators/public.decorator';
 import {
   Body,
   Controller,
@@ -9,7 +10,6 @@ import {
   Query
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Public } from '@server/decorators/public.decorator';
 
 import { ISuccessDelete } from '@shared/interfaces/success-delete.interface';
 
