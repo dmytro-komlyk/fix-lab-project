@@ -10,6 +10,7 @@
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
     "paths": {
       "*": ["./*"],
       "@/*": ["./client/*"],
@@ -20,6 +21,7 @@
       "@shared/*": ["./server/src/shared/*"],
       "@filters/*": ["./server/src/filters/*"],
       "@helpers/*": ["./server/src/helpers/*"],
+      "@decorators/*": ["./server/src/decorators/*"],
       "@trpc/*": ["./server/src/domain/trpc/*"]
     }
   }
