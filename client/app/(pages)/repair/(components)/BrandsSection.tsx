@@ -81,7 +81,7 @@ const BrandsSection: React.FC<BrandsProps> = ({
               className='flex items-center gap-1 text-md font-[400] text-dark-blue  max-md:tracking-tighter'
               href={`/repair/${gadgetData.slug}`}
             >
-              {brandData?.title}
+              {gadgetData?.title}
 
               <MdKeyboardArrowRight size={25} />
             </Link>

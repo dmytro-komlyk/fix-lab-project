@@ -5,13 +5,13 @@ import Button from './(layouts)/(components)/Button'
 function NotFound() {
   return (
     <main className='mt-[87px] flex-auto'>
-      <section className='bg-phone-not-found md:bg-not-found flex min-h-screen w-full bg-cover bg-center bg-no-repeat'>
+      <section className='flex min-h-screen w-full bg-phone-not-found bg-cover bg-center bg-no-repeat md:bg-not-found'>
         <div className='container flex flex-col items-center justify-evenly md:justify-center'>
           <div className='flex w-[210px] flex-col items-center justify-center gap-2 md:w-full'>
-            <p className='font-exo_2 text-dark-blue align-bottom text-9xl font-bold'>
+            <p className='align-bottom font-exo_2 text-9xl font-bold text-dark-blue'>
               404
             </p>
-            <p className='font-exo_2 text-dark-blue pb-8 text-center text-base font-semibold md:text-xl'>
+            <p className='pb-8 text-center font-exo_2 text-base font-semibold text-dark-blue md:text-xl'>
               Дуже прикро, але ця сторінка не відповідає!
             </p>
           </div>
