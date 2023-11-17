@@ -100,6 +100,8 @@ module.exports = {
         'footer-gradient-linear-blue':
           'linear-gradient(134deg, #121C37 0%, #04248B 55.98%, #264CC7 100%)',
         'bg-courier-img-lg': "url('/images/courier-background-pc.png')",
+        'not-found': "url('/images/background404.png')",
+        'phone-not-found': "url('/images/phone-background404.png')",
         'mscope-img': "url('/images/microscope-main.svg')",
         'hero-sm':
           'conic-gradient(from 147deg at 46.50% 50.22%, #09338F 25.037785470485687deg, #093490 37.525796592235565deg, #185CA5 166.41446113586426deg, #04248B 193.932466506958deg, #05268B 245.53698778152466deg, #062B8B 359.2690873146057deg)',

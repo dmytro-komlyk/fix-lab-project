@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { notFound } from 'next/navigation'
 
 export default async function fetchDataFromServer(url: string) {
   try {
@@ -7,7 +8,7 @@ export default async function fetchDataFromServer(url: string) {
     })
 
     if (!res.ok) {
-      throw new Error(res.status.toString() + res.statusText)
+      notFound()
     }
 
     return await res.json()

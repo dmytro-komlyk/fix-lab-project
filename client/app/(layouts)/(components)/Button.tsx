@@ -2,7 +2,7 @@ import { type MouseEventHandler } from 'react'
 import { FiArrowUpRight } from 'react-icons/fi'
 
 interface ButtonProps {
-  toggleModal: MouseEventHandler<HTMLButtonElement>
+  toggleModal?: MouseEventHandler<HTMLButtonElement>
   text: string
   styles: string
   textHoverAnimation?: string
