@@ -39,9 +39,11 @@ const BrandsSection: React.FC<BrandsProps> = ({
   const pathname = usePathname()
   const brandPath = pathname.split('/').pop()
   const pathSegments = pathname.split('/')
-  const isBrandPage = pathSegments[pathSegments.length - 1]
-  const gadgetTitleArr = brandData?.title?.split(' ')
-  const gadgetText = gadgetTitleArr?.[gadgetTitleArr.length - 2] ?? ''
+  const isBrandPage = pathSegments[pathSegments.length - 3]
+  const gadgetText =
+    (isBrandPage === 'telefon' && 'телефонів') ||
+    (isBrandPage === 'planshet' && 'планшетів') ||
+    (isBrandPage === 'noutbuk' && 'ноутбуків')
 
   // Modal window
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
@@ -60,36 +62,37 @@ const BrandsSection: React.FC<BrandsProps> = ({
 
   return (
     <section className='overflow-hidden'>
-      <div className='container flex flex-col gap-[27px] pb-[140px] pt-[159px] max-lg:pb-[50px] max-md:pt-[117px]  lg:px-0'>
-        <div className='flex flex-wrap items-center gap-1'>
+      <div className='container flex flex-col pb-[140px] pt-[159px] max-lg:pb-[50px] max-md:pt-[117px] md:gap-[27px]  lg:px-0'>
+        <div className='flex flex-wrap items-center md:gap-2 '>
           <Link
-            className='flex items-center gap-1 text-base font-[400] text-dark-blue'
+            className='flex items-center gap-1 text-md font-[400] text-dark-blue'
             href='/'
           >
-            <p> Головна</p> <MdKeyboardArrowRight size={30} />
+            <p> Головна</p> <MdKeyboardArrowRight size={25} />
           </Link>
           <Link
-            className='flex items-center gap-1 text-base font-[400] text-dark-blue'
+            className='flex items-center gap-1 text-md font-[400] text-dark-blue'
             href='/repair'
           >
-            <p> Ремонт</p> <MdKeyboardArrowRight size={30} />
+            <p> Ремонт</p> <MdKeyboardArrowRight size={25} />
           </Link>
           {gadgetData && (
             <Link
-              className='flex items-center gap-1 text-base font-[400] text-dark-blue'
+              className='flex items-center gap-1 text-md font-[400] text-dark-blue  max-md:tracking-tighter'
               href={`/repair/${gadgetData.slug}`}
             >
-              <p> {gadgetData.title}</p>
-              <MdKeyboardArrowRight size={30} />
+              {gadgetData?.title}
+
+              <MdKeyboardArrowRight size={25} />
             </Link>
           )}
-          <p className='text-base font-[300] text-dark-blue/50'>
-            {brandData?.title}
+          <p className='text-md font-[300] text-dark-blue/50'>
+            Бренди які ремонтуємо
           </p>
         </div>
         <div className='mb-8 flex flex-col items-start'>
           {gadgetData && (
-            <div className='mb-[50px] h-[80px]'>
+            <div className='mb-[55px] h-[80px] max-md:hidden'>
               {brandData?.icon && (
                 <Image
                   src={gadgetData.icon.src}
@@ -106,7 +109,7 @@ const BrandsSection: React.FC<BrandsProps> = ({
               )}
             </div>
           )}
-          <h1 className='mb-[29px] font-exo_2 text-2xl font-bold text-black-dis lg:leading-[1.2px]'>
+          <h1 className='mb-[25px] font-exo_2 text-2xl font-bold text-black-dis max-md:mb-[2px] max-md:mt-[16px] max-md:text-[23px] max-md:leading-[30px] max-md:tracking-[0.3px] lg:leading-[1.2px] xl:tracking-[1.9px]'>
             Бренди {gadgetText}, які ремонтуємо у сервісному центрі FixLab
           </h1>
           <div className='container mb-[56px] p-0'>

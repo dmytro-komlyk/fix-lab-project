@@ -1,6 +1,5 @@
 import fetchDataFromServer from '@/app/(server)/api/service/helpers/fetchDataFromServer'
 
-export const dynamicParams = true
 export async function generateStaticParams() {
   const url = `/articles?limit=9`
   const articlesData = await fetchDataFromServer(url)
