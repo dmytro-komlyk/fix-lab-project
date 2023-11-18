@@ -4,14 +4,13 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 import { TrpcRouter } from '@domain/trpc/trpc.router';
 import { useContainer } from 'class-validator';
-import { join } from 'path';
 
 import { AppModule } from '@domain/app.module';
 
 import { MongoErrorsFilter } from '@filters/mongo-errors.filter';
 import { SwaggerHelper } from '@helpers/swagger.helper';
 
-import { PREFIX, PUBLIC_FOLDER } from '@server/constants/routes.constants';
+import { PREFIX, PUBLIC_FOLDER } from '@constants/routes.constants';
 
 (async (): Promise<void> => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -29,7 +28,7 @@ import { PREFIX, PUBLIC_FOLDER } from '@server/constants/routes.constants';
   app.useGlobalFilters(new MongoErrorsFilter());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-  app.useStaticAssets(join(__dirname, '../..', PUBLIC_FOLDER), {
+  app.useStaticAssets(`${process.cwd()}/${PUBLIC_FOLDER}`, {
     prefix: `/${PUBLIC_FOLDER}`
   });
 
