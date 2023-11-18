@@ -11,14 +11,9 @@ import {
   Query
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-<<<<<<< HEAD
 
-import { ISuccessDelete } from '@shared/interfaces/success-delete.interface';
-=======
->>>>>>> a16056a6d0eb7521bffbe50081a0ec6d73c246f8
-
-import { UsersService } from './users.service';
 import { NotificationsService } from '@domain/notifications/notifications.service';
+import { UsersService } from './users.service';
 
 import { User } from './schemas/user.schema';
 
@@ -28,11 +23,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-<<<<<<< HEAD
-import { ROUTES } from '@server/constants/routes.constants';
-=======
 import { ROUTES } from '@constants/routes.constants';
->>>>>>> a16056a6d0eb7521bffbe50081a0ec6d73c246f8
 
 @ApiTags(ROUTES.users)
 @Controller(ROUTES.users)
