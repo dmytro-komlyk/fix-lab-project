@@ -13,8 +13,6 @@ import {
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
-import { ISuccessDelete } from '@shared/interfaces/success-delete.interface';
-
 import { BrandsService } from './brands.service';
 
 import { Brand } from './schemas/brand.schema';
@@ -22,7 +20,7 @@ import { Brand } from './schemas/brand.schema';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
 
-import { ROUTES } from '@server/constants/routes.constants';
+import { ROUTES } from '@constants/routes.constants';
 
 @ApiTags(ROUTES.brands)
 @Controller(ROUTES.brands)
@@ -100,9 +98,7 @@ export class BrandsController {
   @ApiResponse({ status: 204 })
   @ApiResponse({ status: 404, description: 'Brand was not found' })
   @Delete('/:id')
-  public async removeBrand(@Param('id') id: string): Promise<ISuccessDelete> {
+  public async removeBrand(@Param('id') id: string): Promise<void> {
     await this.brandsService.remove(id);
-
-    return { status: 204, result: 'success' };
   }
 }

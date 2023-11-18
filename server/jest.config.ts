@@ -2,14 +2,18 @@ module.exports = {
   testEnvironment: 'node',
   testRegex: '.*\\.(spec|test)\\.ts$',
   moduleFileExtensions: ['js', 'json', 'ts'],
-  moduleDirectories: ['node_modules', 'src'],
-  transform: { '^.+\\.(ts|tsx)$': `ts-jest` },
-
-  rootDir: './src',
+  rootDir: './',
   moduleNameMapper: {
-    '^@decorators/(.)*$': '<rootDir>/decorators'
+    '@domain/(.*)': ['<rootDir>/src/domain/$1'],
+    '@shared/(.*)': ['<rootDir>/src/shared/$1'],
+    '@filters/(.*)': ['<rootDir>/src/filters/$1'],
+    '@helpers/(.*)': ['<rootDir>/src/helpers/$1'],
+    '@constants/(.*)': ['<rootDir>/src/constants/$1'],
+    '@decorators/(.*)': ['<rootDir>/src/decorators/$1']
   },
-
+  transform: {
+    '^.+\\.(ts|tsx)$': `ts-jest`
+  },
   coverageDirectory: '../coverage',
   collectCoverageFrom: ['**/*.(t|j)s']
 };

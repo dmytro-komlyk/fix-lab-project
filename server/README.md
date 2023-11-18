@@ -1,45 +1,47 @@
-## Installation
+## About Pet Project
+
+NestJS application for serving NextJS app and API with protected routes for adminpanel
+
+- using nodemailer for sending notifications
+- creating first admin accout through GET request
+- uploading and serving static: img and etc.
+- tRPC module included for front side
+
+### Stack
+
+- nestjs, @/passport, @/swagger
+- mongoose, mongodb
+- node-mailer
+- docker, github-actions
+
+> Repository contains .env file, more in **.env.example**
+
+### Commands
 
 ```bash
-$ yarn install
+# Installation of all packages
+$ npm install
 ```
-
-## Running the app
 
 ```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+# Running the app in development mode
+$ npm run start:dev
+$ npm run d
 ```
-
-## Test
 
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+# Run lint, test and etc
+$ npm run lint
+$ npm run test
 ```
 
-## Support
+```bash
+# Run validation before merging
+$ npm run validate
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+```bash
+# Create build and run the app in production mode
+$ npm run build
+$ npm run start:prod
+```

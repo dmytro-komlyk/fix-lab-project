@@ -22,6 +22,7 @@
       "@filters/*": ["./server/src/filters/*"],
       "@helpers/*": ["./server/src/helpers/*"],
       "@decorators/*": ["./server/src/decorators/*"],
+      "@constants/*": ["./server/src/constants/*"],
       "@trpc/*": ["./server/src/domain/trpc/*"]
     }
   }

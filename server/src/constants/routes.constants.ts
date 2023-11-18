@@ -13,3 +13,4 @@ export const ROUTES = {
 
 export const PUBLIC_FOLDER = 'public';
 export const PREFIX = 'api';
+export const STATIC_FOLDER = 'static';
