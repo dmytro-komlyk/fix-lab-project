@@ -9,8 +9,8 @@ function TawkChat(): JSX.Element {
   return (
     <div className='App'>
       <TawkMessengerReact
-        propertyId='62c6a7cfb0d10b6f3e7b3cf1'
-        widgetId='1g7bvv18l'
+        propertyId={process.env.NEXT_PUBLIC_TWANK_PROPERTY_ID}
+        widgetId={process.env.NEXT_PUBLIC_TWANK_WIDGET_ID}
         ref={tawkMessengerRef}
       />
     </div>

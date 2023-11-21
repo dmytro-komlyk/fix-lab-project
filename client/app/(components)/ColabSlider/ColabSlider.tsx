@@ -58,7 +58,7 @@ export const ColabSlider = () => {
   const size = useWindowSize()
 
   return size.width > 1439 ? (
-    <div>
+    <>
       <ul className='lg: mb-11 flex gap-6 border-b-2 border-b-[#20B9F4]'>
         {colabData.map(item => (
           <li className='relative h-[98px] w-[302px] lg:h-[89px]' key={item.id}>
@@ -72,8 +72,6 @@ export const ColabSlider = () => {
       <ul className='flex gap-6'>
         {colabData.map(item => (
           <li
-            data-aos='zoom-in'
-            data-aos-offset='50'
             key={item.id}
             className='h-[475px] w-[302px] rounded-2xl border border-l-light-green p-8 font-inter text-white-dis lg:h-[420px]'
           >
@@ -89,21 +87,19 @@ export const ColabSlider = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </>
   ) : (
     <div className='navigation-wrapper'>
       <div ref={ref} className='keen-slider'>
         {colabData.map(item => (
           <div
-            data-aos='zoom-in'
-            data-aos-offset='50'
             key={item.id}
             className='keen-slider__slide flex h-[475px] w-[302px] flex-col gap-5 rounded-2xl border-[1px] border-l-light-green p-[30px] font-inter text-white-dis'
           >
             <div className='h-[86px]'>
               <Image
-                width={0}
-                height={0}
+                width={100}
+                height={86}
                 src={`/${item.icon}`}
                 className='block'
                 alt={item.title}

@@ -1,3 +1,4 @@
+import { AOSInit } from './(components)/AOSInit'
 import {
   AddressSection,
   BrokenSection,
@@ -17,6 +18,7 @@ export default async function Home() {
 
   return (
     <main className='relative flex-auto'>
+      <AOSInit />
       <HeroSection />
       <BrokenSection gadgetsData={gadgetsData} />
       <CallCourierSection />
