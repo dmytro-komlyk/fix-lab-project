@@ -65,8 +65,8 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
 
   const handleSubmit = async (values: MyFormValues) => {
     try {
-      const TOKEN = '6885833498:AAFGobowRzxbtdyFjqORjMKMDQPSdPSCA1c'
-      const CHAT_ID = '-1006885833498'
+      const TOKEN = process.env.NEXT_PUBLIC_TELEGRAM_TOKEN
+      const CHAT_ID = process.env.NEXT_PUBLIC_TELEGRAM_CHAT_ID
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
       let message = `<b>Миттєва консультація</b>\n`
