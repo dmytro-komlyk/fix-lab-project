@@ -20,8 +20,6 @@ COPY client .
 
 RUN npm run build
 
-COPY client/.next ./.next
-
 # Production Stage
 FROM node:latest AS production
 WORKDIR /app/server
