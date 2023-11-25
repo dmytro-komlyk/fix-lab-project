@@ -13,8 +13,6 @@ COPY server .
 
 RUN npm run build
 
-COPY server/dist ./dist
-
 FROM node:18-alpine as production
 COPY --from=runner /app/server /app/server
 WORKDIR /app/server
