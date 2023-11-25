@@ -1,4 +1,5 @@
 import fetchDataFromServer from '../helpers/fetchDataFromServer'
+import type { IImage } from './imageService'
 
 export interface IPost {
   _id: string
@@ -12,11 +13,7 @@ export interface IPost {
     description: string
     keywords: string
   }
-  image: {
-    _id: string
-    src: string
-    alt: string
-  }
+  image: IImage
 }
 
 export interface IBlog {

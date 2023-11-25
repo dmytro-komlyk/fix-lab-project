@@ -1,12 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
+import type { IIssue } from 'client/app/(server)/api/service/modules/issueService'
 import { trpc } from 'client/app/trpc'
 
 import { AddressSection } from '@/app/(layouts)'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
-import type {
-  IGadget,
-  IIssue,
-} from '@/app/(server)/api/service/modules/gadgetService'
+import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
 
 import IssueSection from '../../(components)/IssueSection'
 
@@ -16,6 +14,9 @@ interface IndexProps {
     gadget: string
   }
 }
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const singleIssueData = (await trpc.getIssueBySlugQuery.query({

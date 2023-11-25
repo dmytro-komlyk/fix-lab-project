@@ -6,23 +6,30 @@ WORKDIR /app/server
 COPY server/package*.json ./
 COPY server/tsconfig*.json ./
 COPY server/.env.example ./.env
+
 RUN npm install
 
 COPY server .
 
 RUN npm run build
 
+COPY server/dist ./dist
+
 FROM node:18-alpine as production
+COPY --from=runner /app/server /app/server
 WORKDIR /app/server
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nestjs
+
+COPY --from=runner --chown=nestjs:nodejs /app/server/node_modules ./node_modules
+COPY --from=runner --chown=nestjs:nodejs /app/server/dist ./dist
+
+USER nestjs
+
 ENV NODE_ENV=production
-# COPY server/package*.json ./
-# COPY server/tsconfig*.json ./
-# COPY server/.env.example ./.env
-# RUN npm install
-# COPY server .
-COPY --from=runner /app/server/package*.json ./
-COPY --from=runner /app/server/dist ./dist
-COPY --from=runner /app/server/node_modules ./node_modules
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
 
 EXPOSE 3000
 

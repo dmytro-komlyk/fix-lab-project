@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
-import type { IBrand } from '@/app/(server)/api/service/modules/gadgetService'
+import type { IBrand } from '@/app/(server)/api/service/modules/brandService'
 
 export interface BrandsSliderProps {
   gadgetData: {
@@ -123,7 +123,7 @@ export const BrandsSlider: React.FC<BrandsSliderProps> = ({
           {loaded && instanceRef && (
             <div className='relative w-full'>
               <div
-                className='absolute left-0 top-[-2px] z-10 h-[4px] rounded-full bg-mid-grey transition-width'
+                className='bg-mid-grey transition-width absolute left-0 top-[-2px] z-10 h-[4px] rounded-full'
                 style={{
                   width: `${(100 / filled) * currentSlide}%`,
                 }}
