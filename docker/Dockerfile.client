@@ -30,8 +30,13 @@ FROM node:latest AS production
 COPY --from=runner /app/client /app/client
 WORKDIR /app/client
 
+COPY --from=runner /app/client/public ./public
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
+
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
 
 COPY --from=runner --chown=nextjs:nodejs /app/client/.next/standalone/client ./
 COPY --from=runner --chown=nextjs:nodejs /app/client/.next/static ./.next/static
