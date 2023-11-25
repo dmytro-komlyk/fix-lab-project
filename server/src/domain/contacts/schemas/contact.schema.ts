@@ -1,11 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Document,
-  HydratedDocument,
-  Schema as MongooseSchema,
-  Types
-} from 'mongoose';
+import { Document, HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 
 import { Image } from '@domain/images/schemas/image.schema';
 
@@ -14,7 +9,7 @@ export type ContactDocument = HydratedDocument<Contact>;
 @Schema({ versionKey: false })
 class Contact extends Document {
   @ApiProperty({ example: '64ef4383e46e72721c03090e' })
-  readonly _id: Types.ObjectId;
+  readonly _id: string;
 
   @ApiProperty({ example: true })
   @Prop({ type: Boolean, default: false })
@@ -31,7 +26,7 @@ class Contact extends Document {
   @ApiProperty({
     example: 'Вхід через супермаркет ВЕЛМАРТ'
   })
-  @Prop({ type: String, required: false })
+  @Prop({ type: String, required: false, default: null })
   readonly comment: string;
 
   @ApiProperty({ example: ['Мінська', 'Оболонь'] })

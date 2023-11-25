@@ -26,7 +26,7 @@ import { PREFIX, PUBLIC_FOLDER } from '@constants/routes.constants';
   app.setGlobalPrefix(PREFIX);
 
   app.useGlobalFilters(new MongoErrorsFilter());
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   app.useStaticAssets(`${process.cwd()}/${PUBLIC_FOLDER}`, {
     prefix: `/${PUBLIC_FOLDER}`
