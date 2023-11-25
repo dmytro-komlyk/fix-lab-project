@@ -20,11 +20,12 @@ COPY client .
 
 RUN npm run build
 
+COPY client .
 # Production Stage
 FROM node:latest AS production
-WORKDIR /app/server
-COPY --from=runner --chown=nextjs:nodejs /app/client/.next/standalone/client ./static
-COPY --from=runner --chown=nextjs:nodejs /app/client/.next/static ./static/.next/static
+# WORKDIR /app/server
+# COPY --from=runner --chown=nextjs:nodejs /app/client/.next/standalone/client ./static
+# COPY --from=runner --chown=nextjs:nodejs /app/client/.next/static ./static/.next/static
 
 COPY --from=runner /app/client /app/client
 WORKDIR /app/client
