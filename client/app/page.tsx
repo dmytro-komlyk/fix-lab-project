@@ -1,5 +1,4 @@
-import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
-
+import { AOSInit } from './(components)/AOSInit'
 import {
   AddressSection,
   BrokenSection,
@@ -7,6 +6,7 @@ import {
   ColaborationSection,
   HeroSection,
 } from './(layouts)'
+import { getAllContactsData } from './(server)/api/service/modules/contactService'
 import { getAllGadgetsData } from './(server)/api/service/modules/gadgetService'
 
 // export const runtime = 'edge'
@@ -21,6 +21,7 @@ export default async function Home() {
 
   return (
     <main className='relative flex-auto'>
+      <AOSInit />
       <HeroSection />
       <BrokenSection gadgetsData={gadgetsData} />
       <CallCourierSection />

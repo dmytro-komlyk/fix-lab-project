@@ -3,6 +3,24 @@
 @tailwind utilities;
 @import url('keen-slider/keen-slider.min.css');
 
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #04268b;
+}
+
+::-moz-scrollbar {
+  width: 10px;
+  background-color: #f1f1f1;
+}
+
+::-moz-scrollbar-thumb {
+  background-color: #04268b;
+}
+
 @layer base {
   html {
     font-family: Inter, sans-serif;
@@ -152,5 +170,19 @@
   100% {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  [data-aos] {
+    pointer-events: auto !important;
+  }
+
+  html:not(.no-js) [data-aos^='fade'][data-aos^='fade'] {
+    opacity: 1 !important;
+  }
+
+  html:not(.no-js) [data-aos='fade-up'] {
+    transform: none !important;
   }
 }

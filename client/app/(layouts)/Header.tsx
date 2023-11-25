@@ -15,9 +15,9 @@ import CourierModal from './(components)/CourierModal'
 import MobileMenu from './(components)/MobileMenu'
 import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
 
-const blogIdRegex = /^\/blog\/([^/]+)\/([^/]+)\/?$/
-const brandsSinglePageRegex = /^\/repair\/([^/]+)\/brands\/([^/]+)\/?$/
-const brandsPageRegex = /^\/repair\/([^/]+)\/brands\/?$/
+const gadgetsSinglePageRegex = /^\/repair\/([^/]+)\/?$/
+const blogIdRegex = /^\/blog\/(\d+)\/?$/
+const issueSinglePageRegex = /^\/repair\/([^/]+)\/([^/]+)\/?$/
 
 export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
   const pathname = usePathname()
@@ -107,19 +107,20 @@ export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
   return (
     <header
       className={`padding-lock max-md fixed left-0 top-0 z-50 flex w-full items-center transition-colors ${
-        isScrolled ||
-        pathname === '/repair' ||
-        pathname === '/contacts' ||
-        pathname === '/not-found' ||
+        isScrolled && ' bg-[#04268B]'
+      } ${
+        pathname === '/' ||
+        pathname === '/blog' ||
+        pathname === '/corporate' ||
         blogIdRegex.test(pathname) ||
-        brandsPageRegex.test(pathname) ||
-        brandsSinglePageRegex.test(pathname)
-          ? ' bg-[#04268B]'
-          : ''
+        issueSinglePageRegex.test(pathname) ||
+        gadgetsSinglePageRegex.test(pathname)
+          ? ''
+          : ' bg-[#04268B]'
       }`}
     >
       <nav
-        data-aos='fade-down'
+        data-aos={pathname === '/' && 'fade-down'}
         className='container mx-auto flex w-full items-center  justify-between py-6 max-md:justify-between max-md:pb-[15px] max-md:pt-[30px] lg:px-0'
         aria-label='Global'
       >
