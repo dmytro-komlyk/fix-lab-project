@@ -5,8 +5,8 @@ services:
     container_name: mongo
     hostname: mongo
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=
-      - MONGO_INITDB_ROOT_PASSWORD=
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=admin123
     volumes:
       - ./database/data:/data/db
     ports:
@@ -14,53 +14,58 @@ services:
     networks:
       - backend
 
-  mongo-express:
-    image: mongo-express
-    container_name: mongo-ui
-    restart: unless-stopped
-    environment:
-      - ME_CONFIG_MONGODB_SERVER=mongo
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=
-      - ME_CONFIG_MONGODB_URL=
-      - ME_CONFIG_BASICAUTH_USERNAME=
-      - ME_CONFIG_BASICAUTH_PASSWORD=
-    ports:
-      - 8081:8081
-    networks:
-      - backend
-    links:
-      - mongo:mongo
-    depends_on:
-      - mongo
+  # mongo-express:
+  #   image: mongo-express
+  #   container_name: mongo-ui
+  #   restart: unless-stopped
+  #   environment:
+  #     - ME_CONFIG_MONGODB_SERVER=mongo
+  #     - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+  #     - ME_CONFIG_MONGODB_ADMINPASSWORD=admin123
+  #     - ME_CONFIG_MONGODB_URL=
+  #     - ME_CONFIG_BASICAUTH_USERNAME=
+  #     - ME_CONFIG_BASICAUTH_PASSWORD=
+  #   ports:
+  #     - 8081:8081
+  #   networks:
+  #     - backend
+  #   links:
+  #     - mongo:mongo
+  #   depends_on:
+  #     - mongo
 
-  admin:
-    build:
-      target: production
-      dockerfile: ./docker/Dockerfile.admin
-    container_name: admin
-    restart: unless-stopped
-    env_file: ./admin/.env
-    environment:
-      - NODE_ENV=production
-    ports:
-      - "30002:3002"
-    networks:
-      - client
+  # admin:
+  #   build:
+  #     target: production
+  #     dockerfile: ./docker/Dockerfile.admin
+  #   container_name: admin
+  #   restart: unless-stopped
+  #   env_file: ./admin/.env
+  #   environment:
+  #     - NODE_ENV=production
+  #   ports:
+  #     - "30002:3002"
+  #   networks:
+  #     - client
 
-  client:
-    build:
-      target: production
-      dockerfile: ./docker/Dockerfile.client
-    container_name: client
-    restart: unless-stopped
-    env_file: ./client/.env
-    environment:
-      - NODE_ENV=production
-    ports:
-      - "30001:3001"
-    networks:
-      - client
+  # client:
+  #   build:
+  #     target: production
+  #     dockerfile: ./docker/Dockerfile.client
+  #   container_name: client
+  #   restart: unless-stopped
+  #   env_file: ./client/.env
+  #   stdin_open: true
+  #   tty: true
+  #   volumes:
+  #     - ./server/public/:/app/server/public
+  #     - static-content:/app/server/static
+  #   environment:
+  #     - NODE_ENV=production
+  #   ports:
+  #     - "3001:3001"
+  #   networks:
+  #     - client
 
   server:
     build:
@@ -72,15 +77,16 @@ services:
     environment:
       - NODE_ENV=production
       - MONGO_DB_LINK=mongodb://mongo:27017
-      - MONGO_DB_AUTH_USERNAME=
-      - MONGO_DB_AUTH_PASSWORD=
-      - MONGO_DB_NAME=
-      - SECRET=
-      - D_ADMIN_KEY=
+      - MONGO_DB_AUTH_USERNAME=root
+      - MONGO_DB_AUTH_PASSWORD=admin123
+      - MONGO_DB_NAME=fixlab-db
+      - SECRET=4u5I577c6zTbw7za
+      - D_ADMIN_KEY=6315413c-58c1-11ee-8c99-0242ac120002
     volumes:
       - ./server/public/:/app/server/public
+      - static-content:/app/server/static
     ports:
-      - 30000:3000
+      - 4000:3000
     networks:
       - client
       - backend
@@ -96,5 +102,7 @@ networks:
     driver: bridge
 
 volumes:
+  static-content:
+    driver: local
   database:
     driver: local

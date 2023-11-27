@@ -17,7 +17,8 @@ interface IndexProps {
   }
 }
 
-export const revalidate = 3600
+export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({

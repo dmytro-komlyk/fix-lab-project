@@ -1,4 +1,7 @@
 import fetchDataFromServer from '../helpers/fetchDataFromServer'
+import type { IBrand } from './brandService'
+import type { IImage } from './imageService'
+import type { IIssue } from './issueService'
 
 export interface IGadget {
   _id: string
@@ -6,12 +9,8 @@ export interface IGadget {
   isActive: boolean
   title: string
   description: string
-  icon: {
-    alt: string
-    src: string
-  }
-  image: string
-  gallery: string
+  icon: IImage
+  gallery: IImage[]
   metadata: {
     title: string
     description: string
@@ -19,56 +18,6 @@ export interface IGadget {
   }
   brands: IBrand[]
   issues: IIssue[]
-}
-
-export interface IBrand {
-  _id: string
-  slug: string
-  isActive: boolean
-  title: string
-  article: string
-  icon: {
-    src: string
-    alt: string
-  }
-  metadata: {
-    title: string
-    description: string
-    keywords: string
-  }
-}
-
-export interface IIssue {
-  _id: string
-  isActive: boolean
-  slug: string
-  title: string
-  info: string
-  description: string
-  price: string
-  image: {
-    src: string
-    alt: string
-    width: number
-    height: number
-  }
-  metadata: {
-    title: string
-    description: string
-    keywords: string
-  }
-  richText: string
-  benefits: {
-    id: number
-    icon: {
-      src: string
-      alt: string
-      width: number
-      height: number
-    }
-    title: string
-    alt: string
-  }[]
 }
 
 export const getAllGadgetsData = async (): Promise<IGadget[]> => {

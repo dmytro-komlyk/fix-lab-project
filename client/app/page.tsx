@@ -6,15 +6,18 @@ import {
   ColaborationSection,
   HeroSection,
 } from './(layouts)'
-import type { IContact } from './(server)/api/service/modules/contactService'
-import type { IGadget } from './(server)/api/service/modules/gadgetService'
-import { trpc } from './trpc'
+import { getAllContactsData } from './(server)/api/service/modules/contactService'
+import { getAllGadgetsData } from './(server)/api/service/modules/gadgetService'
 
-export const revalidate = 3600
+// export const runtime = 'edge'
+export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 export default async function Home() {
-  const gadgetsData = (await trpc.getGadgetsQuery.query()) as IGadget[]
-  const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
+  // const gadgetsData = (await trpc.getGadgetsQuery.query()) as IGadget[]
+  // const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
+  const gadgetsData = await getAllGadgetsData()
+  const contactsData = await getAllContactsData()
 
   return (
     <main className='relative flex-auto'>
