@@ -7,7 +7,7 @@ import {
   CallCourierSection,
   ColaborationSection,
 } from '@/app/(layouts)'
-import { trpc } from '@/app/trpc'
+import { trpc } from '@/app/(utils)/trpc'
 
 import SingleGadgetSection from '../(components)/SingleGadgetSection'
 
@@ -17,8 +17,7 @@ interface IndexProps {
   }
 }
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 60
+export const runtime = 'edge'
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({

@@ -1,9 +1,8 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { trpc } from 'client/app/trpc'
+import type { IGadget } from 'client/app/(server)/api/service/modules/gadgetService'
 
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
-import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
+import { trpc } from '@/app/(utils)/trpc'
 
 import BrandsSection from '../../(components)/BrandsSection'
 
@@ -14,8 +13,7 @@ interface IndexProps {
   searchParams: any
 }
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 60
+export const runtime = 'edge'
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({
