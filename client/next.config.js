@@ -11,7 +11,8 @@ const nextConfig = {
   },
   output: 'standalone',
   experimental: {
-    serverActions: true,
+    appDir: true,
+    // serverActions: true,
   },
 }
 

@@ -1,5 +1,5 @@
 # Build Stage
-FROM node:latest AS runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 COPY tsconfig*.json ./
 
@@ -18,12 +18,16 @@ RUN npm install
 
 COPY client .
 
+ENV NEXT_TELEMETRY_DISABLED 1
+
 RUN npm run build
 
 # Production Stage
-FROM node:latest AS production
+FROM node:18-alpine AS production
 COPY --from=runner /app/client /app/client
 WORKDIR /app/client
+
+ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -35,11 +39,10 @@ RUN chown nextjs:nodejs .next
 
 COPY --from=runner --chown=nextjs:nodejs /app/client/.next/standalone ./
 COPY --from=runner --chown=nextjs:nodejs /app/client/.next/static ./.next/static
+COPY --from=runner --chown=nextjs:nodejs /app/client/.next/cache/fetch-cache ./.next/cache/fetch-cache
 
 USER nextjs
 
-# Set environment variables
-ENV NODE_ENV=production
 EXPOSE 3001
 ENV HOSTNAME "0.0.0.0"
 
