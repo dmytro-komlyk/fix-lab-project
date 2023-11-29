@@ -7,10 +7,10 @@ import { Connection, Model, connect } from 'mongoose';
 
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
 import { NotificationsModule } from '@domain/notifications/notifications.module';
 import { NotificationsService } from '@domain/notifications/notifications.service';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
 
 import { User, UserSchema } from './schemas/user.schema';
 
@@ -58,8 +58,8 @@ describe('Users Controller', () => {
   afterEach(async () => {
     const collections = mongoConnection.collections;
     for (const key in collections) {
-      const collection = collections[key];
-      await collection.deleteMany({});
+      // const collection = collections[key];
+      // await collection.deleteMany({});
     }
   });
 

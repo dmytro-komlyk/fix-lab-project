@@ -19,6 +19,9 @@ import { Issue } from '@domain/issues/schemas/issue.schema';
 
 @Injectable()
 export class TrpcRouter {
+  static appRouter: any;
+  static appContext: any;
+
   constructor(
     private readonly trpc: TrpcService,
     private readonly gadgetsService: GadgetsService,
@@ -34,7 +37,7 @@ export class TrpcRouter {
     }),
     getGadgetBySlugQuery: this.trpc.procedure
       .input(z.object({ slug: z.string() }))
-      .query(async ({ input }): Promise<Gadget | null> => {
+      .query(async ({ input }: { input: any }): Promise<Gadget | null> => {
         return await this.gadgetsService.findOneByQuery({ ...input });
       }),
 
@@ -43,7 +46,7 @@ export class TrpcRouter {
     }),
     getIssueBySlugQuery: this.trpc.procedure
       .input(z.object({ slug: z.string() }))
-      .query(async ({ input }): Promise<Issue | null> => {
+      .query(async ({ input }: { input: any }): Promise<Issue | null> => {
         return await this.issuesService.findOneByQuery({ ...input });
       }),
 
@@ -52,7 +55,7 @@ export class TrpcRouter {
     }),
     getBrandBySlugQuery: this.trpc.procedure
       .input(z.object({ slug: z.string() }))
-      .query(async ({ input }): Promise<Brand | null> => {
+      .query(async ({ input }: { input: any }): Promise<Brand | null> => {
         return await this.brandsService.findOneByQuery({ ...input });
       }),
 
@@ -64,9 +67,11 @@ export class TrpcRouter {
           sort: z.string().optional()
         })
       )
-      .query(async ({ input }): Promise<IPaginationAnswer<Article>> => {
-        return await this.articlesService.findWithPagination({ ...input }, {});
-      }),
+      .query(
+        async ({ input }: { input: any }): Promise<IPaginationAnswer<Article>> => {
+          return await this.articlesService.findWithPagination({ ...input }, {});
+        }
+      ),
     getArticleBySlugQuery: this.trpc.procedure
       .input(z.object({ slug: z.string() }))
       .query(async ({ input }): Promise<Article | null> => {
@@ -78,12 +83,32 @@ export class TrpcRouter {
     })
   });
 
+  appContext = this.trpc.createContext;
+
   async applyMiddleware(app: INestApplication): Promise<void> {
     app.use(
+      (
+        req: { method: any; path: any; body: any; query: any },
+        _res: any,
+        next: () => void
+      ) => {
+        // request logger
+        console.log('⬅️ ', req.method, req.path, req.body ?? req.query);
+
+        next();
+      }
+    );
+
+    app.use(
       '/trpc',
-      trpcExpress.createExpressMiddleware({ router: this.appRouter })
+      trpcExpress.createExpressMiddleware({
+        router: this.appRouter,
+        createContext: this.trpc.createContext
+      })
     );
   }
 }
 
+export const appRouter = TrpcRouter['appRouter'];
 export type AppRouter = TrpcRouter['appRouter'];
+export const appContext = TrpcRouter['appContext'];

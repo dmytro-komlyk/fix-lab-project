@@ -76,7 +76,7 @@ export class IssuesService {
     return updatedIssue;
   }
 
-  public async remove(id: string): Promise<Issue> {
+  public async remove(id: string): Promise<string> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -87,6 +87,6 @@ export class IssuesService {
       throw new NotFoundException(`Issue with ID ${id} was not found`);
     }
 
-    return contact;
+    return id;
   }
 }

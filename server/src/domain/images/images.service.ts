@@ -49,7 +49,7 @@ export class ImagesService {
     return image;
   }
 
-  public async remove(id: string): Promise<Image> {
+  public async remove(id: string): Promise<string> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -60,6 +60,6 @@ export class ImagesService {
       throw new NotFoundException(`Image with ID ${id} was not found`);
     }
 
-    return image;
+    return id;
   }
 }

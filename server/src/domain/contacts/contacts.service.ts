@@ -60,7 +60,7 @@ export class ContactsService {
     return updatedContact;
   }
 
-  public async remove(id: string): Promise<Contact> {
+  public async remove(id: string): Promise<string> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -71,6 +71,6 @@ export class ContactsService {
       throw new NotFoundException(`Contact with ID ${id} was not found`);
     }
 
-    return contact;
+    return id;
   }
 }

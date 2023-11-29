@@ -60,7 +60,7 @@ export class BenefitsService {
     return updatedBenefit;
   }
 
-  public async remove(id: string): Promise<Benefit> {
+  public async remove(id: string): Promise<string> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -71,6 +71,6 @@ export class BenefitsService {
       throw new NotFoundException(`Brand with ID ${id} was not found`);
     }
 
-    return benefit;
+    return id;
   }
 }
