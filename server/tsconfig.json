@@ -1,9 +1,12 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "noUncheckedIndexedAccess": true,
     "strict": false,
     "strictNullChecks": true,
+    "strictPropertyInitialization": false,
     "declaration": true,
     "removeComments": true,
     "strictBindCallApply": true,
