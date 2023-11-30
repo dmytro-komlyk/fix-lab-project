@@ -8,6 +8,9 @@ interface IContactAdminProps {
   }
 }
 
+export const runtime = 'edge'
+export const revalidate = 3600
+
 const GadgetPage: React.FC<IContactAdminProps> = async ({ params }) => {
   const gadgetUrl = `/gadgets/${params.gadget}`
   const issuesUrl = `/issues/all`
@@ -18,9 +21,9 @@ const GadgetPage: React.FC<IContactAdminProps> = async ({ params }) => {
   const brandsData = await getData(brandsUrl)
   return (
     <main className=' flex flex-auto'>
-      <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>
+      <section className=' bg-footer-gradient-linear-blue w-full  overflow-hidden  py-[60px]'>
         <div className='relative flex flex-col px-8'>
-          <h2 className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
+          <h2 className='font-exo_2 text-white-dis mb-6  text-2xl font-bold max-lg:text-xl '>
             {gadgetData.title}
           </h2>
           <EditGadgetForm

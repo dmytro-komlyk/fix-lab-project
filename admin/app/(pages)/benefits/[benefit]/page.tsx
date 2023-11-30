@@ -11,12 +11,15 @@ interface IArticleAdminProps {
   }
 }
 
+export const runtime = 'edge'
+export const revalidate = 3600
+
 const BenefitPage: React.FC<IArticleAdminProps> = async ({ params }) => {
   const benefitUrl = `/benefits/${params.benefit}`
   const benefitData = await getData(benefitUrl)
   return (
     <main className=' flex flex-auto'>
-      <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>
+      <section className=' bg-footer-gradient-linear-blue w-full  overflow-hidden  py-[60px]'>
         <div className='container  relative flex flex-col  px-8 '>
           <div className='z-[1] mb-8 flex items-center gap-1'>
             <Link
@@ -30,7 +33,7 @@ const BenefitPage: React.FC<IArticleAdminProps> = async ({ params }) => {
               {benefitData.title}
             </p>
           </div>
-          <h2 className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
+          <h2 className='font-exo_2 text-white-dis mb-6  text-2xl font-bold max-lg:text-xl '>
             {benefitData.title}
           </h2>
           <EditBenefitForm benefitData={benefitData} />

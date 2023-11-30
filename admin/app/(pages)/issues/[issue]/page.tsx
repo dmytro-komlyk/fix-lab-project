@@ -11,6 +11,9 @@ interface IIssueAdminProps {
   }
 }
 
+export const runtime = 'edge'
+export const revalidate = 3600
+
 const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
   const issueUrl = `/issues/${params.issue}`
   const benefitsUrl = `/benefits/all`
@@ -19,7 +22,7 @@ const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
   const benefitsData = await getData(benefitsUrl)
   return (
     <main className=' flex flex-auto'>
-      <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>
+      <section className=' bg-footer-gradient-linear-blue w-full  overflow-hidden  py-[60px]'>
         <div className='relative flex flex-col px-8'>
           <div className='z-[1] mb-8 flex items-center gap-1'>
             <Link
@@ -33,7 +36,7 @@ const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
               {issueData.title}
             </p>
           </div>
-          <h2 className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
+          <h2 className='font-exo_2 text-white-dis mb-6  text-2xl font-bold max-lg:text-xl '>
             {issueData.title}
           </h2>
           <EditIssuesForm issueData={issueData} benefitsData={benefitsData} />

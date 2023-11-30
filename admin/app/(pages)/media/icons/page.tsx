@@ -11,12 +11,15 @@ interface IContactAdminProps {
   }
 }
 
+export const runtime = 'edge'
+export const revalidate = 3600
+
 const IconsPage: React.FC<IContactAdminProps> = async () => {
   const iconsUrl = `/images/icons/all`
   const iconsData = await getData(iconsUrl)
   return (
     <main className=' flex flex-auto'>
-      <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>
+      <section className=' bg-footer-gradient-linear-blue w-full  overflow-hidden  py-[60px]'>
         <div className='container  relative flex flex-col px-8 '>
           <div className='z-[1] mb-8 flex items-center gap-1'>
             <Link
@@ -30,7 +33,7 @@ const IconsPage: React.FC<IContactAdminProps> = async () => {
               Іконки
             </p>
           </div>
-          <h2 className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
+          <h2 className='font-exo_2 text-white-dis mb-6  text-2xl font-bold max-lg:text-xl '>
             Іконки
           </h2>
           <IconsSection iconsData={iconsData} />

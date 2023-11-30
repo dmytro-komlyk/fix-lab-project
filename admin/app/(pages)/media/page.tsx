@@ -3,6 +3,9 @@ import Link from 'next/link'
 
 import getData from '@/app/(server)/api/service/admin/getData'
 
+export const runtime = 'edge'
+export const revalidate = 3600
+
 const MediaPage = async () => {
   const iconsUrl = '/images/icons/all'
   const ImagesUrl = '/images/pictures/all'
@@ -11,17 +14,17 @@ const MediaPage = async () => {
 
   return (
     <main className='flex flex-auto'>
-      <section className='flex h-[100vh] w-full items-center justify-center  bg-footer-gradient-linear-blue py-[60px]'>
+      <section className='bg-footer-gradient-linear-blue flex h-[100vh] w-full items-center  justify-center py-[60px]'>
         <div className='container relative flex flex-col px-8 '>
           <ul className='flex w-full items-end justify-center gap-6 '>
             <li>
               <Link
-                className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl'
+                className='font-exo_2 text-white-dis mb-6  text-2xl font-bold max-lg:text-xl'
                 href='/media/icons'
               >
                 <div className='flex flex-col items-center  gap-2 py-2'>
                   <Image
-                    className='h-[240px] w-[380px] border-[1px] border-white-dis  object-center opacity-100'
+                    className='border-white-dis h-[240px] w-[380px] border-[1px]  object-center opacity-100'
                     alt={iconsData[0].alt}
                     src={iconsData[0].src}
                     width={0}
@@ -37,7 +40,7 @@ const MediaPage = async () => {
             </li>
             <li>
               <Link
-                className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl'
+                className='font-exo_2 text-white-dis mb-6  text-2xl font-bold max-lg:text-xl'
                 href='/media/images'
               >
                 <div className='flex flex-col items-center gap-2 py-2'>
