@@ -7,6 +7,7 @@
     "resolveJsonModule": true,
     "removeComments": true,
     "preserveConstEnums": true,
+    "strictPropertyInitialization": false,
     "strict": true,
     "alwaysStrict": true,
     "strictNullChecks": true,
@@ -37,13 +38,6 @@
     "isolatedModules": true,
     "incremental": true,
 
-    "paths": {
-      "*": ["./admin/*"],
-      "@/*": ["./admin/*"],
-      "@/public/*": ["./public/admin/*"],
-      "@server/*": ["./server/src/*"],
-      "@trpc/*": ["./server/src/domain/trpc/*"]
-    },
     "plugins": [
       {
         "name": "next"

@@ -1,7 +1,6 @@
+import getData from '@admin/app/(server)/api/service/admin/getData'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
-
-import getData from '@/app/(server)/api/service/admin/getData'
 
 import EditBenefitForm from '../(components)/EditBenefitForm '
 

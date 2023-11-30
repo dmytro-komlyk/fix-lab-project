@@ -1,4 +1,4 @@
-import TinyMCEEditorAdd from '@/app/(utils)/wysiwygEditor/TinyMCEEditorAdd'
+import TinyMCEEditorAdd from '@admin/app/(utils)/wysiwygEditor/TinyMCEEditorAdd'
 
 interface CustomAddContentProps {
   content: string

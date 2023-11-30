@@ -1,10 +1,9 @@
+import type { IContact } from '@admin/app/(server)/api/service/modules/contactService'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BiMap } from 'react-icons/bi'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 import { TbClockHour9 } from 'react-icons/tb'
-
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 
 interface IContactsProps {
   contactsData: IContact[]
@@ -12,28 +11,28 @@ interface IContactsProps {
 
 const ContactsSection: React.FC<IContactsProps> = ({ contactsData }) => {
   return (
-    <section className=' overflow-hidden  bg-white-dis  pb-[102px] pt-[163px] max-md:pb-14 max-md:pt-[120px]'>
+    <section className=' bg-white-dis  overflow-hidden  pb-[102px] pt-[163px] max-md:pb-14 max-md:pt-[120px]'>
       <div className='container relative flex flex-col xl:p-0 '>
         <div className='z-[1] mb-[21px] flex items-center '>
           <Link
-            className='flex items-center text-base font-[400] text-dark-blue transition-opacity  hover:opacity-70 focus:opacity-70'
+            className='text-dark-blue flex items-center text-base font-[400] transition-opacity  hover:opacity-70 focus:opacity-70'
             href='/'
           >
             <p> Головна</p> <MdKeyboardArrowRight size={25} />
           </Link>
 
-          <p className='text-base font-[400]  text-dark-blue opacity-70'>
+          <p className='text-dark-blue text-base  font-[400] opacity-70'>
             Контакти
           </p>
         </div>
-        <h2 className='mb-[39px] font-exo_2 text-2xl font-bold text-dark-blue max-lg:text-xl max-lg:font-semibold max-md:mb-[47px]  xl:leading-[57px]'>
+        <h2 className='font-exo_2 text-dark-blue mb-[39px] text-2xl font-bold max-lg:text-xl max-lg:font-semibold max-md:mb-[47px]  xl:leading-[57px]'>
           Контакти
         </h2>
         <div className='flex items-start justify-between max-lg:flex-wrap max-lg:gap-[61px]'>
           <div className='flex max-w-[342px] flex-col'>
             <div className='mb-[45px] flex items-center gap-2 max-lg:mb-[26px]'>
               <BiMap color='#04268B' size={24} />
-              <p className='font-exo_2 text-xl font-semibold tracking-[0.45px] text-dark-blue  max-lg:text-lg '>
+              <p className='font-exo_2 text-dark-blue text-xl font-semibold tracking-[0.45px]  max-lg:text-lg '>
                 Приїхати до нас
               </p>
             </div>
@@ -42,7 +41,7 @@ const ContactsSection: React.FC<IContactsProps> = ({ contactsData }) => {
                 return (
                   <div key={item._id} className='flex flex-col gap-[20px] '>
                     <div className=''>
-                      <p className='font-semibold text-black-dis '>
+                      <p className='text-black-dis font-semibold '>
                         {item.address}
                       </p>
                       {item.comment && (
@@ -82,7 +81,7 @@ const ContactsSection: React.FC<IContactsProps> = ({ contactsData }) => {
                     {item.phones.map(phone => (
                       <a
                         key={phone}
-                        className='font-medium leading-none tracking-[1.7px] text-dark-blue transition-opacity  hover:opacity-70 focus:opacity-70'
+                        className='text-dark-blue font-medium leading-none tracking-[1.7px] transition-opacity  hover:opacity-70 focus:opacity-70'
                         href={`tel:${phone.replace(/\s/g, '')}`}
                       >
                         {phone}
@@ -96,7 +95,7 @@ const ContactsSection: React.FC<IContactsProps> = ({ contactsData }) => {
           <div className='max-w-[200px]'>
             <div className='mb-[45px] flex  items-center gap-2 max-lg:mb-8 max-md:mb-[30px]'>
               <TbClockHour9 color='#04268B' size={24} />
-              <p className='font-exo_2 text-xl  font-semibold text-dark-blue max-lg:text-lg  max-md:tracking-[0.45px]'>
+              <p className='font-exo_2 text-dark-blue  text-xl font-semibold max-lg:text-lg  max-md:tracking-[0.45px]'>
                 Режим роботи
               </p>
             </div>

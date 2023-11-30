@@ -6,13 +6,12 @@
 
 'use client'
 
+import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
+import { sendPutRequest } from '@admin/app/(server)/api/service/admin/sendPutRequest'
+import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
+import type { IContact } from '@admin/app/(server)/api/service/modules/contactService'
 import Image from 'next/image'
 import { useState } from 'react'
-
-import deleteData from '@/app/(server)/api/service/admin/deleteData'
-import { sendPutRequest } from '@/app/(server)/api/service/admin/sendPutRequest'
-import uploadImg from '@/app/(server)/api/service/admin/uploadImg'
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 
 import SendButton from '../../(components)/SendButton'
 
@@ -140,7 +139,7 @@ const EditContactForm: React.FC<IAdminContact> = ({ contactData }) => {
 
   return (
     <div className='flex flex-col items-center justify-center gap-[50px]'>
-      <form className='flex w-full flex-wrap items-end justify-evenly gap-3 text-white-dis '>
+      <form className='text-white-dis flex w-full flex-wrap items-end justify-evenly gap-3 '>
         <div className='flex w-[400px] flex-col gap-2'>
           <div className='relative'>
             {!image ? (
@@ -163,7 +162,7 @@ const EditContactForm: React.FC<IAdminContact> = ({ contactData }) => {
               </div>
             )}
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               id='image'
               type='file'
               accept='image/*'
@@ -171,20 +170,20 @@ const EditContactForm: React.FC<IAdminContact> = ({ contactData }) => {
             />
           </div>
 
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Район:
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='area'
               value={newContactData.area || contactData.area}
               onChange={handleInputChange}
             />
           </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Адрес:
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='address'
               value={newContactData.address || contactData.address}
@@ -225,30 +224,30 @@ const EditContactForm: React.FC<IAdminContact> = ({ contactData }) => {
           ))} */}
         </div>
         <div className='flex w-[400px] flex-col gap-2'>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Коментар:
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='comment'
               value={newContactData.comment || contactData.comment || ''}
               onChange={handleInputChange}
             />
           </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Посилання googleMap:
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='googleMapLink'
               value={newContactData.googleMapLink || contactData.googleMapLink}
               onChange={handleInputChange}
             />
           </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Посилання googlePlugin:
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='googlePluginLink'
               value={
@@ -257,20 +256,20 @@ const EditContactForm: React.FC<IAdminContact> = ({ contactData }) => {
               onChange={handleInputChange}
             />
           </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Робочі дні:
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='workingDate'
               value={newContactData.workingDate || contactData.workingDate}
               onChange={handleInputChange}
             />
           </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Робочий час:
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='workingTime'
               value={newContactData.workingTime || contactData.workingTime}

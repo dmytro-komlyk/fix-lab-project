@@ -1,8 +1,7 @@
 'use client'
 
+import TinyMCEEditor from '@admin/app/(utils)/wysiwygEditor/TinyMCEEditor'
 import React from 'react'
-
-import TinyMCEEditor from '@/app/(utils)/wysiwygEditor/TinyMCEEditor'
 
 interface CustomEditorProps {
   id: string

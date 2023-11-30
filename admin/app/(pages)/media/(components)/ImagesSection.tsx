@@ -2,11 +2,10 @@
 
 'use client'
 
+import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { MdDelete } from 'react-icons/md'
-
-import deleteData from '@/app/(server)/api/service/admin/deleteData'
 
 interface IImagesProps {
   imagesData: {
@@ -34,10 +33,10 @@ const ImagesSection: React.FC<IImagesProps> = ({ imagesData }) => {
         {imagesData.map(item => (
           <li
             key={item._id}
-            className='relative flex flex-col items-center gap-2 py-2 text-white-dis'
+            className='text-white-dis relative flex flex-col items-center gap-2 py-2'
           >
             <Image
-              className='h-[140px] w-[280px]  bg-pros-bg object-center opacity-100 '
+              className='bg-pros-bg h-[140px]  w-[280px] object-center opacity-100 '
               alt={item.alt}
               src={item.src}
               width={320}

@@ -4,15 +4,14 @@
 
 'use client'
 
+import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
+import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
+import { sendPutRequest } from '@admin/app/(server)/api/service/admin/sendPutRequest'
+import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-
-import useLocalStorage from '@/app/(hooks)/useLocalStorage '
-import deleteData from '@/app/(server)/api/service/admin/deleteData'
-import { sendPutRequest } from '@/app/(server)/api/service/admin/sendPutRequest'
-import uploadImg from '@/app/(server)/api/service/admin/uploadImg'
 
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
@@ -179,10 +178,10 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
 
   return (
     <div className='flex w-full flex-col items-center justify-center gap-[60px] '>
-      <form className='flex w-full flex-col items-end justify-evenly gap-3 text-white-dis '>
+      <form className='text-white-dis flex w-full flex-col items-end justify-evenly gap-3 '>
         <div className='flex w-full items-start justify-evenly'>
           <div className='flex w-[500px] flex-col gap-3'>
-            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+            <p className=' bold font-exo_2 mt-2 text-center text-xl'>
               Зображення
             </p>
             <div className='relative'>
@@ -215,13 +214,13 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
             />
           </div>
           <div className='flex w-[400px] flex-col'>
-            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+            <p className=' bold font-exo_2 mt-2 text-center text-xl'>
               SEO налаштування
             </p>
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
               Seo title
               <input
-                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                 type='text'
                 name='metadata'
                 data-metadata-field='title'
@@ -229,10 +228,10 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
                 onChange={handleInputChange}
               />
             </label>
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
               Seo description
               <input
-                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                 type='text'
                 name='metadata'
                 data-metadata-field='description'
@@ -240,10 +239,10 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
                 onChange={handleInputChange}
               />
             </label>
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
               Seo keywords
               <input
-                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                 type='text'
                 name='metadata'
                 data-metadata-field='keywords'
@@ -253,22 +252,22 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
             </label>
           </div>
         </div>
-        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
+        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
           Заголовок
           <input
             required
-            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
             type='text'
             name='title'
             value={newArticleData.title || ''}
             onChange={handleInputChange}
           />
         </label>
-        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
+        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
           Опис статті
           <input
             required
-            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
             type='text'
             name='preview'
             value={newArticleData.preview || ''}
@@ -277,7 +276,7 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
         </label>
       </form>
       <div className='flex w-full flex-col  gap-2 '>
-        <p className='text-center font-exo_2 text-xl text-white-dis'>Стаття</p>
+        <p className='font-exo_2 text-white-dis text-center text-xl'>Стаття</p>
         <CustomEditor
           id='edit-article-content'
           setContent={setNewArticle}

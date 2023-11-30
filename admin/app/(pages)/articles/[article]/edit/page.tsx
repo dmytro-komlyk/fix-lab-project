@@ -1,4 +1,4 @@
-import getData from '@/app/(server)/api/service/admin/getData'
+import getData from '@admin/app/(server)/api/service/admin/getData'
 
 import EditArticleSection from '../../(components)/EditArticleSection'
 

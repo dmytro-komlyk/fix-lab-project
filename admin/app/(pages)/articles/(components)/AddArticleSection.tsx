@@ -4,18 +4,17 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
+import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
+import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
+import postData from '@admin/app/(server)/api/service/admin/postData'
+import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
+import { createSlug } from '@admin/app/(utils)/createSlug'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
-
-import useLocalStorage from '@/app/(hooks)/useLocalStorage '
-import deleteData from '@/app/(server)/api/service/admin/deleteData'
-import postData from '@/app/(server)/api/service/admin/postData'
-import uploadImg from '@/app/(server)/api/service/admin/uploadImg'
-import { createSlug } from '@/app/(utils)/createSlug'
 
 import CustomAddContent from '../../(components)/CustomAddContent'
 import SendButton from '../../(components)/SendButton'
@@ -187,17 +186,17 @@ const AddArticleSection = () => {
         key='1'
         startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
         title={
-          <span className='text-center font-exo_2 text-2xl font-bold text-white-dis'>
+          <span className='font-exo_2 text-white-dis text-center text-2xl font-bold'>
             Додати статтю
           </span>
         }
       >
         <div className='container flex flex-col  items-center gap-[60px] transition-all duration-300  ease-in-out'>
-          <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
+          <form className='text-white-dis flex w-full items-end justify-evenly gap-3 '>
             <div className='flex w-full flex-col gap-8'>
               <div className='flex justify-evenly gap-3 '>
                 <div className='flex flex-col gap-3'>
-                  <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+                  <p className=' bold font-exo_2 mt-2 text-center text-xl'>
                     Зображення
                   </p>
                   <div className='relative'>
@@ -227,11 +226,11 @@ const AddArticleSection = () => {
                     />
                   </div>
 
-                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
                     Опис зображення(alt)
                     <input
                       required
-                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                       type='text'
                       name='altImage'
                       value={altImage}
@@ -242,25 +241,25 @@ const AddArticleSection = () => {
                   </label>
                 </div>
                 <div className='flex w-[400px] flex-col'>
-                  <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+                  <p className=' bold font-exo_2 mt-2 text-center text-xl'>
                     SEO налаштування
                   </p>
-                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
                     Seo title
                     <input
                       required
-                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                       type='text'
                       name='title'
                       value={seoContent.title || ''}
                       onChange={e => handleInputChange('title', e.target.value)}
                     />
                   </label>
-                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
                     Seo description
                     <input
                       required
-                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                       type='text'
                       name='description'
                       value={seoContent.description || ''}
@@ -269,11 +268,11 @@ const AddArticleSection = () => {
                       }
                     />
                   </label>
-                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
                     Seo keywords
                     <input
                       required
-                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                       type='text'
                       name='keywords'
                       value={seoContent.keywords || ''}
@@ -284,11 +283,11 @@ const AddArticleSection = () => {
                   </label>
                 </div>
               </div>
-              <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
+              <label className='font-exo_2  flex flex-col gap-1 text-center text-xl'>
                 Заголовок
                 <input
                   required
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                   type='text'
                   name='title'
                   value={contentTitle}
@@ -298,11 +297,11 @@ const AddArticleSection = () => {
                   }}
                 />
               </label>
-              <label className='flex  flex-col  gap-1 text-center font-exo_2 text-xl'>
+              <label className='font-exo_2  flex  flex-col gap-1 text-center text-xl'>
                 Опис статті
                 <input
                   required
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                   type='text'
                   name='preview'
                   value={contentPreview}
@@ -314,7 +313,7 @@ const AddArticleSection = () => {
             </div>
           </form>
           <div className='flex w-full flex-col items-center gap-2 '>
-            <p className='text-center font-exo_2 text-xl text-white-dis'>
+            <p className='font-exo_2 text-white-dis text-center text-xl'>
               Стаття
             </p>
             <CustomAddContent

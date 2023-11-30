@@ -2,13 +2,12 @@
 
 'use client'
 
+import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai'
 import { MdDelete } from 'react-icons/md'
-
-import deleteData from '@/app/(server)/api/service/admin/deleteData'
 
 import type { IArticle } from './ArticlesList'
 
@@ -92,7 +91,7 @@ const RemoveArticles: React.FC<RemoveArticlesProps> = ({ item }) => {
           ref={ref => {
             containerRefs.current[item._id] = ref
           }}
-          className='z-1 absolute bottom-[-21.5px] left-[-25px] flex gap-4 bg-mid-green p-[21px]'
+          className='z-1 bg-mid-green absolute bottom-[-21.5px] left-[-25px] flex gap-4 p-[21px]'
         >
           <button
             aria-label='Видалити'
@@ -100,7 +99,7 @@ const RemoveArticles: React.FC<RemoveArticlesProps> = ({ item }) => {
             onClick={() => handleDeleteArticle(item)}
           >
             <AiOutlineCheckCircle
-              className='transition-colors hover:fill-white-dis focus:fill-white-dis'
+              className='hover:fill-white-dis focus:fill-white-dis transition-colors'
               size={30}
             />
           </button>

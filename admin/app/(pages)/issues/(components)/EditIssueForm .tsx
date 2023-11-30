@@ -4,13 +4,12 @@
 
 'use client'
 
+import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
+import { sendPutRequest } from '@admin/app/(server)/api/service/admin/sendPutRequest'
+import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
+import type { IIssue } from '@admin/app/(server)/api/service/modules/gadgetService'
 import Image from 'next/image'
 import { useState } from 'react'
-
-import deleteData from '@/app/(server)/api/service/admin/deleteData'
-import { sendPutRequest } from '@/app/(server)/api/service/admin/sendPutRequest'
-import uploadImg from '@/app/(server)/api/service/admin/uploadImg'
-import type { IIssue } from '@/app/(server)/api/service/modules/gadgetService'
 
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
@@ -149,7 +148,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
     <div className='flex flex-auto flex-col items-center justify-center gap-[20px]'>
       <form
         onSubmit={handleSubmit}
-        className='flex w-full items-end justify-evenly gap-3 text-white-dis '
+        className='text-white-dis flex w-full items-end justify-evenly gap-3 '
       >
         <div className='w-[400px]'>
           <div className='relative'>
@@ -180,22 +179,22 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
             accept='icon/*'
             onChange={handleImageChange}
           />
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Заголовок
             <input
               required
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='title'
               value={newIssueData.title || ''}
               onChange={handleInputChange}
             />
           </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Вартість послуги
             <input
               required
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='price'
               value={newIssueData.price || ''}
@@ -204,13 +203,13 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
           </label>
         </div>
         <div className='w-[400px]'>
-          <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+          <p className=' bold font-exo_2 mt-2 text-center text-xl'>
             SEO налаштування
           </p>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Seo title
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='metadata'
               data-metadata-field='title'
@@ -218,10 +217,10 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
               onChange={handleInputChange}
             />
           </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Seo description
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='metadata'
               data-metadata-field='description'
@@ -229,10 +228,10 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
               onChange={handleInputChange}
             />
           </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Seo keywords
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='metadata'
               data-metadata-field='keywords'
@@ -244,7 +243,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
       </form>
       <div className='flex w-full flex-col justify-between gap-[50px]'>
         <div className='flex w-full flex-col items-start gap-2 '>
-          <p className='text-center font-exo_2 text-xl text-white-dis'>Інфо</p>
+          <p className='font-exo_2 text-white-dis text-center text-xl'>Інфо</p>
           <CustomEditor
             id='edit-info-content'
             setContent={setNewInfo}
@@ -252,7 +251,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
           />
         </div>
         <div className='flex w-full flex-col items-start gap-2 '>
-          <p className='text-center font-exo_2 text-xl text-white-dis'>
+          <p className='font-exo_2 text-white-dis text-center text-xl'>
             Стаття
           </p>
           <CustomEditor
@@ -263,8 +262,8 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
         </div>
         <div className='flex flex-col items-center justify-center'>
           <div className='flex w-full   flex-col-reverse '>
-            <div className=' mb-[20px] w-full border-b-2 border-mid-grey' />
-            <p className='mb-6 font-exo_2 text-2xl font-bold  text-white-dis  max-lg:text-xl'>
+            <div className=' border-mid-grey mb-[20px] w-full border-b-2' />
+            <p className='font-exo_2 text-white-dis mb-6 text-2xl  font-bold  max-lg:text-xl'>
               Послуги сервісного обслуговування
             </p>
           </div>

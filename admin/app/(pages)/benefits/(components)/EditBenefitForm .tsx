@@ -4,12 +4,11 @@
 
 'use client'
 
+import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
+import { sendPutRequest } from '@admin/app/(server)/api/service/admin/sendPutRequest'
+import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import Image from 'next/image'
 import { useState } from 'react'
-
-import deleteData from '@/app/(server)/api/service/admin/deleteData'
-import { sendPutRequest } from '@/app/(server)/api/service/admin/sendPutRequest'
-import uploadImg from '@/app/(server)/api/service/admin/uploadImg'
 
 import SendButton from '../../(components)/SendButton'
 
@@ -133,7 +132,7 @@ const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
     <div className='flex h-[100vh] justify-between gap-[100px] '>
       <form
         onSubmit={handleSubmit}
-        className='flex w-[400px] flex-col gap-3 text-white-dis '
+        className='text-white-dis flex w-[400px] flex-col gap-3 '
       >
         <div className='relative'>
           {!newIcon ? (
@@ -163,11 +162,11 @@ const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
           accept='icon/*'
           onChange={handleImageChange}
         />
-        <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+        <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
           Заголовок
           <input
             required
-            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
             type='text'
             name='title'
             value={newBenefitData.title || ''}

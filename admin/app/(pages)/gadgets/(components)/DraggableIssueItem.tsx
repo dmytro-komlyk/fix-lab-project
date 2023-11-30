@@ -1,10 +1,9 @@
 'use client'
 
+import type { IIssue } from '@admin/app/(server)/api/service/modules/gadgetService'
 import { useSortable } from '@dnd-kit/sortable'
 import { GoGrabber } from 'react-icons/go'
 import { IoIosRemoveCircle } from 'react-icons/io'
-
-import type { IIssue } from '@/app/(server)/api/service/modules/gadgetService'
 
 interface DraggableIssueItemProps {
   id: string
@@ -35,9 +34,9 @@ export function DraggableIssueItem({
       style={style}
       {...attributes}
       {...listeners}
-      className='flex w-full cursor-grab items-center justify-between gap-2 border-b-[0.5px] border-dark-blue bg-white-dis opacity-60   first:rounded-t-xl last:rounded-b-xl '
+      className='border-dark-blue bg-white-dis flex w-full cursor-grab items-center justify-between gap-2 border-b-[0.5px] opacity-60   first:rounded-t-xl last:rounded-b-xl '
     >
-      <p className='p-4 font-exo_2 text-md font-semibold text-dark-blue max-md:text-lg'>
+      <p className='font-exo_2 text-md text-dark-blue p-4 font-semibold max-md:text-lg'>
         {item?.title || 'No title'}
       </p>
       <div className='flex items-center gap-2'>
@@ -46,7 +45,7 @@ export function DraggableIssueItem({
           onClick={() => {
             onRemove(item)
           }}
-          className='mr-4 cursor-pointer text-dark-blue transition-colors hover:text-[red] focus:text-[red]'
+          className='text-dark-blue mr-4 cursor-pointer transition-colors hover:text-[red] focus:text-[red]'
           size={35}
         />
       </div>

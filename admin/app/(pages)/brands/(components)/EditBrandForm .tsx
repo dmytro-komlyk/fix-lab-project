@@ -4,13 +4,12 @@
 
 'use client'
 
+import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
+import { sendPutRequest } from '@admin/app/(server)/api/service/admin/sendPutRequest'
+import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
+import type { IBrand } from '@admin/app/(server)/api/service/modules/gadgetService'
 import Image from 'next/image'
 import { useState } from 'react'
-
-import deleteData from '@/app/(server)/api/service/admin/deleteData'
-import { sendPutRequest } from '@/app/(server)/api/service/admin/sendPutRequest'
-import uploadImg from '@/app/(server)/api/service/admin/uploadImg'
-import type { IBrand } from '@/app/(server)/api/service/modules/gadgetService'
 
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
@@ -136,7 +135,7 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
 
   return (
     <div className='flex w-full flex-col items-center justify-center gap-[60px] '>
-      <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
+      <form className='text-white-dis flex w-full items-end justify-evenly gap-3 '>
         <div className='flex w-[400px] flex-col'>
           <div className='relative'>
             {!newIcon ? (
@@ -168,11 +167,11 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
             accept='icon/*'
             onChange={handleImageChange}
           />
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Заголовок
             <input
               required
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='title'
               value={newBrandData.title || ''}
@@ -181,13 +180,13 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
           </label>
         </div>
         <div className='flex w-[400px] flex-col'>
-          <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+          <p className=' bold font-exo_2 mt-2 text-center text-xl'>
             SEO налаштування
           </p>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Seo title
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='metadata'
               data-metadata-field='title'
@@ -195,10 +194,10 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
               onChange={handleInputChange}
             />
           </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Seo description
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='metadata'
               data-metadata-field='description'
@@ -206,10 +205,10 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
               onChange={handleInputChange}
             />
           </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
             Seo keywords
             <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
               type='text'
               name='metadata'
               data-metadata-field='keywords'
@@ -221,7 +220,7 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
       </form>
       <div className='flex w-full flex-col justify-center gap-[50px]'>
         <div className='flex w-full flex-col  gap-2 '>
-          <p className='text-center font-exo_2 text-xl text-white-dis'>
+          <p className='font-exo_2 text-white-dis text-center text-xl'>
             Стаття
           </p>
           <CustomEditor

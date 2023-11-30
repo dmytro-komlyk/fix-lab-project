@@ -1,4 +1,4 @@
-import { authConfig } from 'app/(utils)/authOptions'
+import { authConfig } from '@admin/app/(utils)/authOptions'
 import { getServerSession } from 'next-auth'
 
 export default async function getData(url: string) {

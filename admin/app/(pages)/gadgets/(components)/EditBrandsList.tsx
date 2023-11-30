@@ -3,28 +3,27 @@
 
 'use client'
 
+import type {
+  IBrand,
+  IGadget,
+} from '@admin/app/(server)/api/service/modules/gadgetService'
 import {
-  closestCenter,
   DndContext,
   KeyboardSensor,
   PointerSensor,
+  closestCenter,
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
 import {
-  arrayMove,
   SortableContext,
+  arrayMove,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import Image from 'next/image'
 import { useState } from 'react'
 import { IoMdAddCircle } from 'react-icons/io'
-
-import type {
-  IBrand,
-  IGadget,
-} from '@/app/(server)/api/service/modules/gadgetService'
 
 import { DraggableBrandItem } from './DraggableBrandItem'
 
@@ -142,7 +141,7 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
   return (
     <div className='flex w-[800px] justify-between  gap-3'>
       <div className='flex flex-col '>
-        <p className='sticky top-0 mb-6 text-center font-exo_2 text-xl font-bold text-white-dis max-lg:text-xl '>
+        <p className='font-exo_2 text-white-dis sticky top-0 mb-6 text-center text-xl font-bold max-lg:text-xl '>
           Вибрані бренди ({newGadgetData.brands.length})
         </p>
         <DndContext
@@ -169,13 +168,13 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
       </div>
 
       <div className='flex flex-col '>
-        <p className='sticky top-0 mb-6 text-center font-exo_2 text-xl font-bold text-white-dis max-lg:text-xl '>
+        <p className='font-exo_2 text-white-dis sticky top-0 mb-6 text-center text-xl font-bold max-lg:text-xl '>
           Доступні бренди ({filteredBrandsData.length})
         </p>
         <ul className='relative flex w-[380px]  flex-col items-start'>
           {filteredBrandsData.map(item => (
             <li
-              className='flex w-full items-center justify-between gap-2 border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 first:rounded-t-xl last:rounded-b-xl'
+              className='border-dark-blue bg-white-dis flex w-full items-center justify-between gap-2 border-b-[0.5px] opacity-60 first:rounded-t-xl last:rounded-b-xl'
               key={item._id}
             >
               <div className='flex items-center gap-2 p-4'>
@@ -188,13 +187,13 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
                     height={0}
                   />
                 )}
-                <p className='font-exo_2 text-md font-semibold text-dark-blue max-md:text-lg '>
+                <p className='font-exo_2 text-md text-dark-blue font-semibold max-md:text-lg '>
                   {item?.title || 'No title'}
                 </p>
               </div>
               <IoMdAddCircle
                 onClick={() => handleAddBrandItemClick(item)}
-                className='mr-4 cursor-pointer text-dark-blue  transition-colors hover:text-mid-green focus:text-mid-green'
+                className='text-dark-blue hover:text-mid-green focus:text-mid-green  mr-4 cursor-pointer transition-colors'
                 size={35}
               />
             </li>

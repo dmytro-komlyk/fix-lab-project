@@ -1,6 +1,9 @@
-import getData from '@/app/(server)/api/service/admin/getData'
+import getData from '@admin/app/(server)/api/service/admin/getData'
 
 import { GadgetsList } from './(components)/GadgetsList'
+
+export const runtime = 'edge'
+export const revalidate = 3600
 
 const GadgetsPage = async () => {
   const url = '/gadgets/all'
@@ -8,7 +11,7 @@ const GadgetsPage = async () => {
 
   return (
     <main className='flex flex-auto'>
-      <section className=' flex w-full justify-center bg-footer-gradient-linear-blue py-[60px]'>
+      <section className=' bg-footer-gradient-linear-blue flex w-full justify-center py-[60px]'>
         <div className='relative flex flex-col items-center justify-center'>
           <GadgetsList gadgetsData={gadgetsData} />
         </div>
