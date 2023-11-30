@@ -184,7 +184,7 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
 
   return (
     <div className='flex flex-auto flex-col flex-wrap items-center justify-center gap-[20px]'>
-      <form className='text-white-dis flex w-full items-end justify-evenly gap-8 '>
+      <form className='text-white-dis flex w-full justify-between gap-8 '>
         <div className='flex w-full flex-col gap-8'>
           <div className='flex w-full justify-evenly'>
             <div className='flex flex-col items-center justify-between gap-3'>
@@ -194,7 +194,7 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
               {!newIcon ? (
                 gadgetData.icon && (
                   <Image
-                    className='h-[140px] w-[220px]  object-center'
+                    className='h-[140px] w-[220px] object-contain  object-center'
                     src={gadgetData?.icon.src}
                     width={300}
                     height={200}
@@ -204,7 +204,7 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
               ) : (
                 <div>
                   <Image
-                    className='h-[140px] w-[220px] object-center'
+                    className='h-[140px] w-[220px] object-contain object-center'
                     src={typeof newIcon === 'string' ? newIcon : ''}
                     width={0}
                     height={0}
@@ -283,6 +283,21 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
               type='text'
               name='title'
               value={newGadgetData.title || ''}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label
+            htmlFor='title'
+            className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'
+          >
+            Slug(url сторінки)
+            <input
+              required
+              maxLength={60}
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              type='text'
+              name='slug'
+              value={newGadgetData.slug || ''}
               onChange={handleInputChange}
             />
           </label>

@@ -8,6 +8,7 @@ const nextConfig = {
   images: {
     domains: ['95.217.34.212'],
     contentDispositionType: 'attachment',
+    unoptimized: true,
   },
   output: 'standalone',
   experimental: {

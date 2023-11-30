@@ -11,6 +11,7 @@ import type { IBrand } from '@admin/app/(server)/api/service/modules/gadgetServi
 import Image from 'next/image'
 import { useState } from 'react'
 
+import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
 
@@ -218,6 +219,9 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
           </label>
         </div>
       </form>
+      <div className='w-full'>
+        <AddImagesSection />
+      </div>
       <div className='flex w-full flex-col justify-center gap-[50px]'>
         <div className='flex w-full flex-col  gap-2 '>
           <p className='font-exo_2 text-white-dis text-center text-xl'>

@@ -1,4 +1,4 @@
-import { authConfig } from '@admin/app/(utils)/authOptions'
+import { authConfig } from '@admin/app/(utils)/authConfig'
 import { getServerSession } from 'next-auth'
 
 export default async function getData(url: string) {
@@ -12,7 +12,7 @@ export default async function getData(url: string) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${session.user.token}`,
     },
-    cache: 'no-cache',
+    cache: 'no-store',
   })
   if (!res.ok) {
     throw new Error(res.status.toString() + res.statusText)

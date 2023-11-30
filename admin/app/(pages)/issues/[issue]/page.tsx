@@ -35,7 +35,7 @@ const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
               {issueData.title}
             </p>
           </div>
-          <h2 className='font-exo_2 text-white-dis mb-6  text-2xl font-bold max-lg:text-xl '>
+          <h2 className='font-exo_2 text-white-dis mb-6 self-center  text-2xl font-bold max-lg:text-xl '>
             {issueData.title}
           </h2>
           <EditIssuesForm issueData={issueData} benefitsData={benefitsData} />

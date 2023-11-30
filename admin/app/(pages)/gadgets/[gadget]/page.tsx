@@ -1,4 +1,6 @@
 import getData from '@admin/app/(server)/api/service/admin/getData'
+import Link from 'next/link'
+import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import EditGadgetForm from '../(components)/EditGadgetForm '
 
@@ -23,6 +25,18 @@ const GadgetPage: React.FC<IContactAdminProps> = async ({ params }) => {
     <main className=' flex flex-auto'>
       <section className=' bg-footer-gradient-linear-blue w-full  overflow-hidden  py-[60px]'>
         <div className='relative flex flex-col px-8'>
+          <div className=' flex items-center gap-1 self-start'>
+            <Link
+              className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0] transition-opacity  hover:opacity-70 focus:opacity-70'
+              href='/gadgets'
+            >
+              <p>Гаджети</p> <MdKeyboardArrowRight size={30} />
+            </Link>
+
+            <p className='text-base font-[400] text-[#3EB9F0] opacity-70'>
+              {gadgetData.title}
+            </p>
+          </div>
           <h2 className='font-exo_2 text-white-dis mb-6  text-2xl font-bold max-lg:text-xl '>
             {gadgetData.title}
           </h2>

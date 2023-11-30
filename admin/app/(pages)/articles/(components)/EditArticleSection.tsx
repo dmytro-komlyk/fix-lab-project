@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
+import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
 import type { IArticle } from './ArticlesList'
@@ -179,7 +180,7 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
   return (
     <div className='flex w-full flex-col items-center justify-center gap-[60px] '>
       <form className='text-white-dis flex w-full flex-col items-end justify-evenly gap-3 '>
-        <div className='flex w-full items-start justify-evenly'>
+        <div className='flex w-full items-start justify-between'>
           <div className='flex w-[500px] flex-col gap-3'>
             <p className=' bold font-exo_2 mt-2 text-center text-xl'>
               Зображення
@@ -264,6 +265,17 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
           />
         </label>
         <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
+          Slug(url сторінки)
+          <input
+            required
+            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+            type='text'
+            name='slug'
+            value={newArticleData.slug || ''}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
           Опис статті
           <input
             required
@@ -275,6 +287,9 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
           />
         </label>
       </form>
+      <div className='w-full'>
+        <AddImagesSection />
+      </div>
       <div className='flex w-full flex-col  gap-2 '>
         <p className='font-exo_2 text-white-dis text-center text-xl'>Стаття</p>
         <CustomEditor
