@@ -4,7 +4,7 @@ export default async function deleteData(url: string) {
   try {
     const session = await getSession()
 
-    if (session?.user.token === undefined) {
+    if (session?.user?.token === undefined) {
       throw new Error('Headers are undefined')
     }
 
@@ -12,7 +12,7 @@ export default async function deleteData(url: string) {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${session.user.token}`,
+        Authorization: `Bearer ${session?.user?.token}`,
       },
     })
 

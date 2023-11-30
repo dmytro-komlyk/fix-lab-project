@@ -12,6 +12,7 @@ import { sendPutRequest } from '@/app/(server)/api/service/admin/sendPutRequest'
 import uploadImg from '@/app/(server)/api/service/admin/uploadImg'
 import type { IBrand } from '@/app/(server)/api/service/modules/gadgetService'
 
+import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
 
@@ -219,6 +220,9 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
           </label>
         </div>
       </form>
+      <div className='w-full'>
+        <AddImagesSection />
+      </div>
       <div className='flex w-full flex-col justify-center gap-[50px]'>
         <div className='flex w-full flex-col  gap-2 '>
           <p className='text-center font-exo_2 text-xl text-white-dis'>

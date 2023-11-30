@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
-import { authConfig } from 'app/(utils)/authOptions'
 import type { AxiosResponse } from 'axios'
 import axios from 'axios'
 import { getServerSession } from 'next-auth'
+
+import { authConfig } from '@/app/(utils)/authConfig'
 
 export default async function getImageData(url: string): Promise<any> {
   try {

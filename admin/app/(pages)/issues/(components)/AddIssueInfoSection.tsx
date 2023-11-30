@@ -1,8 +1,8 @@
-'use client'
-
-/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-console */
+
+'use client'
 
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Image from 'next/image'
@@ -21,13 +21,14 @@ import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomAddContent from '../../(components)/CustomAddContent'
 import SendButton from '../../(components)/SendButton'
 
-const AddArticleSection = () => {
+const AddIssueInfoSection = () => {
   const router = useRouter()
+
   const [seoContent, setSeoContent] = useLocalStorage<{
     title: string
     description: string
     keywords: string
-  }>('addArticleSeoContent', {
+  }>('addIssueInfoSeoContent', {
     title: '',
     description: '',
     keywords: '',
@@ -37,24 +38,30 @@ const AddArticleSection = () => {
     null,
   )
 
-  const [contentArticle, setContentArticle] = useLocalStorage<string | ''>(
-    'addArticleContentArticle',
+  const [contentInfoIssue, setContentInfoIssue] = useLocalStorage<string | ''>(
+    'addIssueInfoInfoIssue',
     '',
   )
+  const [contentArticleIssue, setContentArticleIssue] = useLocalStorage<
+    string | ''
+  >('addIssueInfoArticleIssue', '')
+
   const [contentTitle, setContentTitle] = useLocalStorage<string>(
-    'addArticleContentTitle',
+    'addIssueInfoTitle',
     '',
   )
-  const [contentPreview, setContentPreview] = useLocalStorage<string | ''>(
-    'addArticleContentPreview',
+
+  const [contentIssuePrice, setContentIssuePrice] = useLocalStorage<string>(
+    'addIssueInfoPrice',
     '',
   )
+
   const [contentSlug, setContentSlug] = useLocalStorage<string>(
-    'addArticleContentSlug',
+    'addIssueInfoSlug',
     '',
   )
   const [altImage, setAltImage] = useLocalStorage<string | ''>(
-    'addArticleAltImage',
+    'addIssueInfoAltImage',
     '',
   )
 
@@ -66,11 +73,12 @@ const AddArticleSection = () => {
     })
     setSelectedImage(null)
     setContentImage(null)
-    setContentArticle('')
+    setContentInfoIssue('')
     setContentTitle('')
-    setContentPreview('')
+    setContentIssuePrice('')
     setContentSlug('')
     setAltImage('')
+    setContentArticleIssue('')
   }
 
   const handleInputChange = (key: string, value: string) => {
@@ -94,20 +102,40 @@ const AddArticleSection = () => {
 
       uploadedImageId = uploadResponse.data._id
 
+      if (
+        !(
+          uploadedImageId &&
+          contentTitle &&
+          contentInfoIssue &&
+          contentArticleIssue
+        )
+      ) {
+        toast.error(`Всі поля повинні бути заповнені...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'grey',
+            color: '#fff',
+          },
+        })
+        return
+      }
+
       const data = {
         isActive: true,
         slug: contentSlug,
         title: contentTitle,
-        text: contentArticle,
+        price: contentIssuePrice,
         image: uploadedImageId,
-        preview: contentPreview,
         metadata: seoContent,
+        description: contentArticleIssue,
+        info: contentInfoIssue,
+        benefits: [],
       }
 
-      const response = await postData(`/articles`, data)
+      const response = await postData(`/issues`, data)
 
       if (response.status === 201) {
-        toast.success(`Статтю додано!`, {
+        toast.success(`Послугу додано!`, {
           style: {
             borderRadius: '10px',
             background: 'grey',
@@ -120,26 +148,7 @@ const AddArticleSection = () => {
         throw new Error('Error posting data')
       }
     } catch (error) {
-      if (
-        !(
-          uploadedImageId &&
-          contentTitle &&
-          contentPreview &&
-          contentArticle &&
-          seoContent &&
-          altImage &&
-          contentSlug
-        )
-      ) {
-        toast.error(`Всі поля повинні бути заповнені...`, {
-          style: {
-            borderRadius: '10px',
-            background: 'grey',
-            color: '#fff',
-          },
-        })
-        return
-      }
+      console.error('Error:', error)
       toast.error(`Помилка сервера...`, {
         style: {
           borderRadius: '10px',
@@ -201,28 +210,28 @@ const AddArticleSection = () => {
         key='1'
         startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
         title={
-          <span className='bg-top- text-center font-exo_2 text-2xl font-bold text-white-dis'>
-            Додати статтю
+          <span className='text-center font-exo_2 text-2xl font-bold text-white-dis'>
+            Додати послугу з додатковою інформацією
           </span>
         }
       >
-        <div className='container flex flex-col items-center gap-[60px] px-4 transition-all duration-300  ease-in-out'>
-          <form className='flex w-full  justify-evenly gap-3 text-white-dis '>
+        <div className='container  flex flex-col items-center  gap-[60px] px-4 transition-all duration-300  ease-in-out'>
+          <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
             <div className='flex w-full flex-col gap-8'>
               <div className='flex justify-between gap-3 '>
                 <div className='flex flex-col gap-3'>
                   <p className=' bold mt-2 text-center font-exo_2 text-xl'>
                     Зображення
                   </p>
-                  <div className='flex flex-col gap-3'>
+                  <div className='relative'>
                     {!contentImage ? (
-                      <div className='flex h-[300px] w-[500px] items-center justify-center'>
+                      <div className=' flex h-[300px] w-[500px] items-center justify-center'>
                         <p>NO IMAGE</p>
                       </div>
                     ) : (
                       <div>
                         <Image
-                          className='h-[300px] w-[500px] object-contain object-center'
+                          className='max-h-[300px] w-[500px] object-contain object-center'
                           src={
                             typeof contentImage === 'string' ? contentImage : ''
                           }
@@ -298,6 +307,17 @@ const AddArticleSection = () => {
                   </label>
                 </div>
               </div>
+              <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                Вартість послуги
+                <input
+                  required
+                  className='font-base h-[45px] w-[300px] indent-3 text-md text-black-dis'
+                  type='text'
+                  name='price'
+                  value={contentIssuePrice}
+                  onChange={e => setContentIssuePrice(e.target.value)}
+                />
+              </label>
               <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
                 Заголовок
                 <input
@@ -325,33 +345,50 @@ const AddArticleSection = () => {
                   }}
                 />
               </label>
-              <label className='flex  flex-col   gap-1 text-center font-exo_2 text-xl'>
-                Опис статті
-                <input
-                  required
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                  type='text'
-                  name='preview'
-                  value={contentPreview}
-                  onChange={e => {
-                    setContentPreview(e.target.value)
-                  }}
-                />
-              </label>
             </div>
           </form>
           <div className='w-full'>
             <AddImagesSection />
           </div>
-          <div className='flex w-full flex-col items-center gap-2 overflow-hidden '>
-            <p className='text-center font-exo_2  text-xl text-white-dis'>
-              Стаття
+          <div className='flex w-full flex-col items-center gap-2 '>
+            <p className='text-center font-exo_2 text-xl text-white-dis'>
+              Інформація послуги
             </p>
             <CustomAddContent
-              id='add-article-content'
-              setContent={setContentArticle}
-              content={contentArticle}
+              id='add-issue-info-content'
+              setContent={setContentInfoIssue}
+              content={contentInfoIssue}
             />
+          </div>
+          <div className='w-full'>
+            <AddImagesSection />
+          </div>
+          <div className='flex w-full flex-col items-center gap-2 '>
+            <p className='text-center font-exo_2 text-xl text-white-dis'>
+              Стаття послуги
+            </p>
+            <CustomAddContent
+              id='add-issue-article-content'
+              setContent={setContentArticleIssue}
+              content={contentArticleIssue}
+            />
+          </div>
+          <div className='flex w-full flex-col items-center justify-center'>
+            <div className='flex w-full  flex-col-reverse  justify-center '>
+              <div className='  w-full border-b-2 border-mid-grey' />
+              <p className='mb-6 text-center font-exo_2 text-2xl font-bold  text-white-dis  max-lg:text-xl'>
+                Послуги сервісного обслуговування
+              </p>
+            </div>
+          </div>
+          <div className=' flex h-[200px] w-full flex-col items-center justify-center gap-2 overflow-auto '>
+            <p className='font-exo_2 text-2xl font-bold text-white-dis'>
+              В розробці...
+            </p>
+            <p className='font-exo_2 text-xl font-bold text-white-dis'>
+              Послуги сервісного обслуговування можна додати після створення, в
+              розділі редагування послуги...
+            </p>
           </div>
           <div className='mb-8'>
             <SendButton handleSubmit={handleSubmit} />
@@ -362,4 +399,4 @@ const AddArticleSection = () => {
   )
 }
 
-export default AddArticleSection
+export default AddIssueInfoSection

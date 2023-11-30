@@ -14,6 +14,7 @@ import deleteData from '@/app/(server)/api/service/admin/deleteData'
 import { sendPutRequest } from '@/app/(server)/api/service/admin/sendPutRequest'
 import uploadImg from '@/app/(server)/api/service/admin/uploadImg'
 
+import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
 import type { IArticle } from './ArticlesList'
@@ -180,7 +181,7 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
   return (
     <div className='flex w-full flex-col items-center justify-center gap-[60px] '>
       <form className='flex w-full flex-col items-end justify-evenly gap-3 text-white-dis '>
-        <div className='flex w-full items-start justify-evenly'>
+        <div className='flex w-full items-start justify-between'>
           <div className='flex w-[500px] flex-col gap-3'>
             <p className=' bold mt-2 text-center font-exo_2 text-xl'>
               Зображення
@@ -265,6 +266,17 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
           />
         </label>
         <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
+          Slug(url сторінки)
+          <input
+            required
+            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+            type='text'
+            name='slug'
+            value={newArticleData.slug || ''}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
           Опис статті
           <input
             required
@@ -276,6 +288,9 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
           />
         </label>
       </form>
+      <div className='w-full'>
+        <AddImagesSection />
+      </div>
       <div className='flex w-full flex-col  gap-2 '>
         <p className='text-center font-exo_2 text-xl text-white-dis'>Стаття</p>
         <CustomEditor

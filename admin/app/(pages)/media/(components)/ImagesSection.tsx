@@ -8,7 +8,7 @@ import { MdDelete } from 'react-icons/md'
 
 import deleteData from '@/app/(server)/api/service/admin/deleteData'
 
-interface IImagesProps {
+export interface IImagesProps {
   imagesData: {
     _id: string
     src: string

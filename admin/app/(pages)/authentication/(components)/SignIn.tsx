@@ -34,6 +34,7 @@ const SignIn = () => {
           },
         })
         router.push('/gadgets')
+        router.refresh()
       } else {
         toast.error(
           `Помилка авторизації!!! Перевірте дані логіну чи паролю...`,

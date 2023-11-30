@@ -1,5 +1,6 @@
-import { authConfig } from 'app/(utils)/authOptions'
 import { getServerSession } from 'next-auth'
+
+import { authConfig } from '@/app/(utils)/authConfig'
 
 export default async function getData(url: string) {
   const session = await getServerSession(authConfig)
@@ -12,7 +13,7 @@ export default async function getData(url: string) {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${session.user.token}`,
     },
-    cache: 'no-cache',
+    cache: 'no-store',
   })
   if (!res.ok) {
     throw new Error(res.status.toString() + res.statusText)
