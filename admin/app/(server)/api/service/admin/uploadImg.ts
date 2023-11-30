@@ -9,7 +9,7 @@ interface UploadFileParams {
 }
 
 const uploadImg = async ({ fileInput, alt, type }: UploadFileParams) => {
-  const url = `http://95.217.34.212:30000/api/images/upload-${type}`
+  const url = `http://localhoat:30000/api/images/upload-${type}`
   const session = await getSession()
 
   if (session?.user.token === undefined) {

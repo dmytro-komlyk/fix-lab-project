@@ -27,7 +27,7 @@ export const sendPutRequest = async (
   if (!endpoint) {
     throw new Error('No endpoint')
   }
-  const apiUrl = `http://95.217.34.212:30000/api${endpoint}`
+  const apiUrl = `http://localhost:30000/api${endpoint}`
   if (!data) {
     throw new Error('No data')
   }

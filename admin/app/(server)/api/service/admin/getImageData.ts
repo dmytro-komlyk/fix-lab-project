@@ -13,7 +13,7 @@ export default async function getImageData(url: string): Promise<any> {
     }
 
     const response: AxiosResponse = await axios.get(
-      `http://95.217.34.212:30000/api${url}`,
+      `http://localhost:30000/api${url}`,
       {
         headers: {
           Authorization: `Bearer ${session.user.token}`,

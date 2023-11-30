@@ -7,7 +7,7 @@ export default async function getData(url: string) {
   if (session?.user.token === undefined) {
     throw new Error('Headers are undefined')
   }
-  const res = await fetch(`http://95.217.34.212:30000/api${url}`, {
+  const res = await fetch(`http://localhost:30000/api${url}`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${session.user.token}`,

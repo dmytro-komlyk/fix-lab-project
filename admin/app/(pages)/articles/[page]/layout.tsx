@@ -1,4 +1,4 @@
-import fetchDataFromServer from '@/app/(server)/api/service/helpers/fetchDataFromServer'
+import fetchDataFromServer from '@admin/app/(server)/api/service/helpers/fetchDataFromServer'
 
 export async function generateStaticParams() {
   const url = `/articles?limit=9`

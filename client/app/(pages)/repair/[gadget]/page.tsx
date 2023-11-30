@@ -18,6 +18,7 @@ interface IndexProps {
 }
 
 export const runtime = 'edge'
+export const revalidate = 3600
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({

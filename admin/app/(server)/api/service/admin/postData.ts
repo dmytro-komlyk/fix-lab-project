@@ -18,7 +18,7 @@ const postData = async (endpoint: string, data: any) => {
   if (!endpoint) {
     throw new Error('No endpoint')
   }
-  const url = `http://95.217.34.212:30000/api${endpoint}`
+  const url = `http://localhost:30000/api${endpoint}`
 
   if (!data) {
     throw new Error('No data')

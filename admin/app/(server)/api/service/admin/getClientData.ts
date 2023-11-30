@@ -6,7 +6,7 @@ export default async function getClientData(url: string) {
   if (session?.user.token === undefined) {
     throw new Error('Headers are undefined')
   }
-  const res = await axios.get(`http://95.217.34.212:30000/api${url}`, {
+  const res = await axios.get(`http://localhost:30000/api${url}`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${session?.user.token}`,

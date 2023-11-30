@@ -8,7 +8,7 @@ export default async function deleteData(url: string) {
       throw new Error('Headers are undefined')
     }
 
-    const res = await fetch(`http://95.217.34.212:30000/api${url}`, {
+    const res = await fetch(`http://localhost:30000/api${url}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

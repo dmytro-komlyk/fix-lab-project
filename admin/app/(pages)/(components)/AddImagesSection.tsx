@@ -3,9 +3,11 @@
 'use client'
 
 import 'swiper/css'
-import 'swiper/css/pagination'
 import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
+import getClientData from '@admin/app/(server)/api/service/admin/getClientData'
+import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -15,9 +17,6 @@ import { FaFileImage, FaSave } from 'react-icons/fa'
 import { IoMdAddCircle } from 'react-icons/io'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-
-import getClientData from '@/app/(server)/api/service/admin/getClientData'
-import uploadImg from '@/app/(server)/api/service/admin/uploadImg'
 
 export interface IImageItem {
   _id: string
@@ -116,7 +115,7 @@ const AddImagesSection = () => {
         startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
         className='flex flex-col'
         title={
-          <span className='bg-top- text-center font-exo_2 text-2xl font-bold text-white-dis'>
+          <span className='bg-top- font-exo_2 text-white-dis text-center text-2xl font-bold'>
             Додати зображення для редактора
           </span>
         }
@@ -133,7 +132,7 @@ const AddImagesSection = () => {
               />
               <button
                 type='button'
-                className='absolute right-0 top-0 rounded-bl-xl bg-black-dis p-2 text-white-dis  '
+                className='bg-black-dis text-white-dis absolute right-0 top-0 rounded-bl-xl p-2  '
                 onClick={() => {
                   setSelectedImage(null)
                   setContentImage(null)
@@ -148,11 +147,11 @@ const AddImagesSection = () => {
             </div>
           )}
           <div className='flex items-end gap-4'>
-            <label className='flex w-[300px] flex-col items-center justify-center gap-1  font-exo_2 text-xl text-white-dis'>
+            <label className='font-exo_2 text-white-dis flex w-[300px] flex-col items-center  justify-center gap-1 text-xl'>
               Опис зображення(alt)
               <input
                 required
-                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                 type='text'
                 name='altImage'
                 value={altImage}
@@ -214,7 +213,7 @@ const AddImagesSection = () => {
           {reversedImagesData.map(item => {
             return (
               <SwiperSlide key={item._id} style={{ width: 600 }}>
-                <div className='relative my-6 mb-10 flex justify-center bg-modal-overlay '>
+                <div className='bg-modal-overlay relative my-6 mb-10 flex justify-center '>
                   <Image
                     className='h-[140px] max-w-[280px]  object-contain object-center opacity-100 '
                     alt={item.alt}
@@ -224,7 +223,7 @@ const AddImagesSection = () => {
                   />
                   <button
                     type='button'
-                    className='absolute right-0 top-0 rounded-bl-xl bg-black-dis p-2 font-exo_2 text-sm text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
+                    className='bg-black-dis font-exo_2 text-white-dis hover:bg-mid-blue focus:bg-mid-blue absolute right-0 top-0 rounded-bl-xl  p-2 text-sm  transition-colors'
                     onClick={() => handleCopyLink(item.src)}
                   >
                     Копіювати посилання

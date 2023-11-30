@@ -3,7 +3,7 @@
 
 export default async function fetchDataFromServer(url: string) {
   try {
-    const res = await fetch(`http://95.217.34.212:30000/api${url}`, {
+    const res = await fetch(`http://localhost:30000/api${url}`, {
       next: { revalidate: 60 },
     })
 
