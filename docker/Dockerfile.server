@@ -1,29 +1,27 @@
 FROM node:18-alpine AS runner
 WORKDIR /app
 COPY tsconfig*.json ./
-
+RUN npm i -g @nestjs/cli
 WORKDIR /app/server
-COPY server/package*.json ./
-COPY server/tsconfig*.json ./
-COPY server/.env.example ./.env
+COPY --chown=node:node server/package*.json ./
+COPY --chown=node:node server/tsconfig*.json ./
+COPY --chown=node:node server/.env.example ./.env
 
 RUN npm install
 
-COPY server .
+COPY --chown=node:node server .
 
 RUN npm run build
+RUN npm cache clean --force
+
+USER node
 
 FROM node:18-alpine as production
-COPY --from=runner /app/server /app/server
+COPY --chown=node:node --from=runner /app/server /app/server
 WORKDIR /app/server
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nestjs
-
-COPY --from=runner --chown=nestjs:nodejs /app/server/node_modules ./node_modules
-COPY --from=runner --chown=nestjs:nodejs /app/server/dist ./dist
-
-USER nestjs
+COPY --chown=node:node --from=runner /app/server/node_modules ./node_modules
+COPY --chown=node:node --from=runner /app/server/dist ./dist
 
 ENV NODE_ENV=production
 ENV PORT 3000
