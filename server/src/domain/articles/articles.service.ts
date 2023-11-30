@@ -95,7 +95,7 @@ export class ArticlesService {
     return article;
   }
 
-  public async remove(id: string): Promise<Article> {
+  public async remove(id: string): Promise<string> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -106,6 +106,6 @@ export class ArticlesService {
       throw new NotFoundException(`Article with ID ${id} was not found`);
     }
 
-    return article;
+    return id;
   }
 }

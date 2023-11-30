@@ -6,7 +6,7 @@ import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
 import TawkChat from './(components)/TawkChat'
 import { Footer, Header } from './(layouts)'
 import type { IContact } from './(server)/api/service/modules/contactService'
-import { trpc } from './trpc'
+import { trpc } from './(utils)/trpc'
 
 const inter = Inter({
   weight: ['300', '400', '700', '500', '600'],
@@ -38,6 +38,7 @@ export const metadata: Metadata = {
   description: 'FixLab - мережа студій ремонту твоєї техніки',
 }
 
+export const runtime = 'edge'
 export const revalidate = 3600
 
 export default async function RootLayout({
@@ -46,6 +47,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
+
   return (
     <html
       lang='uk'

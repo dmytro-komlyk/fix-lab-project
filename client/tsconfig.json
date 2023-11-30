@@ -21,7 +21,7 @@
     "noFallthroughCasesInSwitch": true,
     "target": "es5",
     "outDir": "out",
-    "declaration": true,
+    "declaration": false,
     "sourceMap": true,
     "downlevelIteration": true,
     "esModuleInterop": true,

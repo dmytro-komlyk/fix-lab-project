@@ -91,7 +91,7 @@ export class UsersService {
     return updatedUser;
   }
 
-  public async remove(id: string): Promise<User> {
+  public async remove(id: string): Promise<string> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -102,7 +102,7 @@ export class UsersService {
       throw new NotFoundException(`User ID ${id} was not found`);
     }
 
-    return user;
+    return id;
   }
 
   public async createFirstAdmin(key: string, dto: CreateUserDto): Promise<User> {

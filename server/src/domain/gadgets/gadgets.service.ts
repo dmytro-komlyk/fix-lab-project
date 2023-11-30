@@ -100,7 +100,7 @@ export class GadgetsService {
     return updatedGadget;
   }
 
-  public async remove(id: string): Promise<Gadget> {
+  public async remove(id: string): Promise<string> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -111,6 +111,6 @@ export class GadgetsService {
       throw new NotFoundException(`Gadget with ID ${id} was not found`);
     }
 
-    return gadget;
+    return id;
   }
 }

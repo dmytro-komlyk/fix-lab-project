@@ -4,6 +4,8 @@
 //     gadget: item.slug,
 //   }))
 // }
+export const runtime = 'edge'
+export const revalidate = 3600
 
 export default async function RootLayout({
   children,
