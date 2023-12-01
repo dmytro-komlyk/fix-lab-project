@@ -1,17 +1,23 @@
 'use client'
 
 import { AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import type { IGadgetsProps } from '@/app/(layouts)'
 import Button from '@/app/(layouts)/(components)/Button'
-import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
-import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 
 import { GadgetsList } from './GadgetsList'
 import { GadgetsSlider } from './GadgetsSlider'
+
+const InstantAdviceModal = dynamic(
+  () => import('@/app/(layouts)/(components)/InstantAdviceModal'),
+)
+const SuccessSubmitBanner = dynamic(
+  () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
+)
 
 const GadgetsSection: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
