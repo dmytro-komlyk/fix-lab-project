@@ -3,8 +3,8 @@ import type { IImage } from './imageService'
 
 export interface IPost {
   _id: string
-  slug: string
   isActive: boolean
+  slug: string
   title: string
   preview: string
   text: string
@@ -13,6 +13,7 @@ export interface IPost {
     description: string
     keywords: string
   }
+
   image: IImage
 }
 

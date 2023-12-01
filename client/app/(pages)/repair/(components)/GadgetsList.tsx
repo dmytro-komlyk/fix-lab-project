@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import Image from 'next/image'
 import Link from 'next/link'
 

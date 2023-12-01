@@ -6,7 +6,7 @@ export const ColaborationSection = () => {
   return (
     <section className=' bg-gradient-linear-center-blue pb-[55px] pt-[45px] lg:py-[102px]'>
       <div className='container relative lg:p-0'>
-        <h2 className='font-exo_2 text-white-dis mb-6 text-xl font-bold md:text-2xl lg:mb-[60px]'>
+        <h2 className='mb-6 font-exo_2 text-xl font-bold text-white-dis md:text-2xl lg:mb-[60px]'>
           Співпраця з нами це
         </h2>
         <div

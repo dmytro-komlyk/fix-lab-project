@@ -1,6 +1,7 @@
 'use client'
 
 import { AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
@@ -10,10 +11,15 @@ import { TbPhone } from 'react-icons/tb'
 
 import RenderMarkdown from '@/app/(components)/RenderMarkdown'
 import Button from '@/app/(layouts)/(components)/Button'
-import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
-import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 import type { IPost } from '@/app/(server)/api/service/modules/articlesService'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
+
+const InstantAdviceModal = dynamic(
+  () => import('@/app/(layouts)/(components)/InstantAdviceModal'),
+)
+const SuccessSubmitBanner = dynamic(
+  () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
+)
 
 export interface ISingleArticleProps {
   contactsData: IContact[]

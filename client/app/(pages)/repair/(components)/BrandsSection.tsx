@@ -1,6 +1,7 @@
 'use client'
 
 import { AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -10,12 +11,17 @@ import { MdKeyboardArrowRight } from 'react-icons/md'
 import RenderMarkdown from '@/app/(components)/RenderMarkdown'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
-import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
-import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 import type { IBrand } from '@/app/(server)/api/service/modules/brandService'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 
 import { BrandsSlider } from './BrandsSlider'
+
+const InstantAdviceModal = dynamic(
+  () => import('@/app/(layouts)/(components)/InstantAdviceModal'),
+)
+const SuccessSubmitBanner = dynamic(
+  () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
+)
 
 export interface BrandsProps {
   contactsData: IContact[]
@@ -65,20 +71,20 @@ const BrandsSection: React.FC<BrandsProps> = ({
       <div className='container flex flex-col pb-[140px] pt-[159px] max-lg:pb-[50px] max-md:pt-[117px] md:gap-[27px]  lg:px-0'>
         <div className='flex flex-wrap items-center md:gap-2 '>
           <Link
-            className='text-md text-dark-blue flex items-center gap-1 font-[400]'
+            className='flex items-center gap-1 text-md font-[400] text-dark-blue'
             href='/'
           >
             <p> Головна</p> <MdKeyboardArrowRight size={25} />
           </Link>
           <Link
-            className='text-md text-dark-blue flex items-center gap-1 font-[400]'
+            className='flex items-center gap-1 text-md font-[400] text-dark-blue'
             href='/repair'
           >
             <p> Ремонт</p> <MdKeyboardArrowRight size={25} />
           </Link>
           {gadgetData && (
             <Link
-              className='text-md text-dark-blue flex items-center gap-1 font-[400]  max-md:tracking-tighter'
+              className='flex items-center gap-1 text-md font-[400] text-dark-blue  max-md:tracking-tighter'
               href={`/repair/${gadgetData.slug}`}
             >
               {gadgetData?.title}
@@ -86,7 +92,7 @@ const BrandsSection: React.FC<BrandsProps> = ({
               <MdKeyboardArrowRight size={25} />
             </Link>
           )}
-          <p className='text-md text-dark-blue/50 font-[300]'>
+          <p className='text-md font-[300] text-dark-blue/50'>
             Бренди які ремонтуємо
           </p>
         </div>
@@ -109,7 +115,7 @@ const BrandsSection: React.FC<BrandsProps> = ({
               )}
             </div>
           )}
-          <h1 className='font-exo_2 text-black-dis mb-[25px] text-2xl font-bold max-md:mb-[2px] max-md:mt-[16px] max-md:text-[23px] max-md:leading-[30px] max-md:tracking-[0.3px] lg:leading-[1.2px] xl:tracking-[1.9px]'>
+          <h1 className='mb-[25px] font-exo_2 text-2xl font-bold text-black-dis max-md:mb-[2px] max-md:mt-[16px] max-md:text-[23px] max-md:leading-[30px] max-md:tracking-[0.3px] lg:leading-[1.2px] xl:tracking-[1.9px]'>
             Бренди {gadgetText}, які ремонтуємо у сервісному центрі FixLab
           </h1>
           <div className='container mb-[56px] p-0'>
