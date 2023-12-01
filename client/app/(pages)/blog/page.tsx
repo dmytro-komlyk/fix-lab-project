@@ -33,7 +33,11 @@ export const metadata: Metadata = {
 
 export default async function Blog() {
   // const postsData = await getPosts({ currentPage: 1 })
-  const postsData = (await trpc.getArticlesQuery.query({ page: 1 })) as IBlog
+  const postsData = (await trpc.getArticlesQuery.query({
+    page: 1,
+    sort: 'desc',
+    limit: 9,
+  })) as IBlog
   return (
     <main className='flex-auto'>
       <MainBlogSection postsData={postsData} currentPage={1} />

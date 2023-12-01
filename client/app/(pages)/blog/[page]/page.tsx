@@ -34,6 +34,8 @@ export default async function Blog({ params }: { params: { page: string } }) {
   const currentPage = typeof params.page === 'string' ? Number(params.page) : 1
   const postsData = (await trpc.getArticlesQuery.query({
     page: currentPage,
+    sort: 'desc',
+    limit: 9,
   })) as IBlog
 
   // const postsData = await getPosts({ currentPage })
