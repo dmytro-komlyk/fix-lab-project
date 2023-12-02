@@ -1,8 +1,8 @@
 'use client'
 
-/* eslint-disable no-underscore-dangle */
 import type { IIssue } from 'client/app/(server)/api/service/modules/issueService'
 import { AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
@@ -12,13 +12,18 @@ import RenderMarkdownLight from '@/app/(components)/RenderMarkdownLight'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
-import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
-import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
 
 import { BenefitsList } from '../../corporate/(components)/BenefitsList'
 import { GadgetBrandsSlider } from './GadgetBrandsSlider'
+
+const InstantAdviceModal = dynamic(
+  () => import('@/app/(layouts)/(components)/InstantAdviceModal'),
+)
+const SuccessSubmitBanner = dynamic(
+  () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
+)
 
 interface SingleIssueProps {
   contactsData: IContact[]
@@ -59,7 +64,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
 
   return (
     singleIssueData && (
-      <section className='bg-gradient-linear-blue overflow-hidden pb-[102px] pt-[159px] max-md:pb-[39px] max-md:pt-[117px]'>
+      <section className='overflow-hidden bg-gradient-linear-blue pb-[102px] pt-[159px] max-md:pb-[39px] max-md:pt-[117px]'>
         <div className='container relative  xl:px-0'>
           <div className=' absolute left-[335px] top-[175px] hidden lg:block'>
             <Image
@@ -107,7 +112,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
             <div className='flex flex-col items-start justify-between gap-14 lg:flex-row lg:gap-32'>
               <div className='flex flex-col gap-8 lg:w-[411px] lg:gap-[67px]'>
                 <div className='flex flex-col items-start'>
-                  <h2 className='font-exo_2 text-white-dis mb-8 text-xl font-semibold leading-7 lg:text-2xl lg:font-bold lg:leading-10'>
+                  <h2 className='mb-8 font-exo_2 text-xl font-semibold leading-7 text-white-dis lg:text-2xl lg:font-bold lg:leading-10'>
                     {singleIssueData.title}
                   </h2>
                   {singleIssueData.benefits.length > 0 && (
@@ -144,7 +149,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                 <div className='flex flex-col'>
                   {singleGadgetData.brands.length > 0 && (
                     <div className='max-md:w-[360px]'>
-                      <p className='font-exo_2 text-white-dis mb-[10px] text-xl font-semibold'>
+                      <p className='mb-[10px] font-exo_2 text-xl font-semibold text-white-dis'>
                         Бренди, які ремонтуємо
                       </p>
                       <div className='mb-[67px]'>
@@ -153,7 +158,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                     </div>
                   )}
                   <div>
-                    <p className='font-exo_2 text-white-dis mb-[24px] text-xl font-semibold'>
+                    <p className='mb-[24px] font-exo_2 text-xl font-semibold text-white-dis'>
                       Послуги
                     </p>
 
@@ -161,17 +166,17 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                       {singleGadgetData.issues?.map(item => {
                         return (
                           <li
-                            className='hover:op border-dark-blue bg-white-dis border-b-[0.5px] opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl hover:opacity-100 focus:opacity-100'
+                            className='hover:op border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl hover:opacity-100 focus:opacity-100'
                             key={item._id}
                           >
                             <Link
                               className='flex items-center gap-[12px] max-md:flex-col max-md:items-start max-md:justify-center  max-md:px-[16px] max-md:py-[12px] md:h-[75px] md:justify-between md:px-6'
                               href={`/repair/${slug}/${item.slug}`}
                             >
-                              <p className='font-exo_2 text-dark-blue text-xl font-semibold max-md:text-lg'>
+                              <p className='font-exo_2 text-xl font-semibold text-dark-blue max-md:text-lg'>
                                 {item.title}
                               </p>
-                              <p className='text-md text-black-dis font-[400]'>
+                              <p className='text-md font-[400] text-black-dis'>
                                 {item.price}
                               </p>
                             </Link>

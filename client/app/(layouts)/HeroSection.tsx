@@ -1,6 +1,7 @@
 'use client'
 
 import { AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useCallback, useState } from 'react'
 
@@ -19,9 +20,12 @@ import PowerImage from '../../public/icons/pop-power.svg'
 import SmartphoneImage from '../../public/icons/pop-smartphone.svg'
 import HeroPhone from '../../public/images/phone-hero.png'
 import { CommonButton } from '../(components)/CommonButton'
-import CostRepairModal from './(components)/CostRepairModal'
-import { HeroSlider } from './(components)/HeroSlider'
-import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
+
+const HeroSlider = dynamic(() => import('./(components)/HeroSlider/HeroSlider'))
+const SuccessSubmitBanner = dynamic(
+  () => import('./(components)/SuccessSubmitBanner'),
+)
+const CostRepairModal = dynamic(() => import('./(components)/CostRepairModal'))
 
 const DATA = {
   items: [

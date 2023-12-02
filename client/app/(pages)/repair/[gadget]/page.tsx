@@ -1,5 +1,6 @@
 import type { IContact } from 'client/app/(server)/api/service/modules/contactService'
 import type { IGadget } from 'client/app/(server)/api/service/modules/gadgetService'
+import type { Metadata } from 'next'
 import React from 'react'
 
 import {
@@ -19,6 +20,22 @@ interface IndexProps {
 
 export const runtime = 'edge'
 export const revalidate = 3600
+
+export async function generateMetadata({
+  params,
+}: IndexProps): Promise<Metadata> {
+  const { gadget } = params
+
+  const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({
+    slug: gadget,
+  })) as IGadget
+
+  return {
+    title: singleGadgetData.metadata.title,
+    description: singleGadgetData.metadata.description,
+    keywords: singleGadgetData.metadata.keywords.split(', '),
+  }
+}
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({

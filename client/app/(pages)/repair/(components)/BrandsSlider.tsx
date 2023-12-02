@@ -3,7 +3,7 @@ import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { IBrand } from '@/app/(server)/api/service/modules/brandService'
 
@@ -122,7 +122,7 @@ export const BrandsSlider: React.FC<BrandsSliderProps> = ({
       {loaded && instanceRef && (
         <div className='relative w-full'>
           <div
-            className='bg-mid-grey transition-width absolute left-0 top-[-2px] z-10 h-[4px] rounded-full'
+            className='absolute left-0 top-[-2px] z-10 h-[4px] rounded-full bg-mid-grey transition-width'
             style={{
               width: `${(100 / filled) * currentSlide}%`,
             }}

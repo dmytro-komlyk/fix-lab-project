@@ -1,13 +1,13 @@
+/* eslint-disable import/no-extraneous-dependencies */
 // import { getSinglePost } from '@/app/(server)/api/service/modules/articlesService'
 // import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
 
-// import SingleArticlePage from '../../(components)/SingleArticlePage'
+import type { IPost } from 'client/app/(server)/api/service/modules/articlesService'
+import type { IContact } from 'client/app/(server)/api/service/modules/contactService'
+import { trpc } from 'client/app/(utils)/trpc'
+import type { Metadata } from 'next'
 
-// interface BlogProps {
-//   params: {
-//     article: string
-//   }
-// }
+import SingleArticlePage from '../../(components)/SingleArticlePage'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 60
@@ -25,17 +25,38 @@ export const revalidate = 60
 //   }))
 // }
 
-const Blog = async () => {
+export async function generateMetadata({
+  params,
+}: {
+  params: { article: string }
+}): Promise<Metadata> {
+  const articleData = (await trpc.getArticleBySlugQuery.query({
+    slug: params.article,
+  })) as IPost
+
+  return {
+    title: articleData.metadata.title,
+    description: articleData.metadata.description,
+    keywords: articleData.metadata.keywords.split(', '),
+  }
+}
+
+const SingleArticle = async ({ params }: { params: { article: string } }) => {
+  const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
+  const articleData = (await trpc.getArticleBySlugQuery.query({
+    slug: params.article,
+  })) as IPost
+
   // const contactsData = await getAllContactsData()
   // const articleData = await getSinglePost(params.article)
   return (
     <main className='flex-auto'>
-      {/* <SingleArticlePage
+      <SingleArticlePage
         contactsData={contactsData}
         articleData={articleData}
-      /> */}
+      />
     </main>
   )
 }
 
-export default Blog
+export default SingleArticle

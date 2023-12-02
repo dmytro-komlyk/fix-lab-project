@@ -1,4 +1,5 @@
 import type { IIssue } from 'client/app/(server)/api/service/modules/issueService'
+import type { Metadata } from 'next'
 
 import { AddressSection } from '@/app/(layouts)'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
@@ -15,7 +16,22 @@ interface IndexProps {
 }
 
 export const runtime = 'edge'
-export const revalidate = 3600
+export const revalidate = 60
+
+export async function generateMetadata({
+  params,
+}: IndexProps): Promise<Metadata> {
+  const { issue } = params
+  const singleIssueData = (await trpc.getIssueBySlugQuery.query({
+    slug: issue,
+  })) as IIssue
+
+  return {
+    title: singleIssueData.metadata.title,
+    description: singleIssueData.metadata.description,
+    keywords: singleIssueData.metadata.keywords.split(', '),
+  }
+}
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const singleIssueData = (await trpc.getIssueBySlugQuery.query({

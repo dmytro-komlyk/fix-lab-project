@@ -1,6 +1,7 @@
 'use client'
 
 import { AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
@@ -9,14 +10,19 @@ import { MdKeyboardArrowRight } from 'react-icons/md'
 import { useWindowSize } from '@/app/(hooks)/useWindowResize'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
-import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
-import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 
 import type { IBenefitItem } from './BenefitsList'
 import { BenefitsList } from './BenefitsList'
 import type { IGadgetItem } from './GadgetsList'
 import { GadgetsList } from './GadgetsList'
+
+const InstantAdviceModal = dynamic(
+  () => import('@/app/(layouts)/(components)/InstantAdviceModal'),
+)
+const SuccessSubmitBanner = dynamic(
+  () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
+)
 
 export interface IForBusinessSectionProps {
   contactsData: IContact[]

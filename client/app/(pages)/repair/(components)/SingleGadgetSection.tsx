@@ -1,8 +1,7 @@
-/* eslint-disable no-underscore-dangle */
-
 'use client'
 
 import { AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
@@ -11,12 +10,17 @@ import { MdKeyboardArrowRight } from 'react-icons/md'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
-import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
-import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
 
 import { GadgetBrandsSlider } from './GadgetBrandsSlider'
+
+const InstantAdviceModal = dynamic(
+  () => import('@/app/(layouts)/(components)/InstantAdviceModal'),
+)
+const SuccessSubmitBanner = dynamic(
+  () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
+)
 
 interface SingleGadgetProps {
   singleGadgetData: IGadget
