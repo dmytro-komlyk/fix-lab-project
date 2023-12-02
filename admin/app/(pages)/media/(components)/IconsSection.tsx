@@ -2,11 +2,10 @@
 
 'use client'
 
+import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { MdDelete } from 'react-icons/md'
-
-import deleteData from '@/app/(server)/api/service/admin/deleteData'
 
 interface IIconsProps {
   iconsData: {

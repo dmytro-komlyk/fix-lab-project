@@ -1,9 +1,13 @@
-import type { AuthOptions, User } from 'next-auth'
+import type { User } from 'next-auth'
+import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 
 const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
 
-export const authConfig: AuthOptions = {
+export const {
+  handlers: { GET, POST },
+  auth,
+} = NextAuth({
   providers: [
     Credentials({
       credentials: {
@@ -47,6 +51,9 @@ export const authConfig: AuthOptions = {
     error: '/error',
   },
   callbacks: {
+    authorized(params) {
+      return !!params.auth?.user
+    },
     async jwt({ token, user }) {
       return { ...token, ...user }
     },
@@ -59,4 +66,4 @@ export const authConfig: AuthOptions = {
       return modifiedSession
     },
   },
-}
+})

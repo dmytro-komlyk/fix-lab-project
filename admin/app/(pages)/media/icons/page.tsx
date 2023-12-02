@@ -1,7 +1,6 @@
+import getData from '@admin/app/(server)/api/service/admin/getData'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
-
-import getData from '@/app/(server)/api/service/admin/getData'
 
 import IconsSection from '../(components)/IconsSection'
 
@@ -10,6 +9,9 @@ interface IContactAdminProps {
     benefit: string
   }
 }
+
+export const runtime = 'edge'
+export const revalidate = 3600
 
 const IconsPage: React.FC<IContactAdminProps> = async () => {
   const iconsUrl = `/images/icons/all`

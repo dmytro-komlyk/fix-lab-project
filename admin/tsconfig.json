@@ -7,11 +7,11 @@
     "resolveJsonModule": true,
     "removeComments": true,
     "preserveConstEnums": true,
+    "strictPropertyInitialization": false,
     "strict": true,
     "alwaysStrict": true,
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
-
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -19,31 +19,20 @@
     "noUnusedParameters": true,
     "allowUnreachableCode": false,
     "noFallthroughCasesInSwitch": true,
-
     "target": "es5",
     "outDir": "out",
-    "declaration": true,
+    "declaration": false,
     "sourceMap": true,
     "downlevelIteration": true,
-
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "allowJs": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-
     "jsx": "preserve",
     "noEmit": true,
     "isolatedModules": true,
     "incremental": true,
-
-    "paths": {
-      "*": ["./admin/*"],
-      "@/*": ["./admin/*"],
-      "@/public/*": ["./public/admin/*"],
-      "@server/*": ["./server/src/*"],
-      "@trpc/*": ["./server/src/domain/trpc/*"]
-    },
     "plugins": [
       {
         "name": "next"
@@ -51,10 +40,5 @@
     ]
   },
   "exclude": ["./out/**/*", "./node_modules/**/*"],
-  "include": [
-    "types/next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
 }

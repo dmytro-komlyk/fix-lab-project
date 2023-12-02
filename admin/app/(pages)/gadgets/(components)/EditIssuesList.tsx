@@ -3,6 +3,10 @@
 
 'use client'
 
+import type {
+  IGadget,
+  IIssue,
+} from '@admin/app/(server)/api/service/modules/gadgetService'
 import {
   closestCenter,
   DndContext,
@@ -19,11 +23,6 @@ import {
 } from '@dnd-kit/sortable'
 import { useState } from 'react'
 import { IoMdAddCircle } from 'react-icons/io'
-
-import type {
-  IGadget,
-  IIssue,
-} from '@/app/(server)/api/service/modules/gadgetService'
 
 import { DraggableIssueItem } from './DraggableIssueItem'
 

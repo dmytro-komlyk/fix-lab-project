@@ -7,7 +7,6 @@
   ],
   "rules": {
     "no-underscore-dangle": "off",
-    "no-restricted-exports": "off",
     "prettier/prettier": [
       "error",
       {
@@ -38,7 +37,6 @@
       },
       "rules": {
         "no-underscore-dangle": "off",
-        "no-restricted-exports": "off",
         "prettier/prettier": [
           "error",
           {

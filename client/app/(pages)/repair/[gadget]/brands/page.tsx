@@ -15,6 +15,8 @@ interface IndexProps {
 }
 
 export const runtime = 'edge'
+export const revalidate = 3600
+
 export const metadata: Metadata = {
   title: 'Ремонт брендової техніки в сервісному центрі FixLab',
   description:
@@ -32,6 +34,7 @@ export const metadata: Metadata = {
     'Спеціалізований сервіс з ремонту телефонів, ноутбуків, планшетів',
   ],
 }
+
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({
     slug: params.gadget,

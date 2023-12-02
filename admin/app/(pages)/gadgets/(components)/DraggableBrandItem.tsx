@@ -1,11 +1,10 @@
 'use client'
 
+import type { IBrand } from '@admin/app/(server)/api/service/modules/gadgetService'
 import { useSortable } from '@dnd-kit/sortable'
 import Image from 'next/image'
 import { GoGrabber } from 'react-icons/go'
 import { IoIosRemoveCircle } from 'react-icons/io'
-
-import type { IBrand } from '@/app/(server)/api/service/modules/gadgetService'
 
 interface DraggableBrandItemProps {
   id: string

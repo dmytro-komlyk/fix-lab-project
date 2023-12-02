@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { signIn, useSession } from 'next-auth/react'
 import type { FormEventHandler } from 'react'
 import { useState } from 'react'
@@ -11,7 +10,6 @@ import { ThreeCircles } from 'react-loader-spinner'
 const SignIn = () => {
   const [loading, setLoading] = useState(false)
   const session = useSession()
-  const router = useRouter()
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async event => {
     event.preventDefault()
@@ -22,7 +20,7 @@ const SignIn = () => {
       const res = await signIn('credentials', {
         login: formData.get('login'),
         password: formData.get('password'),
-        redirect: false,
+        callbackUrl: '/',
       })
 
       if (res && !res.error) {
@@ -33,19 +31,15 @@ const SignIn = () => {
             color: '#fff',
           },
         })
-        router.push('/gadgets')
-      } else {
-        toast.error(
-          `Помилка авторизації!!! Перевірте дані логіну чи паролю...`,
-          {
-            style: {
-              borderRadius: '10px',
-              background: 'grey',
-              color: '#fff',
-            },
-          },
-        )
       }
+    } catch {
+      toast.error(`Помилка авторизації...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
     } finally {
       setLoading(false)
     }

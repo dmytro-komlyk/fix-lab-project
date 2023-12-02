@@ -4,18 +4,17 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
+import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
+import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
+import postData from '@admin/app/(server)/api/service/admin/postData'
+import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
+import { createSlug } from '@admin/app/(utils)/createSlug'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
-
-import useLocalStorage from '@/app/(hooks)/useLocalStorage '
-import deleteData from '@/app/(server)/api/service/admin/deleteData'
-import postData from '@/app/(server)/api/service/admin/postData'
-import uploadImg from '@/app/(server)/api/service/admin/uploadImg'
-import { createSlug } from '@/app/(utils)/createSlug'
 
 import CustomAddContent from '../../(components)/CustomAddContent'
 import SendButton from '../../(components)/SendButton'
@@ -93,12 +92,6 @@ const AddArticleSection = () => {
 
       uploadedImageId = uploadResponse.data._id
 
-      if (
-        !(uploadedImageId && contentTitle && contentPreview && contentArticle)
-      ) {
-        throw new Error('Invalid data for article')
-      }
-
       const data = {
         isActive: true,
         slug: contentSlug,
@@ -125,8 +118,27 @@ const AddArticleSection = () => {
         throw new Error('Error posting data')
       }
     } catch (error) {
-      console.error('Error:', error)
-      toast.error(`Помилка...`, {
+      if (
+        !(
+          uploadedImageId &&
+          contentTitle &&
+          contentPreview &&
+          contentArticle &&
+          seoContent &&
+          altImage &&
+          contentSlug
+        )
+      ) {
+        toast.error(`Всі поля повинні бути заповнені...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'grey',
+            color: '#fff',
+          },
+        })
+        return
+      }
+      toast.error(`Помилка сервера...`, {
         style: {
           borderRadius: '10px',
           background: 'grey',
@@ -187,28 +199,28 @@ const AddArticleSection = () => {
         key='1'
         startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
         title={
-          <span className='text-center font-exo_2 text-2xl font-bold text-white-dis'>
+          <span className='bg-top- text-center font-exo_2 text-2xl font-bold text-white-dis'>
             Додати статтю
           </span>
         }
       >
-        <div className='container flex flex-col  items-center gap-[60px] transition-all duration-300  ease-in-out'>
-          <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
+        <div className='container flex flex-col items-center gap-[60px] px-4 transition-all duration-300  ease-in-out'>
+          <form className='flex w-full  justify-evenly gap-3 text-white-dis '>
             <div className='flex w-full flex-col gap-8'>
-              <div className='flex justify-evenly gap-3 '>
+              <div className='flex justify-between gap-3 '>
                 <div className='flex flex-col gap-3'>
                   <p className=' bold mt-2 text-center font-exo_2 text-xl'>
                     Зображення
                   </p>
-                  <div className='relative'>
+                  <div className='flex flex-col gap-3'>
                     {!contentImage ? (
-                      <div className='h-auto w-[500px]'>
+                      <div className='flex h-[300px] w-[500px] items-center justify-center'>
                         <p>NO IMAGE</p>
                       </div>
                     ) : (
                       <div>
                         <Image
-                          className='h-auto w-[500px] object-contain object-center'
+                          className='h-[300px] w-[500px] object-contain object-center'
                           src={
                             typeof contentImage === 'string' ? contentImage : ''
                           }
@@ -241,7 +253,7 @@ const AddArticleSection = () => {
                     />
                   </label>
                 </div>
-                <div className='flex w-[400px] flex-col'>
+                <div className='flex w-[400px] flex-col justify-between'>
                   <p className=' bold mt-2 text-center font-exo_2 text-xl'>
                     SEO налаштування
                   </p>
@@ -298,7 +310,20 @@ const AddArticleSection = () => {
                   }}
                 />
               </label>
-              <label className='flex  flex-col  gap-1 text-center font-exo_2 text-xl'>
+              <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
+                Slug(url сторінки)
+                <input
+                  required
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  type='text'
+                  name='slug'
+                  value={contentSlug}
+                  onChange={e => {
+                    setContentSlug(e.target.value)
+                  }}
+                />
+              </label>
+              <label className='flex  flex-col   gap-1 text-center font-exo_2 text-xl'>
                 Опис статті
                 <input
                   required
@@ -313,8 +338,11 @@ const AddArticleSection = () => {
               </label>
             </div>
           </form>
-          <div className='flex w-full flex-col items-center gap-2 '>
-            <p className='text-center font-exo_2 text-xl text-white-dis'>
+          {/* <div className='w-full'>
+            <AddImagesSection />
+          </div> */}
+          <div className='flex w-full flex-col items-center gap-2 overflow-hidden '>
+            <p className='text-center font-exo_2  text-xl text-white-dis'>
               Стаття
             </p>
             <CustomAddContent

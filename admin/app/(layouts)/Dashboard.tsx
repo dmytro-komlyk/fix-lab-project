@@ -1,13 +1,13 @@
-'use client'
-
-import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { signOut, useSession } from 'next-auth/react'
 import { HiLockClosed } from 'react-icons/hi'
 
-const Dashboard = () => {
-  const session = useSession()
+import { auth } from '../../auth'
+import AuthButtons from './AuthButtons'
+
+const Dashboard = async () => {
+  const session = await auth()
+
   return (
     <div className='fixed left-0 flex h-[100vh] w-[400px] shrink flex-col justify-between  bg-[#09338F] pt-12'>
       <div className='relative ml-8 mr-2 flex flex-col'>
@@ -24,22 +24,9 @@ const Dashboard = () => {
             priority
           />
         </Link>
-        {session.data?.user.name && (
-          <AnimatePresence>
-            <motion.ul
-              initial={{ opacity: 0, translateX: -300 }}
-              animate={{
-                opacity: 1,
-                translateX: 0,
-                transition: { duration: 0.5 },
-              }}
-              exit={{
-                opacity: 0,
-                translateX: -300,
-                transition: { duration: 0.5 },
-              }}
-              className='flex flex-col gap-4'
-            >
+        {session?.user?.name && (
+          <div>
+            <ul className='flex flex-col gap-4'>
               <li>
                 <Link
                   href='/articles'
@@ -56,14 +43,13 @@ const Dashboard = () => {
                   Гаджети
                 </Link>
               </li>
-              <li className='flex items-center justify-between gap-2 opacity-70'>
+              <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/issues'
                   className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Послуги
                 </Link>
-                <HiLockClosed size={30} color='#fff' />
               </li>
               <li className='flex items-center justify-between gap-2 opacity-70'>
                 <Link
@@ -102,11 +88,11 @@ const Dashboard = () => {
                 </Link>
                 <HiLockClosed size={30} color='#fff' />
               </li>
-            </motion.ul>
-          </AnimatePresence>
+            </ul>
+          </div>
         )}
       </div>
-      {!session.data?.user.name ? (
+      {!session?.user?.name ? (
         <div className='m-4 flex flex-col gap-4'>
           <Link
             href='/authentication/signin'
@@ -122,13 +108,7 @@ const Dashboard = () => {
           </Link>
         </div>
       ) : (
-        <button
-          type='button'
-          onClick={() => signOut({ callbackUrl: '/' })}
-          className='m m-4 justify-center rounded-2xl bg-mid-green p-2 text-center font-exo_2 text-2xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
-        >
-          Вийти
-        </button>
+        <AuthButtons />
       )}
     </div>
   )

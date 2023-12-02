@@ -1,7 +1,6 @@
+import getData from '@admin/app/(server)/api/service/admin/getData'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
-
-import getData from '@/app/(server)/api/service/admin/getData'
 
 import EditIssuesForm from '../(components)/EditIssueForm '
 
@@ -10,6 +9,9 @@ interface IIssueAdminProps {
     issue: string
   }
 }
+
+export const runtime = 'edge'
+export const revalidate = 3600
 
 const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
   const issueUrl = `/issues/${params.issue}`
@@ -33,7 +35,7 @@ const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
               {issueData.title}
             </p>
           </div>
-          <h2 className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
+          <h2 className='mb-6 self-center font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
             {issueData.title}
           </h2>
           <EditIssuesForm issueData={issueData} benefitsData={benefitsData} />

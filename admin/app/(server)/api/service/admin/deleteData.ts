@@ -1,18 +1,20 @@
 import { getSession } from 'next-auth/react'
 
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL as string
+
 export default async function deleteData(url: string) {
   try {
     const session = await getSession()
 
-    if (session?.user.token === undefined) {
+    if (session?.user?.token === undefined) {
       throw new Error('Headers are undefined')
     }
 
-    const res = await fetch(`http://95.217.34.212:30000/api${url}`, {
+    const res = await fetch(`${apiUrl}${url}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${session.user.token}`,
+        Authorization: `Bearer ${session?.user?.token}`,
       },
     })
 
