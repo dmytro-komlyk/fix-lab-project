@@ -11,7 +11,7 @@ import type { IGadget } from './(server)/api/service/modules/gadgetService'
 import { trpc } from './(utils)/trpc'
 
 export const runtime = 'edge'
-export const revalidate = 3600
+export const revalidate = 60
 
 export default async function Home() {
   const gadgetsData = (await trpc.getGadgetsQuery.query()) as IGadget[]

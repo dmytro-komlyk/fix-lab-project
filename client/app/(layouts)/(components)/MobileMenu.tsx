@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useCallback, useRef } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
 
@@ -16,6 +17,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   toggleMobileMenu,
   toggleCourierModal,
 }) => {
+  const pathname = usePathname()
   const mobileMenuRef = useRef<HTMLDivElement>(null)
   const onBackdropCloseMobileMenu = useCallback(
     (event: { target: any; currentTarget: any }) => {
@@ -36,7 +38,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   )
 
   useCustomScrollbarLock({ handleEscKeyPressContent })
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -44,15 +45,15 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
       exit={{ transition: { duration: 0.1 } }}
       ref={mobileMenuRef}
       onClick={onBackdropCloseMobileMenu}
-      className='absolute left-0 top-0 z-10 h-[100vh] w-full overflow-y-auto overflow-x-hidden bg-modal-overlay'
+      className='absolute left-0 top-0 z-10 h-[100vh] w-full overflow-y-auto overflow-x-hidden bg-modal-overlay backdrop-blur-[6px]'
     >
       <motion.div
         initial={{ x: 500 }}
         animate={{ x: 0, transition: { duration: 0.3 } }}
         exit={{ x: 500, transition: { duration: 0.3 } }}
-        className='fixed inset-y-0 right-0 z-10 flex w-full flex-col justify-between  bg-[#09338F] px-4 pb-[10px] pt-[30px] sm:ring-1 md:max-w-[400px]'
+        className=' fixed right-0 top-0 z-10 m-[30px] flex w-[365px] flex-col justify-between rounded-2xl bg-dark-blue p-[24px] backdrop-blur-[12.5px] max-md:m-[20px] max-md:w-[320px] max-sm:w-[280px] max-sm:p-[14px]'
       >
-        <div className='flex flex-col overflow-auto'>
+        <div className='flex h-[80dvh] flex-col overflow-auto'>
           <div className='flex items-center justify-between'>
             <Link href='/' onClick={toggleMobileMenu} className=' flex gap-3'>
               <Image
@@ -81,7 +82,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               <Link
                 href='/repair'
                 onClick={toggleMobileMenu}
-                className='font-exo_2 text-xl font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className={`font-exo_2 ${
+                  pathname === '/repair'
+                    ? ' text-light-green'
+                    : 'text-white-dis'
+                } text-xl font-semibold  transition-opacity hover:opacity-80  focus:opacity-80`}
               >
                 Ремонт
               </Link>
@@ -90,7 +95,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               <Link
                 href='/contacts'
                 onClick={toggleMobileMenu}
-                className='font-exo_2 text-xl font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className={`font-exo_2 ${
+                  pathname === '/contacts'
+                    ? ' text-light-green'
+                    : 'text-white-dis'
+                } text-xl font-semibold  transition-opacity hover:opacity-80  focus:opacity-80`}
               >
                 Контакти
               </Link>
@@ -99,7 +108,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               <Link
                 href='/blog'
                 onClick={toggleMobileMenu}
-                className='font-exo_2 text-xl font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className={`font-exo_2 ${
+                  pathname === '/blog' ? ' text-light-green' : 'text-white-dis'
+                } text-xl font-semibold  transition-opacity hover:opacity-80  focus:opacity-80`}
               >
                 Блог
               </Link>
@@ -108,7 +119,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               <Link
                 href='/corporate'
                 onClick={toggleMobileMenu}
-                className='font-exo_2 text-xl font-semibold capitalize text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className={`font-exo_2 ${
+                  pathname === '/corporate'
+                    ? ' text-light-green'
+                    : 'text-white-dis'
+                } text-xl font-semibold capitalize  transition-opacity hover:opacity-80  focus:opacity-80`}
               >
                 Для бізнесу
               </Link>

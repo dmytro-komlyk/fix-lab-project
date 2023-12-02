@@ -1,4 +1,5 @@
 import type { IBrand } from 'client/app/(server)/api/service/modules/brandService'
+import type { Metadata } from 'next'
 
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
@@ -16,8 +17,21 @@ interface IndexProps {
 }
 
 export const runtime = 'edge'
-export const revalidate = 3600
+export const revalidate = 60
+export async function generateMetadata({
+  params,
+}: IndexProps): Promise<Metadata> {
+  const { brand } = params
+  const brandData = (await trpc.getBrandBySlugQuery.query({
+    slug: brand,
+  })) as IBrand
 
+  return {
+    title: brandData.metadata.title,
+    description: brandData.metadata.description,
+    keywords: brandData.metadata.keywords.split(', '),
+  }
+}
 const Index: React.FC<IndexProps> = async ({ params }) => {
   const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({
     slug: params.gadget,

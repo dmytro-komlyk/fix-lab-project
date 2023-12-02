@@ -109,7 +109,7 @@ const CostRepairModal: React.FC<CostRepairModalProps> = ({
       animate={{ opacity: 1, transition: { duration: 0.1 } }}
       exit={{ opacity: 0, transition: { duration: 0.1 } }}
       ref={modalRef}
-      className='fixed left-0 top-0 z-50  h-full w-full overflow-y-auto overflow-x-hidden bg-modal-overlay'
+      className='fixed left-0 top-0 z-50  h-full w-full overflow-y-auto overflow-x-hidden bg-modal-overlay backdrop-blur-[6px]'
     >
       <div
         onClick={onBackdropCloseModal}

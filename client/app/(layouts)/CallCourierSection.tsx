@@ -1,13 +1,17 @@
 'use client'
 
 import { AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useCallback, useState } from 'react'
 
 import Button from './(components)/Button'
-import CourierModal from './(components)/CourierModal'
-import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
+
+const CourierModal = dynamic(() => import('./(components)/CourierModal'))
+const SuccessSubmitBanner = dynamic(
+  () => import('./(components)/SuccessSubmitBanner'),
+)
 
 export const CallCourierSection: React.FC = () => {
   const pathname = usePathname()
