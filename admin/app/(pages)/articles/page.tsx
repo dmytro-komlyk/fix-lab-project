@@ -1,4 +1,6 @@
-import getData from '@admin/app/(server)/api/service/admin/getData'
+/* eslint-disable import/no-extraneous-dependencies */
+import { trpc } from 'admin/app/(utils)/trpc'
+import type { IBlog } from 'admin/types/trpc'
 
 import AddArticleSection from './(components)/AddArticleSection'
 import ArticlesList from './(components)/ArticlesList'
@@ -12,8 +14,14 @@ export default async function ArticlesPage({
   params: { page: string }
 }) {
   const currentPage = typeof params.page === 'string' ? Number(params.page) : 1
-  const articlesDataUrl = `/articles/all?sort=desc&page=${currentPage}&limit=9`
-  const articlesData = await getData(articlesDataUrl)
+  // const articlesDataUrl = `/articles/all?sort=desc&page=${currentPage}&limit=9`
+  // const articlesData = await getData(articlesDataUrl)
+  const articlesData = (await trpc.getArticlesQuery.query({
+    page: currentPage,
+    sort: 'desc',
+    limit: 9,
+  })) as IBlog
+
   return (
     <section className='bg-footer-gradient-linear-blue flex h-full  w-full overflow-hidden overflow-y-auto py-[60px]'>
       <div className='container relative flex flex-col gap-8 px-8'>

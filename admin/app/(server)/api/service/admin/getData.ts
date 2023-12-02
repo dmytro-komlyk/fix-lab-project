@@ -1,13 +1,12 @@
-import { authConfig } from '@admin/app/(utils)/authConfig'
-import { getServerSession } from 'next-auth'
+import { auth } from '../../../../../auth'
 
 export default async function getData(url: string) {
-  const session = await getServerSession(authConfig)
+  const session = await auth()
 
-  if (session?.user.token === undefined) {
+  if (session?.user.name === undefined) {
     throw new Error('Headers are undefined')
   }
-  const res = await fetch(`http://localhost:30000/api${url}`, {
+  const res = await fetch(`http://95.217.34.212:30000/api${url}`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${session.user.token}`,

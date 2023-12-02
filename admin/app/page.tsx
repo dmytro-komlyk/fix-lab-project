@@ -1,5 +1,3 @@
-// import { trpc } from './(utils)/trpc'
-
 export const runtime = 'edge'
 export const revalidate = 3600
 

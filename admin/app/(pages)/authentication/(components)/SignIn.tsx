@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { signIn, useSession } from 'next-auth/react'
 import type { FormEventHandler } from 'react'
 import { useState } from 'react'
@@ -11,7 +10,6 @@ import { ThreeCircles } from 'react-loader-spinner'
 const SignIn = () => {
   const [loading, setLoading] = useState(false)
   const session = useSession()
-  const router = useRouter()
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async event => {
     event.preventDefault()
@@ -22,7 +20,7 @@ const SignIn = () => {
       const res = await signIn('credentials', {
         login: formData.get('login'),
         password: formData.get('password'),
-        redirect: false,
+        callbackUrl: '/',
       })
 
       if (res && !res.error) {
@@ -33,20 +31,15 @@ const SignIn = () => {
             color: '#fff',
           },
         })
-        router.push('/gadgets')
-        router.refresh()
-      } else {
-        toast.error(
-          `Помилка авторизації!!! Перевірте дані логіну чи паролю...`,
-          {
-            style: {
-              borderRadius: '10px',
-              background: 'grey',
-              color: '#fff',
-            },
-          },
-        )
       }
+    } catch {
+      toast.error(`Помилка авторизації...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
     } finally {
       setLoading(false)
     }
@@ -68,7 +61,7 @@ const SignIn = () => {
   ) : (
     !session.data && (
       <div className='flex flex-col items-center justify-center '>
-        <h3 className='mb-8 text-center font-exo_2 text-2xl font-semibold leading-[29px] text-white-dis'>
+        <h3 className='font-exo_2 text-white-dis mb-8 text-center text-2xl font-semibold leading-[29px]'>
           Логін
         </h3>
         <form
@@ -90,7 +83,7 @@ const SignIn = () => {
             required
           />
           <button
-            className='m relative m-4 h-[60px] w-full justify-center rounded-2xl bg-mid-green text-center font-exo_2 text-2xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
+            className='m bg-mid-green font-exo_2 text-white-dis hover:bg-mid-blue focus:bg-mid-blue relative m-4 h-[60px] w-full justify-center rounded-2xl text-center  text-2xl font-bold  transition-colors'
             type='submit'
             disabled={loading}
           >
@@ -115,7 +108,7 @@ const SignIn = () => {
           </button>
         </form>
         <Link
-          className='font-exo_2 text-xl font-bold text-white-dis'
+          className='font-exo_2 text-white-dis text-xl font-bold'
           href='/authentication/forgot-password'
         >
           Забули пароль?

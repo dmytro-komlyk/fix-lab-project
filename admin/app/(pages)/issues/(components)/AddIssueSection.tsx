@@ -1,16 +1,16 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-console */
 
 'use client'
 
+import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import { Accordion, AccordionItem } from '@nextui-org/react'
+import postData from 'admin/app/(server)/api/service/admin/postData'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
-
-import useLocalStorage from '@/app/(hooks)/useLocalStorage '
-import postData from '@/app/(server)/api/service/admin/postData'
 
 import SendButton from '../../(components)/SendButton'
 
@@ -101,19 +101,19 @@ const AddIssueSection = () => {
         key='1'
         startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
         title={
-          <span className='text-center font-exo_2 text-2xl font-bold text-white-dis'>
+          <span className='font-exo_2 text-white-dis text-center text-2xl font-bold'>
             Додати послугу
           </span>
         }
       >
         <div className='container  flex flex-col items-center  gap-[60px] px-4 transition-all duration-300  ease-in-out'>
-          <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
+          <form className='text-white-dis flex w-full items-end justify-evenly gap-3 '>
             <div className='flex w-full flex-col gap-8'>
-              <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
+              <label className='font-exo_2  flex flex-col gap-1 text-center text-xl'>
                 Заголовок
                 <input
                   required
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                   type='text'
                   name='title'
                   value={contentTitle}
@@ -122,11 +122,11 @@ const AddIssueSection = () => {
                   }}
                 />
               </label>
-              <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+              <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
                 Вартість послуги
                 <input
                   required
-                  className='font-base h-[45px] w-[300px] indent-3 text-md text-black-dis'
+                  className='font-base text-md text-black-dis h-[45px] w-[300px] indent-3'
                   type='text'
                   name='price'
                   value={contentIssuePrice}

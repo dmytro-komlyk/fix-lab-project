@@ -41,23 +41,23 @@ const ArticlesList: React.FC<ArticlesListProps> = ({
         <ul className='flex w-full flex-col shadow-2xl'>
           {articlesData.items.map((item: IArticle) => (
             <li
-              className='group border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl'
+              className='border-dark-blue bg-white-dis group border-b-[0.5px] opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl'
               key={item._id}
             >
               <div className='flex items-center justify-between px-6 py-[20px]'>
-                <h3 className='font-semibold text-dark-blue md:text-base xl:text-xl'>
+                <h3 className='text-dark-blue font-semibold md:text-base xl:text-xl'>
                   {item.title}
                 </h3>
                 <div className='relative ml-4 flex items-center justify-center gap-4'>
                   <Link href={`/articles/${currentPage}/${item._id}`}>
                     <FaEye
-                      className='transition-colors hover:fill-mid-green focus:fill-mid-green'
+                      className='hover:fill-mid-green focus:fill-mid-green transition-colors'
                       size={30}
                     />
                   </Link>
                   <Link href={`/articles/${currentPage}/${item._id}/edit`}>
                     <FaEdit
-                      className='transition-colors hover:fill-mid-green focus:fill-mid-green'
+                      className='hover:fill-mid-green focus:fill-mid-green transition-colors'
                       size={30}
                     />
                   </Link>
@@ -68,10 +68,12 @@ const ArticlesList: React.FC<ArticlesListProps> = ({
             </li>
           ))}
         </ul>
-        <PaginationControls
-          totalPages={articlesData.totalPages}
-          currentPage={currentPage}
-        />
+        {articlesData.totalPages > 1 && (
+          <PaginationControls
+            totalPages={articlesData.totalPages}
+            currentPage={currentPage}
+          />
+        )}
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 'use client'
 
-import type { IGadget } from '@admin/app/(server)/api/service/modules/gadgetService'
+import type { IGadget } from 'admin/types/trpc'
 import Image from 'next/image'
 import Link from 'next/link'
 
