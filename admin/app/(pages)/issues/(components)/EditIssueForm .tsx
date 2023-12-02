@@ -169,10 +169,10 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
 
   return (
     <div className='flex flex-auto flex-col items-center justify-center gap-4'>
-      <form className='text-white-dis flex w-full flex-col justify-between gap-3 '>
+      <form className='flex w-full flex-col justify-between gap-3 text-white-dis '>
         <div className='flex w-full justify-between'>
           <div className='flex w-[500px] flex-col gap-3'>
-            <p className=' bold font-exo_2 mt-2 text-center text-xl'>
+            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
               Зображення
             </p>
             <div className='relative'>
@@ -203,11 +203,11 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
               accept='icon/*'
               onChange={handleImageChange}
             />
-            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
               Опис зображення(alt)
               <input
                 required
-                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                 type='text'
                 name='altImage'
                 value={altImage}
@@ -218,13 +218,13 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
             </label>
           </div>
           <div className='flex w-[400px] flex-col justify-between'>
-            <p className=' bold font-exo_2 mt-2 text-center text-xl'>
+            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
               SEO налаштування
             </p>
-            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
               Seo title
               <input
-                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                 type='text'
                 name='metadata'
                 data-metadata-field='title'
@@ -232,10 +232,10 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
                 onChange={handleInputChange}
               />
             </label>
-            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
               Seo description
               <input
-                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                 type='text'
                 name='metadata'
                 data-metadata-field='description'
@@ -243,10 +243,10 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
                 onChange={handleInputChange}
               />
             </label>
-            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
               Seo keywords
               <input
-                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                 type='text'
                 name='metadata'
                 data-metadata-field='keywords'
@@ -256,33 +256,33 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
             </label>
           </div>
         </div>
-        <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+        <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
           Вартість послуги
           <input
             required
-            className='font-base text-md text-black-dis h-[45px] w-[300px] indent-3'
+            className='font-base h-[45px] w-[300px] indent-3 text-md text-black-dis'
             type='text'
             name='price'
             value={newIssueData.price || ''}
             onChange={handleInputChange}
           />
         </label>
-        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
+        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
           Заголовок
           <input
             required
-            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
             type='text'
             name='title'
             value={newIssueData.title || ''}
             onChange={handleInputChange}
           />
         </label>
-        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
+        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
           Slug(url сторінки)
           <input
             required
-            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
             type='text'
             name='slug'
             value={newIssueData.slug || ''}
@@ -295,7 +295,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
       </div>
       <div className='flex w-full flex-col justify-between gap-6'>
         <div className='flex w-full  flex-col  gap-2 '>
-          <p className='font-exo_2 text-white-dis text-center text-xl'>Інфо</p>
+          <p className='text-center font-exo_2 text-xl text-white-dis'>Інфо</p>
           <CustomEditor
             id='edit-info-content'
             setContent={setInfo}
@@ -306,7 +306,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
           <AddImagesSection />
         </div>
         <div className='flex w-full  flex-col  gap-2 '>
-          <p className='font-exo_2 text-white-dis text-center text-xl'>
+          <p className='text-center font-exo_2 text-xl text-white-dis'>
             Стаття
           </p>
           <CustomEditor
@@ -318,8 +318,8 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
       </div>
       <div className='flex w-full flex-col items-center justify-center'>
         <div className='flex w-full  flex-col-reverse  justify-center '>
-          <div className='  border-mid-grey w-full border-b-2' />
-          <p className='font-exo_2 text-white-dis mb-6 text-center text-2xl  font-bold  max-lg:text-xl'>
+          <div className='  w-full border-b-2 border-mid-grey' />
+          <p className='mb-6 text-center font-exo_2 text-2xl font-bold  text-white-dis  max-lg:text-xl'>
             Послуги сервісного обслуговування
           </p>
         </div>

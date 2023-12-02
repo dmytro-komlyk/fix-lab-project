@@ -132,7 +132,7 @@ const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
     <div className='flex h-[100vh] justify-between gap-[100px] '>
       <form
         onSubmit={handleSubmit}
-        className='text-white-dis flex w-[400px] flex-col gap-3 '
+        className='flex w-[400px] flex-col gap-3 text-white-dis '
       >
         <div className='relative'>
           {!newIcon ? (
@@ -162,11 +162,11 @@ const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
           accept='icon/*'
           onChange={handleImageChange}
         />
-        <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+        <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
           Заголовок
           <input
             required
-            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
             type='text'
             name='title'
             value={newBenefitData.title || ''}

@@ -18,7 +18,7 @@ const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
   const articleData = await getData(articleUrl)
   return (
     <main className=' flex flex-auto'>
-      <section className=' bg-footer-gradient-linear-blue w-full  overflow-hidden  py-[60px] '>
+      <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px] '>
         <div className='container  relative flex flex-col items-center px-8 '>
           <div className='z-[1] mb-8 flex items-center gap-1 self-start  px-4'>
             <Link

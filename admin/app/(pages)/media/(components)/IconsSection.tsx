@@ -33,10 +33,10 @@ const IconsSection: React.FC<IIconsProps> = ({ iconsData }) => {
         {iconsData.map(item => (
           <li
             key={item._id}
-            className='text-white-dis relative flex flex-col items-center gap-2 py-2'
+            className='relative flex flex-col items-center gap-2 py-2 text-white-dis'
           >
             <Image
-              className='bg-pros-bg h-[140px]  w-[280px] object-center opacity-100 '
+              className='h-[140px] w-[280px]  bg-pros-bg object-center opacity-100 '
               alt={item.alt}
               src={item.src}
               width={320}

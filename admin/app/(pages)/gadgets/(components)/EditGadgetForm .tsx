@@ -184,11 +184,11 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
 
   return (
     <div className='flex flex-auto flex-col flex-wrap items-center justify-center gap-[20px]'>
-      <form className='text-white-dis flex w-full justify-between gap-8 '>
+      <form className='flex w-full justify-between gap-8 text-white-dis '>
         <div className='flex w-full flex-col gap-8'>
           <div className='flex w-full justify-evenly'>
             <div className='flex flex-col items-center justify-between gap-3'>
-              <p className=' bold  font-exo_2 text-center text-xl'>
+              <p className=' bold  text-center font-exo_2 text-xl'>
                 Іконка(svg)
               </p>
               {!newIcon ? (
@@ -221,17 +221,17 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
               />
             </div>
             <div className='flex w-[400px] flex-col'>
-              <p className=' bold font-exo_2 text-center text-xl'>
+              <p className=' bold text-center font-exo_2 text-xl'>
                 SEO налаштування
               </p>
               <label
                 htmlFor='metadata title'
-                className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'
+                className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
               >
                 Seo title
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='metadata'
                   data-metadata-field='title'
@@ -241,12 +241,12 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
               </label>
               <label
                 htmlFor='metadata description'
-                className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'
+                className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
               >
                 Seo description
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='metadata'
                   data-metadata-field='description'
@@ -256,12 +256,12 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
               </label>
               <label
                 htmlFor='metadata keywords'
-                className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'
+                className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
               >
                 Seo keywords
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='metadata'
                   data-metadata-field='keywords'
@@ -273,13 +273,13 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
           </div>
           <label
             htmlFor='title'
-            className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'
+            className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
           >
             Заголовок
             <input
               required
               maxLength={60}
-              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               type='text'
               name='title'
               value={newGadgetData.title || ''}
@@ -288,13 +288,13 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
           </label>
           <label
             htmlFor='title'
-            className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'
+            className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
           >
             Slug(url сторінки)
             <input
               required
               maxLength={60}
-              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               type='text'
               name='slug'
               value={newGadgetData.slug || ''}
@@ -303,12 +303,12 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
           </label>
           <label
             htmlFor='description'
-            className='font-exo_2 flex flex-col items-start gap-1 text-center text-xl'
+            className='flex flex-col items-start gap-1 text-center font-exo_2 text-xl'
           >
             Опис
             <textarea
               required
-              className='font-base text-md text-black-dis h-[150px] w-full p-2'
+              className='font-base h-[150px] w-full p-2 text-md text-black-dis'
               value={newGadgetData.description || ''}
               name='description'
               onChange={handleInputChange}
@@ -319,12 +319,12 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
       <div className=' flex w-full items-center justify-center gap-[100px]'>
         <div className='w-full'>
           <div className='flex  flex-col-reverse justify-center '>
-            <div className=' border-mid-grey mb-[20px] w-full border-b-2' />
+            <div className=' mb-[20px] w-full border-b-2 border-mid-grey' />
             <div className='mb-[10px] mt-8 flex justify-center gap-8'>
               <button type='button' onClick={() => setActiveTab('issues')}>
                 <span
                   className={`
-              font-exo_2 mb-6 text-2xl  font-bold  max-lg:text-xl
+              mb-6 font-exo_2 text-2xl  font-bold  max-lg:text-xl
               ${activeTab === 'issues' ? 'text-mid-green' : 'text-white-dis'}`}
                 >
                   Послуги
@@ -337,7 +337,7 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
               >
                 <span
                   className={`
-              font-exo_2 mb-6 text-2xl  font-bold  max-lg:text-xl
+              mb-6 font-exo_2 text-2xl  font-bold  max-lg:text-xl
               ${activeTab === 'brands' ? 'text-mid-green' : 'text-white-dis'}`}
                 >
                   Бренди

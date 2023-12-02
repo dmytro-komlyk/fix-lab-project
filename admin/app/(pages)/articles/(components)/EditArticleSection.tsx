@@ -179,10 +179,10 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
 
   return (
     <div className='flex w-full flex-col items-center justify-center gap-[60px] '>
-      <form className='text-white-dis flex w-full flex-col items-end justify-evenly gap-3 '>
+      <form className='flex w-full flex-col items-end justify-evenly gap-3 text-white-dis '>
         <div className='flex w-full items-start justify-between'>
           <div className='flex w-[500px] flex-col gap-3'>
-            <p className=' bold font-exo_2 mt-2 text-center text-xl'>
+            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
               Зображення
             </p>
             <div className='relative'>
@@ -215,13 +215,13 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
             />
           </div>
           <div className='flex w-[400px] flex-col'>
-            <p className=' bold font-exo_2 mt-2 text-center text-xl'>
+            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
               SEO налаштування
             </p>
-            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
               Seo title
               <input
-                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                 type='text'
                 name='metadata'
                 data-metadata-field='title'
@@ -229,10 +229,10 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
                 onChange={handleInputChange}
               />
             </label>
-            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
               Seo description
               <input
-                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                 type='text'
                 name='metadata'
                 data-metadata-field='description'
@@ -240,10 +240,10 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
                 onChange={handleInputChange}
               />
             </label>
-            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
               Seo keywords
               <input
-                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                 type='text'
                 name='metadata'
                 data-metadata-field='keywords'
@@ -253,33 +253,33 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
             </label>
           </div>
         </div>
-        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
+        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
           Заголовок
           <input
             required
-            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
             type='text'
             name='title'
             value={newArticleData.title || ''}
             onChange={handleInputChange}
           />
         </label>
-        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
+        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
           Slug(url сторінки)
           <input
             required
-            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
             type='text'
             name='slug'
             value={newArticleData.slug || ''}
             onChange={handleInputChange}
           />
         </label>
-        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
+        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
           Опис статті
           <input
             required
-            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
             type='text'
             name='preview'
             value={newArticleData.preview || ''}
@@ -291,7 +291,7 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
         <AddImagesSection />
       </div>
       <div className='flex w-full flex-col  gap-2 '>
-        <p className='font-exo_2 text-white-dis text-center text-xl'>Стаття</p>
+        <p className='text-center font-exo_2 text-xl text-white-dis'>Стаття</p>
         <CustomEditor
           id='edit-article-content'
           setContent={setNewArticle}

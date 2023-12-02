@@ -30,7 +30,7 @@ const Dashboard = async () => {
               <li>
                 <Link
                   href='/articles'
-                  className='font-exo_2 text-white-dis  text-2xl font-bold max-lg:text-xl '
+                  className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
                 >
                   Блог
                 </Link>
@@ -38,7 +38,7 @@ const Dashboard = async () => {
               <li>
                 <Link
                   href='/gadgets'
-                  className='font-exo_2 text-white-dis  text-2xl font-bold max-lg:text-xl '
+                  className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
                 >
                   Гаджети
                 </Link>
@@ -46,7 +46,7 @@ const Dashboard = async () => {
               <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/issues'
-                  className='font-exo_2 text-white-dis text-2xl font-bold max-lg:text-xl '
+                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Послуги
                 </Link>
@@ -54,7 +54,7 @@ const Dashboard = async () => {
               <li className='flex items-center justify-between gap-2 opacity-70'>
                 <Link
                   href='/#'
-                  className='font-exo_2 text-white-dis text-2xl font-bold max-lg:text-xl '
+                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Послуги сер/обс
                 </Link>
@@ -63,7 +63,7 @@ const Dashboard = async () => {
               <li className='flex items-center justify-between gap-2 opacity-70'>
                 <Link
                   href='/#'
-                  className='font-exo_2 text-white-dis text-2xl font-bold max-lg:text-xl '
+                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Бренди
                 </Link>
@@ -73,7 +73,7 @@ const Dashboard = async () => {
               <li className='flex items-center justify-between gap-2 opacity-70'>
                 <Link
                   href='/#'
-                  className='font-exo_2 text-white-dis text-2xl font-bold max-lg:text-xl '
+                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Контакти
                 </Link>
@@ -82,7 +82,7 @@ const Dashboard = async () => {
               <li className='flex items-center justify-between gap-2 opacity-70'>
                 <Link
                   href='/#'
-                  className='font-exo_2 text-white-dis text-2xl font-bold max-lg:text-xl '
+                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Медіа
                 </Link>
@@ -96,13 +96,13 @@ const Dashboard = async () => {
         <div className='m-4 flex flex-col gap-4'>
           <Link
             href='/authentication/signin'
-            className='m  bg-mid-green font-exo_2 text-white-dis hover:bg-mid-blue focus:bg-mid-blue justify-center rounded-2xl p-2 text-center  text-2xl font-bold  transition-colors'
+            className='m  justify-center rounded-2xl bg-mid-green p-2 text-center font-exo_2 text-2xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
           >
             Логін
           </Link>
           <Link
             href='/authentication/signup'
-            className='m  bg-mid-green font-exo_2 text-white-dis hover:bg-mid-blue focus:bg-mid-blue justify-center rounded-2xl p-2 text-center  text-2xl font-bold  transition-colors'
+            className='m  justify-center rounded-2xl bg-mid-green p-2 text-center font-exo_2 text-2xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
           >
             Реєстрація
           </Link>

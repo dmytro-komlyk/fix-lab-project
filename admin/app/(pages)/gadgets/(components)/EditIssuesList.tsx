@@ -8,16 +8,16 @@ import type {
   IIssue,
 } from '@admin/app/(server)/api/service/modules/gadgetService'
 import {
+  closestCenter,
   DndContext,
   KeyboardSensor,
   PointerSensor,
-  closestCenter,
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
 import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
@@ -141,7 +141,7 @@ const EditIssuesList: React.FC<IIssuesProps> = ({
   return (
     <div className='flex w-[800px] justify-between  gap-3 '>
       <div className='flex flex-col '>
-        <p className='font-exo_2 text-white-dis sticky top-0 mb-6 text-center  text-xl font-bold max-lg:text-xl '>
+        <p className='sticky top-0 mb-6 text-center font-exo_2 text-xl  font-bold text-white-dis max-lg:text-xl '>
           Вибрані послуги ({newGadgetData.issues.length})
         </p>
         <DndContext
@@ -168,23 +168,23 @@ const EditIssuesList: React.FC<IIssuesProps> = ({
       </div>
 
       <div className='flex flex-col '>
-        <p className='font-exo_2 text-white-dis sticky top-0 mb-6 text-center  text-xl font-bold max-lg:text-xl '>
+        <p className='sticky top-0 mb-6 text-center font-exo_2 text-xl  font-bold text-white-dis max-lg:text-xl '>
           Доступні послуги ({filteredIssuesData.length})
         </p>
         <ul className='relative flex w-[380px]  flex-col items-start'>
           {filteredIssuesData.map(item => (
             <li
-              className='border-dark-blue bg-white-dis flex w-full items-center justify-between gap-2 border-b-[0.5px] opacity-60 first:rounded-t-xl last:rounded-b-xl'
+              className='flex w-full items-center justify-between gap-2 border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 first:rounded-t-xl last:rounded-b-xl'
               key={item._id}
             >
-              <p className='font-exo_2 text-md text-dark-blue p-4 font-semibold max-md:text-lg'>
+              <p className='p-4 font-exo_2 text-md font-semibold text-dark-blue max-md:text-lg'>
                 {item?.title || 'No title'}
               </p>
               <IoMdAddCircle
                 onClick={() => {
                   handleAddIssueItemClick(item)
                 }}
-                className='text-dark-blue hover:text-mid-green focus:text-mid-green  mr-4 cursor-pointer transition-colors'
+                className='mr-4 cursor-pointer text-dark-blue  transition-colors hover:text-mid-green focus:text-mid-green'
                 size={35}
               />
             </li>

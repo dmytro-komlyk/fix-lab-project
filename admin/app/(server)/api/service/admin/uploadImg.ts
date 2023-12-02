@@ -7,9 +7,10 @@ interface UploadFileParams {
   alt: string
   type: string
 }
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL as string
 
 const uploadImg = async ({ fileInput, alt, type }: UploadFileParams) => {
-  const url = `http://localhoat:30000/api/images/upload-${type}`
+  const url = `${apiUrl}/images/upload-${type}`
   const session = await getSession()
 
   if (session?.user.token === undefined) {

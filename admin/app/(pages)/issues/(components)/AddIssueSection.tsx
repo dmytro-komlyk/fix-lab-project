@@ -101,19 +101,19 @@ const AddIssueSection = () => {
         key='1'
         startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
         title={
-          <span className='font-exo_2 text-white-dis text-center text-2xl font-bold'>
+          <span className='text-center font-exo_2 text-2xl font-bold text-white-dis'>
             Додати послугу
           </span>
         }
       >
         <div className='container  flex flex-col items-center  gap-[60px] px-4 transition-all duration-300  ease-in-out'>
-          <form className='text-white-dis flex w-full items-end justify-evenly gap-3 '>
+          <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
             <div className='flex w-full flex-col gap-8'>
-              <label className='font-exo_2  flex flex-col gap-1 text-center text-xl'>
+              <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
                 Заголовок
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='title'
                   value={contentTitle}
@@ -122,11 +122,11 @@ const AddIssueSection = () => {
                   }}
                 />
               </label>
-              <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+              <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                 Вартість послуги
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-[300px] indent-3'
+                  className='font-base h-[45px] w-[300px] indent-3 text-md text-black-dis'
                   type='text'
                   name='price'
                   value={contentIssuePrice}

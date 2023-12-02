@@ -209,17 +209,17 @@ const AddIssueInfoSection = () => {
         key='1'
         startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
         title={
-          <span className='font-exo_2 text-white-dis text-center text-2xl font-bold'>
+          <span className='text-center font-exo_2 text-2xl font-bold text-white-dis'>
             Додати послугу з додатковою інформацією
           </span>
         }
       >
         <div className='container  flex flex-col items-center  gap-[60px] px-4 transition-all duration-300  ease-in-out'>
-          <form className='text-white-dis flex w-full items-end justify-evenly gap-3 '>
+          <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
             <div className='flex w-full flex-col gap-8'>
               <div className='flex justify-between gap-3 '>
                 <div className='flex flex-col gap-3'>
-                  <p className=' bold font-exo_2 mt-2 text-center text-xl'>
+                  <p className=' bold mt-2 text-center font-exo_2 text-xl'>
                     Зображення
                   </p>
                   <div className='relative'>
@@ -249,11 +249,11 @@ const AddIssueInfoSection = () => {
                     />
                   </div>
 
-                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                     Опис зображення(alt)
                     <input
                       required
-                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                       type='text'
                       name='altImage'
                       value={altImage}
@@ -264,25 +264,25 @@ const AddIssueInfoSection = () => {
                   </label>
                 </div>
                 <div className='flex w-[400px] flex-col justify-between'>
-                  <p className=' bold font-exo_2 mt-2 text-center text-xl'>
+                  <p className=' bold mt-2 text-center font-exo_2 text-xl'>
                     SEO налаштування
                   </p>
-                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                     Seo title
                     <input
                       required
-                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                       type='text'
                       name='title'
                       value={seoContent.title || ''}
                       onChange={e => handleInputChange('title', e.target.value)}
                     />
                   </label>
-                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                     Seo description
                     <input
                       required
-                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                       type='text'
                       name='description'
                       value={seoContent.description || ''}
@@ -291,11 +291,11 @@ const AddIssueInfoSection = () => {
                       }
                     />
                   </label>
-                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                     Seo keywords
                     <input
                       required
-                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                       type='text'
                       name='keywords'
                       value={seoContent.keywords || ''}
@@ -306,22 +306,22 @@ const AddIssueInfoSection = () => {
                   </label>
                 </div>
               </div>
-              <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+              <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                 Вартість послуги
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-[300px] indent-3'
+                  className='font-base h-[45px] w-[300px] indent-3 text-md text-black-dis'
                   type='text'
                   name='price'
                   value={contentIssuePrice}
                   onChange={e => setContentIssuePrice(e.target.value)}
                 />
               </label>
-              <label className='font-exo_2  flex flex-col gap-1 text-center text-xl'>
+              <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
                 Заголовок
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='title'
                   value={contentTitle}
@@ -331,11 +331,11 @@ const AddIssueInfoSection = () => {
                   }}
                 />
               </label>
-              <label className='font-exo_2  flex flex-col gap-1 text-center text-xl'>
+              <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
                 Slug(url сторінки)
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='slug'
                   value={contentSlug}
@@ -350,7 +350,7 @@ const AddIssueInfoSection = () => {
             <AddImagesSection />
           </div> */}
           <div className='flex w-full flex-col items-center gap-2 '>
-            <p className='font-exo_2 text-white-dis text-center text-xl'>
+            <p className='text-center font-exo_2 text-xl text-white-dis'>
               Інформація послуги
             </p>
             <CustomAddContent
@@ -363,7 +363,7 @@ const AddIssueInfoSection = () => {
             <AddImagesSection />
           </div> */}
           <div className='flex w-full flex-col items-center gap-2 '>
-            <p className='font-exo_2 text-white-dis text-center text-xl'>
+            <p className='text-center font-exo_2 text-xl text-white-dis'>
               Стаття послуги
             </p>
             <CustomAddContent
@@ -374,17 +374,17 @@ const AddIssueInfoSection = () => {
           </div>
           <div className='flex w-full flex-col items-center justify-center'>
             <div className='flex w-full  flex-col-reverse  justify-center '>
-              <div className='  border-mid-grey w-full border-b-2' />
-              <p className='font-exo_2 text-white-dis mb-6 text-center text-2xl  font-bold  max-lg:text-xl'>
+              <div className='  w-full border-b-2 border-mid-grey' />
+              <p className='mb-6 text-center font-exo_2 text-2xl font-bold  text-white-dis  max-lg:text-xl'>
                 Послуги сервісного обслуговування
               </p>
             </div>
           </div>
           <div className=' flex h-[200px] w-full flex-col items-center justify-center gap-2 overflow-auto '>
-            <p className='font-exo_2 text-white-dis text-2xl font-bold'>
+            <p className='font-exo_2 text-2xl font-bold text-white-dis'>
               В розробці...
             </p>
-            <p className='font-exo_2 text-white-dis text-xl font-bold'>
+            <p className='font-exo_2 text-xl font-bold text-white-dis'>
               Послуги сервісного обслуговування можна додати після створення, в
               розділі редагування послуги...
             </p>

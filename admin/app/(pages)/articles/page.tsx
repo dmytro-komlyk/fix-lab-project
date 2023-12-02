@@ -23,7 +23,7 @@ export default async function ArticlesPage({
   })) as IBlog
 
   return (
-    <section className='bg-footer-gradient-linear-blue flex h-full  w-full overflow-hidden overflow-y-auto py-[60px]'>
+    <section className='flex h-full w-full  overflow-hidden overflow-y-auto bg-footer-gradient-linear-blue py-[60px]'>
       <div className='container relative flex flex-col gap-8 px-8'>
         <AddArticleSection />
         <ArticlesList articlesData={articlesData} currentPage={currentPage} />

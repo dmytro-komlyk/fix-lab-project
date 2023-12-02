@@ -6,6 +6,7 @@ interface ApiResponse {
   data(data: any): unknown
   status: number
 }
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL as string
 
 export const sendPutRequest = async (
   endpoint: string,
@@ -27,12 +28,12 @@ export const sendPutRequest = async (
   if (!endpoint) {
     throw new Error('No endpoint')
   }
-  const apiUrl = `http://localhost:30000/api${endpoint}`
+  const url = `${apiUrl}${endpoint}`
   if (!data) {
     throw new Error('No data')
   }
   try {
-    const response = await axios.put(apiUrl, data, config)
+    const response = await axios.put(url, data, config)
     return response
   } catch (error) {
     throw new Error('Failed to update data')

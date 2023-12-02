@@ -14,7 +14,7 @@ const BrandsPage = async () => {
 
   return (
     <main className='flex flex-auto'>
-      <section className='bg-footer-gradient-linear-blue  flex w-full items-center py-[60px]'>
+      <section className='flex  w-full items-center bg-footer-gradient-linear-blue py-[60px]'>
         <div className=' relative flex flex-col px-12 '>
           <ul>
             {brandsData.map(
@@ -28,7 +28,7 @@ const BrandsPage = async () => {
               }) => (
                 <li key={item._id}>
                   <Link
-                    className='font-exo_2 text-white-dis mb-6  text-2xl font-bold max-lg:text-xl'
+                    className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl'
                     href={`/brands/${item._id}`}
                   >
                     <div className='flex items-center gap-2 py-2'>

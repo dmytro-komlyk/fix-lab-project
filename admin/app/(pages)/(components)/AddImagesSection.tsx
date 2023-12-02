@@ -115,7 +115,7 @@ const AddImagesSection = () => {
         startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
         className='flex flex-col'
         title={
-          <span className='bg-top- font-exo_2 text-white-dis text-center text-2xl font-bold'>
+          <span className='bg-top- text-center font-exo_2 text-2xl font-bold text-white-dis'>
             Додати зображення для редактора
           </span>
         }
@@ -131,8 +131,9 @@ const AddImagesSection = () => {
                 alt=''
               />
               <button
+                aria-label='Видалити зображення'
                 type='button'
-                className='bg-black-dis text-white-dis absolute right-0 top-0 rounded-bl-xl p-2  '
+                className='absolute right-0 top-0 rounded-bl-xl bg-black-dis p-2 text-white-dis  '
                 onClick={() => {
                   setSelectedImage(null)
                   setContentImage(null)
@@ -147,11 +148,11 @@ const AddImagesSection = () => {
             </div>
           )}
           <div className='flex items-end gap-4'>
-            <label className='font-exo_2 text-white-dis flex w-[300px] flex-col items-center  justify-center gap-1 text-xl'>
+            <label className='flex w-[300px] flex-col items-center justify-center gap-1  font-exo_2 text-xl text-white-dis'>
               Опис зображення(alt)
               <input
                 required
-                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                 type='text'
                 name='altImage'
                 value={altImage}
@@ -174,6 +175,7 @@ const AddImagesSection = () => {
               />
             </label>
             <button
+              aria-label='Зберегти '
               className=' text-white-dis transition-all hover:scale-[1.03]  hover:opacity-80 focus:scale-[1.03]  focus:opacity-80'
               type='button'
               onClick={handleImageUpload}
@@ -213,7 +215,7 @@ const AddImagesSection = () => {
           {reversedImagesData.map(item => {
             return (
               <SwiperSlide key={item._id} style={{ width: 600 }}>
-                <div className='bg-modal-overlay relative my-6 mb-10 flex justify-center '>
+                <div className='relative my-6 mb-10 flex justify-center bg-modal-overlay '>
                   <Image
                     className='h-[140px] max-w-[280px]  object-contain object-center opacity-100 '
                     alt={item.alt}
@@ -223,7 +225,7 @@ const AddImagesSection = () => {
                   />
                   <button
                     type='button'
-                    className='bg-black-dis font-exo_2 text-white-dis hover:bg-mid-blue focus:bg-mid-blue absolute right-0 top-0 rounded-bl-xl  p-2 text-sm  transition-colors'
+                    className='absolute right-0 top-0 rounded-bl-xl bg-black-dis p-2 font-exo_2 text-sm text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
                     onClick={() => handleCopyLink(item.src)}
                   >
                     Копіювати посилання

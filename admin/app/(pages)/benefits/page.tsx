@@ -11,7 +11,7 @@ const BenefitsPage = async () => {
 
   return (
     <main className='flex flex-auto'>
-      <section className='bg-footer-gradient-linear-blue flex h-[100vh] w-full items-center  overflow-hidden py-[60px]'>
+      <section className='flex h-[100vh] w-full items-center overflow-hidden  bg-footer-gradient-linear-blue py-[60px]'>
         <div className='container relative flex flex-col px-8'>
           <ul>
             {benefitsData.map(
@@ -25,7 +25,7 @@ const BenefitsPage = async () => {
               }) => (
                 <li key={item._id}>
                   <Link
-                    className='font-exo_2 text-white-dis mb-6  text-2xl font-bold max-lg:text-xl'
+                    className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl'
                     href={`/benefits/${item._id}`}
                   >
                     <div className='flex items-center gap-2 py-2'>

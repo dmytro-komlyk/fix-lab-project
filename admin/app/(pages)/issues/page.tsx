@@ -16,7 +16,7 @@ const IssuesPage = async () => {
 
   return (
     <main className='flex flex-auto'>
-      <section className='bg-footer-gradient-linear-blue flex h-full  w-full overflow-hidden overflow-y-auto py-[60px]'>
+      <section className='flex h-full w-full  overflow-hidden overflow-y-auto bg-footer-gradient-linear-blue py-[60px]'>
         <div className='container relative flex flex-col gap-8 px-8'>
           <AddIssueSection />
           <AddIssueInfoSection />
@@ -24,7 +24,7 @@ const IssuesPage = async () => {
             {issuesData.map((item: { _id: string; title: string }) => (
               <li key={item._id}>
                 <Link
-                  className='font-exo_2 text-white-dis mb-6  text-2xl font-bold max-lg:text-xl'
+                  className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl'
                   href={`/issues/${item._id}`}
                 >
                   {item.title}

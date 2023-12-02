@@ -2,6 +2,8 @@ import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { getSession } from 'next-auth/react'
 
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL as string
+
 const postData = async (endpoint: string, data: any) => {
   const session = await getSession()
 
@@ -18,7 +20,7 @@ const postData = async (endpoint: string, data: any) => {
   if (!endpoint) {
     throw new Error('No endpoint')
   }
-  const url = `http://localhost:30000/api${endpoint}`
+  const url = `${apiUrl}${endpoint}`
 
   if (!data) {
     throw new Error('No data')

@@ -61,7 +61,7 @@ const SignIn = () => {
   ) : (
     !session.data && (
       <div className='flex flex-col items-center justify-center '>
-        <h3 className='font-exo_2 text-white-dis mb-8 text-center text-2xl font-semibold leading-[29px]'>
+        <h3 className='mb-8 text-center font-exo_2 text-2xl font-semibold leading-[29px] text-white-dis'>
           Логін
         </h3>
         <form
@@ -83,7 +83,7 @@ const SignIn = () => {
             required
           />
           <button
-            className='m bg-mid-green font-exo_2 text-white-dis hover:bg-mid-blue focus:bg-mid-blue relative m-4 h-[60px] w-full justify-center rounded-2xl text-center  text-2xl font-bold  transition-colors'
+            className='m relative m-4 h-[60px] w-full justify-center rounded-2xl bg-mid-green text-center font-exo_2 text-2xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
             type='submit'
             disabled={loading}
           >
@@ -108,7 +108,7 @@ const SignIn = () => {
           </button>
         </form>
         <Link
-          className='font-exo_2 text-white-dis text-xl font-bold'
+          className='font-exo_2 text-xl font-bold text-white-dis'
           href='/authentication/forgot-password'
         >
           Забули пароль?

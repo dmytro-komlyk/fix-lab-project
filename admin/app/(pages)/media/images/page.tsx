@@ -18,7 +18,7 @@ const ImagesPage: React.FC<IContactAdminProps> = async () => {
   const imagesData = await getData(imagesUrl)
   return (
     <main className=' flex flex-auto'>
-      <section className=' bg-footer-gradient-linear-blue w-full  overflow-hidden  py-[60px]'>
+      <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>
         <div className='container  relative flex flex-col px-8 '>
           <div className='z-[1] mb-8 flex items-center gap-1'>
             <Link
@@ -32,7 +32,7 @@ const ImagesPage: React.FC<IContactAdminProps> = async () => {
               Зображення
             </p>
           </div>
-          <h2 className='font-exo_2 text-white-dis mb-6  text-2xl font-bold max-lg:text-xl '>
+          <h2 className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
             Зображення
           </h2>
           <ImagesSection imagesData={imagesData} />

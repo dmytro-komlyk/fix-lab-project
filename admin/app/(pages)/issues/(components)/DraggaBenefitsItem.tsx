@@ -35,9 +35,9 @@ export function DraggableBenefitsItem({
       style={style}
       {...attributes}
       {...listeners}
-      className='border-dark-blue bg-white-dis flex w-full cursor-grab items-center justify-between gap-2 border-b-[0.5px] opacity-60   first:rounded-t-xl last:rounded-b-xl '
+      className='flex w-full cursor-grab items-center justify-between gap-2 border-b-[0.5px] border-dark-blue bg-white-dis opacity-60   first:rounded-t-xl last:rounded-b-xl '
     >
-      <p className='font-exo_2 text-md text-dark-blue p-4 font-semibold max-md:text-lg'>
+      <p className='p-4 font-exo_2 text-md font-semibold text-dark-blue max-md:text-lg'>
         {item?.title || 'No title'}
       </p>
       <div className='flex items-center gap-2'>
@@ -46,7 +46,7 @@ export function DraggableBenefitsItem({
           onClick={() => {
             onRemove(item)
           }}
-          className='text-dark-blue mr-4 cursor-pointer transition-colors hover:text-[red] focus:text-[red]'
+          className='mr-4 cursor-pointer text-dark-blue transition-colors hover:text-[red] focus:text-[red]'
           size={35}
         />
       </div>

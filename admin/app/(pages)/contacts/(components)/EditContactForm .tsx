@@ -139,7 +139,7 @@ const EditContactForm: React.FC<IAdminContact> = ({ contactData }) => {
 
   return (
     <div className='flex flex-col items-center justify-center gap-[50px]'>
-      <form className='text-white-dis flex w-full flex-wrap items-end justify-evenly gap-3 '>
+      <form className='flex w-full flex-wrap items-end justify-evenly gap-3 text-white-dis '>
         <div className='flex w-[400px] flex-col gap-2'>
           <div className='relative'>
             {!image ? (
@@ -162,7 +162,7 @@ const EditContactForm: React.FC<IAdminContact> = ({ contactData }) => {
               </div>
             )}
             <input
-              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               id='image'
               type='file'
               accept='image/*'
@@ -170,20 +170,20 @@ const EditContactForm: React.FC<IAdminContact> = ({ contactData }) => {
             />
           </div>
 
-          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
             Район:
             <input
-              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               type='text'
               name='area'
               value={newContactData.area || contactData.area}
               onChange={handleInputChange}
             />
           </label>
-          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
             Адрес:
             <input
-              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               type='text'
               name='address'
               value={newContactData.address || contactData.address}
@@ -224,30 +224,30 @@ const EditContactForm: React.FC<IAdminContact> = ({ contactData }) => {
           ))} */}
         </div>
         <div className='flex w-[400px] flex-col gap-2'>
-          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
             Коментар:
             <input
-              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               type='text'
               name='comment'
               value={newContactData.comment || contactData.comment || ''}
               onChange={handleInputChange}
             />
           </label>
-          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
             Посилання googleMap:
             <input
-              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               type='text'
               name='googleMapLink'
               value={newContactData.googleMapLink || contactData.googleMapLink}
               onChange={handleInputChange}
             />
           </label>
-          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
             Посилання googlePlugin:
             <input
-              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               type='text'
               name='googlePluginLink'
               value={
@@ -256,20 +256,20 @@ const EditContactForm: React.FC<IAdminContact> = ({ contactData }) => {
               onChange={handleInputChange}
             />
           </label>
-          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
             Робочі дні:
             <input
-              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               type='text'
               name='workingDate'
               value={newContactData.workingDate || contactData.workingDate}
               onChange={handleInputChange}
             />
           </label>
-          <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
             Робочий час:
             <input
-              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               type='text'
               name='workingTime'
               value={newContactData.workingTime || contactData.workingTime}
