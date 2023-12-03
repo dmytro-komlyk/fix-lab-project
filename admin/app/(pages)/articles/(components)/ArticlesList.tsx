@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { FaEdit, FaEye } from 'react-icons/fa'
 
-import PaginationControls from './PaginationControls'
 import RemoveArticles from './RemoveArticles'
 
 export interface IArticle {
@@ -28,13 +27,9 @@ interface ArticlesListProps {
     totalPages: number
     totalItems: number
   }
-  currentPage: number
 }
 
-const ArticlesList: React.FC<ArticlesListProps> = ({
-  articlesData,
-  currentPage,
-}) => {
+const ArticlesList: React.FC<ArticlesListProps> = ({ articlesData }) => {
   return (
     <div className=' flex flex-col items-center justify-center gap-8 pb-12'>
       <div className=' flex w-full flex-col items-center justify-center gap-8'>
@@ -49,13 +44,13 @@ const ArticlesList: React.FC<ArticlesListProps> = ({
                   {item.title}
                 </h3>
                 <div className='relative ml-4 flex items-center justify-center gap-4'>
-                  <Link href={`/articles/${currentPage}/${item._id}`}>
+                  <Link href={`/articles/${item._id}`}>
                     <FaEye
                       className='transition-colors hover:fill-mid-green focus:fill-mid-green'
                       size={30}
                     />
                   </Link>
-                  <Link href={`/articles/${currentPage}/${item._id}/edit`}>
+                  <Link href={`/articles/${item._id}/edit`}>
                     <FaEdit
                       className='transition-colors hover:fill-mid-green focus:fill-mid-green'
                       size={30}
@@ -68,12 +63,12 @@ const ArticlesList: React.FC<ArticlesListProps> = ({
             </li>
           ))}
         </ul>
-        {articlesData.totalPages > 1 && (
+        {/* {articlesData.totalPages > 1 && (
           <PaginationControls
             totalPages={articlesData.totalPages}
             currentPage={currentPage}
           />
-        )}
+        )} */}
       </div>
     </div>
   )
