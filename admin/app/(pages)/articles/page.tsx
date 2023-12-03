@@ -19,14 +19,14 @@ export default async function ArticlesPage({
   const articlesData = (await trpc.getArticlesQuery.query({
     page: currentPage,
     sort: 'desc',
-    limit: 9,
+    limit: 6,
   })) as IBlog
 
   return (
     <section className='flex h-full w-full  overflow-hidden overflow-y-auto bg-footer-gradient-linear-blue py-[60px]'>
       <div className='container relative flex flex-col gap-8 px-8'>
         <AddArticleSection />
-        <ArticlesList articlesData={articlesData} currentPage={currentPage} />
+        <ArticlesList articlesData={articlesData} />
       </div>
     </section>
   )

@@ -2,7 +2,7 @@ import getData from '@admin/app/(server)/api/service/admin/getData'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import EditArticleSection from '../../../(components)/EditArticleSection'
+import PreviewArticlePage from '../(components)/PreviewArticlePage'
 
 interface IArticleAdminProps {
   params: {
@@ -32,10 +32,7 @@ const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
               {articleData.title}
             </p>
           </div>
-          <h2 className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
-            {articleData.title}
-          </h2>
-          <EditArticleSection articleData={articleData} />
+          <PreviewArticlePage articleData={articleData} />
         </div>
       </section>
     </main>
