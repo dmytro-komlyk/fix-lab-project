@@ -1,6 +1,3 @@
-export const runtime = 'edge'
-export const revalidate = 3600
-
 export default async function Home() {
   return (
     <main className=' flex h-full w-full flex-auto'>

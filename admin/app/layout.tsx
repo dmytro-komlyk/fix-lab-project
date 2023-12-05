@@ -37,9 +37,6 @@ export const metadata: Metadata = {
   description: 'FixLab - мережа студій ремонту твоєї техніки',
 }
 
-export const runtime = 'edge'
-export const revalidate = 3600
-
 export default async function RootLayout({
   children,
 }: {

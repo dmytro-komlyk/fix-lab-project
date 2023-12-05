@@ -16,6 +16,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 
+import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomAddContent from '../../(components)/CustomAddContent'
 import SendButton from '../../(components)/SendButton'
 
@@ -338,9 +339,9 @@ const AddArticleSection = () => {
               </label>
             </div>
           </form>
-          {/* <div className='w-full'>
+          <div className='w-full'>
             <AddImagesSection />
-          </div> */}
+          </div>
           <div className='flex w-full flex-col items-center gap-2 overflow-hidden '>
             <p className='text-center font-exo_2  text-xl text-white-dis'>
               Стаття
