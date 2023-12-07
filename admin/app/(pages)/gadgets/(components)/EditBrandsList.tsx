@@ -3,6 +3,10 @@
 
 'use client'
 
+import type {
+  IBrand,
+  IGadget,
+} from '@admin/app/(server)/api/service/modules/gadgetService'
 import {
   closestCenter,
   DndContext,
@@ -20,11 +24,6 @@ import {
 import Image from 'next/image'
 import { useState } from 'react'
 import { IoMdAddCircle } from 'react-icons/io'
-
-import type {
-  IBrand,
-  IGadget,
-} from '@/app/(server)/api/service/modules/gadgetService'
 
 import { DraggableBrandItem } from './DraggableBrandItem'
 

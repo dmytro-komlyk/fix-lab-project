@@ -1,5 +1,5 @@
 # Build Stage
-FROM node:latest AS runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 COPY tsconfig*.json ./
 
@@ -18,23 +18,34 @@ RUN npm install
 
 COPY client .
 
+ENV NEXT_TELEMETRY_DISABLED 1
+
 RUN npm run build
 
 # Production Stage
-FROM node:latest AS production
+FROM node:18-alpine AS production
+COPY --from=runner /app/client /app/client
 WORKDIR /app/client
 
-# Copy artifacts from the "runner" stage
-COPY --from=runner /app/client/next.config.js ./
-COPY --from=runner /app/client/package*.json ./
-COPY --from=runner /app/client/.next ./.next
-COPY --from=runner /app/client/out ./out
-COPY --from=runner /app/client/public ./public
-COPY --from=runner /app/client/node_modules ./node_modules
-
-# Set environment variables
 ENV NODE_ENV=production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=runner /app/client/public ./public
+
+# RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+COPY --from=runner --chown=nextjs:nodejs /app/client/.next/standalone ./
+COPY --from=runner --chown=nextjs:nodejs /app/client/.next/static ./.next/static
+
+USER nextjs
+
 EXPOSE 3001
+ENV HOSTNAME "0.0.0.0"
+
+ENV PORT 3001
 
 # CMD to run build and start
-CMD ["npm", "run", "start"]
+CMD ["node", "server.js"]

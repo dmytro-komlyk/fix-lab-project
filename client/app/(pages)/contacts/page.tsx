@@ -2,6 +2,9 @@ import { getAllContactsData } from '@/app/(server)/api/service/modules/contactSe
 
 import ContactsSection from './(components)/ContactsSection'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 60
+
 export default async function Contacts() {
   const contactsData = await getAllContactsData()
   return (

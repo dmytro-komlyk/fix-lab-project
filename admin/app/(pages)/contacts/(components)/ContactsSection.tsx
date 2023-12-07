@@ -1,10 +1,9 @@
+import type { IContact } from '@admin/app/(server)/api/service/modules/contactService'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BiMap } from 'react-icons/bi'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 import { TbClockHour9 } from 'react-icons/tb'
-
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 
 interface IContactsProps {
   contactsData: IContact[]

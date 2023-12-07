@@ -10,6 +10,10 @@ const nextConfig = {
     unoptimized: true,
   },
   output: 'standalone',
+  experimental: {
+    appDir: true,
+    // serverActions: true,
+  },
 }
 
 module.exports = nextConfig

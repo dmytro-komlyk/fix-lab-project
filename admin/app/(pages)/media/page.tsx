@@ -1,7 +1,9 @@
+import getData from '@admin/app/(server)/api/service/admin/getData'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import getData from '@/app/(server)/api/service/admin/getData'
+export const runtime = 'edge'
+export const revalidate = 3600
 
 const MediaPage = async () => {
   const iconsUrl = '/images/icons/all'

@@ -63,6 +63,12 @@ const ArticlesList: React.FC<ArticlesListProps> = ({ articlesData }) => {
             </li>
           ))}
         </ul>
+        {/* {articlesData.totalPages > 1 && (
+          <PaginationControls
+            totalPages={articlesData.totalPages}
+            currentPage={currentPage}
+          />
+        )} */}
       </div>
     </div>
   )

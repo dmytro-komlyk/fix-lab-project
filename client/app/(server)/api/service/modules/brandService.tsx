@@ -1,5 +1,19 @@
 import fetchDataFromServer from '../helpers/fetchDataFromServer'
-import type { IBrand } from './gadgetService'
+import type { IImage } from './imageService'
+
+export interface IBrand {
+  _id: string
+  slug: string
+  isActive: boolean
+  title: string
+  article: string
+  icon: IImage
+  metadata: {
+    title: string
+    description: string
+    keywords: string
+  }
+}
 
 export const getAllBrandsData = async (): Promise<IBrand[]> => {
   const endpoint = '/brands'

@@ -1,11 +1,16 @@
+/* eslint-disable import/no-extraneous-dependencies */
+import { trpc } from 'admin/app/(utils)/trpc'
+import type { IBrand } from 'admin/types/trpc'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import getData from '@/app/(server)/api/service/admin/getData'
+export const runtime = 'edge'
+export const revalidate = 3600
 
 const BrandsPage = async () => {
-  const url = '/brands/all'
-  const brandsData = await getData(url)
+  // const url = '/brands/all'
+  // const brandsData = await getData(url)
+  const brandsData = (await trpc.getBrandsQuery.query()) as IBrand[]
 
   return (
     <main className='flex flex-auto'>

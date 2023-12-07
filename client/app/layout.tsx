@@ -6,7 +6,7 @@ import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
 import TawkChat from './(components)/TawkChat'
 import { Footer, Header } from './(layouts)'
 import type { IContact } from './(server)/api/service/modules/contactService'
-import { trpc } from './trpc'
+import { trpc } from './(utils)/trpc'
 
 const inter = Inter({
   weight: ['300', '400', '700', '500', '600'],
@@ -36,9 +36,37 @@ const gugi = Gugi({
 export const metadata: Metadata = {
   title: 'FixLab - ремонт твоєї техніки',
   description: 'FixLab - мережа студій ремонту твоєї техніки',
+  keywords: [
+    'Ремонт техніки в FixLab',
+    'Сервісний центр FixLab',
+    'Експертний ремонт гаджетів',
+    'Швидкий ремонт техніки',
+    'Професійна допомога FixLab',
+    'Технічний сервіс FixLab',
+    'Ремонт смартфонів у FixLab',
+    'Надійний ремонт гаджетів',
+    'Спеціалізований сервіс FixLab',
+    'Технічна підтримка FixLab',
+    'Ремонт планшетів та ноутбуків в FixLab',
+    'Відновлення електроніки FixLab',
+    'Ефективний ремонт техніки',
+    'FixLab: майстри ремонту',
+    'Інноваційні рішення в ремонті техніки',
+    'Технічні експерти FixLab',
+    'Ремонт електроніки з гарантією',
+    'FixLab: найкращий сервіс ремонту',
+    'Швидкісний відновлення техніки',
+    'Професійна допомога від FixLab',
+    'Ремонт та обслуговування техніки',
+    'FixLab: досвідчений сервісний центр',
+    'Якісний ремонт за доступною ціною',
+    'FixLab: технічний сервіс на висоті',
+    'Ремонт електронних пристроїв у FixLab',
+  ],
 }
 
-export const revalidate = 3600
+export const runtime = 'edge'
+export const revalidate = 60
 
 export default async function RootLayout({
   children,
@@ -46,14 +74,13 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
+
   return (
     <html
       lang='uk'
       className={`${inter.variable} ${manrope.variable} ${exo2.variable} ${gugi.variable} h-full`}
     >
       <body className='h-full'>
-        {/* <AOSInit /> */}
-
         <div className='flex min-h-full flex-col'>
           <Header contactsData={contactsData} />
           {children}

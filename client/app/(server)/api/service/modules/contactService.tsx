@@ -1,4 +1,5 @@
 import fetchDataFromServer from '../helpers/fetchDataFromServer'
+import type { IImage } from './imageService'
 
 export interface IContact {
   _id: string
@@ -10,14 +11,7 @@ export interface IContact {
   phones: string[]
   workingTime: string
   workingDate: string
-  coords: {
-    lat: number
-    lang: number
-  }
-  image: {
-    src: string
-    alt: string
-  }
+  image: IImage
   googlePluginLink: string
   googleMapLink: string
 }

@@ -4,7 +4,7 @@ import type { Metadata } from 'next'
 import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 
-import Dashboard from './(layouts)/(components)/Dashboard'
+import Dashboard from './(layouts)/Dashboard'
 import Providers from './(providers)/Providers'
 
 const inter = Inter({
@@ -36,6 +36,7 @@ export const metadata: Metadata = {
   title: 'FixLab - ремонт твоєї техніки',
   description: 'FixLab - мережа студій ремонту твоєї техніки',
 }
+
 export default async function RootLayout({
   children,
 }: {

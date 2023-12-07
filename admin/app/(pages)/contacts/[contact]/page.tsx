@@ -1,7 +1,6 @@
+import getData from '@admin/app/(server)/api/service/admin/getData'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
-
-import getData from '@/app/(server)/api/service/admin/getData'
 
 import EditContactForm from '../(components)/EditContactForm '
 
@@ -10,6 +9,9 @@ interface IContactAdminProps {
     contact: string
   }
 }
+
+export const runtime = 'edge'
+export const revalidate = 3600
 
 const ContactPage: React.FC<IContactAdminProps> = async ({ params }) => {
   const url = `/contacts/${params.contact}`

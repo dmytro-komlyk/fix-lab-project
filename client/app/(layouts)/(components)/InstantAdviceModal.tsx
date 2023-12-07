@@ -65,8 +65,8 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
 
   const handleSubmit = async (values: MyFormValues) => {
     try {
-      const TOKEN = '6885833498:AAFGobowRzxbtdyFjqORjMKMDQPSdPSCA1c'
-      const CHAT_ID = '-1006885833498'
+      const TOKEN = process.env.NEXT_PUBLIC_TELEGRAM_TOKEN
+      const CHAT_ID = process.env.NEXT_PUBLIC_TELEGRAM_CHAT_ID
       const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`
 
       let message = `<b>Миттєва консультація</b>\n`
@@ -97,7 +97,7 @@ const InstantAdviceModal: React.FC<InstantAdviceModalProps> = ({
       animate={{ opacity: 1, transition: { duration: 0.1 } }}
       exit={{ opacity: 0, transition: { duration: 0.1 } }}
       ref={modalRef}
-      className='fixed left-0 top-0 z-50  h-full w-full   overflow-y-auto overflow-x-hidden  bg-modal-overlay'
+      className='fixed left-0 top-0 z-50  h-full w-full   overflow-y-auto overflow-x-hidden  bg-modal-overlay backdrop-blur-[6px]'
     >
       <div
         onClick={onBackdropCloseModal}

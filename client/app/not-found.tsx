@@ -2,7 +2,10 @@ import Link from 'next/link'
 
 import Button from './(layouts)/(components)/Button'
 
-function NotFound() {
+export const dynamic = 'force-dynamic'
+export const revalidate = 60
+
+export default async function NotFound() {
   return (
     <main className='mt-[87px] flex-auto'>
       <section className='flex min-h-screen w-full bg-phone-not-found bg-cover bg-center bg-no-repeat md:bg-not-found'>
@@ -27,5 +30,3 @@ function NotFound() {
     </main>
   )
 }
-
-export default NotFound

@@ -1,4 +1,4 @@
-export default function Home() {
+export default async function Home() {
   return (
     <main className=' flex h-full w-full flex-auto'>
       <section className=' flex w-full items-center justify-center overflow-hidden  bg-footer-gradient-linear-blue  pb-[102px] pt-[163px] max-md:pb-14 max-md:pt-[120px]'>

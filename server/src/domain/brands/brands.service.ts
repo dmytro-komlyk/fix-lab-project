@@ -80,7 +80,7 @@ export class BrandsService {
     return brand;
   }
 
-  public async remove(id: string): Promise<Brand> {
+  public async remove(id: string): Promise<string> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -91,6 +91,6 @@ export class BrandsService {
       throw new NotFoundException(`Brand with ID ${id} was not found`);
     }
 
-    return brand;
+    return id;
   }
 }

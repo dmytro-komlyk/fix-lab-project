@@ -1,12 +1,10 @@
-/* eslint-disable no-underscore-dangle */
-
 import { AnimatePresence, motion } from 'framer-motion'
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import type { IBrand } from '@/app/(server)/api/service/modules/gadgetService'
+import type { IBrand } from '@/app/(server)/api/service/modules/brandService'
 
 export interface BrandsSliderProps {
   gadgetData: {

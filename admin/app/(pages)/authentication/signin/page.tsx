@@ -1,5 +1,8 @@
 import SignIn from '../(components)/SignIn'
 
+export const runtime = 'edge'
+export const revalidate = 3600
+
 const SignInPage = () => {
   return (
     <main className='flex h-full flex-auto'>

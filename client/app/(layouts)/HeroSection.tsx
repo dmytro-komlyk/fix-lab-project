@@ -1,6 +1,7 @@
 'use client'
 
 import { AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useCallback, useState } from 'react'
 
@@ -19,62 +20,65 @@ import PowerImage from '../../public/icons/pop-power.svg'
 import SmartphoneImage from '../../public/icons/pop-smartphone.svg'
 import HeroPhone from '../../public/images/phone-hero.png'
 import { CommonButton } from '../(components)/CommonButton'
-import CostRepairModal from './(components)/CostRepairModal'
-import { HeroSlider } from './(components)/HeroSlider'
-import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
+
+const HeroSlider = dynamic(() => import('./(components)/HeroSlider/HeroSlider'))
+const SuccessSubmitBanner = dynamic(
+  () => import('./(components)/SuccessSubmitBanner'),
+)
+const CostRepairModal = dynamic(() => import('./(components)/CostRepairModal'))
 
 const DATA = {
   items: [
     {
-      link: '#',
+      link: '/repair/telefon/zamina-ekranu',
       src: SmartphoneImage,
       alt: 'Дисплей',
       title: 'Замінити дисплей',
     },
     {
-      link: '#',
+      link: '/repair/telefon/zamina-batareyi',
       src: PowerImage,
       alt: 'Батарея',
       title: 'Замінити батарею',
     },
     {
-      link: '#',
+      link: '/repair/telefon/zamina-rozyemu-zaryadky',
       src: ChargingImage,
       alt: 'Розʼєм',
       title: 'Замінити розʼєм',
     },
     {
-      link: '#',
+      link: '/repair/noutbuk',
       src: KeyboardImage,
       alt: 'Клавіатура',
       title: 'Замінити клавіатуру',
     },
     {
-      link: '#',
+      link: '/repair/noutbuk',
       src: MatrixImage,
       alt: 'матрицю',
       title: 'Замінити матрицю',
     },
     {
-      link: '#',
+      link: '/repair/noutbuk',
       src: LaptopImage,
       alt: 'Ноутбук',
       title: 'Апгрейд ноутбуку',
     },
     {
-      link: '#',
+      link: '/repair/dzhojstik',
       src: JoystickImage,
       alt: 'ДжойстиК',
       title: 'Ремонт джойстиків',
     },
     {
-      link: '#',
+      link: '/repair/navushniki-kolonki',
       src: BoomboxImage,
       alt: 'Колонка',
       title: 'Ремонт колонок',
     },
     {
-      link: '#',
+      link: '/repair/elektronna-knizhka',
       src: EbookImage,
       alt: 'Читалка',
       title: 'Ремонт читалок',

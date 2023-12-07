@@ -26,7 +26,7 @@ import { PREFIX, PUBLIC_FOLDER } from '@constants/routes.constants';
   app.setGlobalPrefix(PREFIX);
 
   app.useGlobalFilters(new MongoErrorsFilter());
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   app.useStaticAssets(`${process.cwd()}/${PUBLIC_FOLDER}`, {
     prefix: `/${PUBLIC_FOLDER}`
@@ -39,5 +39,5 @@ import { PREFIX, PUBLIC_FOLDER } from '@constants/routes.constants';
   const trpc = app.get(TrpcRouter);
   trpc.applyMiddleware(app);
 
-  await app.listen(process.env.PORT ?? 4000);
+  await app.listen(process.env.PORT ?? 3000);
 })();

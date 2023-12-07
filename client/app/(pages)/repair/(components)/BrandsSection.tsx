@@ -1,6 +1,7 @@
 'use client'
 
 import { AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -10,12 +11,17 @@ import { MdKeyboardArrowRight } from 'react-icons/md'
 import RenderMarkdown from '@/app/(components)/RenderMarkdown'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
-import InstantAdviceModal from '@/app/(layouts)/(components)/InstantAdviceModal'
-import SuccessSubmitBanner from '@/app/(layouts)/(components)/SuccessSubmitBanner'
+import type { IBrand } from '@/app/(server)/api/service/modules/brandService'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
-import type { IBrand } from '@/app/(server)/api/service/modules/gadgetService'
 
 import { BrandsSlider } from './BrandsSlider'
+
+const InstantAdviceModal = dynamic(
+  () => import('@/app/(layouts)/(components)/InstantAdviceModal'),
+)
+const SuccessSubmitBanner = dynamic(
+  () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
+)
 
 export interface BrandsProps {
   contactsData: IContact[]

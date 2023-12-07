@@ -1,5 +1,4 @@
-import { Image } from 'next/dist/client/image-component'
-import React from 'react'
+import Image from 'next/image'
 
 import ColabSlider from '../(components)/ColabSlider/slider'
 

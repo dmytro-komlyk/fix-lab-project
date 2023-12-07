@@ -1,3 +1,4 @@
+import { AOSInit } from './(components)/AOSInit'
 import {
   AddressSection,
   BrokenSection,
@@ -7,9 +8,10 @@ import {
 } from './(layouts)'
 import type { IContact } from './(server)/api/service/modules/contactService'
 import type { IGadget } from './(server)/api/service/modules/gadgetService'
-import { trpc } from './trpc'
+import { trpc } from './(utils)/trpc'
 
-export const revalidate = 3600
+export const runtime = 'edge'
+export const revalidate = 60
 
 export default async function Home() {
   const gadgetsData = (await trpc.getGadgetsQuery.query()) as IGadget[]
@@ -17,6 +19,7 @@ export default async function Home() {
 
   return (
     <main className='relative flex-auto'>
+      <AOSInit />
       <HeroSection />
       <BrokenSection gadgetsData={gadgetsData} />
       <CallCourierSection />

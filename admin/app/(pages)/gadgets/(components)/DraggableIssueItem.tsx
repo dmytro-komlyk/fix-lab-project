@@ -1,10 +1,9 @@
 'use client'
 
+import type { IIssue } from '@admin/app/(server)/api/service/modules/gadgetService'
 import { useSortable } from '@dnd-kit/sortable'
 import { GoGrabber } from 'react-icons/go'
 import { IoIosRemoveCircle } from 'react-icons/io'
-
-import type { IIssue } from '@/app/(server)/api/service/modules/gadgetService'
 
 interface DraggableIssueItemProps {
   id: string

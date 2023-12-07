@@ -1,12 +1,10 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { trpc } from 'client/app/trpc'
+import type { IIssue } from 'client/app/(server)/api/service/modules/issueService'
+import type { Metadata } from 'next'
 
 import { AddressSection } from '@/app/(layouts)'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
-import type {
-  IGadget,
-  IIssue,
-} from '@/app/(server)/api/service/modules/gadgetService'
+import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
+import { trpc } from '@/app/(utils)/trpc'
 
 import IssueSection from '../../(components)/IssueSection'
 
@@ -14,6 +12,24 @@ interface IndexProps {
   params: {
     issue: string
     gadget: string
+  }
+}
+
+export const runtime = 'edge'
+export const revalidate = 60
+
+export async function generateMetadata({
+  params,
+}: IndexProps): Promise<Metadata> {
+  const { issue } = params
+  const singleIssueData = (await trpc.getIssueBySlugQuery.query({
+    slug: issue,
+  })) as IIssue
+
+  return {
+    title: singleIssueData.metadata.title,
+    description: singleIssueData.metadata.description,
+    keywords: singleIssueData.metadata.keywords.split(', '),
   }
 }
 

@@ -4,14 +4,16 @@
 
 'use client'
 
+import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
+import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
+import { sendPutRequest } from '@admin/app/(server)/api/service/admin/sendPutRequest'
+import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
+import type { IIssue } from '@admin/app/(server)/api/service/modules/gadgetService'
 import Image from 'next/image'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
-import deleteData from '@/app/(server)/api/service/admin/deleteData'
-import { sendPutRequest } from '@/app/(server)/api/service/admin/sendPutRequest'
-import uploadImg from '@/app/(server)/api/service/admin/uploadImg'
-import type { IIssue } from '@/app/(server)/api/service/modules/gadgetService'
-
+import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
 import type { IBenefitItem } from '../../benefits/(components)/EditBenefitForm '
@@ -26,12 +28,25 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
   issueData,
   benefitsData,
 }) => {
-  const [newIssueData, setNewIssueData] = useState({ ...issueData })
+  const [newIssueData, setNewIssueData] = useLocalStorage(
+    `editIssueData${issueData._id}`,
+    {
+      ...issueData,
+    },
+  )
   const [selectedIcon, setSelectedIcon] = useState<File | null>(null)
-  const [newIcon, setNewIcon] = useState<string | ArrayBuffer | null>(null)
-  const [newInfo, setNewInfo] = useState<string | ''>(issueData.info || '')
-  const [newDescription, setNewDescription] = useState<string | ''>(
+  const [icon, setIcon] = useState<string | ArrayBuffer | null>(null)
+  const [info, setInfo] = useLocalStorage<string | ''>(
+    `editIssueInfo${issueData._id}`,
+    issueData.info || '',
+  )
+  const [description, setDescription] = useLocalStorage<string | ''>(
+    `editIssueDescription${issueData._id}`,
     issueData.description || '',
+  )
+  const [altImage, setAltImage] = useLocalStorage<string | ''>(
+    `editIssueAltImage${issueData._id}`,
+    issueData.image.alt,
   )
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,8 +84,8 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
             ...newIssueData,
             image: uploadResponse.data._id,
             benefits: newIssueData.benefits.map(item => item._id) || [],
-            description: newDescription,
-            info: newInfo,
+            description,
+            info,
           })
 
           if (response.status === 200) {
@@ -87,11 +102,18 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
           ...newIssueData,
           image: issueData.image._id || '',
           benefits: newIssueData.benefits.map(item => item._id) || [],
-          description: newDescription,
-          info: newInfo,
+          description,
+          info,
         })
       }
     } catch (error) {
+      toast.error(`Всі поля повинні бути заповнені...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
       console.error('Error:', error)
     }
   }
@@ -104,7 +126,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
         setSelectedIcon(file)
         const reader = new FileReader()
         reader.onloadend = () => {
-          setNewIcon(reader.result as string | ArrayBuffer | null)
+          setIcon(reader.result as string | ArrayBuffer | null)
         }
 
         reader.readAsDataURL(file)
@@ -117,7 +139,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
       if (selectedIcon) {
         const response = await uploadImg({
           fileInput: selectedIcon,
-          alt: issueData.image.alt,
+          alt: altImage,
           type: issueData.image.type,
         })
         return response
@@ -136,7 +158,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
         await deleteData(deleteEndpoint)
         if (deleteEndpoint) {
           setSelectedIcon(null)
-          setNewIcon(null)
+          setIcon(null)
         }
         console.log('success')
       }
@@ -146,135 +168,170 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
   }
 
   return (
-    <div className='flex flex-auto flex-col items-center justify-center gap-[20px]'>
-      <form
-        onSubmit={handleSubmit}
-        className='flex w-full items-end justify-evenly gap-3 text-white-dis '
-      >
-        <div className='w-[400px]'>
-          <div className='relative'>
-            {!newIcon ? (
-              <Image
-                className='h-auto w-[400px]  object-center'
-                src={issueData.image.src}
-                width={400}
-                height={300}
-                alt={issueData.image.alt}
-              />
-            ) : (
-              <div>
+    <div className='flex flex-auto flex-col items-center justify-center gap-4'>
+      <form className='flex w-full flex-col justify-between gap-3 text-white-dis '>
+        <div className='flex w-full justify-between'>
+          <div className='flex w-[500px] flex-col gap-3'>
+            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+              Зображення
+            </p>
+            <div className='relative'>
+              {!icon ? (
                 <Image
-                  className='h-[140px] w-[220px] object-center'
-                  src={typeof newIcon === 'string' ? newIcon : ''}
-                  width={0}
-                  height={0}
-                  alt={issueData.title}
+                  className='h-[400px] w-[500px] object-contain  object-center'
+                  src={issueData.image.src}
+                  width={400}
+                  height={300}
+                  alt={issueData.image.alt}
                 />
-              </div>
-            )}
+              ) : (
+                <div>
+                  <Image
+                    className='h-[400px] w-[500px] object-contain object-center'
+                    src={typeof icon === 'string' ? icon : ''}
+                    width={0}
+                    height={0}
+                    alt={issueData.title}
+                  />
+                </div>
+              )}
+            </div>
+            <input
+              className=' text-white-dis'
+              id='icon'
+              type='file'
+              accept='icon/*'
+              onChange={handleImageChange}
+            />
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+              Опис зображення(alt)
+              <input
+                required
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                type='text'
+                name='altImage'
+                value={altImage}
+                onChange={e => {
+                  setAltImage(e.target.value)
+                }}
+              />
+            </label>
           </div>
+          <div className='flex w-[400px] flex-col justify-between'>
+            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+              SEO налаштування
+            </p>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+              Seo title
+              <input
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                type='text'
+                name='metadata'
+                data-metadata-field='title'
+                value={newIssueData.metadata.title || ''}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+              Seo description
+              <input
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                type='text'
+                name='metadata'
+                data-metadata-field='description'
+                value={newIssueData.metadata.description || ''}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+              Seo keywords
+              <input
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                type='text'
+                name='metadata'
+                data-metadata-field='keywords'
+                value={newIssueData.metadata.keywords || ''}
+                onChange={handleInputChange}
+              />
+            </label>
+          </div>
+        </div>
+        <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+          Вартість послуги
           <input
-            className=' text-white-dis'
-            id='icon'
-            type='file'
-            accept='icon/*'
-            onChange={handleImageChange}
+            required
+            className='font-base h-[45px] w-[300px] indent-3 text-md text-black-dis'
+            type='text'
+            name='price'
+            value={newIssueData.price || ''}
+            onChange={handleInputChange}
           />
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-            Заголовок
-            <input
-              required
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-              type='text'
-              name='title'
-              value={newIssueData.title || ''}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-            Вартість послуги
-            <input
-              required
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-              type='text'
-              name='price'
-              value={newIssueData.price || ''}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
-        <div className='w-[400px]'>
-          <p className=' bold mt-2 text-center font-exo_2 text-xl'>
-            SEO налаштування
-          </p>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-            Seo title
-            <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-              type='text'
-              name='metadata'
-              data-metadata-field='title'
-              value={newIssueData.metadata.title || ''}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-            Seo description
-            <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-              type='text'
-              name='metadata'
-              data-metadata-field='description'
-              value={newIssueData.metadata.description || ''}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-            Seo keywords
-            <input
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-              type='text'
-              name='metadata'
-              data-metadata-field='keywords'
-              value={newIssueData.metadata.keywords || ''}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
+        </label>
+        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
+          Заголовок
+          <input
+            required
+            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+            type='text'
+            name='title'
+            value={newIssueData.title || ''}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
+          Slug(url сторінки)
+          <input
+            required
+            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+            type='text'
+            name='slug'
+            value={newIssueData.slug || ''}
+            onChange={handleInputChange}
+          />
+        </label>
       </form>
-      <div className='flex w-full flex-col justify-between gap-[50px]'>
-        <div className='flex w-full flex-col items-start gap-2 '>
+      <div className='w-full'>
+        <AddImagesSection />
+      </div>
+      <div className='flex w-full flex-col justify-between gap-6'>
+        <div className='flex w-full  flex-col  gap-2 '>
           <p className='text-center font-exo_2 text-xl text-white-dis'>Інфо</p>
           <CustomEditor
             id='edit-info-content'
-            setContent={setNewInfo}
-            content={newInfo}
+            setContent={setInfo}
+            content={info}
           />
         </div>
-        <div className='flex w-full flex-col items-start gap-2 '>
+        <div className='w-full'>
+          <AddImagesSection />
+        </div>
+        <div className='flex w-full  flex-col  gap-2 '>
           <p className='text-center font-exo_2 text-xl text-white-dis'>
             Стаття
           </p>
           <CustomEditor
             id='edit-description-content'
-            setContent={setNewDescription}
-            content={newDescription}
+            setContent={setDescription}
+            content={description}
           />
         </div>
-        <div className='flex flex-col items-center justify-center'>
-          <div className='flex w-full   flex-col-reverse '>
-            <div className=' mb-[20px] w-full border-b-2 border-mid-grey' />
-            <p className='mb-6 font-exo_2 text-2xl font-bold  text-white-dis  max-lg:text-xl'>
-              Послуги сервісного обслуговування
-            </p>
-          </div>
+      </div>
+      <div className='flex w-full flex-col items-center justify-center'>
+        <div className='flex w-full  flex-col-reverse  justify-center '>
+          <div className='  w-full border-b-2 border-mid-grey' />
+          <p className='mb-6 text-center font-exo_2 text-2xl font-bold  text-white-dis  max-lg:text-xl'>
+            Послуги сервісного обслуговування
+          </p>
         </div>
       </div>
-      <EditBenefitsList
-        benefitsData={benefitsData}
-        newIssueData={newIssueData}
-        setNewIssueData={setNewIssueData}
-      />
+      <div className=' flex h-[400px] w-full justify-center overflow-auto '>
+        <EditBenefitsList
+          benefitsData={benefitsData}
+          newIssueData={newIssueData}
+          setNewIssueData={setNewIssueData}
+        />
+      </div>
+
       <SendButton handleSubmit={handleSubmit} />
     </div>
   )

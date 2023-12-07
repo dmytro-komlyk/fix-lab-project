@@ -1,14 +1,20 @@
 'use client'
 
 import { AnimatePresence } from 'framer-motion'
+import dynamic from 'next/dynamic'
 import React, { useCallback, useState } from 'react'
 
 import { GadgetsList } from '../(pages)/repair/(components)/GadgetsList'
 import { GadgetsSlider } from '../(pages)/repair/(components)/GadgetsSlider'
 import type { IGadget } from '../(server)/api/service/modules/gadgetService'
 import Button from './(components)/Button'
-import InstantAdviceModal from './(components)/InstantAdviceModal'
-import SuccessSubmitBanner from './(components)/SuccessSubmitBanner'
+
+const InstantAdviceModal = dynamic(
+  () => import('./(components)/InstantAdviceModal'),
+)
+const SuccessSubmitBanner = dynamic(
+  () => import('./(components)/SuccessSubmitBanner'),
+)
 
 export interface IGadgetsProps {
   gadgetsData: IGadget[]
@@ -26,7 +32,7 @@ export const BrokenSection: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
     setShowInstantAdviceModal(prev => !prev)
   }, [setShowInstantAdviceModal])
   return (
-    <section className='z-[1] pb-[39px] pt-[102px] max-md:pt-[43px] md:mb-[-50px] lg:mb-[-100px] xl:mb-[-150px]'>
+    <section className=' relative z-[3] pb-[39px] pt-[102px] max-md:pt-[43px] md:mb-[-50px] lg:mb-[-100px] xl:mb-[-150px]'>
       <div className='container lg:px-0 '>
         <div
           data-aos='fade-up'

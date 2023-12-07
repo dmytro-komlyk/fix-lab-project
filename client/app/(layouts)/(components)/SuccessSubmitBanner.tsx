@@ -29,7 +29,7 @@ const SuccessSubmitBanner: React.FC<SuccessSubmitBannerProps> = ({
       animate={{ opacity: 1, transition: { duration: 0.1 } }}
       exit={{ opacity: 0, transition: { duration: 0.1 } }}
       ref={successSubmitModalRef}
-      className='fixed left-0 top-0 z-50 flex h-full w-full  items-center justify-center overflow-y-auto overflow-x-hidden bg-modal-overlay'
+      className='fixed left-0 top-0 z-50 flex h-full w-full  items-center justify-center overflow-y-auto overflow-x-hidden bg-modal-overlay backdrop-blur-[6px]'
       onClick={onBackdropCloseModal}
     >
       <div

@@ -1,5 +1,8 @@
 import ForgotPassword from '../(components)/ForgotPassword'
 
+export const runtime = 'edge'
+export const revalidate = 3600
+
 const ForgotPasswordPage = () => {
   return (
     <main className='flex h-full flex-auto'>

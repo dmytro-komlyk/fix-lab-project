@@ -17,7 +17,7 @@ import IconZoom from '@/public/icons/icon-zoom.svg'
 import ForBusinessSection from './(components)/ForBusinessSection'
 
 const sectionData = {
-  path: 'Для Бизнесу',
+  path: 'Для Бізнесу',
   info: {
     title: 'В офісі зламалися компʼютери?',
     benefits: [
@@ -97,6 +97,9 @@ const sectionData = {
     ],
   },
 }
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 export default async function Corporate() {
   const contactsData = await getAllContactsData()
