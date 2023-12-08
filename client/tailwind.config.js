@@ -33,6 +33,7 @@ module.exports = {
       '9xl': '6.75rem' /* 108px */,
     },
     colors: {
+      'dodger-blue': '#18C8FF',
       'white-dis': '#F8FCFF',
       'dark-blue': '#04268B',
       'light-blue': '#1B37AA',
@@ -47,6 +48,12 @@ module.exports = {
       'pros-bg': 'rgba(248, 252, 255, 0.76)',
     },
     extend: {
+      borderColor: {
+        transparent: 'transparent',
+      },
+      textColor: {
+        transparent: 'transparent',
+      },
       padding: {
         lg: '102px',
       },
@@ -81,6 +88,8 @@ module.exports = {
         'mscope-xl': 'top calc(50% + 35px) right calc(50% - 32px)',
       },
       backgroundImage: {
+        'loading-gradient':
+          'linear-gradient(90.28deg, #18C8FF -2.9%, rgba(255, 255, 255, 0.1) 78.14%)',
         'card-blog':
           'linear-gradient(180deg, rgba(200, 211, 239, 0) 75.52%, rgba(200, 211, 239, 0.78) 100%)',
         'card-repair-gradient':
@@ -120,8 +129,16 @@ module.exports = {
         hoverBtnOut: 'slide-out-bottom 0.3s ease-out both',
         hoverCard: 'all 0.3s ease-in-out',
         progressBar: 'width 0.5s',
+        gradient: 'animatedgradient 4s ease infinite alternate',
         'slide-top': 'slide-out-top 0.2s ease-in-out both',
         'slide-bottom': 'slide-out-bottom 0.2s ease-in-out both',
+      },
+      keyframes: {
+        animatedgradient: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
       },
     },
   },

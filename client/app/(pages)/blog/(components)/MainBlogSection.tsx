@@ -20,16 +20,16 @@ const MainBlogSection: React.FC<IBlogProps> = ({ postsData, currentPage }) => {
       <div className='container flex flex-col gap-7 pb-[70px] pt-[158px] max-lg:pb-[50px] lg:px-0'>
         <div className='flex flex-wrap items-center gap-1'>
           <Link
-            className='flex items-center text-base font-[400] text-mid-blue transition-opacity  hover:opacity-70 focus:opacity-70'
+            className='text-mid-blue flex items-center text-base font-[400] transition-opacity  hover:opacity-70 focus:opacity-70'
             href='/'
           >
             <p> Головна</p> <MdKeyboardArrowRight size={25} />
           </Link>
           <Link
-            className='flex items-center text-base font-[400] text-mid-blue transition-opacity  hover:opacity-70 focus:opacity-70'
+            className='text-mid-blue flex items-center text-base font-[400] transition-opacity  hover:opacity-70 focus:opacity-70'
             href='/blog'
           >
-            <p className='text-base font-[400] text-mid-blue opacity-70'>
+            <p className='text-mid-blue text-base font-[400] opacity-70'>
               Блог
             </p>
           </Link>
