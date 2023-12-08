@@ -191,6 +191,8 @@
   }
   100% {
     transform: skewX(20deg) skewY(20deg) rotate(360deg);
+  }
+}
 
 @media screen and (max-width: 768px) {
   [data-aos] {
