@@ -1,14 +1,14 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-console */
-import { auth } from 'admin/auth'
 import type { AxiosResponse } from 'axios'
 import axios from 'axios'
+import { getSession } from 'next-auth/react'
 
 const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL as string
 
 export default async function getImageData(url: string): Promise<any> {
   try {
-    const session = await auth()
+    const session = await getSession()
 
     if (session?.user.token === undefined) {
       throw new Error('Headers are undefined')

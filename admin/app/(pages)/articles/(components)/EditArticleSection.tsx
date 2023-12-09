@@ -189,7 +189,7 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
               {!newImage ? (
                 <Image
                   className='h-auto w-[500px]  object-center'
-                  src={articleData.image.src}
+                  src={`http://95.217.34.212:30000/${articleData.image.file.path}`}
                   width={400}
                   height={100}
                   alt={articleData.image.alt}
