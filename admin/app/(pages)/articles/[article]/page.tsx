@@ -1,5 +1,8 @@
+'use client'
+
 import getData from '@admin/app/(server)/api/service/admin/getData'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import PreviewArticlePage from '../(components)/PreviewArticlePage'
@@ -10,15 +13,29 @@ interface IArticleAdminProps {
   }
 }
 
-export const runtime = 'edge'
-export const revalidate = 3600
+const ArticlePage: React.FC<IArticleAdminProps> = ({ params }) => {
+  const [articleData, setArticleData] = useState<any>(null)
 
-const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
-  const articleUrl = `/articles/${params.article}`
-  const articleData = await getData(articleUrl)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const articleUrl = `/articles/${params.article}`
+
+        const data = await getData(articleUrl)
+        setArticleData(data)
+      } catch (error) {
+        throw new Error(`Error in getData: ${(error as Error).message}`)
+      }
+    }
+
+    fetchData()
+  }, [params.article])
+
+  // const articleUrl = `/articles/${params.article}`
+  // const articleData = await getData(articleUrl)
   return (
     <main className=' flex flex-auto'>
-      <section className=' bg-footer-gradient-linear-blue w-full  overflow-hidden  py-[60px] '>
+      <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px] '>
         <div className='container  relative flex flex-col items-center px-8 '>
           <div className='z-[1] mb-8 flex items-center gap-1 self-start  px-4'>
             <Link
@@ -29,10 +46,14 @@ const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
             </Link>
 
             <p className='text-base font-[400] text-[#3EB9F0] opacity-70'>
-              {articleData.title}
+              {articleData?.title}
             </p>
           </div>
-          <PreviewArticlePage articleData={articleData} />
+          {articleData ? (
+            <PreviewArticlePage articleData={articleData} />
+          ) : (
+            <p>No Article</p>
+          )}
         </div>
       </section>
     </main>

@@ -6,7 +6,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
-import getClientData from '@admin/app/(server)/api/service/admin/getClientData'
+import getData from '@admin/app/(server)/api/service/admin/getData'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Image from 'next/image'
@@ -23,6 +23,9 @@ export interface IImageItem {
   src: string
   alt: string
   type: string
+  file: {
+    path: string
+  }
 }
 
 const AddImagesSection = () => {
@@ -46,7 +49,7 @@ const AddImagesSection = () => {
 
   const fetchImages = async () => {
     try {
-      const res = await getClientData('/images/pictures/all')
+      const res = await getData('/images/pictures/all')
       setImagesData(res)
     } catch (error) {
       throw new Error('')
@@ -219,14 +222,18 @@ const AddImagesSection = () => {
                   <Image
                     className='h-[140px] max-w-[280px]  object-contain object-center opacity-100 '
                     alt={item.alt}
-                    src={item.src}
+                    src={`http://95.217.34.212:30000/${item.file.path}`}
                     width={320}
                     height={240}
                   />
                   <button
                     type='button'
                     className='absolute right-0 top-0 rounded-bl-xl bg-black-dis p-2 font-exo_2 text-sm text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
-                    onClick={() => handleCopyLink(item.src)}
+                    onClick={() =>
+                      handleCopyLink(
+                        `http://95.217.34.212:30000/${item.file.path}`,
+                      )
+                    }
                   >
                     Копіювати посилання
                   </button>

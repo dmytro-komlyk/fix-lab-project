@@ -12,7 +12,7 @@ export interface IPreviewArticleProps {
 const PreviewArticlePage: React.FC<IPreviewArticleProps> = ({
   articleData,
 }) => {
-  return (
+  return articleData._id ? (
     <section className=' overflow-hidden bg-white-dis  p-4  shadow-2xl'>
       <div className='container relative flex flex-col xl:p-0'>
         <div className='flex w-[988px] flex-col '>
@@ -23,7 +23,7 @@ const PreviewArticlePage: React.FC<IPreviewArticleProps> = ({
           </div>
           <Image
             className='mb-[56px] min-h-[245px] w-full object-cover md:max-h-[480px]'
-            src={articleData.image.src}
+            src={`http://95.217.34.212:30000/${articleData.image.file.path}`}
             width={924}
             height={480}
             alt={articleData.image.alt}
@@ -34,6 +34,8 @@ const PreviewArticlePage: React.FC<IPreviewArticleProps> = ({
         </div>
       </div>
     </section>
+  ) : (
+    <p>No Article</p>
   )
 }
 

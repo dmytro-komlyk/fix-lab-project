@@ -14,6 +14,9 @@ export interface IArticle {
     src: string
     alt: string
     type: string
+    file: {
+      path: string
+    }
   }
   metadata: {
     title: string
