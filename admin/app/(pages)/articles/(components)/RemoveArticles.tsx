@@ -3,16 +3,15 @@
 'use client'
 
 import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
+import type { IPost } from 'admin/types/trpc'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai'
 import { MdDelete } from 'react-icons/md'
 
-import type { IArticle } from './ArticlesList'
-
 interface RemoveArticlesProps {
-  item: IArticle
+  item: IPost
 }
 const RemoveArticles: React.FC<RemoveArticlesProps> = ({ item }) => {
   const [showRemoveContainers, setShowRemoveContainers] = useState<{
@@ -27,7 +26,24 @@ const RemoveArticles: React.FC<RemoveArticlesProps> = ({ item }) => {
       [itemId]: !prevState[itemId],
     }))
   }
-  const handleDeleteArticle = async (articleItem: IArticle) => {
+
+  // const deleteArticleTrpc = trpc.addArticle.useMutation({
+  //   onSuccess: () => {
+  //     toast.success(`Статтю видалено!`, {
+  //       style: {
+  //         borderRadius: '10px',
+  //         background: 'grey',
+  //         color: '#fff',
+  //       },
+  //     })
+  //     deleteImageTrpc({ id: articleItem.image._id })
+  //     toggleRemoveContainer(articleItem._id)
+  //     router.refresh()
+  //   },
+  // })
+
+  const handleDeleteArticle = async (articleItem: IPost) => {
+    // await deleteArticleTrpc.mutate({id: articleItem._id})
     try {
       const endpoint = `/articles/${articleItem._id}`
       const res = await deleteData(endpoint)
@@ -91,7 +107,7 @@ const RemoveArticles: React.FC<RemoveArticlesProps> = ({ item }) => {
           ref={ref => {
             containerRefs.current[item._id] = ref
           }}
-          className='z-1 absolute bottom-[-21.5px] left-[-25px] flex gap-4 bg-mid-green p-[21px]'
+          className='z-1 bg-mid-green absolute bottom-[-21.5px] left-[-25px] flex gap-4 p-[21px]'
         >
           <button
             aria-label='Видалити'
@@ -99,7 +115,7 @@ const RemoveArticles: React.FC<RemoveArticlesProps> = ({ item }) => {
             onClick={() => handleDeleteArticle(item)}
           >
             <AiOutlineCheckCircle
-              className='transition-colors hover:fill-white-dis focus:fill-white-dis'
+              className='hover:fill-white-dis focus:fill-white-dis transition-colors'
               size={30}
             />
           </button>

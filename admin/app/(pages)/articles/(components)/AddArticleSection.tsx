@@ -79,6 +79,20 @@ const AddArticleSection = () => {
     }))
   }
 
+  // const createArticle = trpc.addArticle.useMutation({
+  //   onSuccess: () => {
+  //     toast.success(`Статтю додано!`, {
+  //       style: {
+  //         borderRadius: '10px',
+  //         background: 'grey',
+  //         color: '#fff',
+  //       },
+  //     })
+  //     clearState()
+  //     router.refresh()
+  //   },
+  // })
+
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
@@ -92,6 +106,16 @@ const AddArticleSection = () => {
       }
 
       uploadedImageId = uploadResponse.data._id
+
+      // await createArticle.mutate({
+      //   isActive: true,
+      //   slug: contentSlug,
+      //   title: contentTitle,
+      //   text: contentArticle,
+      //   image: uploadedImageId,
+      //   preview: contentPreview,
+      //   metadata: seoContent,
+      // })
 
       const data = {
         isActive: true,
@@ -148,6 +172,8 @@ const AddArticleSection = () => {
       })
 
       if (uploadedImageId) {
+        // await deleteImageTrpc({ id: uploadedImageId })
+
         try {
           const deleteResponse = await deleteData(`/images/${uploadedImageId}`)
           console.log('Delete Response:', deleteResponse)
@@ -173,6 +199,7 @@ const AddArticleSection = () => {
       }
     }
   }
+
   const handleImageUpload = async () => {
     try {
       if (selectedImage) {
@@ -187,6 +214,16 @@ const AddArticleSection = () => {
     } catch (error) {
       throw new Error('Error uploading image')
     }
+
+    // if (selectedImage) {
+    //     const response = await uploadImageTrpc.mutate({
+    //       fileInput: selectedImage,
+    //       alt: altImage,
+    //       type: 'picture',
+    //     })
+    //     return response
+    //   }
+    //   return null
   }
 
   return (
@@ -200,17 +237,17 @@ const AddArticleSection = () => {
         key='1'
         startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
         title={
-          <span className='bg-top- text-center font-exo_2 text-2xl font-bold text-white-dis'>
+          <span className='bg-top- font-exo_2 text-white-dis text-center text-2xl font-bold'>
             Додати статтю
           </span>
         }
       >
         <div className='container flex flex-col items-center gap-[60px] px-4 transition-all duration-300  ease-in-out'>
-          <form className='flex w-full  justify-evenly gap-3 text-white-dis '>
+          <form className='text-white-dis flex  w-full justify-evenly gap-3 '>
             <div className='flex w-full flex-col gap-8'>
               <div className='flex justify-between gap-3 '>
                 <div className='flex flex-col gap-3'>
-                  <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+                  <p className=' bold font-exo_2 mt-2 text-center text-xl'>
                     Зображення
                   </p>
                   <div className='flex flex-col gap-3'>
@@ -240,11 +277,11 @@ const AddArticleSection = () => {
                     />
                   </div>
 
-                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
                     Опис зображення(alt)
                     <input
                       required
-                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                       type='text'
                       name='altImage'
                       value={altImage}
@@ -255,25 +292,25 @@ const AddArticleSection = () => {
                   </label>
                 </div>
                 <div className='flex w-[400px] flex-col justify-between'>
-                  <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+                  <p className=' bold font-exo_2 mt-2 text-center text-xl'>
                     SEO налаштування
                   </p>
-                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
                     Seo title
                     <input
                       required
-                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                       type='text'
                       name='title'
                       value={seoContent.title || ''}
                       onChange={e => handleInputChange('title', e.target.value)}
                     />
                   </label>
-                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
                     Seo description
                     <input
                       required
-                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                       type='text'
                       name='description'
                       value={seoContent.description || ''}
@@ -282,11 +319,11 @@ const AddArticleSection = () => {
                       }
                     />
                   </label>
-                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
                     Seo keywords
                     <input
                       required
-                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                       type='text'
                       name='keywords'
                       value={seoContent.keywords || ''}
@@ -297,11 +334,11 @@ const AddArticleSection = () => {
                   </label>
                 </div>
               </div>
-              <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
+              <label className='font-exo_2  flex flex-col gap-1 text-center text-xl'>
                 Заголовок
                 <input
                   required
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                   type='text'
                   name='title'
                   value={contentTitle}
@@ -311,11 +348,11 @@ const AddArticleSection = () => {
                   }}
                 />
               </label>
-              <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
+              <label className='font-exo_2  flex flex-col gap-1 text-center text-xl'>
                 Slug(url сторінки)
                 <input
                   required
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                   type='text'
                   name='slug'
                   value={contentSlug}
@@ -324,11 +361,11 @@ const AddArticleSection = () => {
                   }}
                 />
               </label>
-              <label className='flex  flex-col   gap-1 text-center font-exo_2 text-xl'>
+              <label className='font-exo_2  flex   flex-col gap-1 text-center text-xl'>
                 Опис статті
                 <input
                   required
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                   type='text'
                   name='preview'
                   value={contentPreview}
@@ -343,7 +380,7 @@ const AddArticleSection = () => {
             <AddImagesSection />
           </div>
           <div className='flex w-full flex-col items-center gap-2 overflow-hidden '>
-            <p className='text-center font-exo_2  text-xl text-white-dis'>
+            <p className='font-exo_2 text-white-dis  text-center text-xl'>
               Стаття
             </p>
             <CustomAddContent

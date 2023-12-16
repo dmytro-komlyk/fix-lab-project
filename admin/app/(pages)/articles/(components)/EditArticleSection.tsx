@@ -63,6 +63,20 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
     }
   }
 
+  // const editArticleTrpc = trpc.editArticleTrpc.useMutation({
+  //   onSuccess: () => {
+  //     toast.success(`Оновлення збережено!`, {
+  //       style: {
+  //         borderRadius: '10px',
+  //         background: 'grey',
+  //         color: '#fff',
+  //       },
+  //     })
+  //     clearState()
+  //     router.refresh()
+  //   },
+  // })
+
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
@@ -70,10 +84,14 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
       if (selectedImage) {
         const uploadResponse = await handleImageUpload()
 
-        if (!uploadResponse) {
-          throw new Error('Error uploading image')
-        }
-        if (uploadResponse.data._id) {
+        if (uploadResponse?.data._id) {
+          // await editArticleTrpc.mutate({
+          //   id: newArticleData._id,
+          //   ...newArticleData,
+          //   image: uploadResponse.data._id,
+          //   text: newArticle,
+          // })
+
           const response = await sendPutRequest(
             `/articles/${newArticleData._id}`,
             {
@@ -101,6 +119,13 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
           console.error('Error uploading image')
         }
       } else {
+        // await editArticleTrpc.mutate({
+        //   id: newArticleData._id,
+        //   ...newArticleData,
+        //   image: articleData.image._id || '',
+        //   text: newArticle,
+        // })
+
         await sendPutRequest(`/articles/${newArticleData._id}`, {
           ...newArticleData,
           image: articleData.image._id || '',
@@ -117,7 +142,6 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
       router.refresh()
       clearState()
     } catch (error) {
-      console.error('Error:', error)
       toast.error(`Помилка...`, {
         style: {
           borderRadius: '10px',
@@ -158,19 +182,27 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
     } catch (error) {
       throw new Error('Error uploading image')
     }
+    // if (selectedImage) {
+    //     const response = await uploadImageTrpc.mutate({
+    //       fileInput: selectedImage,
+    //       alt: altImage,
+    //       type: 'picture',
+    //     })
+    //     return response
+    //   }
+    //   return null
   }
 
   const handleImageSave = async (id: string) => {
     try {
       if (id) {
+        //  deleteImageTrpc({ id: articleItem.image._id })
         const deleteEndpoint = `/images/${articleData.image._id}`
-
         await deleteData(deleteEndpoint)
         if (deleteEndpoint) {
           setSelectedImage(null)
           setNewImage(null)
         }
-        console.log('success')
       }
     } catch (error) {
       throw new Error('Error uploading image')
@@ -179,10 +211,10 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
 
   return (
     <div className='flex w-full flex-col items-center justify-center gap-[60px] '>
-      <form className='flex w-full flex-col items-end justify-evenly gap-3 text-white-dis '>
+      <form className='text-white-dis flex w-full flex-col items-end justify-evenly gap-3 '>
         <div className='flex w-full items-start justify-between'>
           <div className='flex w-[500px] flex-col gap-3'>
-            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+            <p className=' bold font-exo_2 mt-2 text-center text-xl'>
               Зображення
             </p>
             <div className='relative'>
@@ -215,13 +247,13 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
             />
           </div>
           <div className='flex w-[400px] flex-col'>
-            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+            <p className=' bold font-exo_2 mt-2 text-center text-xl'>
               SEO налаштування
             </p>
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
               Seo title
               <input
-                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                 type='text'
                 name='metadata'
                 data-metadata-field='title'
@@ -229,10 +261,10 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
                 onChange={handleInputChange}
               />
             </label>
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
               Seo description
               <input
-                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                 type='text'
                 name='metadata'
                 data-metadata-field='description'
@@ -240,10 +272,10 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
                 onChange={handleInputChange}
               />
             </label>
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
               Seo keywords
               <input
-                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
                 type='text'
                 name='metadata'
                 data-metadata-field='keywords'
@@ -253,33 +285,33 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
             </label>
           </div>
         </div>
-        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
+        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
           Заголовок
           <input
             required
-            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
             type='text'
             name='title'
             value={newArticleData.title || ''}
             onChange={handleInputChange}
           />
         </label>
-        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
+        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
           Slug(url сторінки)
           <input
             required
-            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
             type='text'
             name='slug'
             value={newArticleData.slug || ''}
             onChange={handleInputChange}
           />
         </label>
-        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
+        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
           Опис статті
           <input
             required
-            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
             type='text'
             name='preview'
             value={newArticleData.preview || ''}
@@ -291,7 +323,7 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
         <AddImagesSection />
       </div>
       <div className='flex w-full flex-col  gap-2 '>
-        <p className='text-center font-exo_2 text-xl text-white-dis'>Стаття</p>
+        <p className='font-exo_2 text-white-dis text-center text-xl'>Стаття</p>
         <CustomEditor
           id='edit-article-content'
           setContent={setNewArticle}

@@ -13,7 +13,7 @@ const GadgetsPage = async () => {
   const gadgetsData = (await trpc.getGadgetsQuery.query()) as IGadget[]
   return (
     <main className='flex flex-auto'>
-      <section className=' flex w-full justify-center bg-footer-gradient-linear-blue py-[60px]'>
+      <section className=' bg-footer-gradient-linear-blue flex w-full justify-center py-[60px]'>
         <div className='relative flex flex-col items-center justify-center'>
           <GadgetsList gadgetsData={gadgetsData} />
         </div>

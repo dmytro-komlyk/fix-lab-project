@@ -12,8 +12,8 @@ export interface IPreviewArticleProps {
 const PreviewArticlePage: React.FC<IPreviewArticleProps> = ({
   articleData,
 }) => {
-  return articleData._id ? (
-    <section className=' overflow-hidden bg-white-dis  p-4  shadow-2xl'>
+  return (
+    <section className=' bg-white-dis overflow-hidden  p-4  shadow-2xl'>
       <div className='container relative flex flex-col xl:p-0'>
         <div className='flex w-[988px] flex-col '>
           <div className='flex items-center justify-between  gap-2'>
@@ -34,8 +34,6 @@ const PreviewArticlePage: React.FC<IPreviewArticleProps> = ({
         </div>
       </div>
     </section>
-  ) : (
-    <p>No Article</p>
   )
 }
 

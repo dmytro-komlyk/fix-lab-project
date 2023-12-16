@@ -1,8 +1,5 @@
-'use client'
-
 import getData from '@admin/app/(server)/api/service/admin/getData'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import PreviewArticlePage from '../(components)/PreviewArticlePage'
@@ -13,29 +10,20 @@ interface IArticleAdminProps {
   }
 }
 
-const ArticlePage: React.FC<IArticleAdminProps> = ({ params }) => {
-  const [articleData, setArticleData] = useState<any>(null)
+export const runtime = 'edge'
+export const revalidate = 3600
+// export const dynamic = 'force-dynamic'
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const articleUrl = `/articles/${params.article}`
+const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
+  // const articleData = await serverClient.getArticleData({
+  //   slug: params.article,
+  // })
+  const articleUrl = `/articles/${params.article}`
+  const articleData = await getData(articleUrl)
 
-        const data = await getData(articleUrl)
-        setArticleData(data)
-      } catch (error) {
-        throw new Error(`Error in getData: ${(error as Error).message}`)
-      }
-    }
-
-    fetchData()
-  }, [params.article])
-
-  // const articleUrl = `/articles/${params.article}`
-  // const articleData = await getData(articleUrl)
   return (
     <main className=' flex flex-auto'>
-      <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px] '>
+      <section className=' bg-footer-gradient-linear-blue w-full  overflow-hidden  py-[60px] '>
         <div className='container  relative flex flex-col items-center px-8 '>
           <div className='z-[1] mb-8 flex items-center gap-1 self-start  px-4'>
             <Link
@@ -49,11 +37,7 @@ const ArticlePage: React.FC<IArticleAdminProps> = ({ params }) => {
               {articleData?.title}
             </p>
           </div>
-          {articleData ? (
-            <PreviewArticlePage articleData={articleData} />
-          ) : (
-            <p>No Article</p>
-          )}
+          <PreviewArticlePage articleData={articleData} />
         </div>
       </section>
     </main>
