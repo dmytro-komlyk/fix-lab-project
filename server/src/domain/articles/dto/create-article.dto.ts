@@ -21,7 +21,7 @@ export class CreateArticleDto {
   })
   @IsOptional()
   @IsBoolean({ message: 'field must be a boolean' })
-  readonly isActive?: boolean;
+  readonly isActive: boolean;
 
   @ApiProperty({
     example: 'remont-playstation-v-kyevi',
@@ -63,10 +63,10 @@ export class CreateArticleDto {
   @IsNotEmptyObject()
   @ValidateNested()
   @Type(() => MetadataDto)
-  readonly metadata?: MetadataDto;
+  readonly metadata: MetadataDto;
 
   @ApiProperty({ example: '64ef4383e46e72721c03090e' })
   @IsOptional()
   @IsString()
-  readonly image?: string;
+  readonly image: string;
 }

@@ -14,8 +14,7 @@ export class UpdateBenefitDto {
     example: '"651c7fafb8f1268ad2156521"',
     description: 'Image id'
   })
-  @IsDefined()
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   readonly icon?: string;
 

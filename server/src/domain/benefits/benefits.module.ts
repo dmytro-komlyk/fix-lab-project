@@ -1,17 +1,10 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 
-import { BenefitsController } from './benefits.controller';
 import { BenefitsService } from './benefits.service';
 
-import { Benefit, BenefitSchema } from './schemas/benefit.schema';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: Benefit.name, schema: BenefitSchema }])
-  ],
-  controllers: [BenefitsController],
-  providers: [BenefitsService],
-  exports: [BenefitsService]
+  providers: [BenefitsService, PrismaService],
 })
 export class BenefitsModule {}

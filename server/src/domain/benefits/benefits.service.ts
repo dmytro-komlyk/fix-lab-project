@@ -1,32 +1,37 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
-import { Benefit } from './schemas/benefit.schema';
+import { PrismaService } from '../prisma/prisma.service';
 
 import { CreateBenefitDto } from './dto/create-benefit.dto';
 import { UpdateBenefitDto } from './dto/update-benefit.dto';
 
 @Injectable()
 export class BenefitsService {
-  constructor(
-    @InjectModel(Benefit.name) private readonly benefitModel: Model<Benefit>
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
-  public async findAll(): Promise<Benefit[]> {
-    return await this.benefitModel.find().populate('icon');
+  public async findAll() {
+    return await this.prisma.benefits.findMany();
+    // include: { icon: true }
   }
 
-  public async findActive(): Promise<Benefit[]> {
-    return await this.benefitModel.find({ isActive: true }).populate('icon');
+  public async findActive() {
+    return await this.prisma.benefits.findMany({
+      where: { isActive: true }
+      // include: { icon: true }
+    });
   }
 
-  public async findOneById(id: string): Promise<Benefit> {
+  public async findOneById(id: string) {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
 
-    const benefit = await this.benefitModel.findById(id).populate('icon');
+    const benefit = await this.prisma.benefits.findFirst({
+      where: { id }
+      // include: { icon: true }
+    });
+    // findById(id).populate('icon');
 
     if (!benefit) {
       throw new NotFoundException(`Brand with ID "${id}" was not found`);
@@ -35,37 +40,39 @@ export class BenefitsService {
     return benefit;
   }
 
-  public async create(dto: CreateBenefitDto): Promise<Benefit> {
-    const foundBenefit = await this.benefitModel.findOne({ title: dto.title });
+  public async create(dto: CreateBenefitDto) {
+    const foundBenefit = await this.prisma.benefits.findFirst({
+      where: { title: dto.title }
+    });
 
     if (foundBenefit) {
       throw new BadRequestException(
         `Benefit with slug "${dto.title}" already exists`
       );
     }
-    const createdBenefit = await new this.benefitModel(dto).save();
-    const benefit = await this.findOneById(createdBenefit._id);
+    const createdBenefit = await this.prisma.benefits.create({ data: dto });
+    const benefit = await this.findOneById(createdBenefit.id);
     return benefit;
   }
 
-  public async update(id: string, dto: UpdateBenefitDto): Promise<Benefit | null> {
+  public async update(id: string, dto: UpdateBenefitDto) {
     await this.findOneById(id);
 
-    const updatedBenefit = await this.benefitModel
-      .findByIdAndUpdate(id, dto, {
-        new: true
-      })
-      .populate('icon');
+    const benefit = await this.prisma.benefits.update({
+      where: { id },
+      data: dto
+      // include: { icon: true }
+    });
 
-    return updatedBenefit;
+    return benefit;
   }
 
-  public async remove(id: string): Promise<string> {
+  public async remove(id: string) {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
 
-    const benefit = await this.benefitModel.findByIdAndDelete(id);
+    const benefit = await this.prisma.benefits.delete({ where: { id } });
 
     if (!benefit) {
       throw new NotFoundException(`Brand with ID ${id} was not found`);
