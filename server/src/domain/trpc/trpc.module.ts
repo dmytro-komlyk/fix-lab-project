@@ -2,21 +2,26 @@ import { Module } from '@nestjs/common';
 
 import { TrpcRouter } from './trpc.router';
 
-import { ArticlesModule } from '@domain/articles/articles.module';
-import { BrandsModule } from '@domain/brands/brands.module';
-import { ContactsModule } from '@domain/contacts/contacts.module';
-import { GadgetsModule } from '@domain/gadgets/gadgets.module';
-import { IssuesModule } from '@domain/issues/issues.module';
+import { ArticlesService } from '../articles/articles.service';
+import { BenefitsService } from '../benefits/benefits.service';
+import { BrandsService } from '../brands/brands.service';
+import { ContactsService } from '../contacts/contacts.service';
+import { IssuesService } from '../issues/issues.service';
+import { PrismaModule } from '../prisma/prisma.module';
 import { TrpcService } from './trpc.service';
+import { GadgetsService } from '@domain/gadgets/gadgets.service';
 
 @Module({
-  imports: [
-    GadgetsModule,
-    BrandsModule,
-    ContactsModule,
-    IssuesModule,
-    ArticlesModule
-  ],
-  providers: [TrpcService, TrpcRouter]
+  imports: [PrismaModule],
+  providers: [
+    TrpcService,
+    TrpcRouter,
+    GadgetsService,
+    IssuesService,
+    BenefitsService,
+    BrandsService,
+    ArticlesService,
+    ContactsService
+  ]
 })
 export class TrpcModule {}

@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type ArticlesMetadata {
+  description String
+  keywords    String
+  title       String
+}
+
+type BrandsMetadata {
+  description String
+  keywords    String
+  title       String
+}
+
+type GadgetsMetadata {
+  description String
+  keywords    String
+  title       String
+}
+
+type ImagesFile {
+  destination  String
+  encoding     String
+  fieldname    String
+  filename     String
+  mimetype     String
+  originalname String
+  path         String
+  size         Int
+}
+
+type IssuesMetadata {
+  description String
+  keywords    String
+  title       String
+}
+
+model articles {
+  id       String           @id @default(auto()) @map("_id") @db.ObjectId
+  image    String
+  isActive Boolean
+  metadata ArticlesMetadata
+  preview  String
+  slug     String           @unique(map: "slug_1")
+  text     String
+  title    String
+}
+
+model benefits {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  /// Multiple data types found: String: 9.1%, String (ObjectId): 90.9% out of 11 sampled entries
+  icon     String
+  isActive Boolean
+  title    String
+}
+
+model brands {
+  id       String         @id @default(auto()) @map("_id") @db.ObjectId
+  article  String
+  icon     String
+  isActive Boolean
+  metadata BrandsMetadata
+  slug     String         @unique(map: "slug_1")
+  title    String
+}
+
+model contacts {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  address          String
+  area             String
+  comment          String?
+  googleMapLink    String
+  googlePluginLink String
+  image            String
+  isActive         Boolean
+  phones           String[]
+  subways          String[]
+  workingDate      String
+  workingTime      String
+}
+
+model gadgets {
+  id          String          @id @default(auto()) @map("_id") @db.ObjectId
+  brands      String[]
+  description String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  gallery     Json?
+  icon        String
+  isActive    Boolean
+  issues      String[]
+  metadata    GadgetsMetadata
+  slug        String          @unique(map: "slug_1")
+  title       String
+}
+
+model images {
+  id   String     @id @default(auto()) @map("_id") @db.ObjectId
+  alt  String
+  file ImagesFile
+  src  String
+  type String
+}
+
+model issues {
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  benefits    String[]
+  description String
+  image       String
+  info        String
+  isActive    Boolean
+  metadata    IssuesMetadata
+  price       String
+  slug        String         @unique(map: "slug_1")
+  title       String
+}
+
+model users {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  email    String  @unique(map: "email_1")
+  isActive Boolean
+  login    String  @unique(map: "login_1")
+  name     String
+  password String
+}

@@ -1,47 +1,76 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
-import { Issue } from './schemas/issue.schema';
+import { PrismaService } from '../prisma/prisma.service';
 
 import { CreateIssueDto } from './dto/create-issue.dto';
 import { UpdateIssueDto } from './dto/update-issue.dto';
 
 @Injectable()
 export class IssuesService {
-  constructor(@InjectModel(Issue.name) private readonly issueModel: Model<Issue>) {}
+  constructor(private prisma: PrismaService) {}
 
-  public async findAll(): Promise<Issue[]> {
-    return await this.issueModel
-      .find()
-      .populate({ path: 'image' })
-      .populate({ path: 'benefits', populate: { path: 'icon' } });
+  public async findAll() {
+    return await this.prisma.issues.findMany({
+      include: {
+        image: true,
+        benefits: true,
+        icon: true //?
+      }
+    });
+
+    // .populate({ path: 'image' })
+    // .populate({ path: 'benefits', populate: { path: 'icon' } });
   }
 
-  public async findAllActive(): Promise<Issue[]> {
-    return await this.issueModel
-      .find({ isActive: true })
-      .populate({ path: 'image' })
-      .populate({ path: 'benefits', populate: { path: 'icon' } });
+  public async findAllActive() {
+    return await this.prisma.issues.findMany({
+      where: {
+        isActive: true
+      },
+      include: {
+        image: true,
+        benefits: true,
+        icon: true //?
+      }
+    });
   }
 
-  public async findOneByQuery(query: UpdateIssueDto): Promise<Issue | null> {
-    return await this.issueModel
-      .findOne(query)
-      .select('-isActive')
-      .populate({ path: 'image' })
-      .populate({ path: 'benefits', populate: { path: 'icon' } });
+  public async findOneByQuery(slug: string) {
+    return await this.prisma.issues.findUnique({
+      where: {
+        slug: slug
+      },
+      include: {
+        image: true,
+        benefits: true,
+        icon: true //?
+      }
+    });
+    // .findOne(query)
+    // .select('-isActive')
+    // .populate({ path: 'image' })
+    // .populate({ path: 'benefits', populate: { path: 'icon' } });
   }
 
-  public async findOneById(id: string): Promise<Issue> {
+  public async findOneById(id: string) {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
 
-    const issue = await this.issueModel
-      .findById(id)
-      .populate('image')
-      .populate({ path: 'benefits', populate: { path: 'icon' } });
+    const issue = await this.prisma.issues.findUnique({
+      where: {
+        id
+      },
+      include: {
+        image: true,
+        benefits: true,
+        icon: true //?
+      }
+    });
+    // .findById(id)
+    // .populate('image')
+    // .populate({ path: 'benefits', populate: { path: 'icon' } });
 
     if (!issue) {
       throw new NotFoundException(`Issue with ID "${id}" was not found`);
@@ -50,38 +79,46 @@ export class IssuesService {
     return issue;
   }
 
-  public async create(dto: CreateIssueDto): Promise<Issue> {
-    const foundIssue = await this.issueModel.findOne({
-      slug: dto.slug
+  public async create(dto: CreateIssueDto) {
+    const foundIssue = await this.prisma.issues.findUnique({
+      where: {
+        slug: dto.slug
+      }
     });
 
     if (foundIssue) {
       throw new BadRequestException(`Issue with slug "${dto.slug}" already exists`);
     }
 
-    const createdIssue = await new this.issueModel(dto).save();
-    const issue = await this.findOneById(createdIssue._id);
+    const createdIssue = await this.prisma.issues.create({
+      data: dto
+    });
+
+    const issue = await this.findOneById(createdIssue.id);
     return issue;
   }
 
-  public async update(id: string, dto: UpdateIssueDto): Promise<Issue | null> {
+  public async update(id: string, dto: UpdateIssueDto) {
     await this.findOneById(id);
 
-    const updatedIssue = await this.issueModel
-      .findByIdAndUpdate(id, dto, {
-        new: true
-      })
-      .populate('image')
-      .populate({ path: 'benefits', populate: { path: 'icon' } });
+    const updatedIssue = await this.prisma.issues.update({
+      where: { id },
+      data: dto,
+      include: {
+        image: true,
+        benefits: true,
+        icon: true //?
+      }
+    });
     return updatedIssue;
   }
 
-  public async remove(id: string): Promise<string> {
+  public async remove(id: string) {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
 
-    const contact = await this.issueModel.findByIdAndDelete(id);
+    const contact = await this.prisma.issues.delete({ where: { id } });
 
     if (!contact) {
       throw new NotFoundException(`Issue with ID ${id} was not found`);

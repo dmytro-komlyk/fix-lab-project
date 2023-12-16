@@ -1,17 +1,10 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 
-import { GadgetsController } from './gadgets.controller';
 import { GadgetsService } from './gadgets.service';
 
-import { Gadget, GadgetSchema } from './schemas/gadget.schema';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: Gadget.name, schema: GadgetSchema }])
-  ],
-  controllers: [GadgetsController],
-  providers: [GadgetsService],
-  exports: [GadgetsService]
+  providers: [GadgetsService, PrismaService],
 })
 export class GadgetsModule {}
