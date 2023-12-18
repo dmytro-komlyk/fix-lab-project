@@ -1,74 +1,81 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Types } from 'mongoose';
+
+import { Contact } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
+
+import { createContactSchema, updateContactSchema } from './schemas/contact.schema';
 
 @Injectable()
 export class ContactsService {
   constructor(private prisma: PrismaService) {}
 
-  public async findAll() {
-    const contacts = await this.prisma.contacts.findMany();
-    // console.log(contacts);
-    // return contacts;
+  public async findAll(): Promise<Contact[]> {
+    const contacts = await this.prisma.contact.findMany({
+      include: { image: true }
+    });
+    return contacts;
   }
 
-  public async findActive() {
-    const contacts = await this.prisma.contacts.findMany({
+  public async findActive(): Promise<Contact[]> {
+    const contacts = await this.prisma.contact.findMany({
       where: {
         isActive: true
-      }
+      },
+      include: { image: true }
     });
-    console.log(contacts);
-    // const contacts = await this.contactModel
-    //   .find({ isActive: true })
-    //   .populate({ path: 'image' });
 
-    // return contacts;
+    return contacts;
   }
 
-  // public async findOneById(id: string): Promise<Contact> {
-  //   const contact = await this.contactModel.findById(id).populate({ path: 'image' });
+  public async findById(id: string): Promise<Contact> {
+    const contact = await this.prisma.contact.findFirst({
+      where: { id },
+      include: { image: true }
+    });
 
-  //   if (!contact) {
-  //     throw new NotFoundException(`Contact with ID ${id} was not found`);
-  //   }
+    if (!contact) {
+      throw new NotFoundException(`Contact with ID ${id} was not found`);
+    }
 
-  //   return contact;
-  // }
+    return contact;
+  }
 
-  // public async create(dto: CreateContactDto): Promise<Contact> {
-  //   const createdContact = await new this.contactModel(dto).save();
+  public async create(data: createContactSchema): Promise<Contact> {
+    const createdContact = await this.prisma.contact.create({ data });
+    const contact = await this.findById(createdContact.id);
+    return contact;
+  }
 
-  //   return createdContact;
-  // }
+  public async update(data: updateContactSchema): Promise<Contact> {
+    const { id, ...newData } = data;
 
-  // public async update(id: string, dto: UpdateContactDto): Promise<Contact | null> {
-  //   const contact = await this.contactModel.findById(id);
+    const contact = await this.findById(id);
 
-  //   if (!contact) {
-  //     throw new NotFoundException(`Contact with ID ${id} was not found`);
-  //   }
+    if (!contact) {
+      throw new NotFoundException(`Contact with ID ${id} was not found`);
+    }
 
-  //   const updatedContact = await this.contactModel
-  //     .findByIdAndUpdate(id, dto, {
-  //       new: true
-  //     })
-  //     .populate({ path: 'image' });
+    const updatedContact = await this.prisma.contact.update({
+      where: { id },
+      data: newData
+    });
 
-  //   return updatedContact;
-  // }
+    return updatedContact;
+  }
 
-  // public async remove(id: string): Promise<string> {
-  //   if (!Types.ObjectId.isValid(id)) {
-  //     throw new NotFoundException(`Incorrect ID - ${id}`);
-  //   }
+  public async remove(id: string): Promise<string> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException(`Incorrect ID - ${id}`);
+    }
 
-  //   const contact = await this.contactModel.findByIdAndDelete(id);
+    const contact = await this.prisma.contact.delete({ where: { id } });
 
-  //   if (!contact) {
-  //     throw new NotFoundException(`Contact with ID ${id} was not found`);
-  //   }
+    if (!contact) {
+      throw new NotFoundException(`Contact with ID ${id} was not found`);
+    }
 
-  //   return id;
-  // }
+    return id;
+  }
 }

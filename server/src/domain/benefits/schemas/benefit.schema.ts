@@ -1,29 +1,17 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty } from '@nestjs/swagger';
-import { Document, HydratedDocument, Schema as MongooseSchema } from 'mongoose';
+import { z } from 'zod';
 
-import { Image } from '@domain/images/schemas/image.schema';
+export const createBenefitSchema = z.object({
+  title: z.string().min(1),
+  isActive: z.boolean().default(true),
+  icon_id: z.string()
+});
 
-export type BenefitDocument = HydratedDocument<Benefit>;
+export const updateBenefitSchema = z.object({
+  id: z.string(),
+  title: z.string().min(1),
+  isActive: z.boolean().default(true),
+  icon_id: z.string()
+});
 
-@Schema({ versionKey: false })
-class Benefit extends Document {
-  @ApiProperty({ example: '64ef4383e46e72721c03090e' })
-  readonly _id: string;
-
-  @ApiProperty({ example: 'Безкоштовна діагностика' })
-  @Prop({ type: String, required: true })
-  readonly title: string;
-
-  @ApiProperty({ example: true })
-  @Prop({ type: Boolean, default: false })
-  readonly isActive: boolean;
-
-  @ApiProperty({ type: Image })
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: Image.name })
-  readonly icon: Image;
-}
-
-const BenefitSchema = SchemaFactory.createForClass(Benefit);
-
-export { Benefit, BenefitSchema };
+export type createBenefitSchema = z.TypeOf<typeof createBenefitSchema>;
+export type updateBenefitSchema = z.TypeOf<typeof updateBenefitSchema>;

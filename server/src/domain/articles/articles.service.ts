@@ -1,25 +1,30 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { IPaginationAnswer } from 'server/src/shared/interfaces/pagination-answer.interface';
+import { Article } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
-import { Article } from './schemas/article.schema';
-
-import { CreateArticleDto } from './dto/create-article.dto';
-import { UpdateArticleDto } from './dto/update-article.dto';
-import { PaginationDto } from 'server/src/shared/dto/pagination.dto';
+import {
+  createArticleSchema,
+  paginationArticleSchema,
+  updateArticleSchema
+} from './schemas/article.schema';
 
 @Injectable()
 export class ArticlesService {
   constructor(private prisma: PrismaService) {}
 
-  public async findWithPagination(
-    { page = 1, limit = 1000000, sort = 'desc' }: PaginationDto,
-    query: UpdateArticleDto
-  ) {
-    const result: IPaginationAnswer<Article> = {
+  public async findAll() {
+    return await this.prisma.article.findMany();
+  }
+
+  public async findWithPagination({
+    page = 1,
+    limit = 1000000,
+    sort = 'desc'
+  }: paginationArticleSchema) {
+    const result = {
       itemsCount: 0,
       totalItems: 0,
       totalPages: 0,
@@ -28,24 +33,20 @@ export class ArticlesService {
       items: []
     };
 
-    const totalArticles = await this.prisma.articles.findMany();
+    const totalArticles = await this.prisma.article.findMany();
 
     result.totalItems = totalArticles.length;
     result.totalPages = Math.ceil(totalArticles.length / limit);
 
-    const articles = await this.prisma.articles.findMany({
+    const articles = await this.prisma.article.findMany({
       orderBy: {},
       // where: {},
       take: limit,
-      skip: limit * (page - 1)
+      skip: limit * (page - 1),
+      include: {
+        image: true
+      }
     });
-    // console.log(result, articles);
-    // .find(query)
-    // .sort({ updatedAt: sort as SortOrder })
-    // .limit(limit)
-    // .skip(limit * (page - 1))
-    // .populate({ path: 'image' })
-    // .select(['-createdAt', '-updatedAt']);
 
     // result.items = articles;
     // result.itemsCount = articles.length;
@@ -55,20 +56,25 @@ export class ArticlesService {
     // return result;
   }
 
-  public async findOneByQuery(query: UpdateArticleDto) {
-    return await this.prisma.articles.findUnique({
+  public async findOneByQuery(query: string): Promise<Article> {
+    const article = await this.prisma.article.findUnique({
       where: {
-        slug: query.slug
+        slug: query
       }
     });
+    if (!article) {
+      throw new NotFoundException(`Article with slug "${query}" was not found`);
+    }
+
+    return article;
   }
 
-  public async findOneById(id: string) {
+  public async findOneById(id: string): Promise<Article> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
 
-    const article = await this.prisma.articles.findUnique({
+    const article = await this.prisma.article.findUnique({
       where: {
         id
       }
@@ -81,8 +87,8 @@ export class ArticlesService {
     return article;
   }
 
-  public async create(dto: CreateArticleDto) {
-    const foundArticle = await this.prisma.articles.findUnique({
+  public async create(dto: createArticleSchema): Promise<Article> {
+    const foundArticle = await this.prisma.article.findUnique({
       where: {
         slug: dto.slug
       }
@@ -94,7 +100,7 @@ export class ArticlesService {
       );
     }
 
-    const createdArticle = await this.prisma.articles.create({
+    const createdArticle = await this.prisma.article.create({
       data: dto
     });
     const article = await this.findOneById(createdArticle.id);
@@ -102,24 +108,26 @@ export class ArticlesService {
     return article;
   }
 
-  public async update(id: string, dto: UpdateArticleDto) {
-    await this.findOneById(id);
+  public async update(dto: updateArticleSchema): Promise<Article> {
+    const { id, ...newData } = dto;
 
-    const article = await this.prisma.articles.update({
+    await this.findOneById(id as string);
+
+    const article: Article = await this.prisma.article.update({
       where: { id },
-      data: dto,
+      data: newData,
       include: { image: true }
     });
 
     return article;
   }
 
-  public async remove(id: string) {
+  public async remove(id: string): Promise<string> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
 
-    const article = await this.prisma.articles.delete({ where: { id } });
+    const article = await this.prisma.article.delete({ where: { id } });
 
     if (!article) {
       throw new NotFoundException(`Article with ID ${id} was not found`);

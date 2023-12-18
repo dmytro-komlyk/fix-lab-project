@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 
-
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -8,23 +7,23 @@ export class GadgetsService {
   constructor(private prisma: PrismaService) {}
 
   public async findAll() {
-    const test = await this.prisma.gadgets.findMany({
+    const test = await this.prisma.gadget.findMany({
       include: {
         brands: true,
         issues: true,
         icon: true,
         gallery: true
-      },
-    })
-    console.log(test)
-      // .find()
-      // .populate({ path: 'brands', populate: { path: 'icon' } })
-      // .populate({
-      //   path: 'issues',
-      //   populate: [{ path: 'benefits' }, { path: 'image' }]
-      // })
-      // .populate({ path: 'icon' })
-      // .populate({ path: 'gallery' });
+      }
+    });
+    console.log(test);
+    // .find()
+    // .populate({ path: 'brands', populate: { path: 'icon' } })
+    // .populate({
+    //   path: 'issues',
+    //   populate: [{ path: 'benefits' }, { path: 'image' }]
+    // })
+    // .populate({ path: 'icon' })
+    // .populate({ path: 'gallery' });
   }
 
   // public async findActive(): Promise<Gadget[]> {

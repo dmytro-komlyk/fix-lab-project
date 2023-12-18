@@ -1,57 +1,38 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty } from '@nestjs/swagger';
-import { Document, HydratedDocument, Schema as MongooseSchema, now } from 'mongoose';
+import { z } from 'zod';
 
-import { Image } from '@domain/images/schemas/image.schema';
-import { Metadata } from '@shared/schemas/metadata.schema';
+import { MetaSchema } from 'server/src/shared/schemas/metadata.schema';
 
-export type ArticleDocument = HydratedDocument<Article>;
+export const createArticleSchema = z.object({
+  isActive: z.boolean().default(true),
+  slug: z.string().trim().toLowerCase().min(1),
+  title: z.string().min(1),
+  preview: z.string().min(1),
+  text: z.string().min(1),
+  metadata: MetaSchema,
+  image_id: z.string(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional()
+});
 
-@Schema({ versionKey: false })
-class Article extends Document {
-  @ApiProperty({ example: '64ef4383e46e72721c03090e' })
-  readonly _id: string;
+export const updateArticleSchema = z.object({
+  id: z.string(),
+  isActive: z.boolean().default(false),
+  slug: z.string().trim().toLowerCase().min(1),
+  title: z.string().min(1),
+  preview: z.string().min(1),
+  text: z.string().min(1),
+  metadata: MetaSchema,
+  image_id: z.string(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional()
+});
 
-  @ApiProperty({ example: true })
-  @Prop({ type: Boolean, default: false })
-  readonly isActive: boolean;
+export const paginationArticleSchema = z.object({
+  page: z.number().optional(),
+  limit: z.number().optional(),
+  sort: z.string().optional()
+});
 
-  @ApiProperty({ example: 'remont-playstation-v-kyevi' })
-  @Prop({
-    type: String,
-    unique: true,
-    required: true,
-    set: (v: string) => v?.trim().toLowerCase()
-  })
-  readonly slug: string;
-
-  @ApiProperty({ example: 'Як самостійно прискорити роботу ноутбука' })
-  @Prop({ type: String, required: true })
-  readonly title: string;
-
-  @ApiProperty({ example: 'Reparing Apple phones...' })
-  @Prop({ type: String, required: true })
-  readonly preview: string;
-
-  @ApiProperty({ example: '<p>Reparing <span>Apple</span> phones...</p>' })
-  @Prop({ type: String, required: true })
-  readonly text: string;
-
-  @ApiProperty({ type: Metadata })
-  @Prop({ type: Metadata, default: null })
-  readonly metadata: Metadata;
-
-  @ApiProperty({ type: Image })
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: Image.name, default: null })
-  readonly image: Image;
-
-  @Prop({ default: now() })
-  createdAt: Date;
-
-  @Prop({ set: () => now(), default: now() })
-  updatedAt: Date;
-}
-
-const ArticleSchema = SchemaFactory.createForClass(Article);
-
-export { Article, ArticleSchema };
+export type createArticleSchema = z.TypeOf<typeof createArticleSchema>;
+export type updateArticleSchema = z.TypeOf<typeof updateArticleSchema>;
+export type paginationArticleSchema = z.TypeOf<typeof paginationArticleSchema>;

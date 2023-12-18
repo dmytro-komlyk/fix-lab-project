@@ -1,65 +1,33 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty } from '@nestjs/swagger';
-import { Document, HydratedDocument, Schema as MongooseSchema } from 'mongoose';
+import { z } from 'zod';
 
-import { Image } from '@domain/images/schemas/image.schema';
+export const createContactSchema = z.object({
+  isActive: z.boolean().default(true),
+  area: z.string().min(1),
+  address: z.string(),
+  comment: z.string().min(1).default(''),
+  subway: z.string().min(1),
+  phone: z.string().min(1),
+  workingTime: z.string().default(''),
+  workingDate: z.string().default(''),
+  googleMapLink: z.string().default(''),
+  googlePluginLink: z.string().default(''),
+  image_id: z.string().min(1)
+});
 
-export type ContactDocument = HydratedDocument<Contact>;
+export const updateContactSchema = z.object({
+  id: z.string().min(1),
+  isActive: z.boolean().default(true),
+  area: z.string().min(1),
+  address: z.string(),
+  comment: z.string().min(1).default(''),
+  subway: z.string().min(1),
+  phone: z.string().min(1),
+  workingTime: z.string().default(''),
+  workingDate: z.string().default(''),
+  googleMapLink: z.string().default(''),
+  googlePluginLink: z.string().default(''),
+  image_id: z.string().min(1)
+});
 
-@Schema({ versionKey: false })
-class Contact extends Document {
-  @ApiProperty({ example: '64ef4383e46e72721c03090e' })
-  readonly _id: string;
-
-  @ApiProperty({ example: true })
-  @Prop({ type: Boolean, default: false })
-  readonly isActive: boolean;
-
-  @ApiProperty({ example: 'Голосіївський' })
-  @Prop({ type: String, required: true })
-  readonly area: string;
-
-  @ApiProperty({ example: 'Саперно-Слобідська, 10' })
-  @Prop({ type: String, required: true })
-  readonly address: string;
-
-  @ApiProperty({
-    example: 'Вхід через супермаркет ВЕЛМАРТ'
-  })
-  @Prop({ type: String, required: false, default: null })
-  readonly comment: string;
-
-  @ApiProperty({ example: ['Мінська', 'Оболонь'] })
-  @Prop({ type: [String] })
-  readonly subways: Array<string>;
-
-  @ApiProperty({
-    example: ['+38 050 227 27 28', '+38 050 227 27 30']
-  })
-  @Prop({ type: [String], required: true })
-  readonly phones: Array<string>;
-
-  @ApiProperty({ example: '10:00 - 19:30' })
-  @Prop({ type: String, required: true, default: null })
-  readonly workingTime: string;
-
-  @ApiProperty({ example: 'нд - вихідний' })
-  @Prop({ type: String, required: true, default: null })
-  readonly workingDate: string;
-
-  @ApiProperty({ example: 'https://maps.app.goo.gl/1pi9sxQl' })
-  @Prop({ type: String, default: null })
-  readonly googleMapLink: string;
-
-  @ApiProperty({ example: 'https://www.google.com/maps/embed?plugin....' })
-  @Prop({ type: String, default: null })
-  readonly googlePluginLink: string;
-
-  @ApiProperty({ type: Image })
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: Image.name, default: null })
-  readonly image: Image;
-}
-
-const ContactSchema = SchemaFactory.createForClass(Contact);
-
-export { Contact, ContactSchema };
+export type createContactSchema = z.TypeOf<typeof createContactSchema>;
+export type updateContactSchema = z.TypeOf<typeof updateContactSchema>;

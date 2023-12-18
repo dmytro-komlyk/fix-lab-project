@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Types } from 'mongoose';
 
+import { Image } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -7,36 +9,42 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ImagesService {
   constructor(private prisma: PrismaService) {}
 
-  public async findAll() {
-    // return await this.imageModel.find();
+  public async findAll(): Promise<Image[]> {
+    return await this.prisma.image.findMany();
+  }
+
+  public async findOneById(id: string) {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException(`Incorrect ID - ${id}`);
+    }
+
+    const image = await this.prisma.image.findUnique({
+      where: {
+        id
+      }
+    });
+
+    if (!image) {
+      throw new NotFoundException(`Image with ID "${id}" was not found`);
+    }
+
+    return image;
   }
 
   // public async findAllByType({ type }: { type: string }): Promise<Image[]> {
   //   return await this.imageModel.find({ type });
   // }
 
-  // public async add(dto: AddImageDto): Promise<Image> {
-  //   const addedImage = await new this.imageModel(dto).save();
-  //   const image = await this.findOneById(addedImage._id);
+  public async add(dto: any) {
+    const addedImage = await this.prisma.image.create({
+      data: dto
+    });
+    const image = await this.findOneById(addedImage.id);
 
-  //   return image;
-  // }
+    return image;
+  }
 
-  // public async findOneById(id: string): Promise<Image> {
-  //   if (!Types.ObjectId.isValid(id)) {
-  //     throw new NotFoundException(`Incorrect ID - ${id}`);
-  //   }
-
-  //   const image = await this.imageModel.findById(id);
-
-  //   if (!image) {
-  //     throw new NotFoundException(`Image with ID "${id}" was not found`);
-  //   }
-
-  //   return image;
-  // }
-
-  // public async update(id: string, dto: AddImageDto): Promise<Image | null> {
+  // public async update(id: string, dto: any) {
   //   await this.findOneById(id);
 
   //   const image = await this.imageModel.findByIdAndUpdate(id, dto, {
@@ -46,7 +54,7 @@ export class ImagesService {
   //   return image;
   // }
 
-  // public async remove(id: string): Promise<string> {
+  // public async remove(id: string) {
   //   if (!Types.ObjectId.isValid(id)) {
   //     throw new NotFoundException(`Incorrect ID - ${id}`);
   //   }
