@@ -1,32 +1,35 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty } from '@nestjs/swagger';
-import { Document, HydratedDocument } from 'mongoose';
-import type { Multer } from 'multer';
+import { z } from 'zod';
 
-export type ImageDocument = HydratedDocument<Image>;
+export const imageSchema = z.object({
+  id: z.string(),
+  file: z.object({
+    destination: z.string(),
+    encoding: z.string(),
+    fieldname: z.string(),
+    filename: z.string(),
+    mimetype: z.string(),
+    originalname: z.string(),
+    path: z.string(),
+    size: z.number()
+  }),
+  alt: z.string(),
+  type: z.string()
+});
 
-@Schema({ versionKey: false })
-class Image extends Document {
-  @ApiProperty({ example: '64ef4383e46e72721c03090e' })
-  readonly _id: string;
+export const uploadImageSchema = z.object({
+  file: z.object({
+    destination: z.string(),
+    encoding: z.string(),
+    fieldname: z.string(),
+    filename: z.string(),
+    mimetype: z.string(),
+    originalname: z.string(),
+    path: z.string(),
+    size: z.number()
+  }),
+  alt: z.string().min(1),
+  type: z.string().min(1)
+});
 
-  @ApiProperty({ example: 'buffer......' })
-  @Prop({ type: Object })
-  readonly file: Multer;
-
-  @ApiProperty({ example: '/public/image_path' })
-  @Prop({ type: String })
-  readonly src: string;
-
-  @ApiProperty({ example: 'Alt image' })
-  @Prop({ type: String })
-  readonly alt: string;
-
-  @ApiProperty({ example: 'Type image' })
-  @Prop({ type: String })
-  readonly type: string;
-}
-
-const ImageSchema = SchemaFactory.createForClass(Image);
-
-export { Image, ImageSchema };
+export type imageSchema = z.TypeOf<typeof imageSchema>;
+export type uploadImageSchema = z.TypeOf<typeof uploadImageSchema>;

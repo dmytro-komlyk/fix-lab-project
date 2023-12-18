@@ -1,92 +1,108 @@
 import {
-  Injectable
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException
 } from '@nestjs/common';
+import { Types } from 'mongoose';
+
+import { Brand } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
-// import { CreateBrandDto } from './dto/create-brand.dto';
-// import { UpdateBrandDto } from './dto/update-brand.dto';
+import { createBrandSchema, updateBrandSchema } from './schemas/brand.schema';
 
 @Injectable()
 export class BrandsService {
   constructor(private prisma: PrismaService) {}
 
-  public async findAll() {
-    // return await this.brandModel.find().populate({ path: 'icon' });
+  public async findAll(): Promise<Brand[]> {
+    return await this.prisma.brand.findMany({
+      include: { icon: true }
+    });
   }
 
-  // public async findActive(): Promise<Brand[]> {
-  //   return await this.brandModel.find({ isActive: true }).populate({ path: 'icon' });
-  // }
+  public async findActive(): Promise<Brand[]> {
+    return await this.prisma.brand.findMany({
+      where: { isActive: true },
+      include: { icon: true }
+    });
+  }
 
-  // public async findOneByQuery(query: UpdateBrandDto): Promise<Brand | null> {
-  //   return await this.brandModel.findOne(query).populate({ path: 'icon' });
-  // }
+  public async findBySlug(slug: string): Promise<Brand> {
+    const brand = await this.prisma.brand.findFirst({
+      where: { slug },
+      include: { icon: true }
+    });
 
-  // public async findOneById(id: string): Promise<Brand> {
-  //   if (!Types.ObjectId.isValid(id)) {
-  //     throw new NotFoundException(`Incorrect ID - ${id}`);
-  //   }
+    if (!brand) {
+      throw new NotFoundException(`Brand with slug "${slug}" was not found`);
+    }
 
-  //   const brand = await this.brandModel.findById(id).populate({ path: 'icon' });
+    return brand;
+  }
 
-  //   if (!brand) {
-  //     throw new NotFoundException(`Brand with ID "${id}" was not found`);
-  //   }
+  public async findById(id: string): Promise<Brand> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException(`Incorrect ID - ${id}`);
+    }
 
-  //   return brand;
-  // }
+    const brand = await this.prisma.brand.findFirst({
+      where: { id },
+      include: { icon: true }
+    });
 
-  // public async findAllByIds(ids: string[]): Promise<Brand[]> {
-  //   const objectIds = ids.map((value) => new Types.ObjectId(value));
+    if (!brand) {
+      throw new NotFoundException(`Brand with ID "${id}" was not found`);
+    }
 
-  //   const brands = await this.brandModel
-  //     .find({
-  //       _id: { $in: objectIds }
-  //     })
-  //     .populate({ path: 'icon' });
+    return brand;
+  }
 
-  //   return brands;
-  // }
+  public async create(data: createBrandSchema): Promise<Brand> {
+    const foundBrand = await this.prisma.brand.findFirst({
+      where: { slug: data.slug }
+    });
 
-  // public async create(dto: CreateBrandDto): Promise<Brand> {
-  //   const foundBrand = await this.brandModel.findOne({ slug: dto.slug });
+    if (foundBrand) {
+      throw new UnprocessableEntityException(
+        `Brand with slug "${data.slug}" already exists`
+      );
+    }
 
-  //   if (foundBrand) {
-  //     throw new UnprocessableEntityException(
-  //       `Brand with slug "${dto.slug}" already exists`
-  //     );
-  //   }
+    const createdBrand = await this.prisma.brand.create({ data });
+    const brand = await this.findById(createdBrand.id);
 
-  //   const createdBrand = await new this.brandModel(dto).save();
-  //   const brand = await this.findOneById(createdBrand._id);
+    return brand;
+  }
 
-  //   return brand;
-  // }
+  public async update(data: updateBrandSchema): Promise<Brand> {
+    const { id, ...newData } = data;
+    const brand = await this.findById(data.id);
 
-  // public async update(id: string, dto: UpdateBrandDto): Promise<Brand | null> {
-  //   await this.findOneById(id);
+    if (!brand) {
+      throw new NotFoundException(`Brand with ID ${id} was not found`);
+    }
 
-  //   const brand = await this.brandModel
-  //     .findByIdAndUpdate(id, dto, {
-  //       new: true
-  //     })
-  //     .populate({ path: 'icon' });
+    const updatedBrand = await this.prisma.brand.update({
+      where: { id },
+      data: newData,
+      include: { icon: true }
+    });
 
-  //   return brand;
-  // }
+    return updatedBrand;
+  }
 
-  // public async remove(id: string): Promise<string> {
-  //   if (!Types.ObjectId.isValid(id)) {
-  //     throw new NotFoundException(`Incorrect ID - ${id}`);
-  //   }
+  public async remove(id: string): Promise<string> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException(`Incorrect ID - ${id}`);
+    }
 
-  //   const brand = await this.brandModel.findByIdAndDelete(id);
+    const brand = await this.prisma.brand.delete({ where: { id } });
 
-  //   if (!brand) {
-  //     throw new NotFoundException(`Brand with ID ${id} was not found`);
-  //   }
+    if (!brand) {
+      throw new NotFoundException(`Brand with ID ${id} was not found`);
+    }
 
-  //   return id;
-  // }
+    return id;
+  }
 }

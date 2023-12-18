@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 
+import { ImagesRouter } from '../images/images.router';
+
+import { PrismaModule } from '../prisma/prisma.module';
+import { TrpcService } from '../trpc/trpc.service';
 import { IssuesService } from './issues.service';
 
-import { PrismaService } from '../prisma/prisma.service';
-
 @Module({
-  // controllers: [IssuesController],
-  providers: [IssuesService, PrismaService],
-  // exports: [IssuesService]
+  imports: [PrismaModule],
+  providers: [IssuesService, ImagesRouter, TrpcService],
+  exports: [IssuesService]
 })
 export class IssuesModule {}

@@ -7,7 +7,6 @@ import { TrpcModule } from './trpc/trpc.module';
 
 @Module({
   imports: [ConfigModule.forRoot(), TrpcModule, PrismaModule],
-  controllers: [],
   providers: [PrismaService]
 })
 export class AppModule {}
