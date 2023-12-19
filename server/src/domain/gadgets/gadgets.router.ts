@@ -37,14 +37,5 @@ export class GadgetsRouter {
       .mutation(async ({ input }) => {
         return await this.gadgetsService.update(input);
       })
-
-    // getGadgetsQuery: this.trpc.procedure.query(async () => {
-    //   // return await this.gadgetsService.findActive();
-    // }),
-    // getGadgetBySlugQuery: this.trpc.procedure
-    //   .input(z.object({ slug: z.string() }))
-    //   .query(async ({ input }) => {
-    //     // return await this.gadgetsService.findOneByQuery({ ...input });
-    //   })
   });
 }

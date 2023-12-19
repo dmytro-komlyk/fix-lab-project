@@ -19,7 +19,8 @@ export class IssuesService {
           include: {
             icon: true
           }
-        }
+        },
+        gadgets: true
       }
     });
   }
@@ -35,7 +36,8 @@ export class IssuesService {
           include: {
             icon: true
           }
-        }
+        },
+        gadgets: true
       }
     });
   }
@@ -51,7 +53,8 @@ export class IssuesService {
           include: {
             icon: true
           }
-        }
+        },
+        gadgets: true
       }
     });
 
@@ -73,7 +76,8 @@ export class IssuesService {
           include: {
             icon: true
           }
-        }
+        },
+        gadgets: true
       }
     });
 
@@ -121,7 +125,8 @@ export class IssuesService {
           include: {
             icon: true
           }
-        }
+        },
+        gadgets: true
       }
     });
     return updatedIssue;

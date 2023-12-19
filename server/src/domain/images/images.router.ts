@@ -27,26 +27,30 @@ export class ImagesRouter {
     getBlogPicturesAll: this.trpc.procedure.query(async () => {
       return await this.imagesService.findAll();
     }),
-    uploadIcon: this.trpc.procedure
+    // uploadIcon: this.trpc.procedure
+    //   .input(uploadImageSchema)
+    //   .query(async ({ input }) => {
+    //     // return await this.imagesService.create(input);
+    //   }),
+    // uploadPicture: this.trpc.procedure.input(uploadImageSchema).query(async () => {
+    //   // return await this.imagesService.create(input);
+    // }),
+    // uploadBlogPicture: this.trpc.procedure
+    //   .input(uploadImageSchema)
+    //   .query(async () => {
+    //     // return await this.imagesService.create();
+    //   }),
+    updateIconId: this.trpc.procedure.input(uploadImageSchema).query(async () => {
+      // return await this.imagesService.create();
+    }),
+    updatePictureId: this.trpc.procedure.input(uploadImageSchema).query(async () => {
+      // return await this.imagesService.create();
+    }),
+    updateBlogPictureId: this.trpc.procedure
       .input(uploadImageSchema)
-      .query(async ({ input }) => {
-        // return await this.imagesService.create(input);
+      .query(async () => {
+        // return await this.imagesService.create();
       }),
-    uploadPicture: this.trpc.procedure.query(async () => {
-      // return await this.imagesService.create(input);
-    }),
-    uploadBlogPicture: this.trpc.procedure.query(async () => {
-      // return await this.imagesService.create();
-    }),
-    updateIconId: this.trpc.procedure.query(async () => {
-      // return await this.imagesService.create();
-    }),
-    updatePictureId: this.trpc.procedure.query(async () => {
-      // return await this.imagesService.create();
-    }),
-    updateBlogPictureId: this.trpc.procedure.query(async () => {
-      // return await this.imagesService.create();
-    }),
     remove: this.trpc.procedure.input(z.string()).mutation(async ({ input }) => {
       // return await this.imagesService.remove(input);
     })

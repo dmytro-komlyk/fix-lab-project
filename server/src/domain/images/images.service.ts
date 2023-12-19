@@ -13,7 +13,7 @@ export class ImagesService {
     return await this.prisma.image.findMany();
   }
 
-  public async findOneById(id: string) {
+  public async findById(id: string) {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -39,7 +39,7 @@ export class ImagesService {
     const addedImage = await this.prisma.image.create({
       data: dto
     });
-    const image = await this.findOneById(addedImage.id);
+    const image = await this.findById(addedImage.id);
 
     return image;
   }

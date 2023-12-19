@@ -10,6 +10,7 @@ export const createIssueSchema = z.object({
   description: z.string(),
   price: z.string().min(1),
   metadata: MetaSchema,
+  gadgets_ids: z.array(z.string()),
   image_id: z.string(),
   benefits_ids: z.array(z.string())
 });
@@ -23,6 +24,7 @@ export const updateIssueSchema = z.object({
   description: z.string(),
   price: z.string().min(1),
   metadata: MetaSchema,
+  gadgets_ids: z.array(z.string()),
   image_id: z.string(),
   benefits_ids: z.array(z.string())
 });
