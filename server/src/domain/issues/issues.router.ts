@@ -21,11 +21,9 @@ export class IssuesRouter {
     getAllPublished: this.trpc.procedure.query(async () => {
       return await this.issuesService.findAllActive();
     }),
-    getById: this.trpc.procedure
-      .input(z.object({ id: z.string() }))
-      .mutation(async ({ input }) => {
-        return await this.issuesService.findById(input.id);
-      }),
+    getById: this.trpc.procedure.input(z.string()).mutation(async ({ input }) => {
+      return await this.issuesService.findById(input);
+    }),
     getBySlug: this.trpc.procedure.input(z.string()).query(async ({ input }) => {
       return await this.issuesService.findBySlug(input);
     }),

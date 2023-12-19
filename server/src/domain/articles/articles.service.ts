@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { Article } from '@prisma/client';
+import { Article, Image } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -15,22 +15,26 @@ import {
 export class ArticlesService {
   constructor(private prisma: PrismaService) {}
 
-  public async findAll() {
-    return await this.prisma.article.findMany();
+  public async findAll(): Promise<Article[]> {
+    return await this.prisma.article.findMany({
+      include: {
+        image: true
+      }
+    });
   }
 
   public async findWithPagination({
     page = 1,
     limit = 1000000,
     sort = 'desc'
-  }: paginationArticleSchema) {
+  }: paginationArticleSchema): Promise<any> {
     const result = {
       itemsCount: 0,
       totalItems: 0,
       totalPages: 0,
       rangeStart: 0,
       rangeEnd: 0,
-      items: []
+      items: [] as (Article & { image: Image })[]
     };
 
     const totalArticles = await this.prisma.article.findMany();
@@ -39,8 +43,7 @@ export class ArticlesService {
     result.totalPages = Math.ceil(totalArticles.length / limit);
 
     const articles = await this.prisma.article.findMany({
-      orderBy: {},
-      // where: {},
+      orderBy: { createdAt: 'desc' },
       take: limit,
       skip: limit * (page - 1),
       include: {
@@ -48,12 +51,12 @@ export class ArticlesService {
       }
     });
 
-    // result.items = articles;
-    // result.itemsCount = articles.length;
-    // result.rangeStart = articles.length ? limit * (page - 1) : 0;
-    // result.rangeEnd = articles.length ? result.rangeStart + result.itemsCount : 0;
+    result.items = articles;
+    result.itemsCount = articles.length;
+    result.rangeStart = articles.length ? limit * (page - 1) : 0;
+    result.rangeEnd = articles.length ? result.rangeStart + result.itemsCount : 0;
 
-    // return result;
+    return result;
   }
 
   public async findOneByQuery(query: string): Promise<Article> {
