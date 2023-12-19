@@ -22,7 +22,7 @@ export class BenefitsRouter {
       return await this.benefitsService.findActive();
     }),
     getById: this.trpc.procedure.input(z.string()).query(async ({ input }) => {
-      return await this.benefitsService.findOneById(input);
+      return await this.benefitsService.findById(input);
     }),
     create: this.trpc.procedure
       .input(createBenefitSchema)

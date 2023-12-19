@@ -24,12 +24,12 @@ export class BenefitsService {
     });
   }
 
-  public async findOneById(id: string): Promise<Benefit> {
+  public async findById(id: string): Promise<Benefit> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
 
-    const benefit = await this.prisma.benefit.findFirst({
+    const benefit = await this.prisma.benefit.findUnique({
       where: { id },
       include: { icon: true }
     });
@@ -52,14 +52,14 @@ export class BenefitsService {
       );
     }
     const createdBenefit = await this.prisma.benefit.create({ data });
-    const benefit = await this.findOneById(createdBenefit.id);
+    const benefit = await this.findById(createdBenefit.id);
 
     return benefit;
   }
 
   public async update(data: updateBenefitSchema): Promise<Benefit> {
     const { id, ...newData } = data;
-    const benefit = await this.findOneById(id);
+    const benefit = await this.findById(id);
 
     if (!benefit) {
       throw new NotFoundException(`Benefit with ID ${id} was not found`);

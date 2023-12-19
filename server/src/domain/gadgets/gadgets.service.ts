@@ -1,117 +1,195 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Types } from 'mongoose';
+
+import { Gadget } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
+
+import { createGadgetSchema, updateGadgetSchema } from './schemas/gadget.schema';
 
 @Injectable()
 export class GadgetsService {
   constructor(private prisma: PrismaService) {}
 
-  public async findAll() {
-    const test = await this.prisma.gadget.findMany({
+  public async findAll(): Promise<Gadget[]> {
+    return await this.prisma.gadget.findMany({
       include: {
-        brands: true,
-        issues: true,
         icon: true,
+        brands: {
+          include: {
+            icon: true
+          }
+        },
+        issues: {
+          include: {
+            benefits: {
+              include: {
+                icon: true
+              }
+            }
+          }
+        },
         gallery: true
       }
     });
-    console.log(test);
-    // .find()
-    // .populate({ path: 'brands', populate: { path: 'icon' } })
-    // .populate({
-    //   path: 'issues',
-    //   populate: [{ path: 'benefits' }, { path: 'image' }]
-    // })
-    // .populate({ path: 'icon' })
-    // .populate({ path: 'gallery' });
   }
 
-  // public async findActive(): Promise<Gadget[]> {
-  //   return await this.gadgetModel
-  //     .find({ isActive: true })
-  //     .select('-isActive')
-  //     .populate({ path: 'icon' })
-  //     .populate({ path: 'brands' })
-  //     .populate({ path: 'issues' })
-  //     .populate({ path: 'gallery' });
-  // }
+  public async findAllActive(): Promise<Gadget[]> {
+    return await this.prisma.gadget.findMany({
+      where: {
+        isActive: true
+      },
+      include: {
+        icon: true,
+        brands: {
+          include: {
+            icon: true
+          }
+        },
+        issues: {
+          include: {
+            image: true,
+            benefits: {
+              include: {
+                icon: true
+              }
+            }
+          }
+        },
+        gallery: true
+      }
+    });
+  }
 
-  // public async findOneByQuery(query: UpdateGadgetDto): Promise<Gadget | null> {
-  //   return await this.gadgetModel
-  //     .findOne(query)
-  //     .populate({ path: 'brands', populate: { path: 'icon' } })
-  //     .populate({
-  //       path: 'issues',
-  //       populate: [{ path: 'benefits' }, { path: 'image' }]
-  //     })
-  //     .populate({ path: 'icon' })
-  //     .populate({ path: 'gallery' });
-  // }
+  public async findBySlug(slug: string): Promise<Gadget> {
+    const gadget = await this.prisma.gadget.findUnique({
+      where: { slug: slug },
+      include: {
+        icon: true,
+        brands: {
+          include: {
+            icon: true
+          }
+        },
+        issues: {
+          include: {
+            image: true,
+            benefits: {
+              include: {
+                icon: true
+              }
+            }
+          }
+        },
+        gallery: true
+      }
+    });
 
-  // public async findOneById(id: string): Promise<Gadget> {
-  //   if (!Types.ObjectId.isValid(id)) {
-  //     throw new NotFoundException(`Incorrect ID - ${id}`);
-  //   }
+    if (!gadget) {
+      throw new NotFoundException(`Gadget with slug "${slug}" was not found`);
+    }
 
-  //   const gadget = await this.gadgetModel
-  //     .findById(id)
-  //     .populate({ path: 'brands', populate: { path: 'icon' } })
-  //     .populate({
-  //       path: 'issues',
-  //       populate: [{ path: 'benefits' }, { path: 'image' }]
-  //     })
-  //     .populate({ path: 'icon' })
-  //     .populate({ path: 'gallery' });
+    return gadget;
+  }
 
-  //   if (!gadget) {
-  //     throw new NotFoundException(`Gadget with ID "${id}" was not found`);
-  //   }
+  public async findById(id: string): Promise<Gadget> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException(`Incorrect ID - ${id}`);
+    }
 
-  //   return gadget;
-  // }
+    const gadget = await this.prisma.gadget.findUnique({
+      where: { id },
+      include: {
+        icon: true,
+        brands: {
+          include: {
+            icon: true
+          }
+        },
+        issues: {
+          include: {
+            image: true,
+            benefits: {
+              include: {
+                icon: true
+              }
+            }
+          }
+        },
+        gallery: true
+      }
+    });
 
-  // public async create(dto: CreateGadgetDto): Promise<Gadget> {
-  //   const foundGadget = await this.gadgetModel.findOne({ slug: dto.slug });
+    if (!gadget) {
+      throw new NotFoundException(`Gadget with ID "${id}" was not found`);
+    }
 
-  //   if (foundGadget) {
-  //     throw new BadRequestException(`Gadget with slug "${dto.slug}" already exists`);
-  //   }
+    return gadget;
+  }
 
-  //   const createdGadget = await new this.gadgetModel(dto).save();
-  //   const gadget = await this.findOneById(createdGadget._id);
+  public async create(data: createGadgetSchema): Promise<Gadget> {
+    const foundGadget = await this.prisma.gadget.findFirst({
+      where: { slug: data.slug }
+    });
 
-  //   return gadget;
-  // }
+    if (foundGadget) {
+      throw new BadRequestException(
+        `Gadget with slug "${data.slug}" already exists`
+      );
+    }
 
-  // public async update(id: string, dto: UpdateGadgetDto): Promise<Gadget | null> {
-  //   await this.findOneById(id);
+    const createdGadget = await this.prisma.gadget.create({ data });
+    const gadget = await this.findById(createdGadget.id);
 
-  //   const updatedGadget = await this.gadgetModel
-  //     .findByIdAndUpdate(id, dto, {
-  //       new: true
-  //     })
-  //     .populate({ path: 'brands', populate: { path: 'icon' } })
-  //     .populate({
-  //       path: 'issues',
-  //       populate: [{ path: 'benefits' }, { path: 'image' }]
-  //     })
-  //     .populate({ path: 'icon' })
-  //     .populate({ path: 'gallery' });
+    return gadget;
+  }
 
-  //   return updatedGadget;
-  // }
+  public async update(data: updateGadgetSchema): Promise<Gadget> {
+    const { id, ...newData } = data;
+    const gadget = await this.findById(id);
 
-  // public async remove(id: string): Promise<string> {
-  //   if (!Types.ObjectId.isValid(id)) {
-  //     throw new NotFoundException(`Incorrect ID - ${id}`);
-  //   }
+    if (!gadget) {
+      throw new NotFoundException(`Gadget with ID ${id} was not found`);
+    }
 
-  //   const gadget = await this.gadgetModel.findByIdAndDelete(id);
+    const updatedGadget = await this.prisma.gadget.update({
+      where: { id },
+      data: newData,
+      include: {
+        icon: true,
+        brands: {
+          include: {
+            icon: true
+          }
+        },
+        issues: {
+          include: {
+            image: true,
+            benefits: {
+              include: {
+                icon: true
+              }
+            }
+          }
+        },
+        gallery: true
+      }
+    });
 
-  //   if (!gadget) {
-  //     throw new NotFoundException(`Gadget with ID ${id} was not found`);
-  //   }
+    return updatedGadget;
+  }
 
-  //   return id;
-  // }
+  public async remove(id: string): Promise<string> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException(`Incorrect ID - ${id}`);
+    }
+
+    const gadget = await this.prisma.gadget.delete({ where: { id } });
+
+    if (!gadget) {
+      throw new NotFoundException(`Gadget with ID ${id} was not found`);
+    }
+
+    return id;
+  }
 }

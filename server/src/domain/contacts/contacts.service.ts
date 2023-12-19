@@ -30,7 +30,7 @@ export class ContactsService {
   }
 
   public async findById(id: string): Promise<Contact> {
-    const contact = await this.prisma.contact.findFirst({
+    const contact = await this.prisma.contact.findUnique({
       where: { id },
       include: { image: true }
     });

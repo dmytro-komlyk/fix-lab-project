@@ -29,7 +29,7 @@ export class BrandsService {
   }
 
   public async findBySlug(slug: string): Promise<Brand> {
-    const brand = await this.prisma.brand.findFirst({
+    const brand = await this.prisma.brand.findUnique({
       where: { slug },
       include: { icon: true }
     });
@@ -46,7 +46,7 @@ export class BrandsService {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
 
-    const brand = await this.prisma.brand.findFirst({
+    const brand = await this.prisma.brand.findUnique({
       where: { id },
       include: { icon: true }
     });

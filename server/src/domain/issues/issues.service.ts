@@ -12,16 +12,16 @@ export class IssuesService {
   constructor(private prisma: PrismaService) {}
 
   public async findAll(): Promise<Issue[]> {
-    const issues = await this.prisma.issue.findMany({
+    return await this.prisma.issue.findMany({
       include: {
         image: true,
-        benefits: true
-        // icon: true //?
+        benefits: {
+          include: {
+            icon: true
+          }
+        }
       }
     });
-    return issues;
-    // .populate({ path: 'image' })
-    // .populate({ path: 'benefits', populate: { path: 'icon' } });
   }
 
   public async findAllActive(): Promise<Issue[]> {
@@ -31,8 +31,11 @@ export class IssuesService {
       },
       include: {
         image: true,
-        benefits: true
-        // icon: true //?
+        benefits: {
+          include: {
+            icon: true
+          }
+        }
       }
     });
   }
@@ -44,14 +47,13 @@ export class IssuesService {
       },
       include: {
         image: true,
-        benefits: true
-        // icon: true //?
+        benefits: {
+          include: {
+            icon: true
+          }
+        }
       }
     });
-    // .findOne(query)
-    // .select('-isActive')
-    // .populate({ path: 'image' })
-    // .populate({ path: 'benefits', populate: { path: 'icon' } });
 
     if (!issue) {
       throw new NotFoundException(`Issue with slug "${slug}" was not found`);
@@ -61,23 +63,19 @@ export class IssuesService {
   }
 
   public async findById(id: string): Promise<Issue> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(`Incorrect ID - ${id}`);
-    }
-
-    const issue = await this.prisma.issue.findFirst({
+    const issue = await this.prisma.issue.findUnique({
       where: {
         id
       },
       include: {
         image: true,
-        benefits: true
-        // icon: true //?
+        benefits: {
+          include: {
+            icon: true
+          }
+        }
       }
     });
-    // .findById(id)
-    // .populate('image')
-    // .populate({ path: 'benefits', populate: { path: 'icon' } });
 
     if (!issue) {
       throw new NotFoundException(`Issue with ID "${id}" was not found`);
@@ -87,7 +85,7 @@ export class IssuesService {
   }
 
   public async create(data: createIssueSchema): Promise<Issue> {
-    const foundIssue = await this.prisma.issue.findUnique({
+    const foundIssue = await this.prisma.issue.findFirst({
       where: {
         slug: data.slug
       }
@@ -102,6 +100,7 @@ export class IssuesService {
     });
 
     const issue = await this.findById(createdIssue.id);
+
     return issue;
   }
 
@@ -118,8 +117,11 @@ export class IssuesService {
       data: newData,
       include: {
         image: true,
-        benefits: true
-        // icon: true //?
+        benefits: {
+          include: {
+            icon: true
+          }
+        }
       }
     });
     return updatedIssue;

@@ -43,7 +43,7 @@ export class TrpcRouter {
   });
 
   static getAppRouter(): AppRouter {
-    const prismaService = new PrismaService();
+    const prismaService = new PrismaService({});
     const trpcService = new TrpcService();
 
     const trpcRouter = new TrpcRouter(
