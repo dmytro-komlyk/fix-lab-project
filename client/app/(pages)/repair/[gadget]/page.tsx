@@ -1,15 +1,13 @@
-import type { IContact } from 'client/app/(server)/api/service/modules/contactService'
-import type { IGadget } from 'client/app/(server)/api/service/modules/gadgetService'
 import type { Metadata } from 'next'
-import React from 'react'
 
 import {
   AddressSection,
   CallCourierSection,
   ColaborationSection,
 } from '@/app/(layouts)'
-import { trpc } from '@/app/(utils)/trpc'
 
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
+import { outputGadgetSchema } from 'server/src/domain/gadgets/schemas/gadget.schema'
 import SingleGadgetSection from '../(components)/SingleGadgetSection'
 
 interface IndexProps {
@@ -18,17 +16,14 @@ interface IndexProps {
   }
 }
 
-export const runtime = 'edge'
-export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
 }: IndexProps): Promise<Metadata> {
   const { gadget } = params
 
-  const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({
-    slug: gadget,
-  })) as IGadget
+  const singleGadgetData = await serverClient.gadgets.getBySlug(gadget)
 
   return {
     title: singleGadgetData.metadata.title,
@@ -38,19 +33,20 @@ export async function generateMetadata({
 }
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({
-    slug: params.gadget,
-  })) as IGadget
-  const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
+  const singleGadgetDataInit = (await serverClient.gadgets.getBySlug(
+    params.gadget,
+  )) as outputGadgetSchema
+  const contactsDataInit = await serverClient.contacts.getAllPublished()
+
   return (
     <main className='flex-auto'>
       <SingleGadgetSection
-        singleGadgetData={singleGadgetData}
-        contactsData={contactsData}
+        singleGadgetDataInit={singleGadgetDataInit}
+        contactsDataInit={contactsDataInit}
       />
       <CallCourierSection />
       <ColaborationSection />
-      <AddressSection contactsData={contactsData} />
+      <AddressSection contactsDataInit={contactsDataInit} />
     </main>
   )
 }

@@ -1,11 +1,4 @@
-// export async function generateStaticParams() {
-//   const gadgetsData = (await trpc.getGadgetsQuery.query()) as IGadget[]
-//   return gadgetsData.map((item: { slug: string }) => ({
-//     gadget: item.slug,
-//   }))
-// }
-export const runtime = 'edge'
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 export default async function RootLayout({
   children,

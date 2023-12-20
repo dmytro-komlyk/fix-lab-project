@@ -1,8 +1,15 @@
 import { TbPhone } from 'react-icons/tb'
 
-import type { IContactsProps } from './AddressLocationCard'
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
-const CallUsCard: React.FC<IContactsProps> = ({ contactsData }) => {
+// : React.FC<IContactsProps>
+const CallUsCard = ({
+  contactsDataInit,
+}: {
+  contactsDataInit: Awaited<
+    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+  >
+}) => {
   return (
     <div className='flex w-[302px] flex-col items-center justify-center rounded-[15px] bg-white-dis px-[38px] py-8 opacity-80 shadow-brand max-lg:hidden'>
       <p className='relative mb-3 font-exo_2 text-xl font-semibold text-dark-blue'>
@@ -10,8 +17,8 @@ const CallUsCard: React.FC<IContactsProps> = ({ contactsData }) => {
         Подзвонити нам
       </p>
       <ul className='flex flex-col items-center gap-[15px]'>
-        {contactsData.map(item => (
-          <li key={item._id} className='flex flex-col items-center'>
+        {contactsDataInit.map(item => (
+          <li key={item.id} className='flex flex-col items-center'>
             <p className='font-[400] text-black-dis'>{item.area} р-н</p>
             {item.phones.map(phone => (
               <a

@@ -1,21 +1,28 @@
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
 
-import type { IGadgetsProps } from '@/app/(layouts)'
-import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
+// import type { IGadgetsProps } from '@/app/(layouts)'
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
-export const GadgetsSlider: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
+// React.FC<IGadgetsProps>
+export const GadgetsSlider = ({
+  gadgetsData,
+}: {
+  gadgetsData: Awaited<
+    ReturnType<(typeof serverClient)['gadgets']['getAllPublished']>
+  >
+}) => {
   const [ref] = useKeenSlider<HTMLDivElement>({
     slides: { perView: 1.15, spacing: 16 },
   })
   return (
     <div ref={ref} className='keen-slider'>
-      {gadgetsData.map((item: IGadget) => {
+      {/* any as IGadget = ? */}
+      {gadgetsData.map((item: any) => {
         return (
           <Link
-            key={item._id}
+            key={item.id}
             href={`/repair/${item.slug}`}
             className='keen-slider__slide hover-gadget-link flex h-[261px] flex-col justify-between rounded-2xl bg-card-repair-gradient p-8'
           >

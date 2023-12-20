@@ -1,10 +1,9 @@
-import type { IGadget } from 'client/app/(server)/api/service/modules/gadgetService'
 import type { Metadata } from 'next'
 
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
-import { trpc } from '@/app/(utils)/trpc'
 
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
+import { outputGadgetSchema } from 'server/src/domain/gadgets/schemas/gadget.schema'
 import BrandsSection from '../../(components)/BrandsSection'
 
 interface IndexProps {
@@ -14,8 +13,7 @@ interface IndexProps {
   searchParams: any
 }
 
-export const runtime = 'edge'
-export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Ремонт брендової техніки в сервісному центрі FixLab',
@@ -35,19 +33,19 @@ export const metadata: Metadata = {
   ],
 }
 
-const Index: React.FC<IndexProps> = async ({ params }) => {
-  const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({
-    slug: params.gadget,
-  })) as IGadget
-  const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
+const Index = async ({ params }: { params: { gadget: string } }) => {
+  const singleGadgetData = (await serverClient.gadgets.getBySlug(
+    params.gadget,
+  )) as outputGadgetSchema
+  const contactsData = await serverClient.contacts.getAllPublished()
   return (
     <main className='h-full flex-auto'>
       <BrandsSection
-        contactsData={contactsData}
-        gadgetData={singleGadgetData}
+        contactsDataInit={contactsData}
+        gadgetDataInit={singleGadgetData}
       />
       <ColaborationSection />
-      <AddressSection contactsData={contactsData} />
+      <AddressSection contactsDataInit={contactsData} />
     </main>
   )
 }

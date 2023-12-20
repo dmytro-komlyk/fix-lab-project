@@ -30,12 +30,8 @@ interface SingleIssueProps {
   singleIssueData: IIssue
   singleGadgetData: IGadget
 }
-
-const IssueSection: React.FC<SingleIssueProps> = ({
-  singleIssueData,
-  singleGadgetData,
-  contactsData,
-}) => {
+// : React.FC<SingleIssueProps>
+const IssueSection = ({ singleIssueData, singleGadgetData, contactsData }) => {
   const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
     useState<boolean>(false)
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
@@ -130,7 +126,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                     textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
                   />
                 </div>
-                <CallUsCard contactsData={contactsData} />
+                <CallUsCard contactsDataInit={contactsData} />
               </div>
               <div className='mb-14 flex flex-col max-xl:w-[600px] max-lg:w-full xl:w-[737px]'>
                 <div className='mb-14'>
@@ -153,7 +149,7 @@ const IssueSection: React.FC<SingleIssueProps> = ({
                         Бренди, які ремонтуємо
                       </p>
                       <div className='mb-[67px]'>
-                        <GadgetBrandsSlider gadgetData={singleGadgetData} />
+                        <GadgetBrandsSlider gadgetDataInit={singleGadgetData} />
                       </div>
                     </div>
                   )}

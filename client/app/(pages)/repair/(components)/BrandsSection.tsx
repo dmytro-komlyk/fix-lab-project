@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import RenderMarkdown from '@/app/(components)/RenderMarkdown'
@@ -14,6 +14,7 @@ import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import type { IBrand } from '@/app/(server)/api/service/modules/brandService'
 import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 import { BrandsSlider } from './BrandsSlider'
 
 const InstantAdviceModal = dynamic(
@@ -36,11 +37,18 @@ export interface BrandsProps {
   }
   brandData?: IBrand
 }
-
-const BrandsSection: React.FC<BrandsProps> = ({
-  gadgetData,
-  contactsData,
-  brandData,
+// : React.FC<BrandsProps>
+const BrandsSection = ({
+  gadgetDataInit,
+  contactsDataInit,
+  brandDataInit,
+}: {
+  gadgetDataInit: Awaited<
+    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+  >
+  contactsDataInit: Awaited<
+    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+  >
 }) => {
   const pathname = usePathname()
   const brandPath = pathname.split('/').pop()
@@ -142,7 +150,7 @@ const BrandsSection: React.FC<BrandsProps> = ({
               )}
             </div>
             <div className='ml-auto flex flex-col gap-16 max-lg:hidden'>
-              <CallUsCard contactsData={contactsData} />
+              <CallUsCard contactsDataInit={contactsData} />
               <Button
                 text='Миттєва консультація'
                 toggleModal={toggleInstantAdviceModal}

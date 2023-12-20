@@ -6,9 +6,10 @@ import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import type { IGadgetsProps } from '@/app/(layouts)'
 import Button from '@/app/(layouts)/(components)/Button'
 
+import { trpc } from 'client/app/(utils)/trpc/client'
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 import { GadgetsList } from './GadgetsList'
 import { GadgetsSlider } from './GadgetsSlider'
 
@@ -18,8 +19,22 @@ const InstantAdviceModal = dynamic(
 const SuccessSubmitBanner = dynamic(
   () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
 )
-
-const GadgetsSection: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
+// : React.FC<IGadgetsProps>
+const GadgetsSection = ({
+  gadgetsDataInit,
+}: {
+  gadgetsDataInit: Awaited<
+    ReturnType<(typeof serverClient)['gadgets']['getAllPublished']>
+  >
+}) => {
+  const { data: gadgetsData } = trpc.gadgets.getAllPublished.useQuery(
+    undefined,
+    {
+      initialData: gadgetsDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
     useState<boolean>(false)
 

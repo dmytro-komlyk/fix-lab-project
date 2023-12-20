@@ -5,6 +5,9 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import type { IBrand } from '@/app/(server)/api/service/modules/brandService'
+import { SERVER_URL } from 'client/app/(lib)/constants'
+import { trpc } from 'client/app/(utils)/trpc/client'
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
 export interface BrandsSliderProps {
   gadgetData: {
@@ -12,11 +15,23 @@ export interface BrandsSliderProps {
     brands: IBrand[]
   }
 }
-
-export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
-  gadgetData,
+// : React.FC<BrandsSliderProps>
+export const GadgetBrandsSlider = ({
+  gadgetDataInit,
+}: {
+  gadgetDataInit: Awaited<
+    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+  >
 }) => {
   // Keen Slider
+  const { data: gadgetData } = trpc.gadgets.getBySlug.useQuery(
+    gadgetDataInit.slug,
+    {
+      initialData: gadgetDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
   const [currentSlide, setCurrentSlide] = useState(0)
   const [loaded, setLoaded] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -80,7 +95,7 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
           {gadgetData.brands.map(item => {
             return (
               <div
-                key={item._id}
+                key={item.id}
                 className='keen-slider__slide max-w-[77px] p-[14px]'
               >
                 <Link
@@ -89,7 +104,7 @@ export const GadgetBrandsSlider: React.FC<BrandsSliderProps> = ({
                 >
                   {item.icon && (
                     <Image
-                      src={item.icon.src}
+                      src={`${SERVER_URL}/${item.icon.file.path}`}
                       alt={item.icon.alt}
                       width={0}
                       height={0}
