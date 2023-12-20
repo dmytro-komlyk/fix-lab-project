@@ -7,6 +7,8 @@ import { ArticlesService } from './articles.service';
 
 import {
   createArticleSchema,
+  outputArticleSchema,
+  outputArticleWithPaginationSchema,
   paginationArticleSchema,
   updateArticleSchema
 } from './schemas/article.schema';
@@ -39,16 +41,20 @@ export class ArticlesRouter {
     }),
     getByPagination: this.trpc.procedure
       .input(paginationArticleSchema)
+      .output(outputArticleWithPaginationSchema)
       .query(async ({ input }) => {
         return await this.articlesService.findWithPagination({ ...input });
       }),
 
     getById: this.trpc.procedure.input(z.string()).query(async ({ input }) => {
-      return await this.articlesService.findOneById(input);
+      return await this.articlesService.findById(input);
     }),
 
-    getBySlug: this.trpc.procedure.input(z.string()).query(async ({ input }) => {
-      return await this.articlesService.findOneByQuery(input);
-    })
+    getBySlug: this.trpc.procedure
+      .input(z.string())
+      .output(outputArticleSchema)
+      .query(async ({ input }) => {
+        return await this.articlesService.findBySlug(input);
+      })
   });
 }

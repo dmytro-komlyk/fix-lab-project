@@ -7,6 +7,8 @@ import { PrismaService } from '../prisma/prisma.service';
 
 import {
   createArticleSchema,
+  outputArticleSchema,
+  outputArticleWithPaginationSchema,
   paginationArticleSchema,
   updateArticleSchema
 } from './schemas/article.schema';
@@ -27,7 +29,7 @@ export class ArticlesService {
     page = 1,
     limit = 1000000,
     sort = 'desc'
-  }: paginationArticleSchema): Promise<any> {
+  }: paginationArticleSchema): Promise<outputArticleWithPaginationSchema> {
     const result = {
       itemsCount: 0,
       totalItems: 0,
@@ -59,10 +61,13 @@ export class ArticlesService {
     return result;
   }
 
-  public async findOneByQuery(query: string): Promise<Article> {
+  public async findBySlug(query: string): Promise<outputArticleSchema> {
     const article = await this.prisma.article.findUnique({
       where: {
         slug: query
+      },
+      include: {
+        image: true
       }
     });
     if (!article) {
@@ -72,7 +77,7 @@ export class ArticlesService {
     return article;
   }
 
-  public async findOneById(id: string): Promise<Article> {
+  public async findById(id: string): Promise<Article> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -106,7 +111,7 @@ export class ArticlesService {
     const createdArticle = await this.prisma.article.create({
       data: dto
     });
-    const article = await this.findOneById(createdArticle.id);
+    const article = await this.findById(createdArticle.id);
 
     return article;
   }
@@ -114,7 +119,7 @@ export class ArticlesService {
   public async update(dto: updateArticleSchema): Promise<Article> {
     const { id, ...newData } = dto;
 
-    await this.findOneById(id as string);
+    await this.findById(id as string);
 
     const article: Article = await this.prisma.article.update({
       where: { id },
