@@ -1,12 +1,18 @@
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BiMap } from 'react-icons/bi'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 import { TbClockHour9 } from 'react-icons/tb'
+import { outputContactSchema } from 'server/src/domain/contacts/schemas/contact.schema'
 
-import type { IContactsProps } from '@/app/(layouts)/(components)/AddressLocationCard'
-
-const ContactsSection: React.FC<IContactsProps> = ({ contactsData }) => {
+const ContactsSection = ({
+  contactsData,
+}: {
+  contactsData: Awaited<
+    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+  >
+}) => {
   return (
     <section className=' overflow-hidden  bg-white-dis  pb-[102px] pt-[163px] max-md:pb-14 max-md:pt-[120px]'>
       <div className='container relative flex flex-col xl:p-0 '>
@@ -34,9 +40,9 @@ const ContactsSection: React.FC<IContactsProps> = ({ contactsData }) => {
               </p>
             </div>
             <div className='flex flex-col gap-14 max-lg:gap-6'>
-              {contactsData.map(item => {
+              {contactsData.map((item: outputContactSchema) => {
                 return (
-                  <div key={item._id} className='flex flex-col gap-[20px] '>
+                  <div key={item.id} className='flex flex-col gap-[20px] '>
                     <div className=''>
                       <p className='font-semibold text-black-dis '>
                         {item.address}
@@ -48,7 +54,7 @@ const ContactsSection: React.FC<IContactsProps> = ({ contactsData }) => {
                     <div className='flex items-center gap-4'>
                       {item.subways.length > 1 ? (
                         <ul className=' flex flex-col gap-[8px]'>
-                          {item.subways.map(subway => (
+                          {item.subways.map((subway: string) => (
                             <li
                               key={subway}
                               className='flex items-center gap-[17px]'
@@ -75,7 +81,7 @@ const ContactsSection: React.FC<IContactsProps> = ({ contactsData }) => {
                         </>
                       )}
                     </div>
-                    {item.phones.map(phone => (
+                    {item.phones.map((phone: string) => (
                       <a
                         key={phone}
                         className='font-medium leading-none tracking-[1.7px] text-dark-blue transition-opacity  hover:opacity-70 focus:opacity-70'

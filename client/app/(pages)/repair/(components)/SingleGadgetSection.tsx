@@ -9,8 +9,6 @@ import { MdKeyboardArrowRight } from 'react-icons/md'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
-import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
 
 import { SERVER_URL } from 'client/app/(lib)/constants'
 import { trpc } from 'client/app/(utils)/trpc/client'
@@ -25,11 +23,6 @@ const SuccessSubmitBanner = dynamic(
   () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
 )
 
-interface SingleGadgetProps {
-  singleGadgetDataInit: IGadget
-  contactsDataInit: IContact[]
-}
-// : React.FC<SingleGadgetProps>
 const SingleGadgetSection = ({
   singleGadgetDataInit,
   contactsDataInit,

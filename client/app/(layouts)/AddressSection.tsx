@@ -1,8 +1,6 @@
 import { serverClient } from '../(utils)/trpc/serverClient'
-// import type { IContactsProps } from './(components)/AddressLocationCard'
 import { AddressLocationCard } from './(components)/AddressLocationCard'
 
-// : React.FC<IContactsProps>
 export const AddressSection = async ({
   contactsDataInit,
 }: {

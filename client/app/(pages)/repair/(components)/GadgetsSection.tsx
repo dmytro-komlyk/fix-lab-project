@@ -19,7 +19,7 @@ const InstantAdviceModal = dynamic(
 const SuccessSubmitBanner = dynamic(
   () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
 )
-// : React.FC<IGadgetsProps>
+
 const GadgetsSection = ({
   gadgetsDataInit,
 }: {

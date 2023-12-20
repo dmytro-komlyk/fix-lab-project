@@ -11,9 +11,9 @@ import { MdKeyboardArrowRight } from 'react-icons/md'
 import RenderMarkdown from '@/app/(components)/RenderMarkdown'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
-import type { IBrand } from '@/app/(server)/api/service/modules/brandService'
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 
+import { SERVER_URL } from 'client/app/(lib)/constants'
+import { trpc } from 'client/app/(utils)/trpc/client'
 import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 import { BrandsSlider } from './BrandsSlider'
 
@@ -24,20 +24,6 @@ const SuccessSubmitBanner = dynamic(
   () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
 )
 
-export interface BrandsProps {
-  contactsData: IContact[]
-  gadgetData: {
-    title: string
-    slug: string
-    icon: {
-      alt: string
-      src: string
-    }
-    brands: IBrand[]
-  }
-  brandData?: IBrand
-}
-// : React.FC<BrandsProps>
 const BrandsSection = ({
   gadgetDataInit,
   contactsDataInit,
@@ -49,7 +35,34 @@ const BrandsSection = ({
   contactsDataInit: Awaited<
     ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
   >
+  brandDataInit: Awaited<
+    ReturnType<(typeof serverClient)['brands']['getBySlug']>
+  >
 }) => {
+  const { data: gadgetData } = trpc.gadgets.getBySlug.useQuery(
+    gadgetDataInit.slug,
+    {
+      initialData: gadgetDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
+  const { data: contactsData } = trpc.contacts.getAllPublished.useQuery(
+    undefined,
+    {
+      initialData: contactsDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
+  const { data: brandData } = trpc.brands.getBySlug.useQuery(
+    brandDataInit.slug,
+    {
+      initialData: brandDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
   const pathname = usePathname()
   const brandPath = pathname.split('/').pop()
   const pathSegments = pathname.split('/')
@@ -109,7 +122,7 @@ const BrandsSection = ({
             <div className='mb-[55px] h-[80px] max-md:hidden'>
               {brandData?.icon && (
                 <Image
-                  src={gadgetData.icon.src}
+                  src={`${SERVER_URL}/${gadgetData.icon.file.path}`}
                   width={0}
                   height={80}
                   style={{
@@ -127,13 +140,16 @@ const BrandsSection = ({
             Бренди {gadgetText}, які ремонтуємо у сервісному центрі FixLab
           </h1>
           <div className='container mb-[56px] p-0'>
-            <BrandsSlider gadgetData={gadgetData} brandData={brandData} />
+            <BrandsSlider
+              gadgetDataInit={gadgetData}
+              brandDataInit={brandData}
+            />
           </div>
           <div className='flex w-full justify-between gap-16  max-lg:flex-col lg:gap-32'>
             <div className='flex max-xl:w-[600px] max-lg:w-full xl:w-[852px]'>
               {gadgetData.brands?.map(item => (
                 <div
-                  key={item._id}
+                  key={item.id}
                   className={`${
                     brandPath === item.slug
                       ? 'flex   w-[852px] max-xl:max-w-[852px]'

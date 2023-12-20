@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
 import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
+import { outputGadgetSchema } from 'server/src/domain/gadgets/schemas/gadget.schema'
 import GadgetsSection from './(components)/GadgetsSection'
 
 export const dynamic = 'force-dynamic'
@@ -27,7 +28,8 @@ export const metadata: Metadata = {
 }
 
 const Repair = async () => {
-  const gadgetsDataInit = await serverClient.gadgets.getAllPublished()
+  const gadgetsDataInit =
+    (await serverClient.gadgets.getAllPublished()) as outputGadgetSchema[]
   const contactsDataInit = await serverClient.contacts.getAllPublished()
 
   return (

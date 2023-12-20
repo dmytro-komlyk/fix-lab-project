@@ -1,6 +1,5 @@
 'use client'
 
-import type { IIssue } from 'client/app/(server)/api/service/modules/issueService'
 import { AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
@@ -12,9 +11,10 @@ import RenderMarkdownLight from '@/app/(components)/RenderMarkdownLight'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
-import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
 
+import { SERVER_URL } from 'client/app/(lib)/constants'
+import { trpc } from 'client/app/(utils)/trpc/client'
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 import { BenefitsList } from '../../corporate/(components)/BenefitsList'
 import { GadgetBrandsSlider } from './GadgetBrandsSlider'
 
@@ -25,13 +25,45 @@ const SuccessSubmitBanner = dynamic(
   () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
 )
 
-interface SingleIssueProps {
-  contactsData: IContact[]
-  singleIssueData: IIssue
-  singleGadgetData: IGadget
-}
-// : React.FC<SingleIssueProps>
-const IssueSection = ({ singleIssueData, singleGadgetData, contactsData }) => {
+const IssueSection = ({
+  singleIssueDataInit,
+  singleGadgetDataInit,
+  contactsDataInit,
+}: {
+  singleIssueDataInit: Awaited<
+    ReturnType<(typeof serverClient)['issues']['getBySlug']>
+  >
+  singleGadgetDataInit: Awaited<
+    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+  >
+  contactsDataInit: Awaited<
+    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+  >
+}) => {
+  const { data: singleIssueData } = trpc.issues.getBySlug.useQuery(
+    singleIssueDataInit.slug,
+    {
+      initialData: singleIssueDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
+  const { data: singleGadgetData } = trpc.gadgets.getBySlug.useQuery(
+    singleGadgetDataInit.slug,
+    {
+      initialData: singleGadgetDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
+  const { data: contactsData } = trpc.contacts.getAllPublished.useQuery(
+    undefined,
+    {
+      initialData: contactsDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
   const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
     useState<boolean>(false)
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
@@ -80,7 +112,7 @@ const IssueSection = ({ singleIssueData, singleGadgetData, contactsData }) => {
           </div>
           <div
             className='flex flex-wrap items-center gap-1'
-            key={singleIssueData._id}
+            key={singleIssueData.id}
           >
             <Link
               className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0]'
@@ -113,7 +145,7 @@ const IssueSection = ({ singleIssueData, singleGadgetData, contactsData }) => {
                   </h2>
                   {singleIssueData.benefits.length > 0 && (
                     <div className='mb-8'>
-                      <BenefitsList items={singleIssueData.benefits} />
+                      <BenefitsList itemsInit={singleIssueData.benefits} />
                     </div>
                   )}
                   <div className='mb-14'>
@@ -132,7 +164,7 @@ const IssueSection = ({ singleIssueData, singleGadgetData, contactsData }) => {
                 <div className='mb-14'>
                   <Image
                     className='min-h-[245px]  max-w-full rounded-2xl object-cover max-md:w-[360px] md:max-h-[360px]'
-                    src={singleIssueData.image.src}
+                    src={`${SERVER_URL}/${singleIssueData.image.file.path}`}
                     width={737}
                     height={360}
                     alt={singleIssueData?.image.alt}
@@ -163,7 +195,7 @@ const IssueSection = ({ singleIssueData, singleGadgetData, contactsData }) => {
                         return (
                           <li
                             className='hover:op border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl hover:opacity-100 focus:opacity-100'
-                            key={item._id}
+                            key={item.id}
                           >
                             <Link
                               className='flex items-center gap-[12px] max-md:flex-col max-md:items-start max-md:justify-center  max-md:px-[16px] max-md:py-[12px] md:h-[75px] md:justify-between md:px-6'

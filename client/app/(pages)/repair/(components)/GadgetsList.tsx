@@ -1,11 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-// import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
 import { SERVER_URL } from 'client/app/(lib)/constants'
 import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
-// React.FC<IGadgetsProps>
 export const GadgetsList = ({
   gadgetsData,
 }: {

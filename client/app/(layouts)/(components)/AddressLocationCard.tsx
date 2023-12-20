@@ -1,16 +1,11 @@
 'use client'
 
-// import Image from 'next/image'
+import Image from 'next/image'
 import Link from 'next/link'
 
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
+import { SERVER_URL } from 'client/app/(lib)/constants'
 import { trpc } from 'client/app/(utils)/trpc/client'
 import { serverClient } from 'client/app/(utils)/trpc/serverClient'
-
-export interface IContactsProps {
-  contactsData: IContact[]
-}
-// : React.FC<IContactsProps>
 
 export const AddressLocationCard = ({
   contactsDataInit,
@@ -64,15 +59,15 @@ export const AddressLocationCard = ({
         href={item.googleMapLink}
         target='_blank'
       >
-        {/* {item.image && (
+        {item.image && (
           <Image
             className='aspect-square bg-cover bg-center object-cover lg:aspect-[1/1.05]'
-            src={item.image.src}
+            src={`${SERVER_URL}/${item.image.file.path}`}
             alt={item.image.alt}
             width={600}
             height={546}
           />
-        )} */}
+        )}
       </Link>
     </li>
   ))

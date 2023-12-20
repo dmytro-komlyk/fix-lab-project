@@ -2,10 +2,8 @@ import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-// import type { IGadgetsProps } from '@/app/(layouts)'
 import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
-// React.FC<IGadgetsProps>
 export const GadgetsSlider = ({
   gadgetsData,
 }: {

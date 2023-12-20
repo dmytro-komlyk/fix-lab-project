@@ -6,7 +6,6 @@ import { useCallback, useState } from 'react'
 
 import { GadgetsList } from '../(pages)/repair/(components)/GadgetsList'
 import { GadgetsSlider } from '../(pages)/repair/(components)/GadgetsSlider'
-import type { IGadget } from '../(server)/api/service/modules/gadgetService'
 import { trpc } from '../(utils)/trpc/client'
 import { serverClient } from '../(utils)/trpc/serverClient'
 import Button from './(components)/Button'
@@ -18,10 +17,6 @@ const SuccessSubmitBanner = dynamic(
   () => import('./(components)/SuccessSubmitBanner'),
 )
 
-export interface IGadgetsProps {
-  gadgetsData: IGadget[]
-}
-// : React.FC<IGadgetsProps>
 export const BrokenSection = ({
   gadgetsDataInit,
 }: {

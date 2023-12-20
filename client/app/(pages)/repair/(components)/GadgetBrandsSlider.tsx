@@ -4,18 +4,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import type { IBrand } from '@/app/(server)/api/service/modules/brandService'
 import { SERVER_URL } from 'client/app/(lib)/constants'
 import { trpc } from 'client/app/(utils)/trpc/client'
 import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
-export interface BrandsSliderProps {
-  gadgetData: {
-    slug: string
-    brands: IBrand[]
-  }
-}
-// : React.FC<BrandsSliderProps>
 export const GadgetBrandsSlider = ({
   gadgetDataInit,
 }: {

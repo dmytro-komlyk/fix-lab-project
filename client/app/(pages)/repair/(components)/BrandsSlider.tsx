@@ -5,24 +5,42 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import type { IBrand } from '@/app/(server)/api/service/modules/brandService'
+import { SERVER_URL } from 'client/app/(lib)/constants'
+import { trpc } from 'client/app/(utils)/trpc/client'
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
-export interface BrandsSliderProps {
-  gadgetData: {
-    slug: string
-    brands: IBrand[]
-  }
-  brandData?: IBrand
-}
-
-export const BrandsSlider: React.FC<BrandsSliderProps> = ({
-  gadgetData,
-  brandData,
+export const BrandsSlider = ({
+  gadgetDataInit,
+  brandDataInit,
+}: {
+  gadgetDataInit: Awaited<
+    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+  >
+  brandDataInit: Awaited<
+    ReturnType<(typeof serverClient)['brands']['getBySlug']>
+  >
 }) => {
+  const { data: gadgetData } = trpc.gadgets.getBySlug.useQuery(
+    gadgetDataInit.slug,
+    {
+      initialData: gadgetDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
+
+  const { data: brandData } = trpc.brands.getBySlug.useQuery(
+    brandDataInit.slug,
+    {
+      initialData: brandDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
   const pathname = usePathname()
   const pathSegments = pathname.split('/')
   const isBrandsPage = pathSegments[pathSegments.length - 1]
-  function compareBySlug(item: { slug: string | undefined }) {
+  function compareBySlug(item: { slug: string }) {
     return item.slug === brandData?.slug
   }
   const initialSlideIndex = gadgetData.brands.findIndex(compareBySlug)
@@ -95,17 +113,17 @@ export const BrandsSlider: React.FC<BrandsSliderProps> = ({
 
             return (
               <div
-                key={item._id}
+                key={item.id}
                 className='keen-slider__slide max-w-[128px] p-[25px]'
               >
                 <Link
-                  key={item._id}
+                  key={item.id}
                   className={selectedTabClass}
                   href={`/repair/${gadgetData?.slug}/brands/${item.slug}`}
                 >
                   {item.icon && (
                     <Image
-                      src={item.icon.src}
+                      src={`${SERVER_URL}/${item.icon.file.path}`}
                       alt={item.icon.alt}
                       width={0}
                       height={0}

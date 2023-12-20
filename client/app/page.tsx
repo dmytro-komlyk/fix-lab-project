@@ -7,8 +7,6 @@ import {
   HeroSection,
 } from './(layouts)'
 import { serverClient } from './(utils)/trpc/serverClient'
-// import type { IContact } from './(server)/api/service/modules/contactService'
-// import type { IGadget } from './(server)/api/service/modules/gadgetService'
 
 export const dynamic = 'force-dynamic'
 

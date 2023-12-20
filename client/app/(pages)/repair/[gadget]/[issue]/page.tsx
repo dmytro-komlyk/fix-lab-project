@@ -1,11 +1,9 @@
-import type { IIssue } from 'client/app/(server)/api/service/modules/issueService'
 import type { Metadata } from 'next'
 
 import { AddressSection } from '@/app/(layouts)'
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
-import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
-import { trpc } from '@/app/(utils)/trpc'
 
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
+import { outputIssueSchema } from 'server/src/domain/issues/schemas/issue.schema'
 import IssueSection from '../../(components)/IssueSection'
 
 interface IndexProps {
@@ -15,16 +13,15 @@ interface IndexProps {
   }
 }
 
-export const runtime = 'edge'
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
 }: IndexProps): Promise<Metadata> {
   const { issue } = params
-  const singleIssueData = (await trpc.getIssueBySlugQuery.query({
-    slug: issue,
-  })) as IIssue
+  const singleIssueData = (await serverClient.issues.getBySlug(
+    issue,
+  )) as outputIssueSchema
 
   return {
     title: singleIssueData.metadata.title,
@@ -34,37 +31,21 @@ export async function generateMetadata({
 }
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const singleIssueData = (await trpc.getIssueBySlugQuery.query({
-    slug: params.issue,
-  })) as IIssue
-  const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
-  const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({
-    slug: params.gadget,
-  })) as IGadget
+  const singleIssueData = (await serverClient.issues.getBySlug(
+    params.issue,
+  )) as outputIssueSchema
+  const contactsData = await serverClient.contacts.getAllPublished()
+  const singleGadgetData = await serverClient.gadgets.getBySlug(params.gadget)
 
   return (
     <main className='h-full flex-auto'>
       <IssueSection
-        contactsData={contactsData}
-        singleIssueData={singleIssueData}
-        singleGadgetData={singleGadgetData}
+        contactsDataInit={contactsData}
+        singleIssueDataInit={singleIssueData}
+        singleGadgetDataInit={singleGadgetData}
       />
-      <AddressSection contactsData={contactsData} />
+      <AddressSection contactsDataInit={contactsData} />
     </main>
   )
 }
 export default Index
-
-// export async function generateStaticParams({
-//   params,
-// }: {
-//   params: { gadget: string }
-// }) {
-//   const gadgetData = (await trpc.getGadgetBySlugQuery.query({
-//     slug: params.gadget,
-//   })) as IGadget
-//   return gadgetData.issues.map((item: { slug: string }) => ({
-//     gadget: gadgetData.slug,
-//     issue: item.slug,
-//   }))
-// }

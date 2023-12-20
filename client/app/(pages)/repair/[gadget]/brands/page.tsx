@@ -3,14 +3,16 @@ import type { Metadata } from 'next'
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
 
 import { serverClient } from 'client/app/(utils)/trpc/serverClient'
+import { outputBrandSchema } from 'server/src/domain/brands/schemas/brand.schema'
+import { outputContactSchema } from 'server/src/domain/contacts/schemas/contact.schema'
 import { outputGadgetSchema } from 'server/src/domain/gadgets/schemas/gadget.schema'
 import BrandsSection from '../../(components)/BrandsSection'
 
 interface IndexProps {
   params: {
     gadget: string
+    brand: string
   }
-  searchParams: any
 }
 
 export const dynamic = 'force-dynamic'
@@ -33,14 +35,19 @@ export const metadata: Metadata = {
   ],
 }
 
-const Index = async ({ params }: { params: { gadget: string } }) => {
+const Index = async ({ params }: IndexProps) => {
   const singleGadgetData = (await serverClient.gadgets.getBySlug(
     params.gadget,
   )) as outputGadgetSchema
-  const contactsData = await serverClient.contacts.getAllPublished()
+  const contactsData =
+    (await serverClient.contacts.getAllPublished()) as outputContactSchema[]
+  const brandData = (await serverClient.brands.getBySlug(
+    params.brand,
+  )) as outputBrandSchema
   return (
     <main className='h-full flex-auto'>
       <BrandsSection
+        brandDataInit={brandData}
         contactsDataInit={contactsData}
         gadgetDataInit={singleGadgetData}
       />
