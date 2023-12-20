@@ -4,16 +4,20 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import type { IBlog } from '@/app/(server)/api/service/modules/articlesService'
-
+import { SERVER_URL } from 'client/app/(lib)/constants'
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
+import { outputArticleSchema } from 'server/src/domain/articles/schemas/article.schema'
 import PaginationControls from './PaginationControls'
 
-interface IBlogProps {
-  postsData: IBlog
+const MainBlogSection = ({
+  postsDataInit,
+  currentPage,
+}: {
+  postsDataInit: Awaited<
+    ReturnType<(typeof serverClient)['articles']['getByPagination']>
+  >
   currentPage: number
-}
-
-const MainBlogSection: React.FC<IBlogProps> = ({ postsData, currentPage }) => {
+}) => {
   return (
     <section className='overflow-hidden bg-gradient-linear-blue'>
       <AOSInit />
@@ -36,14 +40,14 @@ const MainBlogSection: React.FC<IBlogProps> = ({ postsData, currentPage }) => {
         </div>
         <h2 className='font-exo_2 text-2xl font-bold text-white-dis'>Блог</h2>
         <ul className='flex flex-wrap justify-center gap-6 space-x-0 lg:gap-y-14'>
-          {postsData.items.map(post => {
+          {postsDataInit.items.map((post: outputArticleSchema) => {
             return (
-              <li data-aos='zoom-in' key={post._id}>
+              <li data-aos='zoom-in' key={post.id}>
                 <Link href={`/blog/${currentPage}/${post.slug}`}>
                   <div className='flex h-[515px] max-w-[410px] flex-col rounded-2xl bg-blue-crayola transition-transform duration-300 hover:scale-[1.03]  focus:scale-[1.03] xl:w-[410px]'>
                     <Image
                       className='max-h-[278px] min-h-[278px] rounded-t-2xl object-cover'
-                      src={post.image.src}
+                      src={`${SERVER_URL}/${post.image.file.path}`}
                       width={410}
                       height={278}
                       alt={post.image.alt}
@@ -63,10 +67,10 @@ const MainBlogSection: React.FC<IBlogProps> = ({ postsData, currentPage }) => {
             )
           })}
         </ul>
-        {postsData.totalPages > 1 && (
+        {postsDataInit.totalPages > 1 && (
           <div className='flex flex-col items-center gap-2'>
             <PaginationControls
-              totalPages={postsData.totalPages}
+              totalPages={postsDataInit.totalPages}
               currentPage={currentPage}
             />
           </div>
