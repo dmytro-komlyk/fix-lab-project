@@ -6,25 +6,24 @@ import {
   ColaborationSection,
   HeroSection,
 } from './(layouts)'
-import type { IContact } from './(server)/api/service/modules/contactService'
-import type { IGadget } from './(server)/api/service/modules/gadgetService'
-import { trpc } from './(utils)/trpc'
+import { serverClient } from './(utils)/trpc/serverClient'
+// import type { IContact } from './(server)/api/service/modules/contactService'
+// import type { IGadget } from './(server)/api/service/modules/gadgetService'
 
-export const runtime = 'edge'
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-  const gadgetsData = (await trpc.getGadgetsQuery.query()) as IGadget[]
-  const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
+  const gadgetsDataInit = await serverClient.gadgets.getAllPublished()
+  const contactsDataInit = await serverClient.contacts.getAllPublished()
 
   return (
     <main className='relative flex-auto'>
       <AOSInit />
       <HeroSection />
-      <BrokenSection gadgetsData={gadgetsData} />
+      <BrokenSection gadgetsDataInit={gadgetsDataInit} />
       <CallCourierSection />
       <ColaborationSection />
-      <AddressSection contactsData={contactsData} />
+      <AddressSection contactsDataInit={contactsDataInit} />
     </main>
   )
 }

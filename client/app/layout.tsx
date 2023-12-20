@@ -5,8 +5,8 @@ import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
 
 import TawkChat from './(components)/TawkChat'
 import { Footer, Header } from './(layouts)'
-import type { IContact } from './(server)/api/service/modules/contactService'
-import { trpc } from './(utils)/trpc'
+import { serverClient } from './(utils)/trpc/serverClient'
+import { Providers } from './providers'
 
 const inter = Inter({
   weight: ['300', '400', '700', '500', '600'],
@@ -65,15 +65,14 @@ export const metadata: Metadata = {
   ],
 }
 
-export const runtime = 'edge'
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
+  const contactsDataInit = await serverClient.contacts.getAllPublished()
 
   return (
     <html
@@ -81,14 +80,16 @@ export default async function RootLayout({
       className={`${inter.variable} ${manrope.variable} ${exo2.variable} ${gugi.variable} h-full`}
     >
       <body className='h-full'>
-        <div className='flex min-h-full flex-col'>
-          <Header contactsData={contactsData} />
-          {children}
-          <div className='absolute bottom-8 right-8 z-50'>
-            <TawkChat />
+        <Providers>
+          <div className='flex min-h-full flex-col'>
+            <Header contactsDataInit={contactsDataInit} />
+            {children}
+            <div className='absolute bottom-8 right-8 z-50'>
+              <TawkChat />
+            </div>
+            <Footer contactsDataInit={contactsDataInit} />
           </div>
-          <Footer contactsData={contactsData} />
-        </div>
+        </Providers>
       </body>
     </html>
   )
