@@ -5,10 +5,11 @@ import {
   UnprocessableEntityException
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Types } from 'mongoose';
 
-import { User } from './schemas/user.schema';
+import { User } from '@prisma/client';
+
+import { PrismaService } from '../prisma/prisma.service';
 
 import { PasswordEncryptHelper } from '@helpers/password-encrypt.helper';
 
@@ -18,18 +19,22 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<User>,
+    private prisma: PrismaService,
     private readonly configService: ConfigService
   ) {}
 
   public async findAll(): Promise<User[]> {
-    const users = await this.userModel.find().select('-password');
+    const users = await this.prisma.user.findMany();
 
     return users;
   }
 
-  public async findOneById(id: string): Promise<User> {
-    const user = await this.userModel.findById(id).select('-password');
+  public async findById(id: string): Promise<User> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id
+      }
+    });
 
     if (!user) {
       throw new NotFoundException(`User with ${id} was not found!`);
@@ -38,12 +43,20 @@ export class UsersService {
     return user;
   }
 
-  public async findOneByQuery(query: UpdateUserDto): Promise<User> {
-    return await this.userModel.findOne(query).select('-password');
+  public async findByQuery(query: UpdateUserDto): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: query.email, isActive: query.isActive }
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User was not found`);
+    }
+
+    return user;
   }
 
   public async findOneWithPassword(login: string): Promise<User | null> {
-    return await this.userModel.findOne({ login });
+    return this.prisma.user.findUnique({ where: { login } });
   }
 
   public async create(dto: CreateUserDto): Promise<User> {
@@ -52,7 +65,9 @@ export class UsersService {
       error: 'Bad Request',
       message: `User already exists`
     };
-    const checkedUser = await this.userModel.findOne({ login: dto.login });
+    const checkedUser = await this.prisma.user.findFirst({
+      where: { login: dto.login }
+    });
 
     if (checkedUser) {
       throw new UnprocessableEntityException(errorData);
@@ -60,11 +75,13 @@ export class UsersService {
 
     const password = await PasswordEncryptHelper(dto.password);
 
-    const createdUser = await new this.userModel({ ...dto, password }).save();
+    const createdUser = await this.prisma.user.create({
+      data: { ...dto, password }
+    });
 
-    const user = await this.userModel
-      .findOne({ login: createdUser.login })
-      .select('-password');
+    const user = await this.prisma.user.findFirst({
+      where: { login: createdUser.login }
+    });
 
     if (!user) {
       throw new UnprocessableEntityException(errorData);
@@ -74,15 +91,16 @@ export class UsersService {
   }
 
   public async update(id: string, dto: UpdateUserDto): Promise<User> {
-    const user = await this.findOneById(id);
+    const user = await this.findById(id);
 
     const password = dto.password
       ? await PasswordEncryptHelper(dto.password)
       : user.password;
 
-    const updatedUser = await this.userModel
-      .findByIdAndUpdate(id, { ...dto, password }, { new: true })
-      .select('-password');
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data: { ...dto, password }
+    });
 
     if (!updatedUser) {
       throw new NotFoundException(`User with ID ${id} was not found`);
@@ -96,7 +114,7 @@ export class UsersService {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
 
-    const user = await this.userModel.findByIdAndDelete(id);
+    const user = await this.prisma.user.delete({ where: { id } });
 
     if (!user) {
       throw new NotFoundException(`User ID ${id} was not found`);
@@ -107,7 +125,7 @@ export class UsersService {
 
   public async createFirstAdmin(key: string, dto: CreateUserDto): Promise<User> {
     const originalKey = this.configService.get<string>('D_ADMIN_KEY');
-    const users = await this.userModel.find();
+    const users = await this.prisma.user.findMany();
 
     if (users.length > 0 || key !== originalKey || !originalKey) {
       throw new NotAcceptableException();

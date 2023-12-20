@@ -72,7 +72,7 @@ model Contact {
   id               String          @id @default(auto()) @map("_id") @db.ObjectId
   address          String
   area             String
-  comment          String?
+  comment          String
   googleMapLink    String
   googlePluginLink String
   image            Image          @relation(fields: [image_id], references: [id], name: "contact_image")
@@ -94,7 +94,7 @@ model Gadget {
   icon            Image          @relation(fields: [icon_id], references: [id], name: "gadget_icon")
   icon_id         String         @db.ObjectId
   brands          Brand[]        @relation(fields: [brands_ids], references: [id], name: "gadgets_brands")
-  brands_ids       String[]       @db.ObjectId
+  brands_ids       String[]      @db.ObjectId
   gallery         Image[]        @relation(fields: [gallery_ids], references: [id], name: "gadget_gallery")
   gallery_ids     String[]       @db.ObjectId
   issues          Issue[]        @relation(fields: [issues_ids], references: [id], name: "gadgets_issues")
@@ -141,13 +141,14 @@ model Image {
   @@map("images")
 }
 
-model users {
+model User {
   id       String            @id @default(auto()) @map("_id") @db.ObjectId
   email    String            @unique(map: "email_1")
   login    String            @unique(map: "login_1")
   name     String
   password String
   isActive Boolean
+  token    String
 
   @@map("users")
 }

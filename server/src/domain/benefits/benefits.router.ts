@@ -5,7 +5,11 @@ import { z } from 'zod';
 import { TrpcService } from '../trpc/trpc.service';
 import { BenefitsService } from './benefits.service';
 
-import { createBenefitSchema, updateBenefitSchema } from './schemas/benefit.schema';
+import {
+  createBenefitSchema,
+  outputBenefitSchema,
+  updateBenefitSchema
+} from './schemas/benefit.schema';
 
 @Injectable()
 export class BenefitsRouter {
@@ -18,9 +22,11 @@ export class BenefitsRouter {
     getAll: this.trpc.procedure.query(async () => {
       return await this.benefitsService.findAll();
     }),
-    getAllPublished: this.trpc.procedure.query(async () => {
-      return await this.benefitsService.findActive();
-    }),
+    getAllPublished: this.trpc.procedure
+      .output(z.array(outputBenefitSchema))
+      .query(async () => {
+        return await this.benefitsService.findActive();
+      }),
     getById: this.trpc.procedure.input(z.string()).query(async ({ input }) => {
       return await this.benefitsService.findById(input);
     }),

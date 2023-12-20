@@ -5,7 +5,11 @@ import { Benefit } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
-import { createBenefitSchema, updateBenefitSchema } from './schemas/benefit.schema';
+import {
+  createBenefitSchema,
+  outputBenefitSchema,
+  updateBenefitSchema
+} from './schemas/benefit.schema';
 
 @Injectable()
 export class BenefitsService {
@@ -17,7 +21,7 @@ export class BenefitsService {
     });
   }
 
-  public async findActive(): Promise<Benefit[]> {
+  public async findActive(): Promise<outputBenefitSchema[]> {
     return await this.prisma.benefit.findMany({
       where: { isActive: true },
       include: { icon: true }

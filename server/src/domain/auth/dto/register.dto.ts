@@ -47,4 +47,6 @@ export class RegisterDto {
     message: 'field required to be 1-60 symbols length'
   })
   readonly name: string;
+
+  readonly token: string;
 }

@@ -5,7 +5,11 @@ import { Contact } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
-import { createContactSchema, updateContactSchema } from './schemas/contact.schema';
+import {
+  createContactSchema,
+  outputContactSchema,
+  updateContactSchema
+} from './schemas/contact.schema';
 
 @Injectable()
 export class ContactsService {
@@ -18,7 +22,7 @@ export class ContactsService {
     return contacts;
   }
 
-  public async findActive(): Promise<Contact[]> {
+  public async findActive(): Promise<outputContactSchema[]> {
     const contacts = await this.prisma.contact.findMany({
       where: {
         isActive: true

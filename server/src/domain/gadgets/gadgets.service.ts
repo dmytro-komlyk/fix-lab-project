@@ -5,7 +5,11 @@ import { Gadget } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
-import { createGadgetSchema, updateGadgetSchema } from './schemas/gadget.schema';
+import {
+  createGadgetSchema,
+  outputGadgetSchema,
+  updateGadgetSchema
+} from './schemas/gadget.schema';
 
 @Injectable()
 export class GadgetsService {
@@ -61,7 +65,7 @@ export class GadgetsService {
     });
   }
 
-  public async findBySlug(slug: string): Promise<Gadget> {
+  public async findBySlug(slug: string): Promise<outputGadgetSchema> {
     const gadget = await this.prisma.gadget.findUnique({
       where: { slug: slug },
       include: {

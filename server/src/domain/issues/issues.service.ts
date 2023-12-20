@@ -5,7 +5,11 @@ import { Issue } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
-import { createIssueSchema, updateIssueSchema } from './schemas/issue.schema';
+import {
+  createIssueSchema,
+  outputIssueSchema,
+  updateIssueSchema
+} from './schemas/issue.schema';
 
 @Injectable()
 export class IssuesService {
@@ -42,7 +46,7 @@ export class IssuesService {
     });
   }
 
-  public async findBySlug(slug: string): Promise<Issue> {
+  public async findBySlug(slug: string): Promise<outputIssueSchema> {
     const issue = await this.prisma.issue.findUnique({
       where: {
         slug: slug

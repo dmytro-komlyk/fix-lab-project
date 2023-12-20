@@ -5,7 +5,11 @@ import z from 'zod';
 import { TrpcService } from '../trpc/trpc.service';
 import { BrandsService } from './brands.service';
 
-import { createBrandSchema, updateBrandSchema } from './schemas/brand.schema';
+import {
+  createBrandSchema,
+  outputBrandSchema,
+  updateBrandSchema
+} from './schemas/brand.schema';
 
 @Injectable()
 export class BrandsRouter {
@@ -21,9 +25,12 @@ export class BrandsRouter {
     getAllPublished: this.trpc.procedure.query(async () => {
       return await this.brandsService.findActive();
     }),
-    getBySlug: this.trpc.procedure.input(z.string()).query(async ({ input }) => {
-      return await this.brandsService.findBySlug(input);
-    }),
+    getBySlug: this.trpc.procedure
+      .input(z.string())
+      .output(outputBrandSchema)
+      .query(async ({ input }) => {
+        return await this.brandsService.findBySlug(input);
+      }),
     getById: this.trpc.procedure.input(z.string()).query(async ({ input }) => {
       return await this.brandsService.findById(input);
     }),

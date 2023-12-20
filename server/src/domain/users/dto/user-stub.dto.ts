@@ -6,6 +6,7 @@ export const UserStubDto = (): CreateUserDto => {
     login: 'Admin',
     name: 'Admin',
     email: 'admin@email.com',
-    password: '12345'
+    password: '12345',
+    token: ''
   };
 };
