@@ -48,7 +48,7 @@ export const {
   ],
   pages: {
     signIn: '/authentication/signin',
-    error: '/error',
+    error: '/authentication/signin',
   },
   callbacks: {
     authorized(params) {

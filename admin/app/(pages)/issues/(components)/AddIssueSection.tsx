@@ -1,17 +1,13 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable no-console */
-
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import { Accordion, AccordionItem } from '@nextui-org/react'
-import postData from 'admin/app/(server)/api/service/admin/postData'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 
+import { createSlug } from 'admin/app/(utils)/createSlug'
+import { trpc } from 'admin/app/(utils)/trpc/client'
 import SendButton from '../../(components)/SendButton'
 
 const AddIssueSection = () => {
@@ -22,6 +18,11 @@ const AddIssueSection = () => {
     '',
   )
 
+  const [contentSlug, setContentSlug] = useLocalStorage<string>(
+    'addIssueSlug',
+    '',
+  )
+
   const [contentIssuePrice, setContentIssuePrice] = useLocalStorage<string>(
     'addIssuePrice',
     '',
@@ -29,14 +30,29 @@ const AddIssueSection = () => {
 
   const clearState = () => {
     setContentTitle('')
+    setContentSlug('')
     setContentIssuePrice('')
   }
+
+  const addIssue = trpc.issues.create.useMutation({
+    onSuccess: () => {
+      toast.success(`Послугу додано!`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
+      clearState()
+      router.refresh()
+    },
+  })
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
     try {
-      if (!(contentTitle && contentIssuePrice)) {
+      if (!(contentTitle && contentIssuePrice && contentSlug)) {
         toast.error(`Всі поля повинні бути заповнені...`, {
           style: {
             borderRadius: '10px',
@@ -46,38 +62,20 @@ const AddIssueSection = () => {
         })
         return
       }
-
-      const data = {
-        isActive: true,
-        slug: '111',
+      addIssue.mutate({
+        slug: contentSlug,
         title: contentTitle,
         price: contentIssuePrice,
-        image: '',
+        image_id: '6528fcd9458999afd6a05bfc',
         metadata: {
-          title: '#',
-          description: '#',
-          keywords: '#',
+          title: '1',
+          description: '1',
+          keywords: '1',
         },
-        description: '#',
-        info: '#',
-        benefits: [],
-      }
-
-      const response = await postData(`/issues`, data)
-
-      if (response.status === 201) {
-        toast.success(`Послугу додано!`, {
-          style: {
-            borderRadius: '10px',
-            background: 'grey',
-            color: '#fff',
-          },
-        })
-        clearState()
-        router.refresh()
-      } else {
-        throw new Error('Error posting data')
-      }
+        description: '',
+        info: '',
+        benefits_ids: [],
+      })
     } catch (error) {
       console.error('Error:', error)
       toast.error(`Помилка сервера...`, {
@@ -118,7 +116,21 @@ const AddIssueSection = () => {
                   name='title'
                   value={contentTitle}
                   onChange={e => {
+                    setContentSlug(createSlug(e.target.value))
                     setContentTitle(e.target.value)
+                  }}
+                />
+              </label>
+              <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
+                Slug
+                <input
+                  required
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  type='text'
+                  name='slug'
+                  value={contentSlug}
+                  onChange={e => {
+                    setContentSlug(e.target.value)
                   }}
                 />
               </label>

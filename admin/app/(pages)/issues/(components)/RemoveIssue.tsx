@@ -3,16 +3,17 @@
 'use client'
 
 import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
+import { trpc } from 'admin/app/(utils)/trpc/client'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai'
 import { MdDelete } from 'react-icons/md'
 
-interface RemoveArticlesProps {
-  item: Article
+interface RemoveIssueProps {
+  item: Issue
 }
-const RemoveArticles: React.FC<RemoveArticlesProps> = ({ item }) => {
+const RemoveIssue: React.FC<RemoveIssueProps> = ({ item }) => {
   const [showRemoveContainers, setShowRemoveContainers] = useState<{
     [key: string]: boolean
   }>({})
@@ -26,22 +27,22 @@ const RemoveArticles: React.FC<RemoveArticlesProps> = ({ item }) => {
     }))
   }
 
-  // const deleteArticleTrpc = trpc.addArticle.useMutation({
-  //   onSuccess: () => {
-  //     toast.success(`Статтю видалено!`, {
-  //       style: {
-  //         borderRadius: '10px',
-  //         background: 'grey',
-  //         color: '#fff',
-  //       },
-  //     })
-  //     deleteImageTrpc({ id: articleItem.image.id })
-  //     toggleRemoveContainer(articleItem.id)
-  //     router.refresh()
-  //   },
-  // })
+  const deleteArticleTrpc = trpc.articles.remove.useMutation({
+    onSuccess: () => {
+      toast.success(`Статтю видалено!`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
+      // deleteImageTrpc({ id: articleItem.image.id })
+      toggleRemoveContainer(articleItem.id)
+      router.refresh()
+    },
+  })
 
-  const handleDeleteArticle = async (articleItem: Article) => {
+  const handleDeleteArticle = async (articleItem: Issue) => {
     // await deleteArticleTrpc.mutate({id: articleItem.id})
     try {
       const endpoint = `/articles/${articleItem.id}`
@@ -134,4 +135,4 @@ const RemoveArticles: React.FC<RemoveArticlesProps> = ({ item }) => {
   )
 }
 
-export default RemoveArticles
+export default RemoveIssue

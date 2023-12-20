@@ -1,51 +1,43 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable no-console */
-
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
 import { sendPutRequest } from '@admin/app/(server)/api/service/admin/sendPutRequest'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
-import type { IIssue } from '@admin/app/(server)/api/service/modules/gadgetService'
 import Image from 'next/image'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-import AddImagesSection from '../../(components)/AddImagesSection'
+import { trpc } from 'admin/app/(utils)/trpc/client'
+import { useRouter } from 'next/navigation'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
-import type { IBenefitItem } from '../../benefits/(components)/EditBenefitForm '
-import EditBenefitsList from './EditBenefitsList'
 
 interface IAdminGadget {
-  issueData: IIssue
-  benefitsData: IBenefitItem[]
+  issueData: Issue
 }
 
-const EditIssuesForm: React.FC<IAdminGadget> = ({
-  issueData,
-  benefitsData,
-}) => {
+const EditIssuesForm: React.FC<IAdminGadget> = ({ issueData }) => {
+  const router = useRouter()
+
   const [newIssueData, setNewIssueData] = useLocalStorage(
-    `editIssueData${issueData._id}`,
+    `editIssueData${issueData.id}`,
     {
       ...issueData,
     },
   )
-  const [selectedIcon, setSelectedIcon] = useState<File | null>(null)
-  const [icon, setIcon] = useState<string | ArrayBuffer | null>(null)
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [image, setImage] = useState<string | ArrayBuffer | null>(null)
   const [info, setInfo] = useLocalStorage<string | ''>(
-    `editIssueInfo${issueData._id}`,
+    `editIssueInfo${issueData.id}`,
     issueData.info || '',
   )
   const [description, setDescription] = useLocalStorage<string | ''>(
-    `editIssueDescription${issueData._id}`,
+    `editIssueDescription${issueData.id}`,
     issueData.description || '',
   )
   const [altImage, setAltImage] = useLocalStorage<string | ''>(
-    `editIssueAltImage${issueData._id}`,
+    `editIssueAltImage${issueData.id}`,
     issueData.image.alt,
   )
 
@@ -69,28 +61,40 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
     }
   }
 
+  const editIssue = trpc.issues.update.useMutation({
+    onSuccess: () => {
+      toast.success(`Послугу оновлено!`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
+      router.refresh()
+    },
+  })
+
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
     try {
-      if (selectedIcon) {
+      if (selectedImage) {
         const uploadResponse = await handleImageUpload()
 
         if (!uploadResponse) {
           throw new Error('Error uploading image')
         }
-        if (uploadResponse.data._id) {
-          const response = await sendPutRequest(`/issues/${newIssueData._id}`, {
+        if (uploadResponse.data.id) {
+          const response = await sendPutRequest(`/issues/${newIssueData.id}`, {
             ...newIssueData,
-            image: uploadResponse.data._id,
-            benefits: newIssueData.benefits.map(item => item._id) || [],
+            image: uploadResponse.data.id,
+            benefits: newIssueData.benefits.map(item => item.id) || [],
             description,
             info,
           })
 
           if (response.status === 200) {
-            await handleImageSave(uploadResponse.data._id)
-            window.location.reload()
+            await handleImageSave(uploadResponse.data.id)
           } else {
             console.error('Error updating contact data')
           }
@@ -98,10 +102,10 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
           console.error('Error uploading image')
         }
       } else {
-        await sendPutRequest(`/issues/${newIssueData._id}`, {
+        await sendPutRequest(`/issues/${newIssueData.id}`, {
           ...newIssueData,
-          image: issueData.image._id || '',
-          benefits: newIssueData.benefits.map(item => item._id) || [],
+          image: issueData.image.id || '',
+          benefits: newIssueData.benefits.map(item => item.id) || [],
           description,
           info,
         })
@@ -123,10 +127,10 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
       const file = e.currentTarget.files[0]
 
       if (file) {
-        setSelectedIcon(file)
+        setSelectedImage(file)
         const reader = new FileReader()
         reader.onloadend = () => {
-          setIcon(reader.result as string | ArrayBuffer | null)
+          setImage(reader.result as string | ArrayBuffer | null)
         }
 
         reader.readAsDataURL(file)
@@ -136,9 +140,9 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
 
   const handleImageUpload = async () => {
     try {
-      if (selectedIcon) {
+      if (selectedImage) {
         const response = await uploadImg({
-          fileInput: selectedIcon,
+          fileInput: selectedImage,
           alt: altImage,
           type: issueData.image.type,
         })
@@ -153,12 +157,12 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
   const handleImageSave = async (id: string) => {
     try {
       if (id) {
-        const deleteEndpoint = `/images/${issueData.image._id}`
+        const deleteEndpoint = `/images/${issueData.image.id}`
 
         await deleteData(deleteEndpoint)
         if (deleteEndpoint) {
-          setSelectedIcon(null)
-          setIcon(null)
+          setSelectedImage(null)
+          setImage(null)
         }
         console.log('success')
       }
@@ -176,10 +180,10 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
               Зображення
             </p>
             <div className='relative'>
-              {!icon ? (
+              {!image ? (
                 <Image
                   className='h-[400px] w-[500px] object-contain  object-center'
-                  src={issueData.image.src}
+                  src={issueData.image.file.path}
                   width={400}
                   height={300}
                   alt={issueData.image.alt}
@@ -188,7 +192,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
                 <div>
                   <Image
                     className='h-[400px] w-[500px] object-contain object-center'
-                    src={typeof icon === 'string' ? icon : ''}
+                    src={typeof image === 'string' ? image : ''}
                     width={0}
                     height={0}
                     alt={issueData.title}
@@ -290,9 +294,9 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
           />
         </label>
       </form>
-      <div className='w-full'>
+      {/* <div className='w-full'>
         <AddImagesSection />
-      </div>
+      </div> */}
       <div className='flex w-full flex-col justify-between gap-6'>
         <div className='flex w-full  flex-col  gap-2 '>
           <p className='text-center font-exo_2 text-xl text-white-dis'>Інфо</p>
@@ -302,9 +306,9 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
             content={info}
           />
         </div>
-        <div className='w-full'>
+        {/* <div className='w-full'>
           <AddImagesSection />
-        </div>
+        </div> */}
         <div className='flex w-full  flex-col  gap-2 '>
           <p className='text-center font-exo_2 text-xl text-white-dis'>
             Стаття
@@ -316,7 +320,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
           />
         </div>
       </div>
-      <div className='flex w-full flex-col items-center justify-center'>
+      {/* <div className='flex w-full flex-col items-center justify-center'>
         <div className='flex w-full  flex-col-reverse  justify-center '>
           <div className='  w-full border-b-2 border-mid-grey' />
           <p className='mb-6 text-center font-exo_2 text-2xl font-bold  text-white-dis  max-lg:text-xl'>
@@ -330,7 +334,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({
           newIssueData={newIssueData}
           setNewIssueData={setNewIssueData}
         />
-      </div>
+      </div> */}
 
       <SendButton handleSubmit={handleSubmit} />
     </div>

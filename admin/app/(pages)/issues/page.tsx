@@ -1,18 +1,13 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { trpc } from 'admin/app/(utils)/trpc'
-import type { IIssue } from 'admin/types/trpc'
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import Link from 'next/link'
-
 import AddIssueInfoSection from './(components)/AddIssueInfoSection'
 import AddIssueSection from './(components)/AddIssueSection'
+import RemoveIssue from './(components)/RemoveIssue'
 
-export const runtime = 'edge'
-export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 const IssuesPage = async () => {
-  // const url = '/issues/all'
-  // const issuesData = await getData(url)
-  const issuesData = (await trpc.getIssuesQuery.query()) as IIssue[]
+  const issuesData = (await serverClient.issues.getAll()) as Issue[]
 
   return (
     <main className='flex flex-auto'>
@@ -21,14 +16,15 @@ const IssuesPage = async () => {
           <AddIssueSection />
           <AddIssueInfoSection />
           <ul>
-            {issuesData.map((item: { _id: string; title: string }) => (
-              <li key={item._id}>
+            {issuesData.map((item: { id: string; title: string }) => (
+              <li key={item.id}>
                 <Link
                   className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl'
-                  href={`/issues/${item._id}`}
+                  href={`/issues/${item.id}`}
                 >
                   {item.title}
                 </Link>
+                <RemoveIssue item={item} />
               </li>
             ))}
           </ul>

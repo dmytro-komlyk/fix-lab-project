@@ -3,7 +3,6 @@
 
 'use client'
 
-import type { IIssue } from '@admin/app/(server)/api/service/modules/gadgetService'
 import {
   closestCenter,
   DndContext,
@@ -21,13 +20,12 @@ import {
 import { useState } from 'react'
 import { IoMdAddCircle } from 'react-icons/io'
 
-import type { IBenefitItem } from '../../benefits/(components)/EditBenefitForm '
 import { DraggableBenefitsItem } from './DraggaBenefitsItem'
 
 interface IBenefitsProps {
-  newIssueData: IIssue
-  benefitsData: IBenefitItem[]
-  setNewIssueData: (data: IIssue) => void
+  newIssueData: Issue
+  benefitsData: Benefit[]
+  setNewIssueData: (data: Issue) => void
 }
 
 const EditBenefitsList: React.FC<IBenefitsProps> = ({
@@ -35,21 +33,19 @@ const EditBenefitsList: React.FC<IBenefitsProps> = ({
   benefitsData,
   setNewIssueData,
 }) => {
-  const [filteredBenefitsData, setFilteredBenefitsData] = useState<
-    IBenefitItem[]
-  >(
+  const [filteredBenefitsData, setFilteredBenefitsData] = useState<Benefit[]>(
     benefitsData.filter(
-      item => !newIssueData.benefits.some(issue => issue._id === item._id),
+      item => !newIssueData.benefits.some(issue => issue.id === item.id),
     ),
   )
 
-  const handleAddBenefitItemClick = (item: IBenefitItem) => {
+  const handleAddBenefitItemClick = (item: Benefit) => {
     // Clone the existing array to avoid mutating state directly
     const updatedSelectedBenefitsArray = [...newIssueData.benefits]
 
-    // Check if the item is already in the array based on its _id
+    // Check if the item is already in the array based on its id
     const index = updatedSelectedBenefitsArray.findIndex(
-      selectedIssue => selectedIssue._id === item._id,
+      selectedIssue => selectedIssue.id === item.id,
     )
 
     // If it's not in the array, add it; otherwise, remove it
@@ -68,18 +64,18 @@ const EditBenefitsList: React.FC<IBenefitsProps> = ({
     // Remove the selected item from the filteredBenefitsData array
     setFilteredBenefitsData(prevFilteredBenefitsData =>
       prevFilteredBenefitsData.filter(
-        filteredIssue => filteredIssue._id !== item._id,
+        filteredIssue => filteredIssue.id !== item.id,
       ),
     )
   }
 
-  const handleRemoveBenefitItemClick = (item: IBenefitItem) => {
+  const handleRemoveBenefitItemClick = (item: Benefit) => {
     // Clone the existing array to avoid mutating state directly
     const updatedSelectedBenefitsArray = [...newIssueData.benefits]
 
-    // Check if the item is already in the array based on its _id
+    // Check if the item is already in the array based on its id
     const index = updatedSelectedBenefitsArray.findIndex(
-      selectedIssue => selectedIssue._id === item._id,
+      selectedIssue => selectedIssue.id === item.id,
     )
 
     // If it's not in the array, add it; otherwise, remove it
@@ -92,7 +88,7 @@ const EditBenefitsList: React.FC<IBenefitsProps> = ({
     // Remove the selected item from the filteredBenefitsData array
     setFilteredBenefitsData(prevFilteredBenefitsData =>
       prevFilteredBenefitsData.filter(
-        filteredIssue => filteredIssue._id !== item._id,
+        filteredIssue => filteredIssue.id !== item.id,
       ),
     )
 
@@ -107,7 +103,7 @@ const EditBenefitsList: React.FC<IBenefitsProps> = ({
       benefitsData.filter(
         benefit =>
           !updatedSelectedBenefitsArray.some(
-            selectedIssue => selectedIssue._id === benefit._id,
+            selectedIssue => selectedIssue.id === benefit.id,
           ),
       ),
     )
@@ -129,8 +125,8 @@ const EditBenefitsList: React.FC<IBenefitsProps> = ({
     if (active.id !== over.id) {
       const updatedBenefits = arrayMove(
         newIssueData.benefits,
-        newIssueData.benefits.findIndex(item => item._id === active.id),
-        newIssueData.benefits.findIndex(item => item._id === over.id),
+        newIssueData.benefits.findIndex(item => item.id === active.id),
+        newIssueData.benefits.findIndex(item => item.id === over.id),
       )
 
       setNewIssueData({ ...newIssueData, benefits: updatedBenefits })
@@ -149,14 +145,14 @@ const EditBenefitsList: React.FC<IBenefitsProps> = ({
           onDragEnd={handleDragEnd}
         >
           <SortableContext
-            items={newIssueData.benefits.map(item => ({ id: item._id }))}
+            items={newIssueData.benefits.map(item => ({ id: item.id }))}
             strategy={verticalListSortingStrategy}
           >
             <ul className='relative flex w-[380px]  flex-col items-start'>
               {newIssueData.benefits.map(benefit => (
                 <DraggableBenefitsItem
-                  key={benefit._id}
-                  id={benefit._id}
+                  key={benefit.id}
+                  id={benefit.id}
                   item={benefit}
                   onRemove={handleRemoveBenefitItemClick}
                 />
@@ -174,7 +170,7 @@ const EditBenefitsList: React.FC<IBenefitsProps> = ({
           {filteredBenefitsData.map(item => (
             <li
               className='flex w-full items-center justify-between gap-2 border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 first:rounded-t-xl last:rounded-b-xl'
-              key={item._id}
+              key={item.id}
             >
               <p className='p-4 font-exo_2 text-md font-semibold text-dark-blue max-md:text-lg'>
                 {item?.title || 'No title'}

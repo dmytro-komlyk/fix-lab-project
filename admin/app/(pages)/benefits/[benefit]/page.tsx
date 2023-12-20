@@ -1,7 +1,8 @@
-import getData from '@admin/app/(server)/api/service/admin/getData'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
+import { IBenefit } from 'admin/types/trpc'
 import EditBenefitForm from '../(components)/EditBenefitForm '
 
 interface IArticleAdminProps {
@@ -10,12 +11,17 @@ interface IArticleAdminProps {
   }
 }
 
-export const runtime = 'edge'
-export const revalidate = 3600
+// export const runtime = 'edge'
+// export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 const BenefitPage: React.FC<IArticleAdminProps> = async ({ params }) => {
-  const benefitUrl = `/benefits/${params.benefit}`
-  const benefitData = await getData(benefitUrl)
+  // const benefitUrl = `/benefits/${params.benefit}`
+  // const benefitData = await getData(benefitUrl)
+  const benefitData = (await serverClient.getBenefitById({
+    id: params.benefit,
+  })) as IBenefit
+
   return (
     <main className=' flex flex-auto'>
       <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>

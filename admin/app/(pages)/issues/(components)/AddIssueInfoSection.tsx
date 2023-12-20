@@ -8,7 +8,6 @@
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import useLocalStorage from 'admin/app/(hooks)/useLocalStorage '
 import deleteData from 'admin/app/(server)/api/service/admin/deleteData'
-import postData from 'admin/app/(server)/api/service/admin/postData'
 import uploadImg from 'admin/app/(server)/api/service/admin/uploadImg'
 import { createSlug } from 'admin/app/(utils)/createSlug'
 import Image from 'next/image'
@@ -17,6 +16,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 
+import { trpc } from 'admin/app/(utils)/trpc/client'
 import CustomAddContent from '../../(components)/CustomAddContent'
 import SendButton from '../../(components)/SendButton'
 
@@ -86,7 +86,19 @@ const AddIssueInfoSection = () => {
       [key]: value,
     }))
   }
-
+  const addIssue = trpc.issues.create.useMutation({
+    onSuccess: () => {
+      toast.success(`Послугу додано!`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
+      clearState()
+      router.refresh()
+    },
+  })
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
@@ -103,10 +115,8 @@ const AddIssueInfoSection = () => {
 
       if (
         !(
-          uploadedImageId &&
-          contentTitle &&
-          contentInfoIssue &&
-          contentArticleIssue
+          // uploadedImageId &&
+          (contentTitle && contentInfoIssue && contentArticleIssue)
         )
       ) {
         toast.error(`Всі поля повинні бути заповнені...`, {
@@ -118,34 +128,48 @@ const AddIssueInfoSection = () => {
         })
         return
       }
-
-      const data = {
-        isActive: true,
+      addIssue.mutate({
         slug: contentSlug,
         title: contentTitle,
         price: contentIssuePrice,
-        image: uploadedImageId,
-        metadata: seoContent,
+        image_id: '6528fcd9458999afd6a05bfc',
+        metadata: {
+          title: seoContent.title,
+          description: seoContent.description,
+          keywords: seoContent.keywords,
+        },
         description: contentArticleIssue,
         info: contentInfoIssue,
-        benefits: [],
-      }
+        benefits_ids: [],
+      })
 
-      const response = await postData(`/issues`, data)
+      // const data = {
+      //   isActive: true,
+      //   slug: contentSlug,
+      //   title: contentTitle,
+      //   price: contentIssuePrice,
+      //   image: uploadedImageId,
+      //   metadata: seoContent,
+      //   description: contentArticleIssue,
+      //   info: contentInfoIssue,
+      //   benefits: [],
+      // }
 
-      if (response.status === 201) {
-        toast.success(`Послугу додано!`, {
-          style: {
-            borderRadius: '10px',
-            background: 'grey',
-            color: '#fff',
-          },
-        })
-        clearState()
-        router.refresh()
-      } else {
-        throw new Error('Error posting data')
-      }
+      // const response = await postData(`/issues`, data)
+
+      // if (response.status === 201) {
+      //   toast.success(`Послугу додано!`, {
+      //     style: {
+      //       borderRadius: '10px',
+      //       background: 'grey',
+      //       color: '#fff',
+      //     },
+      //   })
+      //   clearState()
+      //   router.refresh()
+      // } else {
+      //   throw new Error('Error posting data')
+      // }
     } catch (error) {
       console.error('Error:', error)
       toast.error(`Помилка сервера...`, {

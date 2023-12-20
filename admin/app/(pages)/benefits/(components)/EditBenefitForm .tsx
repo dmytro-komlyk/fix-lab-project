@@ -5,18 +5,17 @@
 'use client'
 
 import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
-import { sendPutRequest } from '@admin/app/(server)/api/service/admin/sendPutRequest'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import Image from 'next/image'
 import { useState } from 'react'
 
+import { trpc } from 'admin/app/(utils)/trpc/client'
 import SendButton from '../../(components)/SendButton'
 
 export interface IBenefitItem {
-  _id: string
-  id: number
+  id: string
   icon: {
-    _id?: string
+    id?: string
     type?: string
     src: string
     alt: string
@@ -39,6 +38,17 @@ const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
     const { name, value } = e.target
     setNewBenefitData({ ...newBenefitData, [name]: value })
   }
+  const editBenefit = trpc.updateBenefit.useMutation({
+    onSuccess: () => {
+      toast.success(`Оновлення збережено!`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
+    },
+  })
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -50,29 +60,62 @@ const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
         if (!uploadResponse) {
           throw new Error('Error uploading image')
         }
-        if (uploadResponse.data._id) {
-          const response = await sendPutRequest(
-            `/benefits/${newBenefitData._id}`,
-            {
+        if (uploadResponse.data.id) {
+          await trpc.updateBenefit
+            .useMutation({
+              onSuccess: () => {
+                toast.success(`Оновлення збережено!`, {
+                  style: {
+                    borderRadius: '10px',
+                    background: 'grey',
+                    color: '#fff',
+                  },
+                })
+                handleImageSave(uploadResponse.data.id)
+              },
+            })
+            .mutate({
               ...newBenefitData,
-              icon: uploadResponse.data._id,
-            },
-          )
+              icon: newBenefitData.icon.id,
+            })
+          // const response = await sendPutRequest(
+          //   `/benefits/${newBenefitData.id}`,
+          //   {
+          //     ...newBenefitData,
+          //     icon: uploadResponse.data.id,
+          //   },
+          // )
 
-          if (response.status === 200) {
-            await handleImageSave(uploadResponse.data._id)
-            window.location.reload()
-          } else {
-            console.error('Error updating contact data')
-          }
+          // if (response.status === 200) {
+          //   await handleImageSave(uploadResponse.data.id)
+          //   window.location.reload()
+          // } else {
+          //   console.error('Error updating contact data')
+          // }
         } else {
           console.error('Error uploading image')
         }
       } else {
-        await sendPutRequest(`/benefits/${newBenefitData._id}`, {
-          ...newBenefitData,
-          icon: benefitData.icon._id || '',
-        })
+        await trpc.updateBenefit
+          .useMutation({
+            onSuccess: () => {
+              toast.success(`Оновлення збережено!`, {
+                style: {
+                  borderRadius: '10px',
+                  background: 'grey',
+                  color: '#fff',
+                },
+              })
+            },
+          })
+          .mutate({
+            ...newBenefitData,
+            icon: newBenefitData.icon.id,
+          })
+        // await sendPutRequest(`/benefits/${newBenefitData.id}`, {
+        //   ...newBenefitData,
+        //   icon: benefitData.icon.id || '',
+        // })
       }
     } catch (error) {
       console.error('Error:', error)
@@ -114,7 +157,7 @@ const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
   const handleImageSave = async (id: string) => {
     try {
       if (id) {
-        const deleteEndpoint = `/images/${benefitData.icon._id}`
+        const deleteEndpoint = `/images/${benefitData.icon.id}`
 
         await deleteData(deleteEndpoint)
         if (deleteEndpoint) {

@@ -4,12 +4,10 @@ import { useSortable } from '@dnd-kit/sortable'
 import { GoGrabber } from 'react-icons/go'
 import { IoIosRemoveCircle } from 'react-icons/io'
 
-import type { IBenefitItem } from '../../benefits/(components)/EditBenefitForm '
-
 interface DraggableBenefitsItemProps {
   id: string
-  item: IBenefitItem
-  onRemove: (item: IBenefitItem) => void
+  item: Benefit
+  onRemove: (item: Benefit) => void
 }
 
 export function DraggableBenefitsItem({
@@ -30,7 +28,7 @@ export function DraggableBenefitsItem({
   }
   return (
     <li
-      key={item._id}
+      key={item.id}
       ref={setNodeRef}
       style={style}
       {...attributes}

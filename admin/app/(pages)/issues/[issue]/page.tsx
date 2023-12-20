@@ -1,7 +1,7 @@
-import getData from '@admin/app/(server)/api/service/admin/getData'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import EditIssuesForm from '../(components)/EditIssueForm '
 
 interface IIssueAdminProps {
@@ -10,15 +10,10 @@ interface IIssueAdminProps {
   }
 }
 
-export const runtime = 'edge'
-export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
-  const issueUrl = `/issues/${params.issue}`
-  const benefitsUrl = `/benefits/all`
-
-  const issueData = await getData(issueUrl)
-  const benefitsData = await getData(benefitsUrl)
+  const issueData = (await serverClient.issues.getById(params.issue)) as Issue
   return (
     <main className=' flex flex-auto'>
       <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>
@@ -38,7 +33,7 @@ const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
           <h2 className='mb-6 self-center font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
             {issueData.title}
           </h2>
-          <EditIssuesForm issueData={issueData} benefitsData={benefitsData} />
+          <EditIssuesForm issueData={issueData} />
         </div>
       </section>
     </main>

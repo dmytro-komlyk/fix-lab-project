@@ -4,7 +4,6 @@
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
-import { sendPutRequest } from '@admin/app/(server)/api/service/admin/sendPutRequest'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import type {
   IBrand,
@@ -16,6 +15,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
+import { trpc } from 'admin/app/(utils)/trpc/client'
 import SendButton from '../../(components)/SendButton'
 import EditBrandsList from './EditBrandsList'
 import EditIssuesList from './EditIssuesList'
@@ -113,6 +113,19 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
     }
   }
 
+  const editGadget = trpc.gadgets.update.useMutation({
+    onSettled: () => {
+      toast.success(`Оновлення збережено!`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
+      router.refresh()
+    },
+  })
+
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
@@ -125,50 +138,81 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
         }
 
         if (uploadResponse.data._id) {
-          const response = await sendPutRequest(
-            `/gadgets/${newGadgetData._id}`,
-            {
-              ...newGadgetData,
-              icon: uploadResponse.data._id,
-              gallery: newGadgetData.gallery.map(item => item._id) || [],
-              issues: newGadgetData.issues.map(item => item._id) || [],
-              brands: newGadgetData.brands.map(item => item._id) || [],
-            },
-          )
+          // const response = await sendPutRequest(
+          //   `/gadgets/${newGadgetData._id}`,
+          //   {
+          //     ...newGadgetData,
+          //     icon: uploadResponse.data._id,
+          //     gallery: newGadgetData.gallery.map(item => item._id) || [],
+          //     issues: newGadgetData.issues.map(item => item._id) || [],
+          //     brands: newGadgetData.brands.map(item => item._id) || [],
+          //   },
+          // )
 
-          if (response.status === 200) {
-            await handleImageSave(uploadResponse.data._id)
-            toast.success(`Оновлення збережено!`, {
-              style: {
-                borderRadius: '10px',
-                background: 'grey',
-                color: '#fff',
-              },
-            })
-            router.refresh()
-          } else {
-            console.error('Error updating contact data')
-          }
+          // if (response.status === 200) {
+          //   await handleImageSave(uploadResponse.data._id)
+          //   toast.success(`Оновлення збережено!`, {
+          //     style: {
+          //       borderRadius: '10px',
+          //       background: 'grey',
+          //       color: '#fff',
+          //     },
+          //   })
+          //   router.refresh()
+          // } else {
+          //   console.error('Error updating contact data')
+          // }
+          editGadget.mutate({
+            id: newGadgetData._id,
+            slug: newGadgetData.slug,
+            title: newGadgetData.title,
+            metadata: {
+              title: newGadgetData.metadata.title,
+              description: newGadgetData.metadata.title,
+              keywords: newGadgetData.metadata.title,
+            },
+            description: newGadgetData.description,
+            icon_id: uploadResponse.data._id,
+            gallery_ids: newGadgetData.gallery.map(item => item._id) || [],
+            issues_ids: newGadgetData.issues.map(item => item._id) || [],
+            brands_ids: newGadgetData.brands.map(item => item._id) || [],
+          })
+          await handleImageSave(uploadResponse.data._id)
         } else {
           console.error('Error uploading image')
         }
       } else {
-        const res = await sendPutRequest(`/gadgets/${newGadgetData._id}`, {
-          ...newGadgetData,
-          icon: gadgetData.icon._id || '',
-          gallery: newGadgetData.gallery.map(item => item._id) || [],
-          issues: newGadgetData.issues.map(item => item._id) || [],
-          brands: newGadgetData.brands.map(item => item._id) || [],
+        editGadget.mutate({
+          id: newGadgetData._id,
+          slug: newGadgetData.slug,
+          title: newGadgetData.title,
+          metadata: {
+            title: newGadgetData.metadata.title,
+            description: newGadgetData.metadata.title,
+            keywords: newGadgetData.metadata.title,
+          },
+          description: newGadgetData.description,
+          icon_id: gadgetData.icon._id || '',
+          gallery_ids: newGadgetData.gallery.map(item => item._id) || [],
+          issues_ids: newGadgetData.issues.map(item => item._id) || [],
+          brands_ids: newGadgetData.brands.map(item => item._id) || [],
         })
-        if (res.status === 200) {
-          toast.success(`Оновлення збережено!`, {
-            style: {
-              borderRadius: '10px',
-              background: 'grey',
-              color: '#fff',
-            },
-          })
-        }
+        // const res = await sendPutRequest(`/gadgets/${newGadgetData._id}`, {
+        //   ...newGadgetData,
+        //   icon: gadgetData.icon._id || '',
+        //   gallery: newGadgetData.gallery.map(item => item._id) || [],
+        //   issues: newGadgetData.issues.map(item => item._id) || [],
+        //   brands: newGadgetData.brands.map(item => item._id) || [],
+        // })
+        // if (res.status === 200) {
+        //   toast.success(`Оновлення збережено!`, {
+        //     style: {
+        //       borderRadius: '10px',
+        //       background: 'grey',
+        //       color: '#fff',
+        //     },
+        //   })
+        // }
       }
     } catch (error) {
       console.error('Error:', error)

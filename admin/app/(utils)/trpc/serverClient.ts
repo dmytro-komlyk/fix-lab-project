@@ -1,5 +1,5 @@
-import { appRouter } from '@server/trpc/trpc.router'
 import { httpBatchLink } from '@trpc/client'
+import { appRouter } from 'server/src/domain/trpc/trpc.router'
 
 // import { Backend_URL, Trpc } from "../../(lib)/constants";
 

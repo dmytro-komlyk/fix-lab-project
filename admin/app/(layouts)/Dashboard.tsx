@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { HiLockClosed } from 'react-icons/hi'
 
 import { auth } from '../../auth'
-import AuthButtons from './AuthButtons'
 
 const Dashboard = async () => {
   const session = await auth()
@@ -24,75 +23,75 @@ const Dashboard = async () => {
             priority
           />
         </Link>
-        {session?.user?.name && (
-          <div>
-            <ul className='flex flex-col gap-4'>
-              <li>
-                <Link
-                  href='/articles'
-                  className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
-                >
-                  Блог
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href='/gadgets'
-                  className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
-                >
-                  Гаджети
-                </Link>
-              </li>
-              <li className='flex items-center justify-between gap-2'>
-                <Link
-                  href='/issues'
-                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
-                >
-                  Послуги
-                </Link>
-              </li>
-              <li className='flex items-center justify-between gap-2 opacity-70'>
-                <Link
-                  href='/#'
-                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
-                >
-                  Послуги сер/обс
-                </Link>
-                <HiLockClosed size={30} color='#fff' />
-              </li>
-              <li className='flex items-center justify-between gap-2 opacity-70'>
-                <Link
-                  href='/#'
-                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
-                >
-                  Бренди
-                </Link>
-                <HiLockClosed size={30} color='#fff' />
-              </li>
+        {/* {session?.user?.name && ( */}
+        <div>
+          <ul className='flex flex-col gap-4'>
+            <li>
+              <Link
+                href='/articles'
+                className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
+              >
+                Блог
+              </Link>
+            </li>
+            <li>
+              <Link
+                href='/gadgets'
+                className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
+              >
+                Гаджети
+              </Link>
+            </li>
+            <li className='flex items-center justify-between gap-2'>
+              <Link
+                href='/issues'
+                className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
+              >
+                Послуги
+              </Link>
+            </li>
+            <li className='flex items-center justify-between gap-2 opacity-70'>
+              <Link
+                href='/#'
+                className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
+              >
+                Послуги сер/обс
+              </Link>
+              <HiLockClosed size={30} color='#fff' />
+            </li>
+            <li className='flex items-center justify-between gap-2 opacity-70'>
+              <Link
+                href='/#'
+                className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
+              >
+                Бренди
+              </Link>
+              <HiLockClosed size={30} color='#fff' />
+            </li>
 
-              <li className='flex items-center justify-between gap-2 opacity-70'>
-                <Link
-                  href='/#'
-                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
-                >
-                  Контакти
-                </Link>
-                <HiLockClosed size={30} color='#fff' />
-              </li>
-              <li className='flex items-center justify-between gap-2 opacity-70'>
-                <Link
-                  href='/#'
-                  className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
-                >
-                  Медіа
-                </Link>
-                <HiLockClosed size={30} color='#fff' />
-              </li>
-            </ul>
-          </div>
-        )}
+            <li className='flex items-center justify-between gap-2 opacity-70'>
+              <Link
+                href='/#'
+                className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
+              >
+                Контакти
+              </Link>
+              <HiLockClosed size={30} color='#fff' />
+            </li>
+            <li className='flex items-center justify-between gap-2 opacity-70'>
+              <Link
+                href='/#'
+                className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
+              >
+                Медіа
+              </Link>
+              <HiLockClosed size={30} color='#fff' />
+            </li>
+          </ul>
+        </div>
+        {/* // )} */}
       </div>
-      {!session?.user?.name ? (
+      {/* {!session?.user?.name ? (
         <div className='m-4 flex flex-col gap-4'>
           <Link
             href='/authentication/signin'
@@ -109,7 +108,7 @@ const Dashboard = async () => {
         </div>
       ) : (
         <AuthButtons />
-      )}
+      )} */}
     </div>
   )
 }
