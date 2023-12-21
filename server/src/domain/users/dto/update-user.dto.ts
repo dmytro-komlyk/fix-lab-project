@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDefined,
@@ -9,28 +10,28 @@ import {
 } from 'class-validator';
 
 export class UpdateUserDto {
-  // @ApiProperty({
-  //   example: false,
-  //   description: 'If false, will be disabled and unable to login'
-  // })
+  @ApiProperty({
+    example: false,
+    description: 'If false, will be disabled and unable to login'
+  })
   @IsOptional()
   @IsBoolean()
   readonly isActive?: boolean;
 
-  // @ApiProperty({
-  //   example: 'admin@email.com',
-  //   description: 'Unique user email'
-  // })
+  @ApiProperty({
+    example: 'admin@email.com',
+    description: 'Unique user email'
+  })
   @IsOptional()
   @IsDefined()
   @IsNotEmpty()
   @IsEmail()
   readonly email?: string;
 
-  // @ApiProperty({
-  //   example: '12345',
-  //   description: 'Password of user, must be 10-24 symbols'
-  // })
+  @ApiProperty({
+    example: '12345',
+    description: 'Password of user, must be 10-24 symbols'
+  })
   @IsOptional()
   @IsDefined()
   @IsNotEmpty()
@@ -40,10 +41,10 @@ export class UpdateUserDto {
   })
   readonly password?: string;
 
-  // @ApiProperty({
-  //   example: 'Admin',
-  //   description: 'Users name'
-  // })
+  @ApiProperty({
+    example: 'Admin',
+    description: 'Users name'
+  })
   @IsOptional()
   @IsDefined()
   @IsNotEmpty()

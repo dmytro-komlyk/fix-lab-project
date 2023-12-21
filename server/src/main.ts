@@ -8,6 +8,7 @@ import { useContainer } from 'class-validator';
 import { AppModule } from '@domain/app.module';
 
 import { MongoErrorsFilter } from '@filters/mongo-errors.filter';
+import { SwaggerHelper } from '@helpers/swagger.helper';
 
 import { PREFIX, PUBLIC_FOLDER } from '@constants/routes.constants';
 
@@ -35,6 +36,8 @@ import { PREFIX, PUBLIC_FOLDER } from '@constants/routes.constants';
 
   const trpc = app.get(TrpcRouter);
   trpc.applyMiddleware(app);
+
+  SwaggerHelper(app);
 
   await app.listen(process.env.PORT ?? 3000);
 })();

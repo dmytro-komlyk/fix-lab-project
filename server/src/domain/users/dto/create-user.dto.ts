@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDefined,
@@ -28,19 +29,19 @@ export class CreateUserDto {
   @Length(1, 60)
   readonly login: string;
 
-  // @ApiProperty({
-  //   example: 'admin@email.com',
-  //   description: 'Unique user email'
-  // })
+  @ApiProperty({
+    example: 'admin@email.com',
+    description: 'Unique user email'
+  })
   @IsDefined()
   @IsNotEmpty()
   @IsEmail()
   readonly email: string;
 
-  // @ApiProperty({
-  //   example: '12345',
-  //   description: 'Password of user, must be 10-24 symbols'
-  // })
+  @ApiProperty({
+    example: '12345',
+    description: 'Password of user, must be 10-24 symbols'
+  })
   @IsDefined()
   @IsNotEmpty()
   @IsString()
@@ -49,10 +50,10 @@ export class CreateUserDto {
   })
   readonly password: string;
 
-  // @ApiProperty({
-  //   example: 'Admin',
-  //   description: 'Users name'
-  // })
+  @ApiProperty({
+    example: 'Admin',
+    description: 'Users name'
+  })
   @IsDefined()
   @IsNotEmpty()
   @IsString()

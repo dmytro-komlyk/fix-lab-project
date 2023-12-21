@@ -7,14 +7,13 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { Types } from 'mongoose';
 
-import { User } from '@prisma/client';
-
 import { PrismaService } from '../prisma/prisma.service';
 
 import { PasswordEncryptHelper } from '@helpers/password-encrypt.helper';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { userSchema } from './schemas/user.schema';
 
 @Injectable()
 export class UsersService {
@@ -23,13 +22,13 @@ export class UsersService {
     private readonly configService: ConfigService
   ) {}
 
-  public async findAll(): Promise<User[]> {
+  public async findAll(): Promise<userSchema[]> {
     const users = await this.prisma.user.findMany();
 
     return users;
   }
 
-  public async findById(id: string): Promise<User> {
+  public async findById(id: string): Promise<userSchema> {
     const user = await this.prisma.user.findUnique({
       where: {
         id
@@ -43,7 +42,7 @@ export class UsersService {
     return user;
   }
 
-  public async findByQuery(query: UpdateUserDto): Promise<User | null> {
+  public async findByQuery(query: UpdateUserDto): Promise<userSchema | null> {
     const user = await this.prisma.user.findUnique({
       where: { id: query.email, isActive: query.isActive }
     });
@@ -55,11 +54,11 @@ export class UsersService {
     return user;
   }
 
-  public async findOneWithPassword(login: string): Promise<User | null> {
+  public async findOneWithPassword(login: string): Promise<userSchema | null> {
     return this.prisma.user.findUnique({ where: { login } });
   }
 
-  public async create(dto: CreateUserDto): Promise<User> {
+  public async create(dto: CreateUserDto): Promise<userSchema> {
     const errorData = {
       statusCode: 422,
       error: 'Bad Request',
@@ -90,7 +89,7 @@ export class UsersService {
     return user;
   }
 
-  public async update(id: string, dto: UpdateUserDto): Promise<User> {
+  public async update(id: string, dto: UpdateUserDto): Promise<userSchema> {
     const user = await this.findById(id);
 
     const password = dto.password
@@ -123,7 +122,10 @@ export class UsersService {
     return id;
   }
 
-  public async createFirstAdmin(key: string, dto: CreateUserDto): Promise<User> {
+  public async createFirstAdmin(
+    key: string,
+    dto: CreateUserDto
+  ): Promise<userSchema> {
     const originalKey = this.configService.get<string>('D_ADMIN_KEY');
     const users = await this.prisma.user.findMany();
 

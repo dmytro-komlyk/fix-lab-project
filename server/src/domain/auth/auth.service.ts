@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 import { UsersService } from '@domain/users/users.service';
 
+import { userSchema } from '../users/schemas/user.schema';
 import { LoginDto } from './dto/login.dto';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class AuthService {
     return token;
   }
 
-  public async validatePassword({ login, password }: LoginDto): Promise<User> {
+  public async validatePassword({ login, password }: LoginDto): Promise<userSchema> {
     const user = await this.usersService.findOneWithPassword(login);
 
     if (!user) throw new NotFoundException('User was not found');

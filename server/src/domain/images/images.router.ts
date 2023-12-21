@@ -30,15 +30,6 @@ export class ImagesRouter {
     upload: this.trpc.procedure.input(uploadImageSchema).query(async ({ input }) => {
       return await this.imagesService.upload(input);
     }),
-    // uploadPicture: this.trpc.procedure.input(uploadImageSchema).query(async () => {
-    //   // return await this.imagesService.create(input);
-    // }),
-    // uploadBlogPicture: this.trpc.procedure
-    //   .input(uploadImageSchema)
-    //   .query(async () => {
-    //     // return await this.imagesService.create();
-    //   }),
-
     update: this.trpc.procedure.input(imageSchema).query(async ({ input }) => {
       return await this.imagesService.update(input);
     }),
