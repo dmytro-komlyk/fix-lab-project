@@ -9,7 +9,6 @@ import { AppModule } from '@domain/app.module';
 
 import { MongoErrorsFilter } from '@filters/mongo-errors.filter';
 
-// import { SwaggerHelper } from '@helpers/swagger.helper';
 import { PREFIX, PUBLIC_FOLDER } from '@constants/routes.constants';
 
 (async (): Promise<void> => {
@@ -33,8 +32,6 @@ import { PREFIX, PUBLIC_FOLDER } from '@constants/routes.constants';
   });
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-
-  // SwaggerHelper(app);
 
   const trpc = app.get(TrpcRouter);
   trpc.applyMiddleware(app);

@@ -5,6 +5,8 @@ import { Image } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
+import { imageSchema, uploadImageSchema } from './schemas/image.schema';
+
 @Injectable()
 export class ImagesService {
   constructor(private prisma: PrismaService) {}
@@ -12,8 +14,17 @@ export class ImagesService {
   public async findAll(): Promise<Image[]> {
     return await this.prisma.image.findMany();
   }
+  public async findAllIcons(): Promise<Image[]> {
+    return await this.prisma.image.findMany({ where: { type: 'icon ' } });
+  }
+  public async findAllPictures(): Promise<Image[]> {
+    return await this.prisma.image.findMany({ where: { type: 'picture ' } });
+  }
+  public async findAllBlog(): Promise<Image[]> {
+    return await this.prisma.image.findMany({ where: { type: 'blog ' } });
+  }
 
-  public async findById(id: string) {
+  public async findById(id: string): Promise<imageSchema> {
     if (!Types.ObjectId.isValid(id)) {
       throw new NotFoundException(`Incorrect ID - ${id}`);
     }
@@ -31,40 +42,36 @@ export class ImagesService {
     return image;
   }
 
-  // public async findAllByType({ type }: { type: string }): Promise<Image[]> {
-  //   return await this.imageModel.find({ type });
-  // }
-
-  public async add(dto: any) {
-    const addedImage = await this.prisma.image.create({
-      data: dto
-    });
-    const image = await this.findById(addedImage.id);
+  public async upload(data: uploadImageSchema): Promise<imageSchema> {
+    const createdImage = await this.prisma.image.create({ data });
+    const image = await this.findById(createdImage.id);
 
     return image;
   }
 
-  // public async update(id: string, dto: any) {
-  //   await this.findOneById(id);
+  public async update(data: imageSchema): Promise<imageSchema> {
+    const { id, ...newData } = data;
+    await this.findById(id);
 
-  //   const image = await this.imageModel.findByIdAndUpdate(id, dto, {
-  //     new: true
-  //   });
+    const image = await this.prisma.image.update({
+      where: { id },
+      data: newData
+    });
 
-  //   return image;
-  // }
+    return image;
+  }
 
-  // public async remove(id: string) {
-  //   if (!Types.ObjectId.isValid(id)) {
-  //     throw new NotFoundException(`Incorrect ID - ${id}`);
-  //   }
+  public async remove(id: string): Promise<string> {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new NotFoundException(`Incorrect ID - ${id}`);
+    }
 
-  //   const image = await this.imageModel.findByIdAndDelete(id);
+    const image = await this.prisma.image.delete({ where: { id } });
 
-  //   if (!image) {
-  //     throw new NotFoundException(`Image with ID ${id} was not found`);
-  //   }
+    if (!image) {
+      throw new NotFoundException(`Image with ID ${id} was not found`);
+    }
 
-  //   return id;
-  // }
+    return id;
+  }
 }
