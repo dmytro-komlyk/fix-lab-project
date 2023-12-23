@@ -1,12 +1,12 @@
-import { getAllContactsData } from '@/app/(server)/api/service/modules/contactService'
-
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
+import { outputContactSchema } from 'server/src/domain/contacts/schemas/contact.schema'
 import ContactsSection from './(components)/ContactsSection'
 
 export const dynamic = 'force-dynamic'
-export const revalidate = 60
 
 export default async function Contacts() {
-  const contactsData = await getAllContactsData()
+  const contactsData =
+    (await serverClient.contacts.getAllPublished()) as outputContactSchema[]
   return (
     <main className=' flex-auto'>
       <ContactsSection contactsData={contactsData} />

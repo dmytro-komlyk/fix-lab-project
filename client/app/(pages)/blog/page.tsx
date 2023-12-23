@@ -1,13 +1,12 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { trpc } from 'client/app/(utils)/trpc'
+
 import type { Metadata } from 'next'
 
-import type { IBlog } from '@/app/(server)/api/service/modules/articlesService'
-
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
+import { outputArticleWithPaginationSchema } from 'server/src/domain/articles/schemas/article.schema'
 import MainBlogSection from './(components)/MainBlogSection'
 
 export const dynamic = 'force-dynamic'
-export const revalidate = 60
 
 export const metadata: Metadata = {
   title:
@@ -32,15 +31,14 @@ export const metadata: Metadata = {
 }
 
 export default async function Blog() {
-  // const postsData = await getPosts({ currentPage: 1 })
-  const postsData = (await trpc.getArticlesQuery.query({
+  const postsData = (await serverClient.articles.getByPagination({
     page: 1,
     sort: 'desc',
     limit: 9,
-  })) as IBlog
+  })) as outputArticleWithPaginationSchema
   return (
     <main className='flex-auto'>
-      <MainBlogSection postsData={postsData} currentPage={1} />
+      <MainBlogSection postsDataInit={postsData} currentPage={1} />
     </main>
   )
 }

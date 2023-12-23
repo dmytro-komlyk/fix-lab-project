@@ -10,7 +10,9 @@ import { FaBars } from 'react-icons/fa'
 import { FiMapPin } from 'react-icons/fi'
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
 
-import type { IContactsProps } from './(components)/AddressLocationCard'
+import { trpc } from '../(utils)/trpc/client'
+import { serverClient } from '../(utils)/trpc/serverClient'
+// import type { IContactsProps } from './(components)/AddressLocationCard'
 import Button from './(components)/Button'
 
 const CourierModal = dynamic(() => import('./(components)/CourierModal'))
@@ -23,7 +25,23 @@ const gadgetsSinglePageRegex = /^\/repair\/([^/]+)\/?$/
 const blogIdRegex = /^\/blog\/(\d+)\/?$/
 const issueSinglePageRegex = /^\/repair\/([^/]+)\/([^/]+)\/?$/
 
-export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
+// : React.FC<IContactsProps>
+export const Header = ({
+  contactsDataInit,
+}: {
+  contactsDataInit: Awaited<
+    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+  >
+}) => {
+  const { data: contactsData } = trpc.contacts.getAllPublished.useQuery(
+    undefined,
+    {
+      initialData: contactsDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
+
   const pathname = usePathname()
   const toggleDropdownRegionRef = useRef<HTMLDivElement>(null)
   const toggleDropdownPhoneRef = useRef<HTMLUListElement>(null)
@@ -147,13 +165,13 @@ export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
           <div
             ref={toggleDropdownRegionRef}
             onClick={toggleDropDown}
-            className={` select-text-none relative mr-[63px] flex h-[48px] min-w-[196px] cursor-pointer items-center  justify-center border-[2px] border-mid-green transition-all duration-300  ${
+            className={` select-text-none border-mid-green relative mr-[63px] flex h-[48px] min-w-[196px] cursor-pointer  items-center justify-center border-[2px] transition-all duration-300  ${
               isOpenItem ? 'rounded-t-2xl' : 'rounded-2xl'
             } `}
           >
             <button
               type='button'
-              className='relative text-base font-semibold text-white-dis'
+              className='text-white-dis relative text-base font-semibold'
             >
               {selectedRegionItem}
             </button>
@@ -199,18 +217,18 @@ export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
                           opacity: 0,
                           transition: { duration: 0.3 },
                         }}
-                        key={item._id}
+                        key={item.id}
                         onClick={() => {
                           handleItemClick(item.area)
                           toggleDropDown()
                         }}
-                        className='absolute bottom-[-48px] left-[-2px] z-10 flex w-[196px] flex-col items-center  justify-center gap-2 rounded-b-xl  bg-mid-green  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
+                        className='bg-mid-green hover:bg-mid-blue focus:bg-mid-blue absolute bottom-[-48px] left-[-2px] z-10 flex  w-[196px] flex-col items-center  justify-center  gap-2 rounded-b-xl  transition-colors'
                       >
                         <button
                           type='button'
                           onClick={toggleDropDown}
                           key={item.area}
-                          className='select-none py-3 text-base font-semibold text-dark-blue'
+                          className='text-dark-blue select-none py-3 text-base font-semibold'
                         >
                           {item.area}
                         </button>
@@ -287,7 +305,7 @@ export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
                   ? contactsData[0]?.phones.join('').replace(/\s/g, '')
                   : contactsData[1]?.phones.join('').replace(/\s/g, '')
               }`}
-              className='whitespace-nowrap text-md leading-none tracking-[2px] text-white-dis transition-opacity hover:opacity-80  focus:opacity-80'
+              className='text-md text-white-dis whitespace-nowrap leading-none tracking-[2px] transition-opacity hover:opacity-80  focus:opacity-80'
             >
               {selectedRegionItem === contactsData[0]?.area
                 ? contactsData[0]?.phones.join('')
@@ -336,7 +354,7 @@ export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
                 href={`tel:${contactsData[0]?.phones
                   .join('')
                   .replace(/\s/g, '')}`}
-                className='text-base font-normal leading-none  tracking-[0.45px] text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px]'
+                className='text-white-dis text-base font-normal  leading-none tracking-[0.45px] transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px]'
               >
                 {contactsData[0]?.phones}
               </a>
@@ -361,7 +379,7 @@ export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
                     href={`tel:${contactsData[1]?.phones
                       .join('')
                       .replace(/\s/g, '')}`}
-                    className='whitespace-nowrap text-base font-normal leading-tight tracking-[0.45px]  text-white-dis transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px] '
+                    className='text-white-dis whitespace-nowrap text-base font-normal leading-tight  tracking-[0.45px] transition-opacity hover:opacity-80 focus:opacity-80  max-[330px]:text-[12px] '
                   >
                     {contactsData[1]?.phones}
                   </a>
@@ -370,7 +388,7 @@ export const Header: React.FC<IContactsProps> = ({ contactsData }) => {
             </AnimatePresence>
           </ul>
           <div
-            className=' text-gray-700 -m-2.5 cursor-pointer items-center justify-center rounded-md p-2.5 transition-opacity hover:opacity-80 focus:opacity-80  md:pl-8'
+            className=' -m-2.5 cursor-pointer items-center justify-center rounded-md p-2.5 text-gray-700 transition-opacity hover:opacity-80 focus:opacity-80  md:pl-8'
             onClick={toggleMobileMenu}
           >
             <FaBars className='h-8 w-8' aria-hidden='true' color='#F8F8F8' />

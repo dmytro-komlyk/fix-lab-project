@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-
 import {
   IsBoolean,
   IsDefined,
@@ -11,18 +10,19 @@ import {
 } from 'class-validator';
 
 export class CreateUserDto {
-  @ApiProperty({
-    example: false,
-    description: 'If false, will be disabled and unable to login'
-  })
+  // @ApiProperty({
+  //   example: false,
+  //   description: 'If false, will be disabled and unable to login'
+  // })
+  @IsDefined()
   @IsOptional()
   @IsBoolean()
-  readonly isActive?: boolean;
+  readonly isActive: boolean;
 
-  @ApiProperty({
-    example: 'Admin',
-    description: 'Unique login identifier'
-  })
+  // @ApiProperty({
+  //   example: 'Admin',
+  //   description: 'Unique login identifier'
+  // })
   @IsDefined()
   @IsNotEmpty()
   @IsString()
@@ -61,4 +61,6 @@ export class CreateUserDto {
     message: 'field required to be 1-60 symbols length'
   })
   readonly name: string;
+
+  readonly token: string;
 }

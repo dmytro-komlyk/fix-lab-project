@@ -1,11 +1,11 @@
-import type { IBrand } from 'client/app/(server)/api/service/modules/brandService'
 import type { Metadata } from 'next'
 
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
-import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
-import { trpc } from '@/app/(utils)/trpc'
 
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
+import { outputBrandSchema } from 'server/src/domain/brands/schemas/brand.schema'
+import { outputContactSchema } from 'server/src/domain/contacts/schemas/contact.schema'
+import { outputGadgetSchema } from 'server/src/domain/gadgets/schemas/gadget.schema'
 import BrandsSection from '../../../(components)/BrandsSection'
 
 interface IndexProps {
@@ -16,15 +16,15 @@ interface IndexProps {
   searchParams: any
 }
 
-export const runtime = 'edge'
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata({
   params,
 }: IndexProps): Promise<Metadata> {
   const { brand } = params
-  const brandData = (await trpc.getBrandBySlugQuery.query({
-    slug: brand,
-  })) as IBrand
+  const brandData = (await serverClient.brands.getBySlug(
+    brand,
+  )) as outputBrandSchema
 
   return {
     title: brandData.metadata.title,
@@ -33,37 +33,25 @@ export async function generateMetadata({
   }
 }
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const singleGadgetData = (await trpc.getGadgetBySlugQuery.query({
-    slug: params.gadget,
-  })) as IGadget
-  const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
-  const brandData = (await trpc.getBrandBySlugQuery.query({
-    slug: params.brand,
-  })) as IBrand
+  const singleGadgetData = (await serverClient.gadgets.getBySlug(
+    params.gadget,
+  )) as outputGadgetSchema
+  const contactsData =
+    (await serverClient.contacts.getAllPublished()) as outputContactSchema[]
+  const brandData = (await serverClient.brands.getBySlug(
+    params.brand,
+  )) as outputBrandSchema
+
   return (
     <main className='h-full flex-auto'>
       <BrandsSection
-        contactsData={contactsData}
-        gadgetData={singleGadgetData}
-        brandData={brandData}
+        contactsDataInit={contactsData}
+        gadgetDataInit={singleGadgetData}
+        brandDataInit={brandData}
       />
       <ColaborationSection />
-      <AddressSection contactsData={contactsData} />
+      <AddressSection contactsDataInit={contactsData} />
     </main>
   )
 }
 export default Index
-
-// export async function generateStaticParams({
-//   params,
-// }: {
-//   params: { gadget: string }
-// }) {
-//   const gadgetData = (await trpc.getGadgetBySlugQuery.query({
-//     slug: params.gadget,
-//   })) as IGadget
-//   return gadgetData.brands.map((item: { slug: string }) => ({
-//     gadget: gadgetData.slug,
-//     brand: item.slug,
-//   }))
-// }

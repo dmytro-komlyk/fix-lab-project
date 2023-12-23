@@ -5,14 +5,14 @@ import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
-import { BiMap } from 'react-icons/bi'
 import { MdKeyboardArrowRight } from 'react-icons/md'
-import { TbPhone } from 'react-icons/tb'
 
-import RenderMarkdown from '@/app/(components)/RenderMarkdown'
 import Button from '@/app/(layouts)/(components)/Button'
-import type { IPost } from '@/app/(server)/api/service/modules/articlesService'
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
+import RenderMarkdown from 'client/app/(components)/RenderMarkdown'
+import { SERVER_URL } from 'client/app/(lib)/constants'
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
+import { BiMap } from 'react-icons/bi'
+import { TbPhone } from 'react-icons/tb'
 
 const InstantAdviceModal = dynamic(
   () => import('@/app/(layouts)/(components)/InstantAdviceModal'),
@@ -21,14 +21,16 @@ const SuccessSubmitBanner = dynamic(
   () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
 )
 
-export interface ISingleArticleProps {
-  contactsData: IContact[]
-  articleData: IPost
-}
-
-const SingleArticlePage: React.FC<ISingleArticleProps> = ({
+const SingleArticlePage = ({
   contactsData,
   articleData,
+}: {
+  contactsData: Awaited<
+    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+  >
+  articleData: Awaited<
+    ReturnType<(typeof serverClient)['articles']['getBySlug']>
+  >
 }) => {
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
     useState<boolean>(false)
@@ -71,7 +73,7 @@ const SingleArticlePage: React.FC<ISingleArticleProps> = ({
           {articleData.image && (
             <Image
               className='mb-[56px] min-h-[245px] w-full  object-cover md:max-h-[480px]'
-              src={articleData.image.src}
+              src={`${SERVER_URL}/${articleData.image.file.path}`}
               width={924}
               height={480}
               alt={articleData.image.alt}
@@ -106,7 +108,7 @@ const SingleArticlePage: React.FC<ISingleArticleProps> = ({
               <div className='flex flex-col gap-14 max-lg:gap-6'>
                 {contactsData.map(item => {
                   return (
-                    <div key={item._id} className='flex flex-col gap-[20px] '>
+                    <div key={item.id} className='flex flex-col gap-[20px] '>
                       <div className=''>
                         <p className='font-semibold text-black-dis '>
                           {item.address}
@@ -171,7 +173,7 @@ const SingleArticlePage: React.FC<ISingleArticleProps> = ({
             </div>
             <ul className='mb-[30px] flex flex-col items-center gap-[13px]'>
               {contactsData.map(item => (
-                <li key={item._id} className='flex flex-col items-center'>
+                <li key={item.id} className='flex flex-col items-center'>
                   <p className='font-[400] text-black-dis'>{item.area} р-н</p>
                   {item.phones.map(phone => (
                     <a

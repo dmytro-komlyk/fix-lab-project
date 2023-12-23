@@ -5,7 +5,11 @@ import { Issue } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
-import { createIssueSchema, updateIssueSchema } from './schemas/issue.schema';
+import {
+  createIssueSchema,
+  outputIssueSchema,
+  updateIssueSchema
+} from './schemas/issue.schema';
 
 @Injectable()
 export class IssuesService {
@@ -19,7 +23,8 @@ export class IssuesService {
           include: {
             icon: true
           }
-        }
+        },
+        gadgets: true
       }
     });
   }
@@ -35,12 +40,13 @@ export class IssuesService {
           include: {
             icon: true
           }
-        }
+        },
+        gadgets: true
       }
     });
   }
 
-  public async findBySlug(slug: string): Promise<Issue> {
+  public async findBySlug(slug: string): Promise<outputIssueSchema> {
     const issue = await this.prisma.issue.findUnique({
       where: {
         slug: slug
@@ -51,7 +57,8 @@ export class IssuesService {
           include: {
             icon: true
           }
-        }
+        },
+        gadgets: true
       }
     });
 
@@ -73,7 +80,8 @@ export class IssuesService {
           include: {
             icon: true
           }
-        }
+        },
+        gadgets: true
       }
     });
 
@@ -121,7 +129,8 @@ export class IssuesService {
           include: {
             icon: true
           }
-        }
+        },
+        gadgets: true
       }
     });
     return updatedIssue;

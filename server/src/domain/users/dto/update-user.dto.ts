@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-
 import {
   IsBoolean,
   IsDefined,
@@ -55,5 +54,5 @@ export class UpdateUserDto {
   })
   readonly name?: string;
 
-  readonly token?: string | null;
+  readonly token?: string;
 }

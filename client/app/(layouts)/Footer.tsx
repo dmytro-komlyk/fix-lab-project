@@ -1,10 +1,29 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { LiaViber } from 'react-icons/lia'
 
-import type { IContactsProps } from './(components)/AddressLocationCard'
+// import type { IContactsProps } from './(components)/AddressLocationCard'
+import { trpc } from '../(utils)/trpc/client'
+import { serverClient } from '../(utils)/trpc/serverClient'
 
-export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
+export const Footer = ({
+  contactsDataInit,
+}: {
+  contactsDataInit: Awaited<
+    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+  >
+}) => {
+  const { data: contactsData } = trpc.contacts.getAllPublished.useQuery(
+    undefined,
+    {
+      initialData: contactsDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
+
   return (
     <footer className='bg-footer-gradient-linear-blue '>
       <div className='container relative flex flex-col items-start gap-[52px] py-14 md:flex-row md:justify-between md:px-0 xl:gap-[240px]'>
@@ -163,7 +182,7 @@ export const Footer: React.FC<IContactsProps> = ({ contactsData }) => {
           <div className='flex flex-col items-end gap-4 md:flex-col md:items-start md:gap-[30px] lg:flex lg:items-end lg:gap-[25px]'>
             <ul className='flex flex-col gap-1'>
               {contactsData.map(item => (
-                <li key={item._id}>
+                <li key={item.id}>
                   {item.phones.map(phoneNumber => (
                     <a
                       key={phoneNumber}

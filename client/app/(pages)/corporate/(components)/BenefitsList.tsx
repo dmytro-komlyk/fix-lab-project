@@ -1,30 +1,35 @@
+'use client'
+
+import { SERVER_URL } from 'client/app/(lib)/constants'
+import { trpc } from 'client/app/(utils)/trpc/client'
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
-import React from 'react'
+import { outputBenefitSchema } from 'server/src/domain/benefits/schemas/benefit.schema'
 
-export interface IBenefitItem {
-  icon: {
-    src: string
-    alt: string
-  }
-  title: string
-}
+export const BenefitsList = ({
+  itemsInit,
+}: {
+  itemsInit: Awaited<
+    ReturnType<(typeof serverClient)['benefits']['getAllPublished']>
+  >
+}) => {
+  const { data: items } = trpc.benefits.getAllPublished.useQuery(undefined, {
+    initialData: itemsInit,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+  })
 
-interface IBenefitsListProps {
-  items: IBenefitItem[]
-}
-
-export const BenefitsList: React.FC<IBenefitsListProps> = ({ items }) => {
   return (
     <div className='flex flex-wrap gap-x-3.5 gap-y-[17px] lg:gap-[18px]'>
-      {items?.map((item: IBenefitItem) => {
+      {items?.map((item: outputBenefitSchema) => {
         return (
           <div
             key={item.title}
             className='flex max-h-[104px] w-[110px] flex-col items-center justify-between gap-[14px] rounded-2xl bg-light-grey px-[13px] py-[14px]'
           >
-            {item.icon.src && (
+            {item.icon && (
               <Image
-                src={item.icon.src}
+                src={`${SERVER_URL}/${item.icon.file.path}`}
                 width={26}
                 height={30}
                 alt={item.icon.alt}

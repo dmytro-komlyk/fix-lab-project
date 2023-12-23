@@ -1,17 +1,31 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
+import { SERVER_URL } from 'client/app/(lib)/constants'
+import { trpc } from 'client/app/(utils)/trpc/client'
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
-export interface IContactsProps {
-  contactsData: IContact[]
-}
-export const AddressLocationCard: React.FC<IContactsProps> = ({
-  contactsData,
+export const AddressLocationCard = ({
+  contactsDataInit,
+}: {
+  contactsDataInit: Awaited<
+    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+  >
 }) => {
+  const { data: contactsData } = trpc.contacts.getAllPublished.useQuery(
+    undefined,
+    {
+      initialData: contactsDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
+
   return contactsData.map(item => (
     <li
-      key={item._id}
+      key={item.id}
       className='group flex h-[286px] w-full justify-between overflow-hidden rounded-xl bg-card-gradient-blue text-base transition-all delay-75 duration-300 ease-in-out hover:bg-card-gradient-hover lg:mb-0 lg:h-[240px] xl:h-[265px]'
     >
       <div className='flex w-full flex-col py-[26px] pl-8 pr-3 text-white-dis transition-all delay-75 duration-300 ease-in-out group-hover:translate-x-6 group-hover:scale-110 lg:justify-between lg:pb-[30px] lg:pr-0 lg:pt-10 lg:group-hover:translate-x-0 xl:group-hover:translate-x-4'>
@@ -45,10 +59,10 @@ export const AddressLocationCard: React.FC<IContactsProps> = ({
         href={item.googleMapLink}
         target='_blank'
       >
-        {item.image.src && (
+        {item.image && (
           <Image
             className='aspect-square bg-cover bg-center object-cover lg:aspect-[1/1.05]'
-            src={item.image.src}
+            src={`${SERVER_URL}/${item.image.file.path}`}
             alt={item.image.alt}
             width={600}
             height={546}

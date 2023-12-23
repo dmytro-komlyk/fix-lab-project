@@ -4,15 +4,16 @@ import { AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useCallback, useState } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@/app/(layouts)/(components)/CostRepairModal'
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
-import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
 
+import { SERVER_URL } from 'client/app/(lib)/constants'
+import { trpc } from 'client/app/(utils)/trpc/client'
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
+import { useCallback, useState } from 'react'
 import { GadgetBrandsSlider } from './GadgetBrandsSlider'
 
 const InstantAdviceModal = dynamic(
@@ -22,14 +23,35 @@ const SuccessSubmitBanner = dynamic(
   () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
 )
 
-interface SingleGadgetProps {
-  singleGadgetData: IGadget
-  contactsData: IContact[]
-}
-const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
-  singleGadgetData,
-  contactsData,
+const SingleGadgetSection = ({
+  singleGadgetDataInit,
+  contactsDataInit,
+}: {
+  singleGadgetDataInit: Awaited<
+    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+  >
+  contactsDataInit: Awaited<
+    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+  >
 }) => {
+  const { data: singleGadgetData } = trpc.gadgets.getBySlug.useQuery(
+    singleGadgetDataInit.slug,
+    {
+      initialData: singleGadgetDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
+
+  const { data: contactsData } = trpc.contacts.getAllPublished.useQuery(
+    undefined,
+    {
+      initialData: contactsDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
+
   const [submitSuccessCostRepair, setSubmitSuccessCostRepair] =
     useState<boolean>(false)
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =
@@ -39,22 +61,23 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
   const [showCostRepair, setShowCostRepair] = useState<boolean>(false)
 
   const toggleSuccessSubmitInstantAdviceModal = useCallback(() => {
-    setSubmitSuccessInstantAdviceModal(prev => !prev)
+    setSubmitSuccessInstantAdviceModal((prev: boolean) => !prev)
   }, [])
 
   const toggleSuccessCostRepair = useCallback(() => {
-    setSubmitSuccessCostRepair(prev => !prev)
+    setSubmitSuccessCostRepair((prev: boolean) => !prev)
   }, [])
 
   const toggleInstantAdviceModal = useCallback(() => {
-    setShowInstantAdviceModal(prev => !prev)
-  }, [setShowInstantAdviceModal])
+    setShowInstantAdviceModal((prev: boolean) => !prev)
+  }, [])
 
   const toggleCostRepairModal = useCallback(() => {
-    setShowCostRepair(prev => !prev)
+    setShowCostRepair((prev: boolean) => !prev)
   }, [])
 
   const { title, icon, description, slug } = singleGadgetData
+
   return (
     <section className=' overflow-hidden  bg-gradient-linear-blue  pb-[102px] pt-[159px] max-md:pb-14 max-md:pt-[117px]'>
       <div className='container relative flex flex-col xl:p-0'>
@@ -100,7 +123,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                   {icon && (
                     <Image
                       className='h-[80px]'
-                      src={icon.src}
+                      src={`${SERVER_URL}/${icon.file.path}`}
                       width={0}
                       height={80}
                       style={{
@@ -125,7 +148,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                 textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
               />
             </div>
-            <CallUsCard contactsData={contactsData} />
+            <CallUsCard contactsDataInit={contactsData} />
           </div>
           <div className='flex flex-col gap-8 max-xl:w-[600px] max-lg:w-full lg:gap-14 xl:w-[737px]'>
             <div className='flex flex-col'>
@@ -135,7 +158,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                     Бренди, які ремонтуємо
                   </p>
                   <div className='mb-[46px]'>
-                    <GadgetBrandsSlider gadgetData={singleGadgetData} />
+                    <GadgetBrandsSlider gadgetDataInit={singleGadgetData} />
                   </div>
                 </>
               )}
@@ -149,7 +172,7 @@ const SingleGadgetSection: React.FC<SingleGadgetProps> = ({
                       return (
                         <li
                           className='hover:op border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl hover:opacity-100 focus:opacity-100'
-                          key={item._id}
+                          key={item.id}
                         >
                           <Link
                             className='flex items-center gap-[12px] max-md:flex-col max-md:items-start max-md:justify-center  max-md:px-[16px] max-md:py-[12px] md:h-[75px] md:justify-between md:px-6'

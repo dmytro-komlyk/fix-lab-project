@@ -5,8 +5,7 @@ import * as bcrypt from 'bcrypt';
 
 import { UsersService } from '@domain/users/users.service';
 
-import { User } from '@domain/users/schemas/user.schema';
-
+import { userSchema } from '../users/schemas/user.schema';
 import { LoginDto } from './dto/login.dto';
 
 @Injectable()
@@ -18,14 +17,14 @@ export class AuthService {
 
   public async login(dto: LoginDto): Promise<string> {
     const user = await this.validatePassword(dto);
-    const payload = { sub: user._id };
+    const payload = { sub: user.id };
     const token = await this.jwtService.signAsync(payload);
-    await this.usersService.update(user._id, { token });
+    await this.usersService.update(user.id, { token });
 
     return token;
   }
 
-  public async validatePassword({ login, password }: LoginDto): Promise<User> {
+  public async validatePassword({ login, password }: LoginDto): Promise<userSchema> {
     const user = await this.usersService.findOneWithPassword(login);
 
     if (!user) throw new NotFoundException('User was not found');

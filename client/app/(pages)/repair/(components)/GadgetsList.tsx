@@ -1,16 +1,23 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { IGadgetsProps } from '@/app/(layouts)'
-import type { IGadget } from '@/app/(server)/api/service/modules/gadgetService'
+import { SERVER_URL } from 'client/app/(lib)/constants'
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
-export const GadgetsList: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
+export const GadgetsList = ({
+  gadgetsData,
+}: {
+  gadgetsData: Awaited<
+    ReturnType<(typeof serverClient)['gadgets']['getAllPublished']>
+  >
+}) => {
   return (
     <ul className='z-2 flex flex-wrap justify-center gap-2 max-xl:max-w-full xl:w-[954px] xl:gap-6'>
-      {gadgetsData.map((item: IGadget) => {
+      {/* any as IGadget = ? */}
+      {gadgetsData.map((item: any) => {
         return (
           <li
-            key={item._id}
+            key={item.id}
             className='group h-[261px] w-[302px] rounded-2xl bg-card-repair-gradient  md:w-[calc((100%-10px)/2)] xl:w-[calc((100%-48px)/3)]'
           >
             <Link
@@ -21,7 +28,7 @@ export const GadgetsList: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
                 {item.icon && (
                   <Image
                     className='w-auto transition-transform delay-75 duration-300 ease-in-out group-hover:scale-[1.2]'
-                    src={item.icon.src}
+                    src={`${SERVER_URL}/${item.icon.file.path}`}
                     fill
                     alt={item.icon.alt}
                   />

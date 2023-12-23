@@ -12,10 +12,10 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+import { userSchema } from './schemas/user.schema';
+
 import { NotificationsService } from '@domain/notifications/notifications.service';
 import { UsersService } from './users.service';
-
-import { User } from './schemas/user.schema';
 
 import { PasswordGeneratorHelper } from '@helpers/password-generator.helper';
 
@@ -34,28 +34,28 @@ export class UsersController {
   ) {}
 
   @ApiOperation({ summary: 'get all users' })
-  @ApiResponse({ status: 200, type: User, isArray: true })
+  @ApiResponse({ status: 200, isArray: true })
   @Get('')
-  public async findAllUsers(): Promise<User[]> {
+  public async findAllUsers(): Promise<userSchema[]> {
     return await this.usersService.findAll();
   }
 
   @ApiOperation({ summary: 'create new user' })
-  @ApiResponse({ status: 200, type: User })
+  @ApiResponse({ status: 200 })
   @ApiResponse({ status: 400, description: 'Incorrect content data' })
   @Post('')
-  public async createUser(@Body() dto: CreateUserDto): Promise<User | null> {
+  public async createUser(@Body() dto: CreateUserDto): Promise<userSchema> {
     return await this.usersService.create(dto);
   }
 
   @ApiOperation({ summary: 'update existing user by ID' })
-  @ApiResponse({ status: 200, type: User })
+  @ApiResponse({ status: 200 })
   @ApiResponse({ status: 404, description: 'Contact was not found' })
   @Put('/:id')
   public async update(
     @Param('id') id: string,
     @Body() dto: UpdateUserDto
-  ): Promise<User | null> {
+  ): Promise<userSchema> {
     return await this.usersService.update(id, dto);
   }
 
@@ -73,7 +73,7 @@ export class UsersController {
   @Get('/reset-password')
   public async renewPassword(@Query() { email }: ResetPasswordDto): Promise<void> {
     const updatedPassword = PasswordGeneratorHelper();
-    const userFound = await this.usersService.findOneByQuery({
+    const userFound = await this.usersService.findByQuery({
       email,
       isActive: true
     });
@@ -84,7 +84,7 @@ export class UsersController {
 
     const user = await this.usersService.update(userFound.id, {
       password: updatedPassword,
-      token: null
+      token: ''
     });
 
     await this.notificationsService.sendPasswordReset(
@@ -95,13 +95,13 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'create first admin' })
-  @ApiResponse({ status: 200, type: User })
+  @ApiResponse({ status: 200 })
   @Public()
   @Get('/init/:key')
   public async createFirstAdmin(
     @Param('key') key: string,
     @Query() query: CreateUserDto
-  ): Promise<User> {
+  ): Promise<userSchema> {
     return await this.usersService.createFirstAdmin(key, query);
   }
 }

@@ -1,14 +1,13 @@
-import type { IContact } from 'client/app/(server)/api/service/modules/contactService'
-import type { IGadget } from 'client/app/(server)/api/service/modules/gadgetService'
 import type { Metadata } from 'next'
 
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
-import { trpc } from '@/app/(utils)/trpc'
+import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
+import { outputGadgetSchema } from 'server/src/domain/gadgets/schemas/gadget.schema'
 import GadgetsSection from './(components)/GadgetsSection'
 
-export const runtime = 'edge'
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title:
     "Ремонт різних гаджетів: ноутбуки, телефони, планшети, комп'ютери, колонки, навушники, смарт-годинники, читалки, електронні книги, павербанки, джойстики в сервісному центрі FixLab",
@@ -27,14 +26,17 @@ export const metadata: Metadata = {
     'Ремонт та обслуговування різних гаджетів в FixLab',
   ],
 }
+
 const Repair = async () => {
-  const gadgetsData = (await trpc.getGadgetsQuery.query()) as IGadget[]
-  const contactsData = (await trpc.getContactsQuery.query()) as IContact[]
+  const gadgetsDataInit =
+    (await serverClient.gadgets.getAllPublished()) as outputGadgetSchema[]
+  const contactsDataInit = await serverClient.contacts.getAllPublished()
+
   return (
     <main className='flex-auto'>
-      <GadgetsSection gadgetsData={gadgetsData} />
+      <GadgetsSection gadgetsDataInit={gadgetsDataInit} />
       <ColaborationSection />
-      <AddressSection contactsData={contactsData} />
+      <AddressSection contactsDataInit={contactsDataInit} />
     </main>
   )
 }

@@ -1,10 +1,9 @@
-import fetchDataFromServer from '../helpers/fetchDataFromServer'
 import type { IBrand } from './brandService'
 import type { IImage } from './imageService'
 import type { IIssue } from './issueService'
 
 export interface IGadget {
-  _id: string
+  id: string
   slug: string
   isActive: boolean
   title: string
@@ -18,14 +17,4 @@ export interface IGadget {
   }
   brands: IBrand[]
   issues: IIssue[]
-}
-
-export const getAllGadgetsData = async (): Promise<IGadget[]> => {
-  const endpoint = '/gadgets'
-  return fetchDataFromServer(endpoint)
-}
-
-export const getSingleGadgetData = async (slug: string): Promise<IGadget> => {
-  const endpoint = `/gadgets/find-by-slug/${slug}`
-  return fetchDataFromServer(endpoint)
 }

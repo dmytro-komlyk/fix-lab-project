@@ -1,8 +1,12 @@
-import type { IContactsProps } from './(components)/AddressLocationCard'
+import { serverClient } from '../(utils)/trpc/serverClient'
 import { AddressLocationCard } from './(components)/AddressLocationCard'
 
-export const AddressSection: React.FC<IContactsProps> = async ({
-  contactsData,
+export const AddressSection = async ({
+  contactsDataInit,
+}: {
+  contactsDataInit: Awaited<
+    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+  >
 }) => {
   return (
     <section className='py-[102px] max-md:py-[56px]'>
@@ -11,7 +15,7 @@ export const AddressSection: React.FC<IContactsProps> = async ({
           Як нас знайти
         </h2>
         <ul className='flex w-full gap-8 max-lg:flex-col lg:gap-6'>
-          <AddressLocationCard contactsData={contactsData} />
+          <AddressLocationCard contactsDataInit={contactsDataInit} />
         </ul>
       </div>
     </section>

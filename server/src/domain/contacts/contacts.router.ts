@@ -5,7 +5,11 @@ import z from 'zod';
 import { TrpcService } from '../trpc/trpc.service';
 import { ContactsService } from './contacts.service';
 
-import { createContactSchema, updateContactSchema } from './schemas/contact.schema';
+import {
+  createContactSchema,
+  outputContactSchema,
+  updateContactSchema
+} from './schemas/contact.schema';
 
 @Injectable()
 export class ContactsRouter {
@@ -18,9 +22,11 @@ export class ContactsRouter {
     getAll: this.trpc.procedure.query(async () => {
       return await this.contactsService.findAll();
     }),
-    getAllPublished: this.trpc.procedure.query(async () => {
-      return await this.contactsService.findActive();
-    }),
+    getAllPublished: this.trpc.procedure
+      .output(z.array(outputContactSchema))
+      .query(async () => {
+        return await this.contactsService.findActive();
+      }),
     getById: this.trpc.procedure.input(z.string()).query(async ({ input }) => {
       return await this.contactsService.findById(input);
     }),

@@ -23,13 +23,13 @@ import { TrpcService } from './trpc.service';
 export class TrpcRouter {
   constructor(
     private readonly trpc: TrpcService,
-    private readonly gadget: GadgetsRouter,
     private readonly issues: IssuesRouter,
     private readonly benefits: BenefitsRouter,
     private readonly brands: BrandsRouter,
     private readonly articles: ArticlesRouter,
     private readonly contacts: ContactsRouter,
-    private readonly images: ImagesRouter
+    private readonly images: ImagesRouter,
+    private readonly gadget: GadgetsRouter
   ) {}
 
   appRouter = this.trpc.router({
@@ -48,13 +48,13 @@ export class TrpcRouter {
 
     const trpcRouter = new TrpcRouter(
       trpcService,
-      new GadgetsRouter(trpcService, new GadgetsService(prismaService)),
       new IssuesRouter(trpcService, new IssuesService(prismaService)),
       new BenefitsRouter(trpcService, new BenefitsService(prismaService)),
       new BrandsRouter(trpcService, new BrandsService(prismaService)),
       new ArticlesRouter(trpcService, new ArticlesService(prismaService)),
       new ContactsRouter(trpcService, new ContactsService(prismaService)),
-      new ImagesRouter(trpcService, new ImagesService(prismaService))
+      new ImagesRouter(trpcService, new ImagesService(prismaService)),
+      new GadgetsRouter(trpcService, new GadgetsService(prismaService))
     );
     return trpcRouter.appRouter;
   }

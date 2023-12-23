@@ -9,7 +9,11 @@ import { Brand } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
-import { createBrandSchema, updateBrandSchema } from './schemas/brand.schema';
+import {
+  createBrandSchema,
+  outputBrandSchema,
+  updateBrandSchema
+} from './schemas/brand.schema';
 
 @Injectable()
 export class BrandsService {
@@ -28,7 +32,7 @@ export class BrandsService {
     });
   }
 
-  public async findBySlug(slug: string): Promise<Brand> {
+  public async findBySlug(slug: string): Promise<outputBrandSchema> {
     const brand = await this.prisma.brand.findUnique({
       where: { slug },
       include: { icon: true }

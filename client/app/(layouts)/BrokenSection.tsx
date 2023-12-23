@@ -2,11 +2,12 @@
 
 import { AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { GadgetsList } from '../(pages)/repair/(components)/GadgetsList'
 import { GadgetsSlider } from '../(pages)/repair/(components)/GadgetsSlider'
-import type { IGadget } from '../(server)/api/service/modules/gadgetService'
+import { trpc } from '../(utils)/trpc/client'
+import { serverClient } from '../(utils)/trpc/serverClient'
 import Button from './(components)/Button'
 
 const InstantAdviceModal = dynamic(
@@ -16,10 +17,22 @@ const SuccessSubmitBanner = dynamic(
   () => import('./(components)/SuccessSubmitBanner'),
 )
 
-export interface IGadgetsProps {
-  gadgetsData: IGadget[]
-}
-export const BrokenSection: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
+export const BrokenSection = ({
+  gadgetsDataInit,
+}: {
+  gadgetsDataInit: Awaited<
+    ReturnType<(typeof serverClient)['gadgets']['getAllPublished']>
+  >
+}) => {
+  const { data: gadgetsData } = trpc.gadgets.getAllPublished.useQuery(
+    undefined,
+    {
+      initialData: gadgetsDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
+
   const [showInstantAdviceModal, setShowInstantAdviceModal] =
     useState<boolean>(false)
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)

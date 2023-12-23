@@ -5,7 +5,11 @@ import z from 'zod';
 import { TrpcService } from '../trpc/trpc.service';
 import { IssuesService } from './issues.service';
 
-import { createIssueSchema, updateIssueSchema } from './schemas/issue.schema';
+import {
+  createIssueSchema,
+  outputIssueSchema,
+  updateIssueSchema
+} from './schemas/issue.schema';
 
 @Injectable()
 export class IssuesRouter {
@@ -24,9 +28,12 @@ export class IssuesRouter {
     getById: this.trpc.procedure.input(z.string()).mutation(async ({ input }) => {
       return await this.issuesService.findById(input);
     }),
-    getBySlug: this.trpc.procedure.input(z.string()).query(async ({ input }) => {
-      return await this.issuesService.findBySlug(input);
-    }),
+    getBySlug: this.trpc.procedure
+      .input(z.string())
+      .output(outputIssueSchema)
+      .query(async ({ input }) => {
+        return await this.issuesService.findBySlug(input);
+      }),
     create: this.trpc.procedure
       .input(createIssueSchema)
       .mutation(async ({ input }) => {

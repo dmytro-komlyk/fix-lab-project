@@ -35,7 +35,7 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    const user = await this.usersService.findOneByQuery({ token });
+    const user = await this.usersService.findByQuery({ token });
 
     if (!user) {
       throw new UnauthorizedException();

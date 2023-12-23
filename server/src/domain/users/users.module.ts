@@ -1,19 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
 
-import { NotificationsModule } from '@domain/notifications/notifications.module';
+import { PrismaModule } from '../prisma/prisma.module';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-
-import { User, UserSchema } from './schemas/user.schema';
+import { NotificationsModule } from '@domain/notifications/notifications.module';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-    ConfigModule,
-    NotificationsModule
-  ],
+  imports: [PrismaModule, ConfigModule, NotificationsModule],
   providers: [UsersService],
   controllers: [UsersController],
   exports: [UsersService]
