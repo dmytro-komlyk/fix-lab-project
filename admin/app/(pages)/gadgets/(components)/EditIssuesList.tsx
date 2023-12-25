@@ -1,23 +1,16 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable import/no-extraneous-dependencies */
-
 'use client'
 
-import type {
-  IGadget,
-  IIssue,
-} from '@admin/app/(server)/api/service/modules/gadgetService'
 import {
-  closestCenter,
   DndContext,
   KeyboardSensor,
   PointerSensor,
+  closestCenter,
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
 import {
-  arrayMove,
   SortableContext,
+  arrayMove,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
@@ -26,30 +19,30 @@ import { IoMdAddCircle } from 'react-icons/io'
 
 import { DraggableIssueItem } from './DraggableIssueItem'
 
-interface IIssuesProps {
-  newGadgetData: IGadget
-  issuesData: IIssue[]
-  setNewGadgetData: (data: IGadget) => void
+interface IssuesProps {
+  newGadgetData: Gadget
+  issuesData: Issue[]
+  setNewGadgetData: (data: Gadget) => void
 }
 
-const EditIssuesList: React.FC<IIssuesProps> = ({
+const EditIssuesList: React.FC<IssuesProps> = ({
   newGadgetData,
   issuesData,
   setNewGadgetData,
 }) => {
-  const [filteredIssuesData, setFilteredIssuesData] = useState<IIssue[]>(
+  const [filteredIssuesData, setFilteredIssuesData] = useState<Issue[]>(
     issuesData.filter(
-      item => !newGadgetData.issues.some(issue => issue._id === item._id),
+      item => !newGadgetData.issues.some(issue => issue.id === item.id),
     ),
   )
 
-  const handleAddIssueItemClick = (item: IIssue) => {
+  const handleAddIssueItemClick = (item: Issue) => {
     // Clone the existing array to avoid mutating state directly
     const updatedSelectedIssuesArray = [...newGadgetData.issues]
 
-    // Check if the item is already in the array based on its _id
+    // Check if the item is already in the array based on its id
     const index = updatedSelectedIssuesArray.findIndex(
-      selectedIssue => selectedIssue._id === item._id,
+      selectedIssue => selectedIssue.id === item.id,
     )
 
     // If it's not in the array, add it; otherwise, remove it
@@ -68,18 +61,18 @@ const EditIssuesList: React.FC<IIssuesProps> = ({
     // Remove the selected item from the filteredIssuesData array
     setFilteredIssuesData(prevFilteredIssuesData =>
       prevFilteredIssuesData.filter(
-        filteredIssue => filteredIssue._id !== item._id,
+        filteredIssue => filteredIssue.id !== item.id,
       ),
     )
   }
 
-  const handleRemoveIssueItemClick = (clickedIssue: IIssue) => {
+  const handleRemoveIssueItemClick = (clickedIssue: Issue) => {
     // Clone the existing array to avoid mutating state directly
     const updatedSelectedIssuesArray = [...newGadgetData.issues]
 
-    // Check if the item is already in the array based on its _id
+    // Check if the item is already in the array based on its id
     const index = updatedSelectedIssuesArray.findIndex(
-      selectedIssue => selectedIssue._id === clickedIssue._id,
+      selectedIssue => selectedIssue.id === clickedIssue.id,
     )
 
     // If it's not in the array, add it; otherwise, remove it
@@ -92,7 +85,7 @@ const EditIssuesList: React.FC<IIssuesProps> = ({
     // Remove the selected item from the filteredIssuesData array
     setFilteredIssuesData(prevFilteredIssuesData =>
       prevFilteredIssuesData.filter(
-        filteredIssue => filteredIssue._id !== clickedIssue._id,
+        filteredIssue => filteredIssue.id !== clickedIssue.id,
       ),
     )
 
@@ -107,7 +100,7 @@ const EditIssuesList: React.FC<IIssuesProps> = ({
       issuesData.filter(
         item =>
           !updatedSelectedIssuesArray.some(
-            selectedIssue => selectedIssue._id === item._id,
+            selectedIssue => selectedIssue.id === item.id,
           ),
       ),
     )
@@ -130,8 +123,8 @@ const EditIssuesList: React.FC<IIssuesProps> = ({
     if (event.id !== over.id) {
       const updatedIssues = arrayMove(
         newGadgetData.issues,
-        newGadgetData.issues.findIndex(item => item._id === active.id),
-        newGadgetData.issues.findIndex(item => item._id === over.id),
+        newGadgetData.issues.findIndex(item => item.id === active.id),
+        newGadgetData.issues.findIndex(item => item.id === over.id),
       )
 
       setNewGadgetData({ ...newGadgetData, issues: updatedIssues })
@@ -150,14 +143,14 @@ const EditIssuesList: React.FC<IIssuesProps> = ({
           onDragEnd={handleDragEnd}
         >
           <SortableContext
-            items={newGadgetData.issues.map(item => ({ id: item._id }))}
+            items={newGadgetData.issues.map(item => ({ id: item.id }))}
             strategy={verticalListSortingStrategy}
           >
             <ul className='relative flex w-[380px]  flex-col items-start'>
               {newGadgetData.issues.map(item => (
                 <DraggableIssueItem
-                  key={item._id}
-                  id={item._id}
+                  key={item.id}
+                  id={item.id}
                   item={item}
                   onRemove={handleRemoveIssueItemClick}
                 />
@@ -175,7 +168,7 @@ const EditIssuesList: React.FC<IIssuesProps> = ({
           {filteredIssuesData.map(item => (
             <li
               className='flex w-full items-center justify-between gap-2 border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 first:rounded-t-xl last:rounded-b-xl'
-              key={item._id}
+              key={item.id}
             >
               <p className='p-4 font-exo_2 text-md font-semibold text-dark-blue max-md:text-lg'>
                 {item?.title || 'No title'}

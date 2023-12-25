@@ -1,16 +1,13 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-
 'use client'
 
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
-import getData from '@admin/app/(server)/api/service/admin/getData'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiFillCloseSquare } from 'react-icons/ai'
 import { FaFileImage, FaSave } from 'react-icons/fa'
@@ -27,15 +24,15 @@ export interface IImageItem {
     path: string
   }
 }
-
-const AddImagesSection = () => {
+interface IAllImagesProps {
+  allImagesData: Image[]
+}
+const AddImagesSection: React.FC<IAllImagesProps> = ({ allImagesData }) => {
   const [altImage, setAltImage] = useState<string | ''>('')
-  const [imagesData, setImagesData] = useState([])
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [contentImage, setContentImage] = useState<string | ArrayBuffer | null>(
     null,
   )
-
   const handleCopyLink = (url: string) => {
     navigator.clipboard.writeText(url)
     toast.success(`Посилання скопійовано!`, {
@@ -46,19 +43,6 @@ const AddImagesSection = () => {
       },
     })
   }
-
-  const fetchImages = async () => {
-    try {
-      const res = await getData('/images/pictures/all')
-      setImagesData(res)
-    } catch (error) {
-      throw new Error('')
-    }
-  }
-
-  useEffect(() => {
-    fetchImages()
-  }, [])
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.files && e.currentTarget.files.length > 0) {
@@ -84,7 +68,6 @@ const AddImagesSection = () => {
           alt: altImage,
           type: 'picture',
         })
-        fetchImages()
         setAltImage('')
         setContentImage(null)
         setSelectedImage(null)
@@ -104,7 +87,7 @@ const AddImagesSection = () => {
     }
   }
 
-  const reversedImagesData: IImageItem[] = [...imagesData].reverse()
+  const reversedImagesData: Image[] = [...allImagesData].reverse()
 
   return (
     <Accordion
@@ -217,7 +200,7 @@ const AddImagesSection = () => {
         >
           {reversedImagesData.map(item => {
             return (
-              <SwiperSlide key={item._id} style={{ width: 600 }}>
+              <SwiperSlide key={item.id} style={{ width: 600 }}>
                 <div className='relative my-6 mb-10 flex justify-center bg-modal-overlay '>
                   <Image
                     className='h-[140px] max-w-[280px]  object-contain object-center opacity-100 '

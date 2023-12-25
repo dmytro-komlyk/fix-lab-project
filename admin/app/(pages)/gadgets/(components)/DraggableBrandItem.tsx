@@ -1,15 +1,11 @@
-'use client'
-
-import type { IBrand } from '@admin/app/(server)/api/service/modules/gadgetService'
 import { useSortable } from '@dnd-kit/sortable'
-import Image from 'next/image'
 import { GoGrabber } from 'react-icons/go'
 import { IoIosRemoveCircle } from 'react-icons/io'
 
 interface DraggableBrandItemProps {
   id: string
-  item: IBrand
-  onRemove: (item: IBrand) => void
+  item: Brand
+  onRemove: (item: Brand) => void
 }
 
 export function DraggableBrandItem({
@@ -30,7 +26,7 @@ export function DraggableBrandItem({
   }
   return (
     <li
-      key={item._id}
+      key={item.id}
       ref={setNodeRef}
       style={style}
       {...attributes}
@@ -38,7 +34,7 @@ export function DraggableBrandItem({
       className='flex w-full cursor-grab items-center justify-between gap-2 border-b-[0.5px] border-dark-blue bg-white-dis opacity-60   first:rounded-t-xl last:rounded-b-xl '
     >
       <div className='flex items-center gap-2 p-4'>
-        {item.icon && (
+        {/* {item.icon && (
           <Image
             className='h-[40px] w-[40px] object-center opacity-100'
             alt={item.icon.alt}
@@ -46,7 +42,7 @@ export function DraggableBrandItem({
             width={0}
             height={0}
           />
-        )}
+        )} */}
         <p className='font-exo_2 text-md font-semibold text-dark-blue max-md:text-lg '>
           {item?.title || 'No title'}
         </p>

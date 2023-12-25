@@ -1,14 +1,11 @@
-'use client'
-
-import type { IIssue } from '@admin/app/(server)/api/service/modules/gadgetService'
 import { useSortable } from '@dnd-kit/sortable'
 import { GoGrabber } from 'react-icons/go'
 import { IoIosRemoveCircle } from 'react-icons/io'
 
 interface DraggableIssueItemProps {
   id: string
-  item: IIssue
-  onRemove: (item: IIssue) => void
+  item: Issue
+  onRemove: (item: Issue) => void
 }
 
 export function DraggableIssueItem({
@@ -29,7 +26,7 @@ export function DraggableIssueItem({
   }
   return (
     <li
-      key={item._id}
+      key={item.id}
       ref={setNodeRef}
       style={style}
       {...attributes}

@@ -1,7 +1,7 @@
-import getData from '@admin/app/(server)/api/service/admin/getData'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import EditGadgetForm from '../(components)/EditGadgetForm '
 
 interface IContactAdminProps {
@@ -10,17 +10,14 @@ interface IContactAdminProps {
   }
 }
 
-export const runtime = 'edge'
-export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 const GadgetPage: React.FC<IContactAdminProps> = async ({ params }) => {
-  const gadgetUrl = `/gadgets/${params.gadget}`
-  const issuesUrl = `/issues/all`
-  const brandsUrl = `/brands/all`
-
-  const issuesData = await getData(issuesUrl)
-  const gadgetData = await getData(gadgetUrl)
-  const brandsData = await getData(brandsUrl)
+  const gadgetData = (await serverClient.gadgets.getById(
+    params.gadget,
+  )) as Gadget
+  const issuesData = (await serverClient.issues.getAll()) as Issue[]
+  const brandsData = (await serverClient.brands.getAll()) as Brand[]
   return (
     <main className=' flex flex-auto'>
       <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>

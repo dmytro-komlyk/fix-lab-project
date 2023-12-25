@@ -5,11 +5,6 @@
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
-import type {
-  IBrand,
-  IGadget,
-  IIssue,
-} from '@admin/app/(server)/api/service/modules/gadgetService'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -21,9 +16,9 @@ import EditBrandsList from './EditBrandsList'
 import EditIssuesList from './EditIssuesList'
 
 interface IAdminGadget {
-  gadgetData: IGadget
-  issuesData: IIssue[]
-  brandsData: IBrand[]
+  gadgetData: Gadget
+  issuesData: Issue
+  brandsData: Brand
 }
 
 const EditGadgetForm: React.FC<IAdminGadget> = ({
@@ -33,7 +28,7 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
 }) => {
   const router = useRouter()
   const [newGadgetData, setNewGadgetData] = useLocalStorage(
-    `newGadgetData${gadgetData._id}`,
+    `newGadgetData${gadgetData.id}`,
     {
       ...gadgetData,
     },
@@ -99,7 +94,7 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
   const handleImageSave = async (id: string) => {
     try {
       if (id) {
-        const deleteEndpoint = `/images/${gadgetData.icon._id}`
+        const deleteEndpoint = `/images/${gadgetData.icon.id}`
 
         await deleteData(deleteEndpoint)
         if (deleteEndpoint) {
@@ -137,20 +132,20 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
           throw new Error('Error uploading image')
         }
 
-        if (uploadResponse.data._id) {
+        if (uploadResponse.data.id) {
           // const response = await sendPutRequest(
-          //   `/gadgets/${newGadgetData._id}`,
+          //   `/gadgets/${newGadgetData.id}`,
           //   {
           //     ...newGadgetData,
-          //     icon: uploadResponse.data._id,
-          //     gallery: newGadgetData.gallery.map(item => item._id) || [],
-          //     issues: newGadgetData.issues.map(item => item._id) || [],
-          //     brands: newGadgetData.brands.map(item => item._id) || [],
+          //     icon: uploadResponse.data.id,
+          //     gallery: newGadgetData.gallery.map(item => item.id) || [],
+          //     issues: newGadgetData.issues.map(item => item.id) || [],
+          //     brands: newGadgetData.brands.map(item => item.id) || [],
           //   },
           // )
 
           // if (response.status === 200) {
-          //   await handleImageSave(uploadResponse.data._id)
+          //   await handleImageSave(uploadResponse.data.id)
           //   toast.success(`Оновлення збережено!`, {
           //     style: {
           //       borderRadius: '10px',
@@ -163,7 +158,7 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
           //   console.error('Error updating contact data')
           // }
           editGadget.mutate({
-            id: newGadgetData._id,
+            id: newGadgetData.id,
             slug: newGadgetData.slug,
             title: newGadgetData.title,
             metadata: {
@@ -172,18 +167,18 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
               keywords: newGadgetData.metadata.title,
             },
             description: newGadgetData.description,
-            icon_id: uploadResponse.data._id,
-            gallery_ids: newGadgetData.gallery.map(item => item._id) || [],
-            issues_ids: newGadgetData.issues.map(item => item._id) || [],
-            brands_ids: newGadgetData.brands.map(item => item._id) || [],
+            icon_id: uploadResponse.data.id,
+            gallery_ids: newGadgetData.gallery.map(item => item.id) || [],
+            issues_ids: newGadgetData.issues.map(item => item.id) || [],
+            brands_ids: newGadgetData.brands.map(item => item.id) || [],
           })
-          await handleImageSave(uploadResponse.data._id)
+          await handleImageSave(uploadResponse.data.id)
         } else {
           console.error('Error uploading image')
         }
       } else {
         editGadget.mutate({
-          id: newGadgetData._id,
+          id: newGadgetData.id,
           slug: newGadgetData.slug,
           title: newGadgetData.title,
           metadata: {
@@ -192,17 +187,17 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
             keywords: newGadgetData.metadata.title,
           },
           description: newGadgetData.description,
-          icon_id: gadgetData.icon._id || '',
-          gallery_ids: newGadgetData.gallery.map(item => item._id) || [],
-          issues_ids: newGadgetData.issues.map(item => item._id) || [],
-          brands_ids: newGadgetData.brands.map(item => item._id) || [],
+          icon_id: gadgetData.icon.id || '',
+          gallery_ids: newGadgetData.gallery.map(item => item.id) || [],
+          issues_ids: newGadgetData.issues.map(item => item.id) || [],
+          brands_ids: newGadgetData.brands.map(item => item.id) || [],
         })
-        // const res = await sendPutRequest(`/gadgets/${newGadgetData._id}`, {
+        // const res = await sendPutRequest(`/gadgets/${newGadgetData.id}`, {
         //   ...newGadgetData,
-        //   icon: gadgetData.icon._id || '',
-        //   gallery: newGadgetData.gallery.map(item => item._id) || [],
-        //   issues: newGadgetData.issues.map(item => item._id) || [],
-        //   brands: newGadgetData.brands.map(item => item._id) || [],
+        //   icon: gadgetData.icon.id || '',
+        //   gallery: newGadgetData.gallery.map(item => item.id) || [],
+        //   issues: newGadgetData.issues.map(item => item.id) || [],
+        //   brands: newGadgetData.brands.map(item => item.id) || [],
         // })
         // if (res.status === 200) {
         //   toast.success(`Оновлення збережено!`, {

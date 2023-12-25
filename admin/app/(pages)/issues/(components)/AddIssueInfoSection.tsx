@@ -149,6 +149,7 @@ const AddIssueInfoSection = () => {
       }
     }
   }
+
   const handleImageUpload = async () => {
     try {
       if (selectedImage) {

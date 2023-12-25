@@ -43,14 +43,14 @@ import { auth } from '../../../../../auth'
 const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL as string
 
 export default async function getData(url: string) {
-  const session = await auth()
-  if (session?.user.name === undefined) {
-    throw new Error('Headers are undefined')
-  }
+  // const session = await auth()
+  // if (session?.user.name === undefined) {
+  //   throw new Error('Headers are undefined')
+  // }
   const res = await fetch(`${apiUrl}${url}`, {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${session.user.token}`,
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTg5ODE2YjNiNzk3OGQ1MmNhMThkNmYiLCJpYXQiOjE3MDM1MTAzODJ9.oSu2p7ehVxcORXEKkZ-oU64nDDi7u5pNB7A9AU_PvFY`,
     },
     cache: 'no-store',
   })

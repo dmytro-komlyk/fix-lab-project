@@ -1,7 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-
 'use client'
 
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
@@ -14,10 +10,13 @@ import { trpc } from 'admin/app/(utils)/trpc/client'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
+import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
-
-const AddBrandForm = () => {
+interface IBrandProps {
+  allImagesData: Image[]
+}
+const AddBrandForm: React.FC<IBrandProps> = ({ allImagesData }) => {
   const router = useRouter()
   const [brandTitle, setBrandTitle] = useLocalStorage<string | ''>(
     'addBrandTitle',
@@ -294,9 +293,9 @@ const AddBrandForm = () => {
               </label>
             </div>
           </form>
-          {/* <div className='w-full'>
-        <AddImagesSection />
-      </div> */}
+          <div className='w-full'>
+            <AddImagesSection allImagesData={allImagesData} />
+          </div>
           <div className='flex w-full flex-col justify-center gap-[50px]'>
             <div className='flex w-full flex-col  gap-2 '>
               <p className='text-center font-exo_2 text-xl text-white-dis'>

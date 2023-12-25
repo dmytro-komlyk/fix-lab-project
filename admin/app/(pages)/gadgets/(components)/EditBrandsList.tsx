@@ -1,12 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable import/no-extraneous-dependencies */
-
-'use client'
-
-import type {
-  IBrand,
-  IGadget,
-} from '@admin/app/(server)/api/service/modules/gadgetService'
 import {
   closestCenter,
   DndContext,
@@ -21,16 +12,15 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import Image from 'next/image'
 import { useState } from 'react'
 import { IoMdAddCircle } from 'react-icons/io'
 
 import { DraggableBrandItem } from './DraggableBrandItem'
 
 interface IBrandsProps {
-  newGadgetData: IGadget
-  brandsData: IBrand[]
-  setNewGadgetData: (data: IGadget) => void
+  newGadgetData: Gadget
+  brandsData: Brand[]
+  setNewGadgetData: (data: Gadget) => void
 }
 
 const EditBrandsList: React.FC<IBrandsProps> = ({
@@ -38,19 +28,19 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
   newGadgetData,
   setNewGadgetData,
 }) => {
-  const [filteredBrandsData, setFilteredBrandsData] = useState<IBrand[]>(
+  const [filteredBrandsData, setFilteredBrandsData] = useState<Brand[]>(
     brandsData.filter(
-      item => !newGadgetData.brands.some(brand => brand._id === item._id),
+      item => !newGadgetData.brands.some(brand => brand.id === item.id),
     ),
   )
 
-  const handleAddBrandItemClick = (item: IBrand) => {
+  const handleAddBrandItemClick = (item: Brand) => {
     // Clone the existing array to avoid mutating state directly
     const updatedSelectedBrandsArray = [...newGadgetData.brands]
 
-    // Check if the item is already in the array based on its _id
+    // Check if the item is already in the array based on its id
     const index = updatedSelectedBrandsArray.findIndex(
-      selectedBrand => selectedBrand._id === item._id,
+      selectedBrand => selectedBrand.id === item.id,
     )
 
     // If it's not in the array, add it; otherwise, remove it
@@ -69,18 +59,18 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
     // Remove the selected item from the filteredBrandsData array
     setFilteredBrandsData(prevFilteredBrandsData =>
       prevFilteredBrandsData.filter(
-        filteredBrand => filteredBrand._id !== item._id,
+        filteredBrand => filteredBrand.id !== item.id,
       ),
     )
   }
 
-  const handleRemoveBrandItemClick = (clickedBrand: IBrand) => {
+  const handleRemoveBrandItemClick = (clickedBrand: Brand) => {
     // Clone the existing array to avoid mutating state directly
     const updatedSelectedBrandsArray = [...newGadgetData.brands]
 
-    // Check if the item is already in the array based on its _id
+    // Check if the item is already in the array based on its id
     const index = updatedSelectedBrandsArray.findIndex(
-      selectedBrand => selectedBrand._id === clickedBrand._id,
+      selectedBrand => selectedBrand.id === clickedBrand.id,
     )
 
     // If it's not in the array, add it; otherwise, remove it
@@ -93,7 +83,7 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
     // Remove the selected item from the filteredBrandsData array
     setFilteredBrandsData(prevFilteredBrandsData =>
       prevFilteredBrandsData.filter(
-        filteredBrand => filteredBrand._id !== clickedBrand._id,
+        filteredBrand => filteredBrand.id !== clickedBrand.id,
       ),
     )
 
@@ -106,7 +96,7 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
       brandsData.filter(
         item =>
           !updatedSelectedBrandsArray.some(
-            selectedBrand => selectedBrand._id === item._id,
+            selectedBrand => selectedBrand.id === item.id,
           ),
       ),
     )
@@ -129,9 +119,9 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
       const updatedIssues = arrayMove(
         newGadgetData.brands,
         newGadgetData.brands.findIndex(
-          item => item._id === active.id.toString(),
+          item => item.id === active.id.toString(),
         ),
-        newGadgetData.brands.findIndex(item => item._id === over.id.toString()),
+        newGadgetData.brands.findIndex(item => item.id === over.id.toString()),
       )
 
       setNewGadgetData({ ...newGadgetData, brands: updatedIssues })
@@ -150,14 +140,14 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
           onDragEnd={handleDragEnd}
         >
           <SortableContext
-            items={newGadgetData.brands.map(item => ({ id: item._id }))}
+            items={newGadgetData.brands.map(item => ({ id: item.id }))}
             strategy={verticalListSortingStrategy}
           >
             <ul className='relative flex w-[380px]  flex-col items-start'>
               {newGadgetData.brands.map(item => (
                 <DraggableBrandItem
-                  key={item._id}
-                  id={item._id}
+                  key={item.id}
+                  id={item.id}
                   item={item}
                   onRemove={handleRemoveBrandItemClick}
                 />
@@ -175,10 +165,10 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
           {filteredBrandsData.map(item => (
             <li
               className='flex w-full items-center justify-between gap-2 border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 first:rounded-t-xl last:rounded-b-xl'
-              key={item._id}
+              key={item.id}
             >
               <div className='flex items-center gap-2 p-4'>
-                {item.icon && (
+                {/* {item.icon && (
                   <Image
                     className='h-[40px] w-[40px] object-center opacity-100'
                     alt={item.icon?.alt || item.title}
@@ -186,7 +176,7 @@ const EditBrandsList: React.FC<IBrandsProps> = ({
                     width={0}
                     height={0}
                   />
-                )}
+                )} */}
                 <p className='font-exo_2 text-md font-semibold text-dark-blue max-md:text-lg '>
                   {item?.title || 'No title'}
                 </p>
