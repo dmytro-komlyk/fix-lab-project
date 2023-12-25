@@ -1,11 +1,11 @@
+import { serverClient } from '@client/app/(utils)/trpc/serverClient'
+import type { outputBrandSchema } from '@server/domain/brands/schemas/brand.schema'
+import type { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
+import type { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
 import type { Metadata } from 'next'
 
 import { AddressSection, ColaborationSection } from '@/app/(layouts)'
 
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
-import { outputBrandSchema } from 'server/src/domain/brands/schemas/brand.schema'
-import { outputContactSchema } from 'server/src/domain/contacts/schemas/contact.schema'
-import { outputGadgetSchema } from 'server/src/domain/gadgets/schemas/gadget.schema'
 import BrandsSection from '../../(components)/BrandsSection'
 
 interface IndexProps {

@@ -1,9 +1,7 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
+import { serverClient } from '@client/app/(utils)/trpc/serverClient'
+import type { outputArticleWithPaginationSchema } from '@server/domain/articles/schemas/article.schema'
 import type { Metadata } from 'next'
 
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
-import { outputArticleWithPaginationSchema } from 'server/src/domain/articles/schemas/article.schema'
 import MainBlogSection from './(components)/MainBlogSection'
 
 export const dynamic = 'force-dynamic'

@@ -1,10 +1,10 @@
 'use client'
 
-import { SERVER_URL } from 'client/app/(lib)/constants'
-import { trpc } from 'client/app/(utils)/trpc/client'
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
+import { SERVER_URL } from '@client/app/(lib)/constants'
+import { trpc } from '@client/app/(utils)/trpc/client'
+import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
+import type { outputBenefitSchema } from '@server/domain/benefits/schemas/benefit.schema'
 import Image from 'next/image'
-import { outputBenefitSchema } from 'server/src/domain/benefits/schemas/benefit.schema'
 
 export const BenefitsList = ({
   itemsInit,

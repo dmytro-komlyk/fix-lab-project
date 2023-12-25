@@ -1,10 +1,8 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
+import { serverClient } from '@client/app/(utils)/trpc/serverClient'
+import type { outputArticleSchema } from '@server/domain/articles/schemas/article.schema'
+import type { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
 import type { Metadata } from 'next'
 
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
-import { outputArticleSchema } from 'server/src/domain/articles/schemas/article.schema'
-import { outputContactSchema } from 'server/src/domain/contacts/schemas/contact.schema'
 import SingleArticlePage from '../../(components)/SingleArticlePage'
 
 export const dynamic = 'force-dynamic'

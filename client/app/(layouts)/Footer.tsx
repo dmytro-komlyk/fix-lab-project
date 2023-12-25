@@ -6,7 +6,7 @@ import { LiaViber } from 'react-icons/lia'
 
 // import type { IContactsProps } from './(components)/AddressLocationCard'
 import { trpc } from '../(utils)/trpc/client'
-import { serverClient } from '../(utils)/trpc/serverClient'
+import type { serverClient } from '../(utils)/trpc/serverClient'
 
 export const Footer = ({
   contactsDataInit,

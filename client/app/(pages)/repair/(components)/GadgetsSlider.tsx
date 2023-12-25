@@ -1,8 +1,7 @@
+import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
 import Link from 'next/link'
-
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
 export const GadgetsSlider = ({
   gadgetsData,

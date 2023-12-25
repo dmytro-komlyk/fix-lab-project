@@ -1,9 +1,9 @@
+import { serverClient } from '@client/app/(utils)/trpc/serverClient'
+import type { outputIssueSchema } from '@server/domain/issues/schemas/issue.schema'
 import type { Metadata } from 'next'
 
 import { AddressSection } from '@/app/(layouts)'
 
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
-import { outputIssueSchema } from 'server/src/domain/issues/schemas/issue.schema'
 import IssueSection from '../../(components)/IssueSection'
 
 interface IndexProps {

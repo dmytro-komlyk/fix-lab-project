@@ -1,12 +1,11 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { AOSInit } from 'client/app/(components)/AOSInit'
+import { AOSInit } from '@client/app/(components)/AOSInit'
+import { SERVER_URL } from '@client/app/(lib)/constants'
+import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
+import type { outputArticleSchema } from '@server/domain/articles/schemas/article.schema'
 import Image from 'next/image'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { SERVER_URL } from 'client/app/(lib)/constants'
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
-import { outputArticleSchema } from 'server/src/domain/articles/schemas/article.schema'
 import PaginationControls from './PaginationControls'
 
 const MainBlogSection = ({
@@ -24,16 +23,16 @@ const MainBlogSection = ({
       <div className='container flex flex-col gap-7 pb-[70px] pt-[158px] max-lg:pb-[50px] lg:px-0'>
         <div className='flex flex-wrap items-center gap-1'>
           <Link
-            className='text-mid-blue flex items-center text-base font-[400] transition-opacity  hover:opacity-70 focus:opacity-70'
+            className='flex items-center text-base font-[400] text-mid-blue transition-opacity  hover:opacity-70 focus:opacity-70'
             href='/'
           >
             <p> Головна</p> <MdKeyboardArrowRight size={25} />
           </Link>
           <Link
-            className='text-mid-blue flex items-center text-base font-[400] transition-opacity  hover:opacity-70 focus:opacity-70'
+            className='flex items-center text-base font-[400] text-mid-blue transition-opacity  hover:opacity-70 focus:opacity-70'
             href='/blog'
           >
-            <p className='text-mid-blue text-base font-[400] opacity-70'>
+            <p className='text-base font-[400] text-mid-blue opacity-70'>
               Блог
             </p>
           </Link>

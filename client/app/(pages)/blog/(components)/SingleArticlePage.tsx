@@ -1,18 +1,18 @@
 'use client'
 
+import RenderMarkdown from '@client/app/(components)/RenderMarkdown'
+import { SERVER_URL } from '@client/app/(lib)/constants'
+import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
 import { AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
+import { BiMap } from 'react-icons/bi'
 import { MdKeyboardArrowRight } from 'react-icons/md'
+import { TbPhone } from 'react-icons/tb'
 
 import Button from '@/app/(layouts)/(components)/Button'
-import RenderMarkdown from 'client/app/(components)/RenderMarkdown'
-import { SERVER_URL } from 'client/app/(lib)/constants'
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
-import { BiMap } from 'react-icons/bi'
-import { TbPhone } from 'react-icons/tb'
 
 const InstantAdviceModal = dynamic(
   () => import('@/app/(layouts)/(components)/InstantAdviceModal'),
