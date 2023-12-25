@@ -1,13 +1,12 @@
+import { SERVER_URL } from '@client/app/(lib)/constants'
+import { trpc } from '@client/app/(utils)/trpc/client'
+import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-
-import { SERVER_URL } from 'client/app/(lib)/constants'
-import { trpc } from 'client/app/(utils)/trpc/client'
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
 export const BrandsSlider = ({
   gadgetDataInit,

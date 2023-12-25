@@ -75,7 +75,7 @@ export class UsersService {
     const password = await PasswordEncryptHelper(dto.password);
 
     const createdUser = await this.prisma.user.create({
-      data: { ...dto, password }
+      data: { ...dto, password, token: '' }
     });
 
     const user = await this.prisma.user.findFirst({

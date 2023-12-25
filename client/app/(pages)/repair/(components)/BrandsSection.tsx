@@ -1,5 +1,8 @@
 'use client'
 
+import { SERVER_URL } from '@client/app/(lib)/constants'
+import { trpc } from '@client/app/(utils)/trpc/client'
+import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
 import { AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
@@ -12,9 +15,6 @@ import RenderMarkdown from '@/app/(components)/RenderMarkdown'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
 
-import { SERVER_URL } from 'client/app/(lib)/constants'
-import { trpc } from 'client/app/(utils)/trpc/client'
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 import { BrandsSlider } from './BrandsSlider'
 
 const InstantAdviceModal = dynamic(

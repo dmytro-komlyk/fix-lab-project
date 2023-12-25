@@ -1,10 +1,10 @@
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
+import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
+import type { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BiMap } from 'react-icons/bi'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 import { TbClockHour9 } from 'react-icons/tb'
-import { outputContactSchema } from 'server/src/domain/contacts/schemas/contact.schema'
 
 const ContactsSection = ({
   contactsData,

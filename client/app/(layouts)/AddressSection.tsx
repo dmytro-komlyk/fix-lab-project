@@ -1,4 +1,4 @@
-import { serverClient } from '../(utils)/trpc/serverClient'
+import type { serverClient } from '../(utils)/trpc/serverClient'
 import { AddressLocationCard } from './(components)/AddressLocationCard'
 
 export const AddressSection = async ({

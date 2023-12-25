@@ -1,11 +1,11 @@
 'use client'
 
+import type { serverClient } from 'client/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { SERVER_URL } from 'client/app/(lib)/constants'
-import { trpc } from 'client/app/(utils)/trpc/client'
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
+import { SERVER_URL } from '../../(lib)/constants'
+import { trpc } from '../../(utils)/trpc/client'
 
 export const AddressLocationCard = ({
   contactsDataInit,

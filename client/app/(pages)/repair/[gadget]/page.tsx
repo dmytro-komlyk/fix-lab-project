@@ -1,3 +1,5 @@
+import { serverClient } from '@client/app/(utils)/trpc/serverClient'
+import type { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
 import type { Metadata } from 'next'
 
 import {
@@ -6,8 +8,6 @@ import {
   ColaborationSection,
 } from '@/app/(layouts)'
 
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
-import { outputGadgetSchema } from 'server/src/domain/gadgets/schemas/gadget.schema'
 import SingleGadgetSection from '../(components)/SingleGadgetSection'
 
 interface IndexProps {

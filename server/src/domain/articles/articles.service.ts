@@ -27,8 +27,7 @@ export class ArticlesService {
 
   public async findWithPagination({
     page = 1,
-    limit = 1000000,
-    sort = 'desc'
+    limit = 1000000
   }: paginationArticleSchema): Promise<outputArticleWithPaginationSchema> {
     const result = {
       itemsCount: 0,

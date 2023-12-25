@@ -7,7 +7,7 @@ import { useCallback, useState } from 'react'
 import { GadgetsList } from '../(pages)/repair/(components)/GadgetsList'
 import { GadgetsSlider } from '../(pages)/repair/(components)/GadgetsSlider'
 import { trpc } from '../(utils)/trpc/client'
-import { serverClient } from '../(utils)/trpc/serverClient'
+import type { serverClient } from '../(utils)/trpc/serverClient'
 import Button from './(components)/Button'
 
 const InstantAdviceModal = dynamic(

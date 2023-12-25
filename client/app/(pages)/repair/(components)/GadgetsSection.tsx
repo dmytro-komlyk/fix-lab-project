@@ -1,5 +1,7 @@
 'use client'
 
+import { trpc } from '@client/app/(utils)/trpc/client'
+import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
 import { AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -8,8 +10,6 @@ import { MdKeyboardArrowRight } from 'react-icons/md'
 
 import Button from '@/app/(layouts)/(components)/Button'
 
-import { trpc } from 'client/app/(utils)/trpc/client'
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 import { GadgetsList } from './GadgetsList'
 import { GadgetsSlider } from './GadgetsSlider'
 

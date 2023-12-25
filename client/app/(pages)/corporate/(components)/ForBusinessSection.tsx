@@ -1,5 +1,7 @@
 'use client'
 
+import { trpc } from '@client/app/(utils)/trpc/client'
+import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
 import { AnimatePresence } from 'framer-motion'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
@@ -10,11 +12,8 @@ import { MdKeyboardArrowRight } from 'react-icons/md'
 import { useWindowSize } from '@/app/(hooks)/useWindowResize'
 import Button from '@/app/(layouts)/(components)/Button'
 import CallUsCard from '@/app/(layouts)/(components)/CallUsCard'
-import type { IContact } from '@/app/(server)/api/service/modules/contactService'
 
-import type { IBenefitItem } from './BenefitsList'
 import { BenefitsList } from './BenefitsList'
-import type { IGadgetItem } from './GadgetsList'
 import { GadgetsList } from './GadgetsList'
 
 const InstantAdviceModal = dynamic(
@@ -24,26 +23,24 @@ const SuccessSubmitBanner = dynamic(
   () => import('@/app/(layouts)/(components)/SuccessSubmitBanner'),
 )
 
-export interface IForBusinessSectionProps {
-  contactsData: IContact[]
-  sectionData: {
-    path: string
-    info: {
-      title: string
-      benefits: IBenefitItem[]
-      description: string
-    }
-    officeGadgets: {
-      title: string
-      gadgets: IGadgetItem[]
-    }
-  }
-}
-
-const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
-  sectionData,
-  contactsData,
+const ForBusinessSection = ({
+  sectionDataInit,
+  contactsDataInit,
+}: {
+  sectionDataInit: any
+  contactsDataInit: Awaited<
+    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+  >
 }) => {
+  const { data: contactsData } = trpc.contacts.getAllPublished.useQuery(
+    undefined,
+    {
+      initialData: contactsDataInit,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    },
+  )
+
   const windowSize = useWindowSize()
 
   const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
@@ -71,18 +68,18 @@ const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
           </Link>
 
           <p className='text-md font-[400] text-[#0088C5] opacity-70'>
-            {sectionData.path}
+            Для Бізнесу
           </p>
         </div>
         <div className='flex flex-col justify-between gap-[56px] pb-[74px] pt-[18px] lg:flex-row lg:gap-[45px] lg:pt-[32px]'>
           <div className='flex w-full flex-col gap-8 lg:max-w-[500px] lg:gap-14'>
             <div className='flex flex-col gap-[20px] lg:gap-7'>
               <h3 className='max-w-[350px] font-exo_2 text-xl leading-[30px] text-[#FFFFFF] lg:mb-2.5 lg:max-w-full lg:text-2xl'>
-                {sectionData.info.title}
+                В офісі зламалися компʼютери?
               </h3>
-              <BenefitsList items={sectionData.info.benefits} />
+              <BenefitsList itemsInit={sectionDataInit.benefits} />
               <p className='mt-1.5 font-[400] text-white-dis'>
-                {sectionData.info.description}
+                Обслуговуємо гаджети для корпоративних клієнтів по всій Україні.
               </p>
             </div>
             <div className='w-full lg:max-w-[288px]'>
@@ -93,7 +90,7 @@ const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
                 textHoverAnimation='text-base font-semibold tracking-wide text-dark-blue group-hover:animate-hoverBtnOut animate-hoverBtnIn'
               />
             </div>
-            <CallUsCard contactsData={contactsData} />
+            <CallUsCard contactsDataInit={contactsData} />
           </div>
           <div className='flex flex-col gap-8'>
             <Image
@@ -109,9 +106,9 @@ const ForBusinessSection: React.FC<IForBusinessSectionProps> = ({
             />
             <div className='flex flex-col gap-8 lg:gap-[7]'>
               <h5 className='text-md font-[300] text-white-dis lg:text-base'>
-                {sectionData.officeGadgets.title}
+                Яке офісне обладнання ремонтуємо
               </h5>
-              <GadgetsList items={sectionData.officeGadgets.gadgets} />
+              <GadgetsList items={sectionDataInit.gadgets} />
             </div>
           </div>
         </div>

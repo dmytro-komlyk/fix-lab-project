@@ -1,5 +1,6 @@
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
-import { outputContactSchema } from 'server/src/domain/contacts/schemas/contact.schema'
+import { serverClient } from '@client/app/(utils)/trpc/serverClient'
+import type { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
+
 import ContactsSection from './(components)/ContactsSection'
 
 export const dynamic = 'force-dynamic'

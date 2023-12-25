@@ -1,6 +1,5 @@
+import type { serverClient } from 'client/app/(utils)/trpc/serverClient'
 import { TbPhone } from 'react-icons/tb'
-
-import { serverClient } from 'client/app/(utils)/trpc/serverClient'
 
 const CallUsCard = ({
   contactsDataInit,
