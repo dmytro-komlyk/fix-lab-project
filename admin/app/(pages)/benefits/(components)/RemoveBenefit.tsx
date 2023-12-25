@@ -1,18 +1,16 @@
-/* eslint-disable no-console */
-
 'use client'
 
-import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
+import { trpc } from 'admin/app/(utils)/trpc/client'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai'
 import { MdDelete } from 'react-icons/md'
 
-interface RemoveArticlesProps {
-  item: Article
+interface RemoveBenefitProps {
+  item: Benefit
 }
-const RemoveArticles: React.FC<RemoveArticlesProps> = ({ item }) => {
+const RemoveBenefit: React.FC<RemoveBenefitProps> = ({ item }) => {
   const [showRemoveContainers, setShowRemoveContainers] = useState<{
     [key: string]: boolean
   }>({})
@@ -26,43 +24,34 @@ const RemoveArticles: React.FC<RemoveArticlesProps> = ({ item }) => {
     }))
   }
 
-  // const deleteArticleTrpc = trpc.addArticle.useMutation({
-  //   onSuccess: () => {
-  //     toast.success(`Статтю видалено!`, {
-  //       style: {
-  //         borderRadius: '10px',
-  //         background: 'grey',
-  //         color: '#fff',
-  //       },
-  //     })
-  //     deleteImageTrpc({ id: articleItem.image.id })
-  //     toggleRemoveContainer(articleItem.id)
-  //     router.refresh()
-  //   },
-  // })
-
-  const handleDeleteArticle = async (articleItem: Article) => {
-    // await deleteArticleTrpc.mutate({id: articleItem.id})
-    try {
-      const endpoint = `/articles/${articleItem.id}`
-      const res = await deleteData(endpoint)
-      if (res.status === 200) {
-        toast.success(`Статтю видалено!`, {
-          style: {
-            borderRadius: '10px',
-            background: 'grey',
-            color: '#fff',
-          },
-        })
-        const deleteImgUrl = `/images/${articleItem.image.id}`
-        await deleteData(deleteImgUrl)
-      }
-    } catch (error) {
-      console.error(error)
-    } finally {
-      toggleRemoveContainer(articleItem.id)
+  const removeBenefit = trpc.benefits.remove.useMutation({
+    onSuccess: async () => {
+      // const deleteImgUrl = `/images/${item.image_id}`
+      // await deleteData(deleteImgUrl)
       router.refresh()
-    }
+      toast.success(`Послугу сервісного обслуговування видалено!`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
+    },
+
+    onError: () => {
+      toast.error(`Сталася помилка під час видалення...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+    },
+  })
+
+  const handleDeleteArticle = async (articleItem: Benefit) => {
+    removeBenefit.mutate(articleItem.id)
+    toggleRemoveContainer(articleItem.id)
   }
 
   useEffect(() => {
@@ -134,4 +123,4 @@ const RemoveArticles: React.FC<RemoveArticlesProps> = ({ item }) => {
   )
 }
 
-export default RemoveArticles
+export default RemoveBenefit

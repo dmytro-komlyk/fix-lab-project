@@ -6,7 +6,6 @@
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
-import postData from '@admin/app/(server)/api/service/admin/postData'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { createSlug } from '@admin/app/(utils)/createSlug'
 import { Accordion, AccordionItem } from '@nextui-org/react'
@@ -16,7 +15,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 
-import AddImagesSection from '../../(components)/AddImagesSection'
+import { trpc } from 'admin/app/(utils)/trpc/client'
 import CustomAddContent from '../../(components)/CustomAddContent'
 import SendButton from '../../(components)/SendButton'
 
@@ -32,6 +31,7 @@ const AddArticleSection = () => {
     keywords: '',
   })
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [uploadedImageId, setUploadedImageId] = useState<object | undefined>({})
   const [contentImage, setContentImage] = useState<string | ArrayBuffer | null>(
     null,
   )
@@ -72,116 +72,88 @@ const AddArticleSection = () => {
     setAltImage('')
   }
 
-  const handleInputChange = (key: string, value: string) => {
+  const handleSeoInputChange = (key: string, value: string) => {
     setSeoContent((prevData: any) => ({
       ...prevData,
       [key]: value,
     }))
   }
 
-  // const createArticle = trpc.addArticle.useMutation({
-  //   onSuccess: () => {
-  //     toast.success(`Статтю додано!`, {
-  //       style: {
-  //         borderRadius: '10px',
-  //         background: 'grey',
-  //         color: '#fff',
-  //       },
-  //     })
-  //     clearState()
-  //     router.refresh()
-  //   },
-  // })
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-
-    let uploadedImageId = null
-
-    try {
-      const uploadResponse = await handleImageUpload()
-
-      if (!uploadResponse) {
-        throw new Error('Error uploading image')
-      }
-
-      uploadedImageId = uploadResponse.data._id
-
-      // await createArticle.mutate({
-      //   isActive: true,
-      //   slug: contentSlug,
-      //   title: contentTitle,
-      //   text: contentArticle,
-      //   image: uploadedImageId,
-      //   preview: contentPreview,
-      //   metadata: seoContent,
-      // })
-
-      const data = {
-        isActive: true,
-        slug: contentSlug,
-        title: contentTitle,
-        text: contentArticle,
-        image: uploadedImageId,
-        preview: contentPreview,
-        metadata: seoContent,
-      }
-
-      const response = await postData(`/articles`, data)
-
-      if (response.status === 201) {
-        toast.success(`Статтю додано!`, {
-          style: {
-            borderRadius: '10px',
-            background: 'grey',
-            color: '#fff',
-          },
-        })
-        clearState()
-        router.refresh()
-      } else {
-        throw new Error('Error posting data')
-      }
-    } catch (error) {
-      if (
-        !(
-          uploadedImageId &&
-          contentTitle &&
-          contentPreview &&
-          contentArticle &&
-          seoContent &&
-          altImage &&
-          contentSlug
-        )
-      ) {
-        toast.error(`Всі поля повинні бути заповнені...`, {
-          style: {
-            borderRadius: '10px',
-            background: 'grey',
-            color: '#fff',
-          },
-        })
-        return
-      }
-      toast.error(`Помилка сервера...`, {
+  const createArticle = trpc.articles.create.useMutation({
+    onSuccess: () => {
+      toast.success(`Статтю додано!`, {
         style: {
           borderRadius: '10px',
           background: 'grey',
           color: '#fff',
         },
       })
+      clearState()
+      router.refresh()
+    },
+    onError: async () => {
+      await deleteData(`/images/${uploadedImageId}`)
+      toast.error(`Виникла помилка при додаванні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+    },
+  })
 
-      if (uploadedImageId) {
-        // await deleteImageTrpc({ id: uploadedImageId })
-
-        try {
-          const deleteResponse = await deleteData(`/images/${uploadedImageId}`)
-          console.log('Delete Response:', deleteResponse)
-        } catch (deleteError) {
-          console.error('Error deleting image:', deleteError)
-        }
-      }
+  const handleSubmit = async (e: any) => {
+    e.preventDefault()
+    // const uploadResponse = await handleImageUpload()
+    if (
+      !(
+        uploadedImageId &&
+        contentTitle &&
+        contentPreview &&
+        contentArticle &&
+        seoContent &&
+        altImage &&
+        contentSlug
+      )
+    ) {
+      toast.error(`Всі поля повинні бути заповнені...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
+      return
     }
+    // if (!uploadResponse) {
+    //   toast.error(`Помилка завантаження зображення...`, {
+    //     style: {
+    //       borderRadius: '10px',
+    //       background: 'grey',
+    //       color: '#fff',
+    //     },
+    //   })
+    // } else {
+    //   createArticle.mutate({
+    //     isActive: true,
+    //     slug: contentSlug,
+    //     title: contentTitle,
+    //     text: contentArticle,
+    //     image_id: '6528fcd9458999afd6a05bfc',
+    //     preview: contentPreview,
+    //     metadata: seoContent,
+    //   })
+    // }
+    createArticle.mutate({
+      isActive: true,
+      slug: contentSlug,
+      title: contentTitle,
+      text: contentArticle,
+      image_id: '6528fcd9458999afd6a05bfc',
+      preview: contentPreview,
+      metadata: seoContent,
+    })
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -208,22 +180,12 @@ const AddArticleSection = () => {
           alt: altImage,
           type: 'picture',
         })
-        return response
+        setUploadedImageId(response)
       }
       return null
     } catch (error) {
       throw new Error('Error uploading image')
     }
-
-    // if (selectedImage) {
-    //     const response = await uploadImageTrpc.mutate({
-    //       fileInput: selectedImage,
-    //       alt: altImage,
-    //       type: 'picture',
-    //     })
-    //     return response
-    //   }
-    //   return null
   }
 
   return (
@@ -303,7 +265,9 @@ const AddArticleSection = () => {
                       type='text'
                       name='title'
                       value={seoContent.title || ''}
-                      onChange={e => handleInputChange('title', e.target.value)}
+                      onChange={e =>
+                        handleSeoInputChange('title', e.target.value)
+                      }
                     />
                   </label>
                   <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
@@ -315,7 +279,7 @@ const AddArticleSection = () => {
                       name='description'
                       value={seoContent.description || ''}
                       onChange={e =>
-                        handleInputChange('description', e.target.value)
+                        handleSeoInputChange('description', e.target.value)
                       }
                     />
                   </label>
@@ -328,7 +292,7 @@ const AddArticleSection = () => {
                       name='keywords'
                       value={seoContent.keywords || ''}
                       onChange={e =>
-                        handleInputChange('keywords', e.target.value)
+                        handleSeoInputChange('keywords', e.target.value)
                       }
                     />
                   </label>
@@ -376,9 +340,9 @@ const AddArticleSection = () => {
               </label>
             </div>
           </form>
-          <div className='w-full'>
+          {/* <div className='w-full'>
             <AddImagesSection />
-          </div>
+          </div> */}
           <div className='flex w-full flex-col items-center gap-2 overflow-hidden '>
             <p className='font-exo_2 text-white-dis  text-center text-xl'>
               Стаття

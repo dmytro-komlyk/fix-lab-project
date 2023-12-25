@@ -7,10 +7,10 @@ import toast from 'react-hot-toast'
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai'
 import { MdDelete } from 'react-icons/md'
 
-interface RemoveIssueProps {
-  item: Issue
+interface RemoveArticleProps {
+  item: Article
 }
-const RemoveIssue: React.FC<RemoveIssueProps> = ({ item }) => {
+const RemoveArticle: React.FC<RemoveArticleProps> = ({ item }) => {
   const [showRemoveContainers, setShowRemoveContainers] = useState<{
     [key: string]: boolean
   }>({})
@@ -24,12 +24,12 @@ const RemoveIssue: React.FC<RemoveIssueProps> = ({ item }) => {
     }))
   }
 
-  const removeIssueRemoveIssue = trpc.issues.remove.useMutation({
+  const removeArticle = trpc.articles.remove.useMutation({
     onSuccess: async () => {
       // const deleteImgUrl = `/images/${item.image_id}`
       // await deleteData(deleteImgUrl)
       router.refresh()
-      toast.success(`Послугу видалено!`, {
+      toast.success(`Статтю видалено!`, {
         style: {
           borderRadius: '10px',
           background: 'grey',
@@ -49,8 +49,8 @@ const RemoveIssue: React.FC<RemoveIssueProps> = ({ item }) => {
     },
   })
 
-  const handleDeleteArticle = async (articleItem: Issue) => {
-    removeIssueRemoveIssue.mutate(articleItem.id)
+  const handleDeleteArticle = async (articleItem: Article) => {
+    removeArticle.mutate(articleItem.id)
     toggleRemoveContainer(articleItem.id)
   }
 
@@ -123,4 +123,4 @@ const RemoveIssue: React.FC<RemoveIssueProps> = ({ item }) => {
   )
 }
 
-export default RemoveIssue
+export default RemoveArticle

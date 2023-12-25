@@ -50,23 +50,21 @@ const Dashboard = async () => {
                 Послуги
               </Link>
             </li>
-            <li className='flex items-center justify-between gap-2 opacity-70'>
+            <li className='flex items-center justify-between gap-2'>
               <Link
-                href='/#'
+                href='/benefits'
                 className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
               >
                 Послуги сер/обс
               </Link>
-              <HiLockClosed size={30} color='#fff' />
             </li>
-            <li className='flex items-center justify-between gap-2 opacity-70'>
+            <li className='flex items-center justify-between gap-2'>
               <Link
-                href='/#'
+                href='/brands'
                 className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
               >
                 Бренди
               </Link>
-              <HiLockClosed size={30} color='#fff' />
             </li>
 
             <li className='flex items-center justify-between gap-2 opacity-70'>

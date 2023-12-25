@@ -22,8 +22,10 @@
 }
 
 @layer base {
-  html {
+  html,
+  body {
     font-family: Inter, sans-serif;
+    height: 100%;
   }
   h2 {
     @apply text-2xl;

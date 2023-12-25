@@ -1,39 +1,34 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
-import { sendPutRequest } from '@admin/app/(server)/api/service/admin/sendPutRequest'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-import AddImagesSection from '../../(components)/AddImagesSection'
+import { trpc } from 'admin/app/(utils)/trpc/client'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
-import type { IArticle } from './ArticlesList'
 
 interface IArticleAdminProps {
-  articleData: IArticle
+  articleData: Article
 }
 
 const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
   const router = useRouter()
   const [newArticleData, setNewArticleData] = useLocalStorage(
-    `editNewArticleData${articleData._id}`,
+    `editNewArticleData${articleData.id}`,
     { ...articleData },
   )
+  const [uploadedImageId, setUploadedImageId] = useState<object | undefined>({})
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [newImage, setNewImage] = useState<string | ArrayBuffer | null>(null)
   const [newArticle, setNewArticle] = useLocalStorage<string | ''>(
-    `editNewArticle${articleData._id}`,
+    `editNewArticle${articleData.id}`,
     articleData.text || '',
   )
+
   const clearState = () => {
     setNewArticleData({ ...newArticleData })
     if (selectedImage) {
@@ -63,90 +58,88 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
     }
   }
 
-  // const editArticleTrpc = trpc.editArticleTrpc.useMutation({
-  //   onSuccess: () => {
-  //     toast.success(`Оновлення збережено!`, {
-  //       style: {
-  //         borderRadius: '10px',
-  //         background: 'grey',
-  //         color: '#fff',
-  //       },
-  //     })
-  //     clearState()
-  //     router.refresh()
-  //   },
-  // })
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-
-    try {
-      if (selectedImage) {
-        const uploadResponse = await handleImageUpload()
-
-        if (uploadResponse?.data._id) {
-          // await editArticleTrpc.mutate({
-          //   id: newArticleData._id,
-          //   ...newArticleData,
-          //   image: uploadResponse.data._id,
-          //   text: newArticle,
-          // })
-
-          const response = await sendPutRequest(
-            `/articles/${newArticleData._id}`,
-            {
-              ...newArticleData,
-              image: uploadResponse.data._id,
-              text: newArticle,
-            },
-          )
-
-          if (response.status === 200) {
-            await handleImageSave(uploadResponse.data._id)
-            toast.success(`Оновлення збережено!`, {
-              style: {
-                borderRadius: '10px',
-                background: 'grey',
-                color: '#fff',
-              },
-            })
-            clearState()
-            router.refresh()
-          } else {
-            console.error('Error updating contact data')
-          }
-        } else {
-          console.error('Error uploading image')
-        }
-      } else {
-        // await editArticleTrpc.mutate({
-        //   id: newArticleData._id,
-        //   ...newArticleData,
-        //   image: articleData.image._id || '',
-        //   text: newArticle,
-        // })
-
-        await sendPutRequest(`/articles/${newArticleData._id}`, {
-          ...newArticleData,
-          image: articleData.image._id || '',
-          text: newArticle,
-        })
-        toast.success(`Оновлення збережено!`, {
-          style: {
-            borderRadius: '10px',
-            background: 'grey',
-            color: '#fff',
-          },
-        })
-      }
-      router.refresh()
-      clearState()
-    } catch (error) {
-      toast.error(`Помилка...`, {
+  const updateArticle = trpc.articles.update.useMutation({
+    onSuccess: () => {
+      toast.success(`Оновлення збережено!`, {
         style: {
           borderRadius: '10px',
           background: 'grey',
           color: '#fff',
+        },
+      })
+      clearState()
+      router.refresh()
+    },
+
+    onError: async () => {
+      toast.error(`Помилка при оновленні`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+    },
+  })
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault()
+
+    if (selectedImage) {
+      // const uploadResponse = await handleImageUpload()
+
+      // if (uploadResponse?.data.id) {
+      //   updateArticle.mutate({
+      //     isActive: true,
+      //     id: newArticleData.id,
+      //     slug: newArticleData.slug,
+      //     title: newArticleData.title,
+      //     text: newArticleData.text,
+      //     image_id: '6528fcd9458999afd6a05bfc',
+      //     preview: newArticleData.preview,
+      //     metadata: {
+      //       title: newArticleData.metadata.title,
+      //       description: newArticleData.metadata.title,
+      //       keywords: newArticleData.metadata.title,
+      //     },
+      //   })
+      // } else {
+      //   toast.error(`Помилка завантаження зображення...`, {
+      //     style: {
+      //       borderRadius: '10px',
+      //       background: 'red',
+      //       color: '#fff',
+      //     },
+      //   })
+      // }
+
+      updateArticle.mutate({
+        isActive: true,
+        id: newArticleData.id,
+        slug: newArticleData.slug,
+        title: newArticleData.title,
+        text: newArticleData.text,
+        image_id: '6528fcd9458999afd6a05bfc',
+        preview: newArticleData.preview,
+        metadata: {
+          title: newArticleData.metadata.title,
+          description: newArticleData.metadata.title,
+          keywords: newArticleData.metadata.title,
+        },
+      })
+    } else {
+      updateArticle.mutate({
+        isActive: true,
+        id: newArticleData.id,
+        slug: newArticleData.slug,
+        title: newArticleData.title,
+        text: newArticleData.text,
+        image_id: newArticleData.image_id,
+        preview: newArticleData.preview,
+        metadata: {
+          title: newArticleData.metadata.title,
+          description: newArticleData.metadata.title,
+          keywords: newArticleData.metadata.title,
         },
       })
     }
@@ -196,8 +189,8 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
   const handleImageSave = async (id: string) => {
     try {
       if (id) {
-        //  deleteImageTrpc({ id: articleItem.image._id })
-        const deleteEndpoint = `/images/${articleData.image._id}`
+        //  deleteImageTrpc({ id: articleItem.image.id })
+        const deleteEndpoint = `/images/${articleData.image.id}`
         await deleteData(deleteEndpoint)
         if (deleteEndpoint) {
           setSelectedImage(null)
@@ -217,11 +210,11 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
             <p className=' bold font-exo_2 mt-2 text-center text-xl'>
               Зображення
             </p>
-            <div className='relative'>
+            {/* <div className='relative'>
               {!newImage ? (
                 <Image
                   className='h-auto w-[500px]  object-center'
-                  src={`http://95.217.34.212:30000/${articleData.image.file.path}`}
+                  src={`http://95.217.34.212:30000/${articleData.image?.file.path}`}
                   width={400}
                   height={100}
                   alt={articleData.image.alt}
@@ -237,7 +230,7 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
                   />
                 </div>
               )}
-            </div>
+            </div> */}
             <input
               className=' text-white-dis'
               id='image'
@@ -319,9 +312,9 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
           />
         </label>
       </form>
-      <div className='w-full'>
+      {/* <div className='w-full'>
         <AddImagesSection />
-      </div>
+      </div> */}
       <div className='flex w-full flex-col  gap-2 '>
         <p className='font-exo_2 text-white-dis text-center text-xl'>Стаття</p>
         <CustomEditor

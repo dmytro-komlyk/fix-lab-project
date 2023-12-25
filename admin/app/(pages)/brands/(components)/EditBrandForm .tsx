@@ -5,24 +5,26 @@
 'use client'
 
 import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
-import { sendPutRequest } from '@admin/app/(server)/api/service/admin/sendPutRequest'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
-import type { IBrand } from '@admin/app/(server)/api/service/modules/gadgetService'
-import Image from 'next/image'
 import { useState } from 'react'
 
-import AddImagesSection from '../../(components)/AddImagesSection'
+import { trpc } from 'admin/app/(utils)/trpc/client'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
 
 interface IAdminBrandProps {
-  brandData: IBrand
+  brandData: Brand
 }
 
 const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
+  const router = useRouter()
+
   const [newBrandData, setNewBrandData] = useState({ ...brandData })
   const [selectedIcon, setSelectedIcon] = useState<File | null>(null)
   const [newIcon, setNewIcon] = useState<string | ArrayBuffer | null>(null)
+  const [uploadedIconId, setUploadedIconId] = useState<string | undefined>('')
   const [newArticle, setNewArticle] = useState<string | ''>(
     brandData.article || '',
   )
@@ -47,41 +49,97 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
     }
   }
 
+  const clearState = () => {
+    setNewBrandData({ ...newBrandData })
+    if (selectedIcon) {
+      setSelectedIcon(null)
+      setUploadedIconId('')
+    }
+    setNewIcon(null)
+    setNewArticle(brandData.article || '')
+  }
+
+  const updateBrand = trpc.brands.update.useMutation({
+    onSuccess: () => {
+      toast.success(`Оновлення збережено!`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
+      // await handleIconSave(benefitData.icon.id)
+      clearState()
+      router.refresh()
+    },
+    onError: () => {
+      // await deleteData(`/images/${uploadedIconId}`)
+      toast.error(`Виникла помилка при оновленні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+    },
+  })
+
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    try {
-      if (selectedIcon) {
-        const uploadResponse = await handleImageUpload()
+    if (newBrandData.title) {
+      updateBrand.mutate({
+        id: brandData.id,
+        icon_id: '6528ff26458999afd6a05c48',
+        title: newBrandData.title,
+        slug: newBrandData.slug,
+        article: newArticle,
+        metadata: {
+          title: newBrandData.metadata.title,
+          description: newBrandData.metadata.description,
+          keywords: newBrandData.metadata.keywords,
+        },
+      })
+      // if (selectedIcon) {
+      //   // const uploadResponse = await handleIconUpload()
+      //   // if (!uploadResponse) {
+      //   //   throw new Error('Error uploading image')
+      //   // }
 
-        if (!uploadResponse) {
-          throw new Error('Error uploading image')
-        }
-        if (uploadResponse.data._id) {
-          const response = await sendPutRequest(`/brands/${newBrandData._id}`, {
-            ...newBrandData,
-            icon: uploadResponse.data._id,
-            article: newArticle,
-          })
-
-          if (response.status === 200) {
-            await handleImageSave(uploadResponse.data._id)
-            window.location.reload()
-          } else {
-            console.error('Error updating contact data')
-          }
-        } else {
-          console.error('Error uploading image')
-        }
-      } else {
-        await sendPutRequest(`/brands/${newBrandData._id}`, {
-          ...newBrandData,
-          icon: brandData.icon._id || '',
-          article: newArticle,
-        })
-      }
-    } catch (error) {
-      console.error('Error:', error)
+      //   updateBrand.mutate({
+      //     id: brandData.id,
+      //     icon_id: '6528ff26458999afd6a05c48',
+      //     title: newBrandData.title,
+      //     slug: newBrandData.slug,
+      //     article: newArticle,
+      //     metadata: {
+      //       title: newBrandData.metadata.title,
+      //       description: newBrandData.metadata.description,
+      //       keywords: newBrandData.metadata.keywords,
+      //     },
+      //   })
+      // } else {
+      //   updateBrand.mutate({
+      //     id: brandData.id,
+      //     icon_id: brandData.icon_id,
+      //     title: newBrandData.title,
+      //     slug: newBrandData.slug,
+      //     article: newArticle,
+      //     metadata: {
+      //       title: newBrandData.metadata.title,
+      //       description: newBrandData.metadata.description,
+      //       keywords: newBrandData.metadata.keywords,
+      //     },
+      //   })
+      // }
+    } else {
+      toast.error(`Всі поля повинні бути заповнені...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
     }
   }
 
@@ -120,7 +178,7 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
   const handleImageSave = async (id: string) => {
     try {
       if (id) {
-        const deleteEndpoint = `/images/${brandData.icon._id}`
+        const deleteEndpoint = `/images/${brandData.icon.id}`
 
         await deleteData(deleteEndpoint)
         if (deleteEndpoint) {
@@ -138,29 +196,29 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
     <div className='flex w-full flex-col items-center justify-center gap-[60px] '>
       <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
         <div className='flex w-[400px] flex-col'>
-          <div className='relative'>
-            {!newIcon ? (
-              brandData.icon && (
-                <Image
-                  className='h-auto w-[100px]  object-center'
-                  src={brandData.icon.src}
-                  width={100}
-                  height={100}
-                  alt={brandData?.icon.alt || ''}
-                />
-              )
-            ) : (
-              <div>
-                <Image
-                  className='h-[100px] w-[100px] object-center'
-                  src={typeof newIcon === 'string' ? newIcon : ''}
-                  width={100}
-                  height={100}
-                  alt={brandData.title}
-                />
-              </div>
-            )}
-          </div>
+          {/* <div className='relative'>
+                {!newIcon ? (
+                  brandData.icon && (
+                    <Image
+                      className='h-auto w-[100px]  object-center'
+                      src={brandData.icon.src}
+                      width={100}
+                      height={100}
+                      alt={brandData?.icon.alt || ''}
+                    />
+                  )
+                ) : (
+                  <div>
+                    <Image
+                      className='h-[100px] w-[100px] object-center'
+                      src={typeof newIcon === 'string' ? newIcon : ''}
+                      width={100}
+                      height={100}
+                      alt={brandData.title}
+                    />
+                  </div>
+                )}
+              </div> */}
           <input
             className=' text-white-dis'
             id='icon'
@@ -176,6 +234,17 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
               type='text'
               name='title'
               value={newBrandData.title || ''}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label className='font-exo_2  flex flex-col gap-1 text-center text-xl'>
+            Slug(url сторінки)
+            <input
+              required
+              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              type='text'
+              name='slug'
+              value={newBrandData.slug || ''}
               onChange={handleInputChange}
             />
           </label>
@@ -219,9 +288,9 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
           </label>
         </div>
       </form>
-      <div className='w-full'>
+      {/* <div className='w-full'>
         <AddImagesSection />
-      </div>
+      </div> */}
       <div className='flex w-full flex-col justify-center gap-[50px]'>
         <div className='flex w-full flex-col  gap-2 '>
           <p className='text-center font-exo_2 text-xl text-white-dis'>

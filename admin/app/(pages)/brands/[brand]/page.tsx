@@ -1,7 +1,7 @@
-import getData from '@admin/app/(server)/api/service/admin/getData'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import EditBrandForm from '../(components)/EditBrandForm '
 
 interface IContactAdminProps {
@@ -10,15 +10,13 @@ interface IContactAdminProps {
   }
 }
 
-export const runtime = 'edge'
-export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 const BrandPage: React.FC<IContactAdminProps> = async ({ params }) => {
-  const brandUrl = `/brands/${params.brand}`
-  const brandData = await getData(brandUrl)
+  const brandData = (await serverClient.brands.getById(params.brand)) as Brand
   return (
-    <main className=' flex flex-auto'>
-      <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>
+    <main>
+      <section className='bg-footer-gradient-linear-blue flex w-full min-h-[100vh] py-[60px]'>
         <div className='container  relative flex flex-col px-8 '>
           <div className='z-[1] mb-8 flex items-center gap-1'>
             <Link

@@ -1,49 +1,65 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-
 'use client'
 
 import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
-import Image from 'next/image'
 import { useState } from 'react'
 
+import useLocalStorage from 'admin/app/(hooks)/useLocalStorage '
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 import SendButton from '../../(components)/SendButton'
 
-export interface IBenefitItem {
-  id: string
-  icon: {
-    id?: string
-    type?: string
-    src: string
-    alt: string
-    width: number
-    height: number
-  }
-  title: string
-  alt: string
-}
 interface IAdminBenefitProps {
-  benefitData: IBenefitItem
+  benefitData: Benefit
 }
 
 const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
-  const [newBenefitData, setNewBenefitData] = useState({ ...benefitData })
+  const [newBenefitData, setNewBenefitData] = useLocalStorage(
+    `editNewBenefitData${benefitData.id}`,
+    {
+      ...benefitData,
+    },
+  )
   const [selectedIcon, setSelectedIcon] = useState<File | null>(null)
   const [newIcon, setNewIcon] = useState<string | ArrayBuffer | null>(null)
+  const [uploadedIconId, setUploadedIconId] = useState<string | undefined>('')
+  const router = useRouter()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setNewBenefitData({ ...newBenefitData, [name]: value })
   }
-  const editBenefit = trpc.updateBenefit.useMutation({
+
+  const clearState = () => {
+    setNewBenefitData({ ...newBenefitData })
+    if (selectedIcon) {
+      setSelectedIcon(null)
+      setUploadedIconId('')
+    }
+
+    setNewIcon(null)
+  }
+
+  const updateBenefit = trpc.benefits.update.useMutation({
     onSuccess: () => {
       toast.success(`Оновлення збережено!`, {
         style: {
           borderRadius: '10px',
           background: 'grey',
+          color: '#fff',
+        },
+      })
+      // await handleIconSave(benefitData.icon.id)
+      clearState()
+      router.refresh()
+    },
+    onError: () => {
+      // await deleteData(`/images/${uploadedIconId}`)
+      toast.error(`Виникла помилка при оновленні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
           color: '#fff',
         },
       })
@@ -53,72 +69,40 @@ const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    try {
-      if (selectedIcon) {
-        const uploadResponse = await handleImageUpload()
+    if (newBenefitData.title) {
+      updateBenefit.mutate({
+        id: benefitData.id,
+        icon_id: '6528ff26458999afd6a05c48',
+        title: newBenefitData.title,
+      })
+      // if (selectedIcon) {
+      //   // const uploadResponse = await handleIconUpload()
+      //   // if (!uploadResponse) {
+      //   //   throw new Error('Error uploading image')
+      //   // }
 
-        if (!uploadResponse) {
-          throw new Error('Error uploading image')
-        }
-        if (uploadResponse.data.id) {
-          await trpc.updateBenefit
-            .useMutation({
-              onSuccess: () => {
-                toast.success(`Оновлення збережено!`, {
-                  style: {
-                    borderRadius: '10px',
-                    background: 'grey',
-                    color: '#fff',
-                  },
-                })
-                handleImageSave(uploadResponse.data.id)
-              },
-            })
-            .mutate({
-              ...newBenefitData,
-              icon: newBenefitData.icon.id,
-            })
-          // const response = await sendPutRequest(
-          //   `/benefits/${newBenefitData.id}`,
-          //   {
-          //     ...newBenefitData,
-          //     icon: uploadResponse.data.id,
-          //   },
-          // )
-
-          // if (response.status === 200) {
-          //   await handleImageSave(uploadResponse.data.id)
-          //   window.location.reload()
-          // } else {
-          //   console.error('Error updating contact data')
-          // }
-        } else {
-          console.error('Error uploading image')
-        }
-      } else {
-        await trpc.updateBenefit
-          .useMutation({
-            onSuccess: () => {
-              toast.success(`Оновлення збережено!`, {
-                style: {
-                  borderRadius: '10px',
-                  background: 'grey',
-                  color: '#fff',
-                },
-              })
-            },
-          })
-          .mutate({
-            ...newBenefitData,
-            icon: newBenefitData.icon.id,
-          })
-        // await sendPutRequest(`/benefits/${newBenefitData.id}`, {
-        //   ...newBenefitData,
-        //   icon: benefitData.icon.id || '',
-        // })
-      }
-    } catch (error) {
-      console.error('Error:', error)
+      //   updateBenefit.mutate({
+      //     id: benefitData.id,
+      //     icon_id: '6528ff26458999afd6a05c48',
+      //     title: newBenefitData.title,
+      //     isActive: true,
+      //   })
+      // } else {
+      //   updateBenefit.mutate({
+      //     id: benefitData.id,
+      //     icon_id: benefitData.icon.id,
+      //     title: newBenefitData.title,
+      //     isActive: true,
+      //   })
+      // }
+    } else {
+      toast.error(`Всі поля повинні бути заповнені...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
     }
   }
 
@@ -138,7 +122,7 @@ const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
     }
   }
 
-  const handleImageUpload = async () => {
+  const handleIconUpload = async () => {
     try {
       if (selectedIcon) {
         const response = await uploadImg({
@@ -146,7 +130,7 @@ const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
           alt: benefitData.icon.alt,
           type: benefitData.icon.type || 'icon',
         })
-        return response
+        setUploadedIconId(response.data.id)
       }
       return null
     } catch (error) {
@@ -154,17 +138,16 @@ const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
     }
   }
 
-  const handleImageSave = async (id: string) => {
+  const handleIconSave = async (id: string | undefined) => {
     try {
       if (id) {
-        const deleteEndpoint = `/images/${benefitData.icon.id}`
+        const deleteEndpoint = `/images/${id}`
 
         await deleteData(deleteEndpoint)
         if (deleteEndpoint) {
           setSelectedIcon(null)
           setNewIcon(null)
         }
-        console.log('success')
       }
     } catch (error) {
       throw new Error('Error uploading image')
@@ -177,7 +160,7 @@ const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
         onSubmit={handleSubmit}
         className='flex w-[400px] flex-col gap-3 text-white-dis '
       >
-        <div className='relative'>
+        {/* <div className='relative'>
           {!newIcon ? (
             <Image
               className='h-auto w-[100px]  object-center'
@@ -197,7 +180,7 @@ const EditBenefitForm: React.FC<IAdminBenefitProps> = ({ benefitData }) => {
               />
             </div>
           )}
-        </div>
+        </div> */}
         <input
           className=' text-white-dis'
           id='icon'

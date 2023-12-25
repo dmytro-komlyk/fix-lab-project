@@ -1,7 +1,7 @@
-import getData from '@admin/app/(server)/api/service/admin/getData'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
 import PreviewArticlePage from '../(components)/PreviewArticlePage'
 
 interface IArticleAdminProps {
@@ -10,19 +10,15 @@ interface IArticleAdminProps {
   }
 }
 
-export const runtime = 'edge'
-export const revalidate = 3600
-// export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic'
 
 const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
-  // const articleData = await serverClient.getArticleData({
-  //   slug: params.article,
-  // })
-  const articleUrl = `/articles/${params.article}`
-  const articleData = await getData(articleUrl)
+  const articleData = (await serverClient.articles.getById(
+    params.article,
+  )) as Article
 
   return (
-    <main className=' flex flex-auto'>
+    <main className='flex flex-auto h-[100dvh]'>
       <section className=' bg-footer-gradient-linear-blue w-full  overflow-hidden  py-[60px] '>
         <div className='container  relative flex flex-col items-center px-8 '>
           <div className='z-[1] mb-8 flex items-center gap-1 self-start  px-4'>

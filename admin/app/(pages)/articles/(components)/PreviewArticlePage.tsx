@@ -1,19 +1,17 @@
 'use client'
 
 import Image from 'next/image'
-
 import RenderMarkdown from '../../(components)/RenderMarkdown'
-import type { IArticle } from './ArticlesList'
 
 export interface IPreviewArticleProps {
-  articleData: IArticle
+  articleData: Article
 }
 
 const PreviewArticlePage: React.FC<IPreviewArticleProps> = ({
   articleData,
 }) => {
   return (
-    <section className=' bg-white-dis overflow-hidden  p-4  shadow-2xl'>
+    <section className=' bg-white-dis overflow-hidden p-4  shadow-2xl'>
       <div className='container relative flex flex-col xl:p-0'>
         <div className='flex w-[988px] flex-col '>
           <div className='flex items-center justify-between  gap-2'>
@@ -21,13 +19,17 @@ const PreviewArticlePage: React.FC<IPreviewArticleProps> = ({
               {articleData.title}
             </h2>
           </div>
-          <Image
-            className='mb-[56px] min-h-[245px] w-full object-cover md:max-h-[480px]'
-            src={`http://95.217.34.212:30000/${articleData.image.file.path}`}
-            width={924}
-            height={480}
-            alt={articleData.image.alt}
-          />
+          {articleData.image ? (
+            <Image
+              className='mb-[56px] min-h-[245px] w-full object-cover md:max-h-[480px]'
+              src={`${process.env.NEXT_PUBLIC_BASE_URL}/${articleData.image.file.path}`}
+              width={924}
+              height={480}
+              alt={articleData.image.alt}
+            />
+          ) : (
+            <p>No Image</p>
+          )}
           <div className='mb-[104px] max-md:mb-[56px]'>
             <RenderMarkdown markdown={articleData.text} />
           </div>

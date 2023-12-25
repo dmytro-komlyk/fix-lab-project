@@ -1,13 +1,7 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable no-console */
-
 'use client'
 
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import useLocalStorage from 'admin/app/(hooks)/useLocalStorage '
-import deleteData from 'admin/app/(server)/api/service/admin/deleteData'
 import uploadImg from 'admin/app/(server)/api/service/admin/uploadImg'
 import { createSlug } from 'admin/app/(utils)/createSlug'
 import Image from 'next/image'
@@ -33,6 +27,8 @@ const AddIssueInfoSection = () => {
     keywords: '',
   })
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [uploadedImageId, setUploadedImageId] = useState<string | undefined>('')
+
   const [contentImage, setContentImage] = useState<string | ArrayBuffer | null>(
     null,
   )
@@ -86,7 +82,7 @@ const AddIssueInfoSection = () => {
       [key]: value,
     }))
   }
-  const addIssue = trpc.issues.create.useMutation({
+  const createIssue = trpc.issues.create.useMutation({
     onSuccess: () => {
       toast.success(`Послугу додано!`, {
         style: {
@@ -98,37 +94,21 @@ const AddIssueInfoSection = () => {
       clearState()
       router.refresh()
     },
+    onError: () => {
+      // await deleteData(`/images/${uploadedIconId}`)
+      toast.error(`Виникла помилка при додаванні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+    },
   })
   const handleSubmit = async (e: any) => {
     e.preventDefault()
-
-    let uploadedImageId = null
-
-    try {
-      const uploadResponse = await handleImageUpload()
-
-      if (!uploadResponse) {
-        throw new Error('Error uploading image')
-      }
-
-      uploadedImageId = uploadResponse.data._id
-
-      if (
-        !(
-          // uploadedImageId &&
-          (contentTitle && contentInfoIssue && contentArticleIssue)
-        )
-      ) {
-        toast.error(`Всі поля повинні бути заповнені...`, {
-          style: {
-            borderRadius: '10px',
-            background: 'grey',
-            color: '#fff',
-          },
-        })
-        return
-      }
-      addIssue.mutate({
+    if (contentTitle && contentSlug) {
+      createIssue.mutate({
         slug: contentSlug,
         title: contentTitle,
         price: contentIssuePrice,
@@ -141,53 +121,16 @@ const AddIssueInfoSection = () => {
         description: contentArticleIssue,
         info: contentInfoIssue,
         benefits_ids: [],
+        gadgets_ids: [],
       })
-
-      // const data = {
-      //   isActive: true,
-      //   slug: contentSlug,
-      //   title: contentTitle,
-      //   price: contentIssuePrice,
-      //   image: uploadedImageId,
-      //   metadata: seoContent,
-      //   description: contentArticleIssue,
-      //   info: contentInfoIssue,
-      //   benefits: [],
-      // }
-
-      // const response = await postData(`/issues`, data)
-
-      // if (response.status === 201) {
-      //   toast.success(`Послугу додано!`, {
-      //     style: {
-      //       borderRadius: '10px',
-      //       background: 'grey',
-      //       color: '#fff',
-      //     },
-      //   })
-      //   clearState()
-      //   router.refresh()
-      // } else {
-      //   throw new Error('Error posting data')
-      // }
-    } catch (error) {
-      console.error('Error:', error)
-      toast.error(`Помилка сервера...`, {
+    } else {
+      toast.error(`Всі поля повинні бути заповнені...`, {
         style: {
           borderRadius: '10px',
           background: 'grey',
           color: '#fff',
         },
       })
-
-      if (uploadedImageId) {
-        try {
-          const deleteResponse = await deleteData(`/images/${uploadedImageId}`)
-          console.log('Delete Response:', deleteResponse)
-        } catch (deleteError) {
-          console.error('Error deleting image:', deleteError)
-        }
-      }
     }
   }
 
@@ -214,7 +157,7 @@ const AddIssueInfoSection = () => {
           alt: altImage,
           type: 'picture',
         })
-        return response
+        setUploadedImageId(response.data.id)
       }
       return null
     } catch (error) {

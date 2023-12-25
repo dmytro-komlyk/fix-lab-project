@@ -1,33 +1,25 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { trpc } from 'admin/app/(utils)/trpc'
-import type { IBlog } from 'admin/types/trpc'
-
+import { serverClient } from 'admin/app/(utils)/trpc/serverClient'
+import EmptySection from '../(components)/EmptySection'
 import AddArticleSection from './(components)/AddArticleSection'
 import ArticlesList from './(components)/ArticlesList'
 
-export const runtime = 'edge'
-export const revalidate = 3600
-// export const dynamic = 'force-dynamic'
+export const dynamic = 'force-dynamic'
 
-export default async function ArticlesPage({
-  params,
-}: {
-  params: { page: string }
-}) {
-  const currentPage = typeof params.page === 'string' ? Number(params.page) : 1
-  // const articlesData = await serverClient.getArticlesData()
-  const articlesData = (await trpc.getArticlesQuery.query({
-    page: currentPage,
-    sort: 'desc',
-    limit: 6,
-  })) as IBlog
+export default async function ArticlesPage() {
+  const articlesData = (await serverClient.articles.getAll()) as Article[]
 
   return (
-    <section className='bg-footer-gradient-linear-blue flex h-full  w-full overflow-hidden overflow-y-auto py-[60px]'>
-      <div className='container relative flex flex-col gap-8 px-8'>
-        <AddArticleSection />
-        <ArticlesList articlesData={articlesData} />
-      </div>
-    </section>
+    <main>
+      <section className='bg-footer-gradient-linear-blue flex w-full min-h-[100vh] py-[60px]'>
+        <div className='container relative flex flex-col gap-8 px-8'>
+          <AddArticleSection />
+          {articlesData.length ? (
+            <ArticlesList articlesData={articlesData} />
+          ) : (
+            <EmptySection />
+          )}
+        </div>
+      </section>
+    </main>
   )
 }

@@ -1,18 +1,17 @@
 import Link from 'next/link'
-import { FaEdit, FaEye } from 'react-icons/fa'
+import { FaEdit } from 'react-icons/fa'
+import RemoveBrand from './RemoveBrand'
 
-import RemoveArticle from './RemoveArticle'
-
-interface ArticlesListProps {
-  articlesData: Article[]
+interface BrandsListProps {
+  brandsData: Brand[]
 }
 
-const ArticlesList: React.FC<ArticlesListProps> = ({ articlesData }) => {
+const BrandsList: React.FC<BrandsListProps> = ({ brandsData }) => {
   return (
     <div className=' flex flex-col items-center justify-center gap-8 pb-12'>
       <div className=' flex w-full flex-col items-center justify-center gap-8'>
         <ul className='flex w-full flex-col shadow-2xl'>
-          {articlesData.map((item: Article) => (
+          {brandsData.map((item: Brand) => (
             <li
               className='border-dark-blue bg-white-dis group border-b-[0.5px] opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl'
               key={item.id}
@@ -22,27 +21,21 @@ const ArticlesList: React.FC<ArticlesListProps> = ({ articlesData }) => {
                   {item.title}
                 </h3>
                 <div className='relative ml-4 flex items-center justify-center gap-4'>
-                  <Link href={`/articles/${item.id}`}>
-                    <FaEye
-                      className='hover:fill-mid-green focus:fill-mid-green transition-colors'
-                      size={30}
-                    />
-                  </Link>
-                  <Link href={`/articles/${item.id}/edit`}>
+                  <Link href={`/brands/${item.id}`}>
                     <FaEdit
                       className='hover:fill-mid-green focus:fill-mid-green transition-colors'
                       size={30}
                     />
                   </Link>
-                  <RemoveArticle item={item} />
+                  <RemoveBrand item={item} />
                 </div>
               </div>
             </li>
           ))}
         </ul>
-        {/* {articlesData.totalPages > 1 && (
+        {/* {brandsData.totalPages > 1 && (
           <PaginationControls
-            totalPages={articlesData.totalPages}
+            totalPages={brandsData.totalPages}
             currentPage={currentPage}
           />
         )} */}
@@ -51,4 +44,4 @@ const ArticlesList: React.FC<ArticlesListProps> = ({ articlesData }) => {
   )
 }
 
-export default ArticlesList
+export default BrandsList

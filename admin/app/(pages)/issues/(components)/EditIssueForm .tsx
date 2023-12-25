@@ -2,7 +2,6 @@
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
-import { sendPutRequest } from '@admin/app/(server)/api/service/admin/sendPutRequest'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -12,12 +11,14 @@ import { trpc } from 'admin/app/(utils)/trpc/client'
 import { useRouter } from 'next/navigation'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
+import EditBenefitsList from './EditBenefitsList'
 
-interface IAdminGadget {
+interface IIssueProps {
   issueData: Issue
+  benefitsData: Benefit[]
 }
 
-const EditIssuesForm: React.FC<IAdminGadget> = ({ issueData }) => {
+const EditIssuesForm: React.FC<IIssueProps> = ({ issueData, benefitsData }) => {
   const router = useRouter()
 
   const [newIssueData, setNewIssueData] = useLocalStorage(
@@ -61,7 +62,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({ issueData }) => {
     }
   }
 
-  const editIssue = trpc.issues.update.useMutation({
+  const updateIssue = trpc.issues.update.useMutation({
     onSuccess: () => {
       toast.success(`Послугу оновлено!`, {
         style: {
@@ -72,45 +73,90 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({ issueData }) => {
       })
       router.refresh()
     },
+
+    onError: () => {
+      // await deleteData(`/images/${uploadedIconId}`)
+      toast.error(`Виникла помилка при оновленні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+    },
   })
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    try {
-      if (selectedImage) {
-        const uploadResponse = await handleImageUpload()
+    if (
+      newIssueData.title &&
+      newIssueData.slug &&
+      newIssueData.slug &&
+      newIssueData.price &&
+      newIssueData.description &&
+      newIssueData.info &&
+      newIssueData.metadata.description &&
+      newIssueData.metadata.title &&
+      newIssueData.metadata.keywords
+    ) {
+      updateIssue.mutate({
+        id: issueData.id,
+        image_id: '6528fcd9458999afd6a05bfc',
+        title: newIssueData.title,
+        slug: newIssueData.slug,
+        price: newIssueData.price,
+        description: newIssueData.description,
+        info: newIssueData.info,
+        benefits_ids: newIssueData.benefits.map(benefit => benefit.id),
+        metadata: {
+          title: newIssueData.metadata.title,
+          description: newIssueData.metadata.description,
+          keywords: newIssueData.metadata.keywords,
+        },
+        gadgets_ids: [],
+      })
+      //  if (selectedImage) {
+      //    // const uploadResponse = await handleIconUpload()
+      //    // if (!uploadResponse) {
+      //    //   throw new Error('Error uploading image')
+      //    // }
 
-        if (!uploadResponse) {
-          throw new Error('Error uploading image')
-        }
-        if (uploadResponse.data.id) {
-          const response = await sendPutRequest(`/issues/${newIssueData.id}`, {
-            ...newIssueData,
-            image: uploadResponse.data.id,
-            benefits: newIssueData.benefits.map(item => item.id) || [],
-            description,
-            info,
-          })
-
-          if (response.status === 200) {
-            await handleImageSave(uploadResponse.data.id)
-          } else {
-            console.error('Error updating contact data')
-          }
-        } else {
-          console.error('Error uploading image')
-        }
-      } else {
-        await sendPutRequest(`/issues/${newIssueData.id}`, {
-          ...newIssueData,
-          image: issueData.image.id || '',
-          benefits: newIssueData.benefits.map(item => item.id) || [],
-          description,
-          info,
-        })
-      }
-    } catch (error) {
+      //    updateIssue.mutate({
+      //      id: issueData.id,
+      //      image_id: '6528fcd9458999afd6a05bfc',
+      //      title: newIssueData.title,
+      //      slug: newIssueData.slug,
+      //      price: newIssueData.price,
+      //      description: newIssueData.description,
+      //      info: newIssueData.info,
+      //      benefits_ids: newIssueData.benefits.map(benefit => benefit.id),
+      //      metadata: {
+      //        title: newIssueData.metadata.title,
+      //        description: newIssueData.metadata.description,
+      //        keywords: newIssueData.metadata.keywords,
+      //      },
+      //      gadgets_ids: [],
+      //    })
+      //  } else {
+      //    updateIssue.mutate({
+      //      id: issueData.id,
+      //      image_id: issueData.image_id,
+      //      title: newIssueData.title,
+      //      slug: newIssueData.slug,
+      //      price: newIssueData.price,
+      //      description: newIssueData.description,
+      //      info: newIssueData.info,
+      //      benefits_ids: newIssueData.benefits.map(benefit => benefit.id),
+      //      metadata: {
+      //        title: newIssueData.metadata.title,
+      //        description: newIssueData.metadata.description,
+      //        keywords: newIssueData.metadata.keywords,
+      //      },
+      //      gadgets_ids: [],
+      //    })
+      //  }
+    } else {
       toast.error(`Всі поля повинні бути заповнені...`, {
         style: {
           borderRadius: '10px',
@@ -118,7 +164,6 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({ issueData }) => {
           color: '#fff',
         },
       })
-      console.error('Error:', error)
     }
   }
 
@@ -320,7 +365,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({ issueData }) => {
           />
         </div>
       </div>
-      {/* <div className='flex w-full flex-col items-center justify-center'>
+      <div className='flex w-full flex-col items-center justify-center'>
         <div className='flex w-full  flex-col-reverse  justify-center '>
           <div className='  w-full border-b-2 border-mid-grey' />
           <p className='mb-6 text-center font-exo_2 text-2xl font-bold  text-white-dis  max-lg:text-xl'>
@@ -334,7 +379,7 @@ const EditIssuesForm: React.FC<IAdminGadget> = ({ issueData }) => {
           newIssueData={newIssueData}
           setNewIssueData={setNewIssueData}
         />
-      </div> */}
+      </div>
 
       <SendButton handleSubmit={handleSubmit} />
     </div>
