@@ -42,9 +42,9 @@ export class UsersService {
     return user;
   }
 
-  public async findByQuery(query: UpdateUserDto): Promise<userSchema | null> {
-    const user = await this.prisma.user.findUnique({
-      where: { id: query.email, isActive: query.isActive }
+  public async findByQuery(query: UpdateUserDto): Promise<userSchema> {
+    const user = await this.prisma.user.findFirst({
+      where: { email: query.email, isActive: query.isActive }
     });
 
     if (!user) {
