@@ -91,6 +91,7 @@ const EditGadgetForm: React.FC<IGadgetProps> = ({
       if (uploadResponse?.status === 201) {
         if (uploadResponse.data) {
           await updateGadget.mutateAsync({
+            isActive: true,
             id: newGadgetData.id,
             slug: newGadgetData.slug,
             title: newGadgetData.title,
@@ -121,6 +122,7 @@ const EditGadgetForm: React.FC<IGadgetProps> = ({
       }
     } else {
       updateGadget.mutate({
+        isActive: true,
         id: newGadgetData.id,
         slug: newGadgetData.slug,
         title: newGadgetData.title,
