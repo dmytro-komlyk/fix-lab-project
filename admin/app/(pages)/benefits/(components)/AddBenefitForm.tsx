@@ -43,8 +43,7 @@ const AddBenefitForm = () => {
       router.refresh()
     },
     onError: () => {
-      // await deleteData(`/images/${uploadedIconId}`)
-      toast.error(`Виникла помилка при оновленні...`, {
+      toast.error(`Виникла помилка при додаванні...`, {
         style: {
           borderRadius: '10px',
           background: 'red',
@@ -53,16 +52,11 @@ const AddBenefitForm = () => {
       })
     },
   })
-
+  const deleteImage = trpc.images.remove.useMutation()
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    if (benefitTitle) {
-      createBenefit.mutate({
-        icon_id: '6528ff26458999afd6a05c48',
-        title: benefitTitle,
-      })
-    } else {
+    if (!benefitTitle && !selectedIcon) {
       toast.error(`Всі поля повинні бути заповнені...`, {
         style: {
           borderRadius: '10px',
@@ -70,6 +64,24 @@ const AddBenefitForm = () => {
           color: '#fff',
         },
       })
+      return
+    } else {
+      const uploadResponse = await handleImageUpload()
+      if (uploadResponse?.status === 201) {
+        createBenefit.mutate({
+          icon_id: '6528ff26458999afd6a05c48',
+          title: benefitTitle,
+        })
+      } else {
+        await deleteImage.mutateAsync(uploadResponse?.data.id)
+        toast.error(`Помилка додаванні послуги сервісного обслуговування...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'grey',
+            color: '#fff',
+          },
+        })
+      }
     }
   }
 
@@ -97,7 +109,7 @@ const AddBenefitForm = () => {
           alt: benefitTitle,
           type: 'icon',
         })
-        setUploadedIconId(response)
+        return response
       }
       return null
     } catch (error) {

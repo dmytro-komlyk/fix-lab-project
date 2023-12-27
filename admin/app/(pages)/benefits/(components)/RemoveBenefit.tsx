@@ -23,11 +23,10 @@ const RemoveBenefit: React.FC<RemoveBenefitProps> = ({ item }) => {
       [itemId]: !prevState[itemId],
     }))
   }
-
+  const deleteImage = trpc.images.remove.useMutation()
   const removeBenefit = trpc.benefits.remove.useMutation({
     onSuccess: async () => {
-      // const deleteImgUrl = `/images/${item.image_id}`
-      // await deleteData(deleteImgUrl)
+      deleteImage.mutate(item.icon.id)
       router.refresh()
       toast.success(`Послугу сервісного обслуговування видалено!`, {
         style: {

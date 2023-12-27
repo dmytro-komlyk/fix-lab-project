@@ -1,11 +1,6 @@
 'use client'
 
-/* eslint-disable no-console */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable @typescript-eslint/no-use-before-define */
-
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { createSlug } from '@admin/app/(utils)/createSlug'
 import { Accordion, AccordionItem } from '@nextui-org/react'
@@ -16,10 +11,13 @@ import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomAddContent from '../../(components)/CustomAddContent'
 import SendButton from '../../(components)/SendButton'
-
-const AddArticleSection = () => {
+interface IAddArticleProps {
+  allImagesData: Image[]
+}
+const AddArticleSection: React.FC<IAddArticleProps> = ({ allImagesData }) => {
   const router = useRouter()
   const [seoContent, setSeoContent] = useLocalStorage<{
     title: string
@@ -31,7 +29,6 @@ const AddArticleSection = () => {
     keywords: '',
   })
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
-  const [uploadedImageId, setUploadedImageId] = useState<object | undefined>({})
   const [contentImage, setContentImage] = useState<string | ArrayBuffer | null>(
     null,
   )
@@ -92,7 +89,6 @@ const AddArticleSection = () => {
       router.refresh()
     },
     onError: async () => {
-      await deleteData(`/images/${uploadedImageId}`)
       toast.error(`Виникла помилка при додаванні...`, {
         style: {
           borderRadius: '10px',
@@ -102,13 +98,13 @@ const AddArticleSection = () => {
       })
     },
   })
+  const deleteImage = trpc.images.remove.useMutation()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
-    // const uploadResponse = await handleImageUpload()
     if (
       !(
-        uploadedImageId &&
+        selectedImage &&
         contentTitle &&
         contentPreview &&
         contentArticle &&
@@ -125,35 +121,29 @@ const AddArticleSection = () => {
         },
       })
       return
+    } else {
+      const uploadResponse = await handleImageUpload()
+      if (uploadResponse?.status === 201) {
+        createArticle.mutate({
+          isActive: true,
+          slug: contentSlug,
+          title: contentTitle,
+          text: contentArticle,
+          image_id: uploadResponse.data.id,
+          preview: contentPreview,
+          metadata: seoContent,
+        })
+      } else {
+        await deleteImage.mutateAsync(uploadResponse?.data.id)
+        toast.error(`Помилка додаванні статті...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'grey',
+            color: '#fff',
+          },
+        })
+      }
     }
-    // if (!uploadResponse) {
-    //   toast.error(`Помилка завантаження зображення...`, {
-    //     style: {
-    //       borderRadius: '10px',
-    //       background: 'grey',
-    //       color: '#fff',
-    //     },
-    //   })
-    // } else {
-    //   createArticle.mutate({
-    //     isActive: true,
-    //     slug: contentSlug,
-    //     title: contentTitle,
-    //     text: contentArticle,
-    //     image_id: '6528fcd9458999afd6a05bfc',
-    //     preview: contentPreview,
-    //     metadata: seoContent,
-    //   })
-    // }
-    createArticle.mutate({
-      isActive: true,
-      slug: contentSlug,
-      title: contentTitle,
-      text: contentArticle,
-      image_id: '6528fcd9458999afd6a05bfc',
-      preview: contentPreview,
-      metadata: seoContent,
-    })
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -180,7 +170,7 @@ const AddArticleSection = () => {
           alt: altImage,
           type: 'picture',
         })
-        setUploadedImageId(response)
+        return response
       }
       return null
     } catch (error) {
@@ -340,9 +330,9 @@ const AddArticleSection = () => {
               </label>
             </div>
           </form>
-          {/* <div className='w-full'>
-            <AddImagesSection />
-          </div> */}
+          <div className='w-full'>
+            <AddImagesSection allImagesData={allImagesData} />
+          </div>
           <div className='flex w-full flex-col items-center gap-2 overflow-hidden '>
             <p className='font-exo_2 text-white-dis  text-center text-xl'>
               Стаття

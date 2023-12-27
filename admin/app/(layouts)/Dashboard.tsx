@@ -2,10 +2,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { HiLockClosed } from 'react-icons/hi'
 
-import { auth } from '../../auth'
-
 const Dashboard = async () => {
-  const session = await auth()
+  // const session = await auth()
 
   return (
     <div className='fixed left-0 flex h-[100vh] w-[400px] shrink flex-col justify-between  bg-[#09338F] pt-12'>
@@ -29,7 +27,7 @@ const Dashboard = async () => {
             <li>
               <Link
                 href='/articles'
-                className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
+                className='font-exo_2 text-white-dis  text-2xl font-bold max-lg:text-xl '
               >
                 Блог
               </Link>
@@ -37,7 +35,7 @@ const Dashboard = async () => {
             <li>
               <Link
                 href='/gadgets'
-                className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
+                className='font-exo_2 text-white-dis  text-2xl font-bold max-lg:text-xl '
               >
                 Гаджети
               </Link>
@@ -45,7 +43,7 @@ const Dashboard = async () => {
             <li className='flex items-center justify-between gap-2'>
               <Link
                 href='/issues'
-                className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
+                className='font-exo_2 text-white-dis text-2xl font-bold max-lg:text-xl '
               >
                 Послуги
               </Link>
@@ -53,7 +51,7 @@ const Dashboard = async () => {
             <li className='flex items-center justify-between gap-2'>
               <Link
                 href='/benefits'
-                className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
+                className='font-exo_2 text-white-dis text-2xl font-bold max-lg:text-xl '
               >
                 Послуги сер/обс
               </Link>
@@ -61,7 +59,7 @@ const Dashboard = async () => {
             <li className='flex items-center justify-between gap-2'>
               <Link
                 href='/brands'
-                className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
+                className='font-exo_2 text-white-dis text-2xl font-bold max-lg:text-xl '
               >
                 Бренди
               </Link>
@@ -70,7 +68,7 @@ const Dashboard = async () => {
             <li className='flex items-center justify-between gap-2 opacity-70'>
               <Link
                 href='/#'
-                className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
+                className='font-exo_2 text-white-dis text-2xl font-bold max-lg:text-xl '
               >
                 Контакти
               </Link>
@@ -79,7 +77,7 @@ const Dashboard = async () => {
             <li className='flex items-center justify-between gap-2 opacity-70'>
               <Link
                 href='/#'
-                className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
+                className='font-exo_2 text-white-dis text-2xl font-bold max-lg:text-xl '
               >
                 Медіа
               </Link>

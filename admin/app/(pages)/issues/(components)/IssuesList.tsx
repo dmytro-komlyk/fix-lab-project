@@ -21,7 +21,7 @@ const IssuesList: React.FC<IssuesListProps> = ({ issuesData }) => {
                   {item.title}
                 </h3>
                 <div className='relative ml-4 flex items-center justify-center gap-4'>
-                  <Link href={`/issues/${item.id}`}>
+                  <Link href={`/issues/${item.slug}`}>
                     <FaEdit
                       className='hover:fill-mid-green focus:fill-mid-green transition-colors'
                       size={30}

@@ -7,6 +7,7 @@ import { Accordion, AccordionItem } from '@nextui-org/react'
 import useLocalStorage from 'admin/app/(hooks)/useLocalStorage '
 import { createSlug } from 'admin/app/(utils)/createSlug'
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
@@ -47,7 +48,6 @@ const AddBrandForm: React.FC<IBrandProps> = ({ allImagesData }) => {
 
   const [selectedIcon, setSelectedIcon] = useState<File | null>(null)
   const [newIcon, setNewIcon] = useState<string | ArrayBuffer | null>(null)
-  const [uploadedIconId, setUploadedIconId] = useState<string | undefined>('')
 
   const handleSeoInputChange = (key: string, value: string) => {
     setSeoContent((prevData: any) => ({
@@ -64,7 +64,6 @@ const AddBrandForm: React.FC<IBrandProps> = ({ allImagesData }) => {
     })
     if (selectedIcon) {
       setSelectedIcon(null)
-      setUploadedIconId('')
     }
     setNewIcon(null)
     setBrandTitle('')
@@ -82,12 +81,10 @@ const AddBrandForm: React.FC<IBrandProps> = ({ allImagesData }) => {
           color: '#fff',
         },
       })
-      // await handleIconSave(benefitData.icon.id)
       clearState()
       router.refresh()
     },
     onError: () => {
-      // await deleteData(`/images/${uploadedIconId}`)
       toast.error(`Виникла помилка при додаванні...`, {
         style: {
           borderRadius: '10px',
@@ -97,40 +94,22 @@ const AddBrandForm: React.FC<IBrandProps> = ({ allImagesData }) => {
       })
     },
   })
+  const deleteIcon = trpc.images.remove.useMutation()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
-
-    if (brandTitle) {
-      createBrand.mutate({
-        icon_id: '6528ff26458999afd6a05c48',
-        title: brandTitle,
-        slug: brandSlug,
-        article: brandSlug,
-        metadata: {
-          title: seoContent.title,
-          description: seoContent.description,
-          keywords: seoContent.keywords,
-        },
-      })
-      // const uploadResponse = await handleIconUpload()
-      // if (!uploadResponse) {
-      //   throw new Error('Error uploading image')
-      // }
-
-      // updateBrand.mutate({
-      //   id: brandData.id,
-      //   icon_id: uploadResponse.data.id,
-      //   title: newBrandData.title,
-      //   slug: newBrandData.slug,
-      //   article: newArticle,
-      //   metadata: {
-      //     title: newBrandData.metadata.title,
-      //     description: newBrandData.metadata.description,
-      //     keywords: newBrandData.metadata.keywords,
-      //   },
-      // })
-    } else {
+    if (
+      !(
+        selectedIcon &&
+        brandTitle &&
+        brandSlug &&
+        brandArticle &&
+        altIcon &&
+        seoContent.keywords &&
+        seoContent.description &&
+        seoContent.title
+      )
+    ) {
       toast.error(`Всі поля повинні бути заповнені...`, {
         style: {
           borderRadius: '10px',
@@ -138,6 +117,31 @@ const AddBrandForm: React.FC<IBrandProps> = ({ allImagesData }) => {
           color: '#fff',
         },
       })
+      return
+    } else {
+      const uploadResponse = await handleIconUpload()
+      if (uploadResponse?.status === 201) {
+        await createBrand.mutateAsync({
+          icon_id: uploadResponse.data.id,
+          title: brandTitle,
+          slug: brandSlug,
+          article: brandSlug,
+          metadata: {
+            title: seoContent.title,
+            description: seoContent.description,
+            keywords: seoContent.keywords,
+          },
+        })
+      } else {
+        await deleteIcon.mutateAsync(uploadResponse?.data.id)
+        toast.error(`Помилка додаванні бренду...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'grey',
+            color: '#fff',
+          },
+        })
+      }
     }
   }
 
@@ -163,9 +167,9 @@ const AddBrandForm: React.FC<IBrandProps> = ({ allImagesData }) => {
         const response = await uploadImg({
           fileInput: selectedIcon,
           alt: altIcon,
-          type: 'picture',
+          type: 'icon',
         })
-        setUploadedIconId(response.data.id)
+        return response
       }
       return null
     } catch (error) {
@@ -192,17 +196,11 @@ const AddBrandForm: React.FC<IBrandProps> = ({ allImagesData }) => {
         <div className='flex w-full flex-col items-center justify-center py-4 gap-[60px] '>
           <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
             <div className='flex w-[400px] flex-col'>
-              {/* <div className='relative'>
+              <div className='relative'>
                 {!newIcon ? (
-                  brandData.icon && (
-                    <Image
-                      className='h-auto w-[100px]  object-center'
-                      src={brandData.icon.src}
-                      width={100}
-                      height={100}
-                      alt={brandData?.icon.alt || ''}
-                    />
-                  )
+                  <div className='flex h-[300px] w-[500px] items-center justify-center'>
+                    <p>NO IMAGE</p>
+                  </div>
                 ) : (
                   <div>
                     <Image
@@ -210,11 +208,11 @@ const AddBrandForm: React.FC<IBrandProps> = ({ allImagesData }) => {
                       src={typeof newIcon === 'string' ? newIcon : ''}
                       width={100}
                       height={100}
-                      alt={brandData.title}
+                      alt={altIcon}
                     />
                   </div>
                 )}
-              </div> */}
+              </div>
               <input
                 className=' text-white-dis'
                 id='icon'
@@ -222,6 +220,17 @@ const AddBrandForm: React.FC<IBrandProps> = ({ allImagesData }) => {
                 accept='icon/*'
                 onChange={handleImageChange}
               />
+              <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+                alt(Опис зображення)
+                <input
+                  required
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  type='text'
+                  name='altIcon'
+                  value={altIcon}
+                  onChange={e => setAltIcon(e.target.value)}
+                />
+              </label>
               <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                 Заголовок
                 <input

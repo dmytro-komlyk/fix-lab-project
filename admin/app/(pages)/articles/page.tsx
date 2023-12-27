@@ -7,12 +7,13 @@ export const dynamic = 'force-dynamic'
 
 export default async function ArticlesPage() {
   const articlesData = (await serverClient.articles.getAll()) as Article[]
+  const allImagesData = (await serverClient.images.getAll()) as Image[]
 
   return (
     <main>
       <section className='bg-footer-gradient-linear-blue flex w-full min-h-[100vh] py-[60px]'>
         <div className='container relative flex flex-col gap-8 px-8'>
-          <AddArticleSection />
+          <AddArticleSection allImagesData={allImagesData} />
           {articlesData.length ? (
             <ArticlesList articlesData={articlesData} />
           ) : (

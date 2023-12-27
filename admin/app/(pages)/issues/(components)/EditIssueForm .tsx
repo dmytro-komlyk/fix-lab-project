@@ -1,7 +1,6 @@
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -9,6 +8,7 @@ import toast from 'react-hot-toast'
 
 import { trpc } from 'admin/app/(utils)/trpc/client'
 import { useRouter } from 'next/navigation'
+import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
 import EditBenefitsList from './EditBenefitsList'
@@ -16,9 +16,14 @@ import EditBenefitsList from './EditBenefitsList'
 interface IIssueProps {
   issueData: Issue
   benefitsData: Benefit[]
+  allImagesData: Image[]
 }
 
-const EditIssuesForm: React.FC<IIssueProps> = ({ issueData, benefitsData }) => {
+const EditIssuesForm: React.FC<IIssueProps> = ({
+  issueData,
+  benefitsData,
+  allImagesData,
+}) => {
   const router = useRouter()
 
   const [newIssueData, setNewIssueData] = useLocalStorage(
@@ -75,7 +80,6 @@ const EditIssuesForm: React.FC<IIssueProps> = ({ issueData, benefitsData }) => {
     },
 
     onError: () => {
-      // await deleteData(`/images/${uploadedIconId}`)
       toast.error(`Виникла помилка при оновленні...`, {
         style: {
           borderRadius: '10px',
@@ -86,77 +90,23 @@ const EditIssuesForm: React.FC<IIssueProps> = ({ issueData, benefitsData }) => {
     },
   })
 
+  const deleteImage = trpc.images.remove.useMutation()
+
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
     if (
-      newIssueData.title &&
-      newIssueData.slug &&
-      newIssueData.slug &&
-      newIssueData.price &&
-      newIssueData.description &&
-      newIssueData.info &&
-      newIssueData.metadata.description &&
-      newIssueData.metadata.title &&
-      newIssueData.metadata.keywords
+      !(
+        newIssueData.title &&
+        newIssueData.slug &&
+        newIssueData.price &&
+        newIssueData.description &&
+        newIssueData.info &&
+        newIssueData.metadata.description &&
+        newIssueData.metadata.title &&
+        newIssueData.metadata.keywords
+      )
     ) {
-      updateIssue.mutate({
-        id: issueData.id,
-        image_id: '6528fcd9458999afd6a05bfc',
-        title: newIssueData.title,
-        slug: newIssueData.slug,
-        price: newIssueData.price,
-        description: newIssueData.description,
-        info: newIssueData.info,
-        benefits_ids: newIssueData.benefits.map(benefit => benefit.id),
-        metadata: {
-          title: newIssueData.metadata.title,
-          description: newIssueData.metadata.description,
-          keywords: newIssueData.metadata.keywords,
-        },
-        gadgets_ids: [],
-      })
-      //  if (selectedImage) {
-      //    // const uploadResponse = await handleIconUpload()
-      //    // if (!uploadResponse) {
-      //    //   throw new Error('Error uploading image')
-      //    // }
-
-      //    updateIssue.mutate({
-      //      id: issueData.id,
-      //      image_id: '6528fcd9458999afd6a05bfc',
-      //      title: newIssueData.title,
-      //      slug: newIssueData.slug,
-      //      price: newIssueData.price,
-      //      description: newIssueData.description,
-      //      info: newIssueData.info,
-      //      benefits_ids: newIssueData.benefits.map(benefit => benefit.id),
-      //      metadata: {
-      //        title: newIssueData.metadata.title,
-      //        description: newIssueData.metadata.description,
-      //        keywords: newIssueData.metadata.keywords,
-      //      },
-      //      gadgets_ids: [],
-      //    })
-      //  } else {
-      //    updateIssue.mutate({
-      //      id: issueData.id,
-      //      image_id: issueData.image_id,
-      //      title: newIssueData.title,
-      //      slug: newIssueData.slug,
-      //      price: newIssueData.price,
-      //      description: newIssueData.description,
-      //      info: newIssueData.info,
-      //      benefits_ids: newIssueData.benefits.map(benefit => benefit.id),
-      //      metadata: {
-      //        title: newIssueData.metadata.title,
-      //        description: newIssueData.metadata.description,
-      //        keywords: newIssueData.metadata.keywords,
-      //      },
-      //      gadgets_ids: [],
-      //    })
-      //  }
-    } else {
       toast.error(`Всі поля повинні бути заповнені...`, {
         style: {
           borderRadius: '10px',
@@ -164,6 +114,57 @@ const EditIssuesForm: React.FC<IIssueProps> = ({ issueData, benefitsData }) => {
           color: '#fff',
         },
       })
+    } else {
+      if (selectedImage) {
+        const uploadResponse = await handleImageUpload()
+
+        if (uploadResponse?.status === 201) {
+          await updateIssue.mutateAsync({
+            id: issueData.id,
+            image_id: uploadResponse.data.id,
+            title: newIssueData.title,
+            slug: newIssueData.slug,
+            price: newIssueData.price,
+            description: newIssueData.description,
+            info: newIssueData.info,
+            benefits_ids: newIssueData.benefits.map(benefit => benefit.id),
+            metadata: {
+              title: newIssueData.metadata.title,
+              description: newIssueData.metadata.description,
+              keywords: newIssueData.metadata.keywords,
+            },
+            gadgets_ids: newIssueData.gadgets_ids || [],
+          })
+          await deleteImage.mutateAsync(issueData.image.id)
+        } else {
+          await deleteImage.mutateAsync(uploadResponse?.data.id)
+          toast.error(`Помилка оновлення послуги...`, {
+            style: {
+              borderRadius: '10px',
+              background: 'red',
+              color: '#fff',
+            },
+          })
+          throw new Error('Error uploading image')
+        }
+      } else {
+        updateIssue.mutate({
+          id: issueData.id,
+          image_id: issueData.image.id,
+          title: newIssueData.title,
+          slug: newIssueData.slug,
+          price: newIssueData.price,
+          description: newIssueData.description,
+          info: newIssueData.info,
+          benefits_ids: newIssueData.benefits.map(benefit => benefit.id),
+          metadata: {
+            title: newIssueData.metadata.title,
+            description: newIssueData.metadata.description,
+            keywords: newIssueData.metadata.keywords,
+          },
+          gadgets_ids: newIssueData.gadgets_ids || [],
+        })
+      }
     }
   }
 
@@ -199,23 +200,6 @@ const EditIssuesForm: React.FC<IIssueProps> = ({ issueData, benefitsData }) => {
     }
   }
 
-  const handleImageSave = async (id: string) => {
-    try {
-      if (id) {
-        const deleteEndpoint = `/images/${issueData.image.id}`
-
-        await deleteData(deleteEndpoint)
-        if (deleteEndpoint) {
-          setSelectedImage(null)
-          setImage(null)
-        }
-        console.log('success')
-      }
-    } catch (error) {
-      throw new Error('Error uploading image')
-    }
-  }
-
   return (
     <div className='flex flex-auto flex-col items-center justify-center gap-4'>
       <form className='flex w-full flex-col justify-between gap-3 text-white-dis '>
@@ -228,7 +212,7 @@ const EditIssuesForm: React.FC<IIssueProps> = ({ issueData, benefitsData }) => {
               {!image ? (
                 <Image
                   className='h-[400px] w-[500px] object-contain  object-center'
-                  src={issueData.image.file.path}
+                  src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/pictures/${issueData.image.file.filename}`}
                   width={400}
                   height={300}
                   alt={issueData.image.alt}
@@ -339,9 +323,9 @@ const EditIssuesForm: React.FC<IIssueProps> = ({ issueData, benefitsData }) => {
           />
         </label>
       </form>
-      {/* <div className='w-full'>
-        <AddImagesSection />
-      </div> */}
+      <div className='w-full'>
+        <AddImagesSection allImagesData={allImagesData} />
+      </div>
       <div className='flex w-full flex-col justify-between gap-6'>
         <div className='flex w-full  flex-col  gap-2 '>
           <p className='text-center font-exo_2 text-xl text-white-dis'>Інфо</p>
@@ -351,9 +335,9 @@ const EditIssuesForm: React.FC<IIssueProps> = ({ issueData, benefitsData }) => {
             content={info}
           />
         </div>
-        {/* <div className='w-full'>
-          <AddImagesSection />
-        </div> */}
+        <div className='w-full'>
+          <AddImagesSection allImagesData={allImagesData} />
+        </div>
         <div className='flex w-full  flex-col  gap-2 '>
           <p className='text-center font-exo_2 text-xl text-white-dis'>
             Стаття

@@ -13,8 +13,10 @@ interface IIssueAdminProps {
 export const dynamic = 'force-dynamic'
 
 const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
-  const issueData = (await serverClient.issues.getById(params.issue)) as Issue
+  const issueData = (await serverClient.issues.getBySlug(params.issue)) as Issue
   const benefitsData = (await serverClient.benefits.getAll()) as Benefit[]
+  const allImagesData = (await serverClient.images.getAll()) as Image[]
+
   return (
     <main className=' flex flex-auto'>
       <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>
@@ -34,7 +36,11 @@ const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
           <h2 className='mb-6 self-center font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
             {issueData.title}
           </h2>
-          <EditIssuesForm issueData={issueData} benefitsData={benefitsData} />
+          <EditIssuesForm
+            issueData={issueData}
+            benefitsData={benefitsData}
+            allImagesData={allImagesData}
+          />
         </div>
       </section>
     </main>

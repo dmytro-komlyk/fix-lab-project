@@ -7,6 +7,7 @@ import 'swiper/css/pagination'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiFillCloseSquare } from 'react-icons/ai'
@@ -15,19 +16,12 @@ import { IoMdAddCircle } from 'react-icons/io'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-export interface IImageItem {
-  _id: string
-  src: string
-  alt: string
-  type: string
-  file: {
-    path: string
-  }
-}
 interface IAllImagesProps {
   allImagesData: Image[]
 }
 const AddImagesSection: React.FC<IAllImagesProps> = ({ allImagesData }) => {
+  const router = useRouter()
+
   const [altImage, setAltImage] = useState<string | ''>('')
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [contentImage, setContentImage] = useState<string | ArrayBuffer | null>(
@@ -60,7 +54,9 @@ const AddImagesSection: React.FC<IAllImagesProps> = ({ allImagesData }) => {
     }
   }
 
-  const handleImageUpload = async () => {
+  const handleImageUpload = async (e: any) => {
+    e.preventDefault()
+
     try {
       if (selectedImage && altImage) {
         const response = await uploadImg({
@@ -68,21 +64,30 @@ const AddImagesSection: React.FC<IAllImagesProps> = ({ allImagesData }) => {
           alt: altImage,
           type: 'picture',
         })
-        setAltImage('')
-        setContentImage(null)
-        setSelectedImage(null)
-        return response
+        if (response.status === 201) {
+          setAltImage('')
+          setContentImage(null)
+          setSelectedImage(null)
+          router.refresh()
+          return
+        }
+      } else {
+        toast.error(`Додайте зображення і опис...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'grey',
+            color: '#fff',
+          },
+        })
       }
-      toast.error(`Додайте зображення і опис...`, {
+    } catch (error) {
+      toast.error(`Помилка завантаження...`, {
         style: {
           borderRadius: '10px',
-          background: 'grey',
+          background: 'red',
           color: '#fff',
         },
       })
-
-      return null
-    } catch (error) {
       throw new Error('Error uploading image')
     }
   }
@@ -205,7 +210,7 @@ const AddImagesSection: React.FC<IAllImagesProps> = ({ allImagesData }) => {
                   <Image
                     className='h-[140px] max-w-[280px]  object-contain object-center opacity-100 '
                     alt={item.alt}
-                    src={`http://95.217.34.212:30000/${item.file.path}`}
+                    src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/pictures/${item.file.filename}`}
                     width={320}
                     height={240}
                   />
@@ -214,7 +219,7 @@ const AddImagesSection: React.FC<IAllImagesProps> = ({ allImagesData }) => {
                     className='absolute right-0 top-0 rounded-bl-xl bg-black-dis p-2 font-exo_2 text-sm text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
                     onClick={() =>
                       handleCopyLink(
-                        `http://95.217.34.212:30000/${item.file.path}`,
+                        `${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/pictures/${item.file.filename}`,
                       )
                     }
                   >

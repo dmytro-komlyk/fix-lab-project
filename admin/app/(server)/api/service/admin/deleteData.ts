@@ -12,7 +12,7 @@ export default async function deleteData(url: string) {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTg5ODE2YjNiNzk3OGQ1MmNhMThkNmYiLCJpYXQiOjE3MDM1MTAzODJ9.oSu2p7ehVxcORXEKkZ-oU64nDDi7u5pNB7A9AU_PvFY`,
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTg5OTBlZmFjNWRmNjcwNjU5YTA1MzgiLCJpYXQiOjE3MDM1MTQzNjV9.s1By_dgoehic_ymyoFv7830QByFXFFQsNOR8wsgvQQI`,
       },
     })
 

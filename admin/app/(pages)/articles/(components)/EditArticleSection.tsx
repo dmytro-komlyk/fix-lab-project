@@ -1,27 +1,31 @@
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import Image from 'next/image'
+import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
 
-interface IArticleAdminProps {
+interface IEditArticleProps {
   articleData: Article
+  allImagesData: Image[]
 }
 
-const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
+const EditArticleSection: React.FC<IEditArticleProps> = ({
+  articleData,
+  allImagesData,
+}) => {
   const router = useRouter()
   const [newArticleData, setNewArticleData] = useLocalStorage(
     `editNewArticleData${articleData.id}`,
     { ...articleData },
   )
-  const [uploadedImageId, setUploadedImageId] = useState<object | undefined>({})
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [newImage, setNewImage] = useState<string | ArrayBuffer | null>(null)
   const [newArticle, setNewArticle] = useLocalStorage<string | ''>(
@@ -82,51 +86,40 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
     },
   })
 
+  const deleteImage = trpc.images.remove.useMutation()
+
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
     if (selectedImage) {
-      // const uploadResponse = await handleImageUpload()
+      const uploadResponse = await handleImageUpload()
 
-      // if (uploadResponse?.data.id) {
-      //   updateArticle.mutate({
-      //     isActive: true,
-      //     id: newArticleData.id,
-      //     slug: newArticleData.slug,
-      //     title: newArticleData.title,
-      //     text: newArticleData.text,
-      //     image_id: '6528fcd9458999afd6a05bfc',
-      //     preview: newArticleData.preview,
-      //     metadata: {
-      //       title: newArticleData.metadata.title,
-      //       description: newArticleData.metadata.title,
-      //       keywords: newArticleData.metadata.title,
-      //     },
-      //   })
-      // } else {
-      //   toast.error(`Помилка завантаження зображення...`, {
-      //     style: {
-      //       borderRadius: '10px',
-      //       background: 'red',
-      //       color: '#fff',
-      //     },
-      //   })
-      // }
-
-      updateArticle.mutate({
-        isActive: true,
-        id: newArticleData.id,
-        slug: newArticleData.slug,
-        title: newArticleData.title,
-        text: newArticleData.text,
-        image_id: '6528fcd9458999afd6a05bfc',
-        preview: newArticleData.preview,
-        metadata: {
-          title: newArticleData.metadata.title,
-          description: newArticleData.metadata.title,
-          keywords: newArticleData.metadata.title,
-        },
-      })
+      if (uploadResponse?.data.id) {
+        await updateArticle.mutateAsync({
+          isActive: true,
+          id: newArticleData.id,
+          slug: newArticleData.slug,
+          title: newArticleData.title,
+          text: newArticleData.text,
+          image_id: uploadResponse.data.id,
+          preview: newArticleData.preview,
+          metadata: {
+            title: newArticleData.metadata.title,
+            description: newArticleData.metadata.title,
+            keywords: newArticleData.metadata.title,
+          },
+        })
+        await deleteImage.mutateAsync(articleData.image.id)
+      } else {
+        await deleteImage.mutateAsync(uploadResponse?.data.id)
+        toast.error(`Помилка оновлення статті...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'red',
+            color: '#fff',
+          },
+        })
+      }
     } else {
       updateArticle.mutate({
         isActive: true,
@@ -134,7 +127,7 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
         slug: newArticleData.slug,
         title: newArticleData.title,
         text: newArticleData.text,
-        image_id: newArticleData.image_id,
+        image_id: articleData.image.id,
         preview: newArticleData.preview,
         metadata: {
           title: newArticleData.metadata.title,
@@ -175,31 +168,6 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
     } catch (error) {
       throw new Error('Error uploading image')
     }
-    // if (selectedImage) {
-    //     const response = await uploadImageTrpc.mutate({
-    //       fileInput: selectedImage,
-    //       alt: altImage,
-    //       type: 'picture',
-    //     })
-    //     return response
-    //   }
-    //   return null
-  }
-
-  const handleImageSave = async (id: string) => {
-    try {
-      if (id) {
-        //  deleteImageTrpc({ id: articleItem.image.id })
-        const deleteEndpoint = `/images/${articleData.image.id}`
-        await deleteData(deleteEndpoint)
-        if (deleteEndpoint) {
-          setSelectedImage(null)
-          setNewImage(null)
-        }
-      }
-    } catch (error) {
-      throw new Error('Error uploading image')
-    }
   }
 
   return (
@@ -210,11 +178,11 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
             <p className=' bold font-exo_2 mt-2 text-center text-xl'>
               Зображення
             </p>
-            {/* <div className='relative'>
+            <div className='relative'>
               {!newImage ? (
                 <Image
                   className='h-auto w-[500px]  object-center'
-                  src={`http://95.217.34.212:30000/${articleData.image?.file.path}`}
+                  src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/pictures/${articleData.image.file.filename}`}
                   width={400}
                   height={100}
                   alt={articleData.image.alt}
@@ -230,7 +198,7 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
                   />
                 </div>
               )}
-            </div> */}
+            </div>
             <input
               className=' text-white-dis'
               id='image'
@@ -312,9 +280,9 @@ const EditArticleSection: React.FC<IArticleAdminProps> = ({ articleData }) => {
           />
         </label>
       </form>
-      {/* <div className='w-full'>
-        <AddImagesSection />
-      </div> */}
+      <div className='w-full'>
+        <AddImagesSection allImagesData={allImagesData} />
+      </div>
       <div className='flex w-full flex-col  gap-2 '>
         <p className='font-exo_2 text-white-dis text-center text-xl'>Стаття</p>
         <CustomEditor

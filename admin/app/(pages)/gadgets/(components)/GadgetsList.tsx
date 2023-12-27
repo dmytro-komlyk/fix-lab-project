@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 
 export interface IGadgetsProps {
@@ -19,14 +20,14 @@ export const GadgetsList: React.FC<IGadgetsProps> = ({ gadgetsData }) => {
               className='flex w-full flex-col justify-between rounded-2xl pb-[23px] pl-[31px] pr-[21px] pt-[33px]  transition-colors delay-75 duration-300 ease-in-out hover:bg-dark-blue md:h-full xl:h-[261px]'
             >
               <div className='relative ml-auto h-[80px] w-full max-w-[104px]'>
-                {/* {item.icon && (
+                {item.icon && (
                   <Image
                     className='w-auto transition-transform delay-75 duration-300 ease-in-out group-hover:scale-[1.2]'
-                    src={item.icon.src}
+                    src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/icons/${item.icon.file.filename}`}
                     fill
                     alt={item.icon.alt}
                   />
-                )} */}
+                )}
               </div>
               <div className='relative text-white-dis'>
                 <h3 className='mr-auto max-w-[151px]  font-semibold leading-tight transition duration-300 ease-in-out group-hover:-translate-y-7   max-xl:group-hover:translate-x-2 max-lg:group-hover:translate-x-0 md:text-base xl:text-xl'>

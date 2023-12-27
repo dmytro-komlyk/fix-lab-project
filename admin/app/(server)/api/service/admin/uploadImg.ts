@@ -18,7 +18,7 @@ const uploadImg = async ({ fileInput, alt, type }: UploadFileParams) => {
   const config: AxiosRequestConfig = {
     headers: {
       'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTg5ODE2YjNiNzk3OGQ1MmNhMThkNmYiLCJpYXQiOjE3MDM1MTAzODJ9.oSu2p7ehVxcORXEKkZ-oU64nDDi7u5pNB7A9AU_PvFY`,
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTFmMTNiZDQ4ZDUxZGY2OTMxY2QxMjYiLCJpYXQiOjE3MDM2ODc2NzR9.NcL0_Z1ygHwnlVy_fYXGb_294LkhDg4e-B6UobgFX9s`,
     },
   }
 

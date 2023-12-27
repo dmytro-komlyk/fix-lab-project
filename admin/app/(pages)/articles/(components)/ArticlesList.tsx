@@ -22,13 +22,13 @@ const ArticlesList: React.FC<ArticlesListProps> = ({ articlesData }) => {
                   {item.title}
                 </h3>
                 <div className='relative ml-4 flex items-center justify-center gap-4'>
-                  <Link href={`/articles/${item.id}`}>
+                  <Link href={`/articles/${item.slug}`}>
                     <FaEye
                       className='hover:fill-mid-green focus:fill-mid-green transition-colors'
                       size={30}
                     />
                   </Link>
-                  <Link href={`/articles/${item.id}/edit`}>
+                  <Link href={`/articles/${item.slug}/edit`}>
                     <FaEdit
                       className='hover:fill-mid-green focus:fill-mid-green transition-colors'
                       size={30}

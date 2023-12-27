@@ -1,27 +1,24 @@
-/* eslint-disable no-console */
-
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import Image from 'next/image'
 import SendButton from '../../(components)/SendButton'
 import EditBrandsList from './EditBrandsList'
 import EditIssuesList from './EditIssuesList'
 
-interface IAdminGadget {
+interface IGadgetProps {
   gadgetData: Gadget
-  issuesData: Issue
-  brandsData: Brand
+  issuesData: Issue[]
+  brandsData: Brand[]
 }
 
-const EditGadgetForm: React.FC<IAdminGadget> = ({
+const EditGadgetForm: React.FC<IGadgetProps> = ({
   gadgetData,
   issuesData,
   brandsData,
@@ -59,6 +56,88 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
     }
   }
 
+  const updateGadget = trpc.gadgets.update.useMutation({
+    onSuccess: () => {
+      toast.success(`Послугу оновлено!`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
+      router.refresh()
+      setSelectedIcon(null)
+      setNewIcon(null)
+    },
+
+    onError: async () => {
+      toast.error(`Виникла помилка при оновленні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+    },
+  })
+
+  const deleteIcon = trpc.images.remove.useMutation()
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault()
+
+    if (selectedIcon) {
+      const uploadResponse = await handleImageUpload()
+      if (uploadResponse?.status === 201) {
+        if (uploadResponse.data) {
+          await updateGadget.mutateAsync({
+            id: newGadgetData.id,
+            slug: newGadgetData.slug,
+            title: newGadgetData.title,
+            metadata: {
+              title: newGadgetData.metadata.title,
+              description: newGadgetData.metadata.title,
+              keywords: newGadgetData.metadata.title,
+            },
+            description: newGadgetData.description,
+            icon_id: uploadResponse.data.id,
+            gallery_ids:
+              newGadgetData.gallery.map((item: { id: string }) => item.id) ||
+              [],
+            issues_ids: newGadgetData.issues.map(item => item.id) || [],
+            brands_ids: newGadgetData.brands.map(item => item.id) || [],
+          })
+          await deleteIcon.mutateAsync(gadgetData.icon_id)
+        }
+      } else {
+        await deleteIcon.mutateAsync(uploadResponse?.data.id)
+        toast.error(`Виникла при оновлені гаджету...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'red',
+            color: '#fff',
+          },
+        })
+      }
+    } else {
+      updateGadget.mutate({
+        id: newGadgetData.id,
+        slug: newGadgetData.slug,
+        title: newGadgetData.title,
+        metadata: {
+          title: newGadgetData.metadata.title,
+          description: newGadgetData.metadata.title,
+          keywords: newGadgetData.metadata.title,
+        },
+        description: newGadgetData.description,
+        icon_id: gadgetData.icon.id || '',
+        gallery_ids: newGadgetData.gallery.map(item => item.id) || [],
+        issues_ids: newGadgetData.issues.map(item => item.id) || [],
+        brands_ids: newGadgetData.brands.map(item => item.id) || [],
+      })
+    }
+  }
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.files && e.currentTarget.files.length > 0) {
       const file = e.currentTarget.files[0]
@@ -91,136 +170,6 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
     }
   }
 
-  const handleImageSave = async (id: string) => {
-    try {
-      if (id) {
-        const deleteEndpoint = `/images/${gadgetData.icon.id}`
-
-        await deleteData(deleteEndpoint)
-        if (deleteEndpoint) {
-          setSelectedIcon(null)
-          setNewIcon(null)
-        }
-        console.log('success')
-      }
-    } catch (error) {
-      throw new Error('Error uploading image')
-    }
-  }
-
-  const editGadget = trpc.gadgets.update.useMutation({
-    onSettled: () => {
-      toast.success(`Оновлення збережено!`, {
-        style: {
-          borderRadius: '10px',
-          background: 'grey',
-          color: '#fff',
-        },
-      })
-      router.refresh()
-    },
-  })
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-
-    try {
-      if (selectedIcon) {
-        const uploadResponse = await handleImageUpload()
-
-        if (!uploadResponse) {
-          throw new Error('Error uploading image')
-        }
-
-        if (uploadResponse.data.id) {
-          // const response = await sendPutRequest(
-          //   `/gadgets/${newGadgetData.id}`,
-          //   {
-          //     ...newGadgetData,
-          //     icon: uploadResponse.data.id,
-          //     gallery: newGadgetData.gallery.map(item => item.id) || [],
-          //     issues: newGadgetData.issues.map(item => item.id) || [],
-          //     brands: newGadgetData.brands.map(item => item.id) || [],
-          //   },
-          // )
-
-          // if (response.status === 200) {
-          //   await handleImageSave(uploadResponse.data.id)
-          //   toast.success(`Оновлення збережено!`, {
-          //     style: {
-          //       borderRadius: '10px',
-          //       background: 'grey',
-          //       color: '#fff',
-          //     },
-          //   })
-          //   router.refresh()
-          // } else {
-          //   console.error('Error updating contact data')
-          // }
-          editGadget.mutate({
-            id: newGadgetData.id,
-            slug: newGadgetData.slug,
-            title: newGadgetData.title,
-            metadata: {
-              title: newGadgetData.metadata.title,
-              description: newGadgetData.metadata.title,
-              keywords: newGadgetData.metadata.title,
-            },
-            description: newGadgetData.description,
-            icon_id: uploadResponse.data.id,
-            gallery_ids: newGadgetData.gallery.map(item => item.id) || [],
-            issues_ids: newGadgetData.issues.map(item => item.id) || [],
-            brands_ids: newGadgetData.brands.map(item => item.id) || [],
-          })
-          await handleImageSave(uploadResponse.data.id)
-        } else {
-          console.error('Error uploading image')
-        }
-      } else {
-        editGadget.mutate({
-          id: newGadgetData.id,
-          slug: newGadgetData.slug,
-          title: newGadgetData.title,
-          metadata: {
-            title: newGadgetData.metadata.title,
-            description: newGadgetData.metadata.title,
-            keywords: newGadgetData.metadata.title,
-          },
-          description: newGadgetData.description,
-          icon_id: gadgetData.icon.id || '',
-          gallery_ids: newGadgetData.gallery.map(item => item.id) || [],
-          issues_ids: newGadgetData.issues.map(item => item.id) || [],
-          brands_ids: newGadgetData.brands.map(item => item.id) || [],
-        })
-        // const res = await sendPutRequest(`/gadgets/${newGadgetData.id}`, {
-        //   ...newGadgetData,
-        //   icon: gadgetData.icon.id || '',
-        //   gallery: newGadgetData.gallery.map(item => item.id) || [],
-        //   issues: newGadgetData.issues.map(item => item.id) || [],
-        //   brands: newGadgetData.brands.map(item => item.id) || [],
-        // })
-        // if (res.status === 200) {
-        //   toast.success(`Оновлення збережено!`, {
-        //     style: {
-        //       borderRadius: '10px',
-        //       background: 'grey',
-        //       color: '#fff',
-        //     },
-        //   })
-        // }
-      }
-    } catch (error) {
-      console.error('Error:', error)
-      toast.error(`Помилка оновлення...`, {
-        style: {
-          borderRadius: '10px',
-          background: 'grey',
-          color: '#fff',
-        },
-      })
-    }
-  }
-
   return (
     <div className='flex flex-auto flex-col flex-wrap items-center justify-center gap-[20px]'>
       <form className='text-white-dis flex w-full justify-between gap-8 '>
@@ -234,10 +183,10 @@ const EditGadgetForm: React.FC<IAdminGadget> = ({
                 gadgetData.icon && (
                   <Image
                     className='h-[140px] w-[220px] object-contain  object-center'
-                    src={gadgetData?.icon.src}
+                    src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/icons/${gadgetData.icon.file.filename}`}
                     width={300}
                     height={200}
-                    alt={gadgetData?.icon.alt}
+                    alt={gadgetData.icon.alt}
                   />
                 )
               ) : (

@@ -4,11 +4,11 @@
 
 'use client'
 
-import deleteData from '@admin/app/(server)/api/service/admin/deleteData'
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { useState } from 'react'
 
 import { trpc } from 'admin/app/(utils)/trpc/client'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import CustomEditor from '../../(components)/CustomEditor'
@@ -24,7 +24,6 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
   const [newBrandData, setNewBrandData] = useState({ ...brandData })
   const [selectedIcon, setSelectedIcon] = useState<File | null>(null)
   const [newIcon, setNewIcon] = useState<string | ArrayBuffer | null>(null)
-  const [uploadedIconId, setUploadedIconId] = useState<string | undefined>('')
   const [newArticle, setNewArticle] = useState<string | ''>(
     brandData.article || '',
   )
@@ -53,7 +52,6 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
     setNewBrandData({ ...newBrandData })
     if (selectedIcon) {
       setSelectedIcon(null)
-      setUploadedIconId('')
     }
     setNewIcon(null)
     setNewArticle(brandData.article || '')
@@ -68,12 +66,10 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
           color: '#fff',
         },
       })
-      // await handleIconSave(benefitData.icon.id)
       clearState()
       router.refresh()
     },
     onError: () => {
-      // await deleteData(`/images/${uploadedIconId}`)
       toast.error(`Виникла помилка при оновленні...`, {
         style: {
           borderRadius: '10px',
@@ -83,14 +79,41 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
       })
     },
   })
+  const deleteIcon = trpc.images.remove.useMutation()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    if (newBrandData.title) {
+    if (selectedIcon) {
+      const uploadResponse = await handleIconUpload()
+      if (uploadResponse?.data.id) {
+        await updateBrand.mutateAsync({
+          id: brandData.id,
+          icon_id: uploadResponse.data.id,
+          title: newBrandData.title,
+          slug: newBrandData.slug,
+          article: newArticle,
+          metadata: {
+            title: newBrandData.metadata.title,
+            description: newBrandData.metadata.description,
+            keywords: newBrandData.metadata.keywords,
+          },
+        })
+        await deleteIcon.mutateAsync(brandData.icon.id)
+      } else {
+        await deleteIcon.mutateAsync(uploadResponse?.data.id)
+        toast.error(`Помилка оновлення статті...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'red',
+            color: '#fff',
+          },
+        })
+      }
+    } else {
       updateBrand.mutate({
         id: brandData.id,
-        icon_id: '6528ff26458999afd6a05c48',
+        icon_id: brandData.icon_id,
         title: newBrandData.title,
         slug: newBrandData.slug,
         article: newArticle,
@@ -98,46 +121,6 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
           title: newBrandData.metadata.title,
           description: newBrandData.metadata.description,
           keywords: newBrandData.metadata.keywords,
-        },
-      })
-      // if (selectedIcon) {
-      //   // const uploadResponse = await handleIconUpload()
-      //   // if (!uploadResponse) {
-      //   //   throw new Error('Error uploading image')
-      //   // }
-
-      //   updateBrand.mutate({
-      //     id: brandData.id,
-      //     icon_id: '6528ff26458999afd6a05c48',
-      //     title: newBrandData.title,
-      //     slug: newBrandData.slug,
-      //     article: newArticle,
-      //     metadata: {
-      //       title: newBrandData.metadata.title,
-      //       description: newBrandData.metadata.description,
-      //       keywords: newBrandData.metadata.keywords,
-      //     },
-      //   })
-      // } else {
-      //   updateBrand.mutate({
-      //     id: brandData.id,
-      //     icon_id: brandData.icon_id,
-      //     title: newBrandData.title,
-      //     slug: newBrandData.slug,
-      //     article: newArticle,
-      //     metadata: {
-      //       title: newBrandData.metadata.title,
-      //       description: newBrandData.metadata.description,
-      //       keywords: newBrandData.metadata.keywords,
-      //     },
-      //   })
-      // }
-    } else {
-      toast.error(`Всі поля повинні бути заповнені...`, {
-        style: {
-          borderRadius: '10px',
-          background: 'grey',
-          color: '#fff',
         },
       })
     }
@@ -159,7 +142,7 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
     }
   }
 
-  const handleImageUpload = async () => {
+  const handleIconUpload = async () => {
     try {
       if (selectedIcon) {
         const response = await uploadImg({
@@ -175,50 +158,33 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
     }
   }
 
-  const handleImageSave = async (id: string) => {
-    try {
-      if (id) {
-        const deleteEndpoint = `/images/${brandData.icon.id}`
-
-        await deleteData(deleteEndpoint)
-        if (deleteEndpoint) {
-          setSelectedIcon(null)
-          setNewIcon(null)
-        }
-        console.log('success')
-      }
-    } catch (error) {
-      throw new Error('Error uploading image')
-    }
-  }
-
   return (
     <div className='flex w-full flex-col items-center justify-center gap-[60px] '>
       <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
         <div className='flex w-[400px] flex-col'>
-          {/* <div className='relative'>
-                {!newIcon ? (
-                  brandData.icon && (
-                    <Image
-                      className='h-auto w-[100px]  object-center'
-                      src={brandData.icon.src}
-                      width={100}
-                      height={100}
-                      alt={brandData?.icon.alt || ''}
-                    />
-                  )
-                ) : (
-                  <div>
-                    <Image
-                      className='h-[100px] w-[100px] object-center'
-                      src={typeof newIcon === 'string' ? newIcon : ''}
-                      width={100}
-                      height={100}
-                      alt={brandData.title}
-                    />
-                  </div>
-                )}
-              </div> */}
+          <div className='relative'>
+            {!newIcon ? (
+              brandData.icon && (
+                <Image
+                  className='h-auto w-[100px]  object-center'
+                  src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/icons/${brandData.icon.file.filename}`}
+                  width={100}
+                  height={100}
+                  alt={brandData?.icon.alt || ''}
+                />
+              )
+            ) : (
+              <div>
+                <Image
+                  className='h-[100px] w-[100px] object-center'
+                  src={typeof newIcon === 'string' ? newIcon : ''}
+                  width={100}
+                  height={100}
+                  alt={brandData.title}
+                />
+              </div>
+            )}
+          </div>
           <input
             className=' text-white-dis'
             id='icon'
@@ -226,6 +192,17 @@ const EditBrandForm: React.FC<IAdminBrandProps> = ({ brandData }) => {
             accept='icon/*'
             onChange={handleImageChange}
           />
+          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+            alt(Опис зображення)
+            <input
+              required
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+              type='text'
+              name='altIcon'
+              value={newBrandData.icon.alt || ''}
+              onChange={handleInputChange}
+            />
+          </label>
           <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
             Заголовок
             <input

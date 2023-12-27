@@ -22,7 +22,7 @@ const PreviewArticlePage: React.FC<IPreviewArticleProps> = ({
           {articleData.image ? (
             <Image
               className='mb-[56px] min-h-[245px] w-full object-cover md:max-h-[480px]'
-              src={`${process.env.NEXT_PUBLIC_BASE_URL}/${articleData.image.file.path}`}
+              src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/pictures/${articleData.image.file.filename}`}
               width={924}
               height={480}
               alt={articleData.image.alt}

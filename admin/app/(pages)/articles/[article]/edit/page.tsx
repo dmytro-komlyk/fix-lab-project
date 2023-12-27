@@ -13,12 +13,14 @@ interface IArticleAdminProps {
 export const dynamic = 'force-dynamic'
 
 const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
-  const articleData = (await serverClient.articles.getById(
+  const articleData = (await serverClient.articles.getBySlug(
     params.article,
   )) as Article
+  const allImagesData = (await serverClient.images.getAll()) as Image[]
+
   return (
-    <main className=' flex flex-auto'>
-      <section className=' bg-footer-gradient-linear-blue w-full  overflow-hidden  py-[60px] '>
+    <main>
+      <section className='bg-footer-gradient-linear-blue flex w-full min-h-[100vh] py-[60px]'>
         <div className='container  relative flex flex-col items-center px-8 '>
           <div className='z-[1] mb-8 flex items-center gap-1 self-start  px-4'>
             <Link
@@ -36,7 +38,10 @@ const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
             {articleData?.title}
           </h2>
           {articleData ? (
-            <EditArticleSection articleData={articleData} />
+            <EditArticleSection
+              articleData={articleData}
+              allImagesData={allImagesData}
+            />
           ) : (
             <p>No article</p>
           )}

@@ -24,10 +24,11 @@ const RemoveIssue: React.FC<RemoveIssueProps> = ({ item }) => {
     }))
   }
 
+  const deleteImage = trpc.images.remove.useMutation()
+
   const removeIssueRemoveIssue = trpc.issues.remove.useMutation({
-    onSuccess: async () => {
-      // const deleteImgUrl = `/images/${item.image_id}`
-      // await deleteData(deleteImgUrl)
+    onSuccess: () => {
+      deleteImage.mutate(item.image_id)
       router.refresh()
       toast.success(`Послугу видалено!`, {
         style: {

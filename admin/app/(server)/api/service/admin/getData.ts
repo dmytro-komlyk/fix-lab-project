@@ -38,7 +38,7 @@
 //   }
 // }
 
-import { auth } from '../../../../../auth'
+// import { auth } from '../../../../../auth'
 
 const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL as string
 
