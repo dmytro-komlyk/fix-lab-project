@@ -92,20 +92,20 @@ const BrandsSection = ({
       <div className='container flex flex-col pb-[140px] pt-[159px] max-lg:pb-[50px] max-md:pt-[117px] md:gap-[27px]  lg:px-0'>
         <div className='flex flex-wrap items-center md:gap-2 '>
           <Link
-            className='flex items-center gap-1 text-md font-[400] text-dark-blue'
+            className='text-md text-dark-blue flex items-center gap-1 font-[400] transition-opacity  hover:opacity-70 focus:opacity-70'
             href='/'
           >
             <p> Головна</p> <MdKeyboardArrowRight size={25} />
           </Link>
           <Link
-            className='flex items-center gap-1 text-md font-[400] text-dark-blue'
+            className='text-md text-dark-blue flex items-center gap-1 font-[400] transition-opacity  hover:opacity-70 focus:opacity-70'
             href='/repair'
           >
             <p> Ремонт</p> <MdKeyboardArrowRight size={25} />
           </Link>
           {gadgetData && (
             <Link
-              className='flex items-center gap-1 text-md font-[400] text-dark-blue  max-md:tracking-tighter'
+              className='text-md text-dark-blue flex items-center gap-1 font-[400]  transition-opacity hover:opacity-70  focus:opacity-70 max-md:tracking-tighter'
               href={`/repair/${gadgetData.slug}`}
             >
               {gadgetData?.title}
@@ -113,7 +113,7 @@ const BrandsSection = ({
               <MdKeyboardArrowRight size={25} />
             </Link>
           )}
-          <p className='text-md font-[300] text-dark-blue/50'>
+          <p className='text-md text-dark-blue/50 font-[300]'>
             Бренди які ремонтуємо
           </p>
         </div>
@@ -136,7 +136,7 @@ const BrandsSection = ({
               )}
             </div>
           )}
-          <h1 className='mb-[25px] font-exo_2 text-2xl font-bold text-black-dis max-md:mb-[2px] max-md:mt-[16px] max-md:text-[23px] max-md:leading-[30px] max-md:tracking-[0.3px] lg:leading-[1.2px] xl:tracking-[1.9px]'>
+          <h1 className='font-exo_2 text-black-dis mb-[25px] text-2xl font-bold max-md:mb-[2px] max-md:mt-[16px] max-md:text-[23px] max-md:leading-[30px] max-md:tracking-[0.3px] lg:leading-[1.2px] xl:tracking-[1.9px]'>
             Бренди {gadgetText}, які ремонтуємо у сервісному центрі FixLab
           </h1>
           <div className='container mb-[56px] p-0'>
