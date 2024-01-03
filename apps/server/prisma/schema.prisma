@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"] 
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type Metadata {
+  description String
+  keywords    String
+  title       String
+}
+
+type ImagesFile {
+  destination  String
+  encoding     String
+  fieldname    String
+  filename     String
+  mimetype     String
+  originalname String
+  path         String
+  size         Int
+}
+
+model Article {
+  id            String            @id @default(auto()) @map("_id") @db.ObjectId
+  image         Image             @relation(fields: [image_id], references: [id], name: "article_image")
+  image_id      String            @db.ObjectId
+  isActive      Boolean
+  metadata      Metadata
+  preview       String
+  slug          String            @unique(map: "slug_1")
+  text          String
+  title         String
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@map("articles")
+}
+
+model Benefit {
+  id              String          @id @default(auto()) @map("_id") @db.ObjectId
+  icon            Image           @relation(fields: [icon_id], references: [id], name: "benefit_icon")
+  icon_id         String          @db.ObjectId
+  title           String
+  isActive        Boolean
+  issues          Issue[]         @relation(fields: [issues_ids], references: [id], name: "issues_benefits")
+  issues_ids      String[]        @db.ObjectId
+
+  @@map("benefits")
+}
+
+model Brand {
+  id                String         @id @default(auto()) @map("_id") @db.ObjectId
+  article           String
+  icon              Image          @relation(fields: [icon_id], references: [id], name: "brand_icon")
+  icon_id           String         @db.ObjectId
+  isActive          Boolean
+  metadata          Metadata
+  slug              String         @unique(map: "slug_1")
+  title             String
+
+  gadgets           Gadget[]       @relation(fields: [gadgets_ids], references: [id], name: "gadgets_brands")
+  gadgets_ids       String[]       @db.ObjectId
+
+  @@map("brands")
+}
+
+model Contact {
+  id               String          @id @default(auto()) @map("_id") @db.ObjectId
+  address          String
+  area             String
+  comment          String
+  googleMapLink    String
+  googlePluginLink String
+  image            Image          @relation(fields: [image_id], references: [id], name: "contact_image")
+  image_id         String         @db.ObjectId
+  isActive         Boolean
+  phones           String[]
+  subways          String[]
+  workingDate      String
+  workingTime      String
+
+  @@map("contacts")
+}
+
+model Gadget {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  slug            String         @unique(map: "slug_1")
+  title           String
+  description     String
+  icon            Image          @relation(fields: [icon_id], references: [id], name: "gadget_icon")
+  icon_id         String         @db.ObjectId
+  brands          Brand[]        @relation(fields: [brands_ids], references: [id], name: "gadgets_brands")
+  brands_ids       String[]      @db.ObjectId
+  gallery         Image[]        @relation(fields: [gallery_ids], references: [id], name: "gadget_gallery")
+  gallery_ids     String[]       @db.ObjectId
+  issues          Issue[]        @relation(fields: [issues_ids], references: [id], name: "gadgets_issues")
+  issues_ids      String[]       @db.ObjectId
+  metadata        Metadata
+  isActive        Boolean
+
+  @@map("gadgets")
+}
+
+model Issue {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  slug          String         @unique(map: "slug_1")
+  title         String
+  description   String
+  info          String
+  price         String
+  image         Image          @relation(fields: [image_id], references: [id], name: "issue_image")
+  image_id      String         @db.ObjectId
+  benefits      Benefit[]      @relation(fields: [benefits_ids], references: [id], name: "issues_benefits")
+  benefits_ids  String[]       @db.ObjectId
+  metadata      Metadata
+  isActive      Boolean
+  gadgets       Gadget[]       @relation(fields: [gadgets_ids], references: [id], name: "gadgets_issues")
+  gadgets_ids   String[]       @db.ObjectId
+
+  @@map("issues")
+}
+
+model Image {
+  id                  String         @id @default(auto()) @map("_id") @db.ObjectId
+  alt                 String
+  file                ImagesFile
+  type                String
+  gadget_gallery      Gadget[]       @relation(fields: [gadget_gallery_ids], references: [id], name: "gadget_gallery")
+  gadget_gallery_ids  String[]       @db.ObjectId
+  gadget_icon         Gadget[]       @relation("gadget_icon")
+  issue_image         Issue[]        @relation("issue_image")
+  contact_image       Contact[]      @relation("contact_image")
+  brand_icon          Brand[]        @relation("brand_icon")
+  benefit_icon        Benefit[]      @relation("benefit_icon")
+  article_image       Article[]      @relation("article_image")
+
+  @@map("images")
+}
+
+model User {
+  id       String            @id @default(auto()) @map("_id") @db.ObjectId
+  email    String            @unique(map: "email_1")
+  login    String            @unique(map: "login_1")
+  name     String
+  password String
+  isActive Boolean
+  token    String
+
+  @@map("users")
+}
