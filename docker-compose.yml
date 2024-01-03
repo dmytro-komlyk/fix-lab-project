@@ -1,92 +1,81 @@
 version: "3.8"
 services:
   mongo:
-    image: mongo:6.0
+    build:
+      dockerfile: ./apps/database/Dockerfile
+      args:
+        MONGO_VERSION: 6
     container_name: mongo
-    hostname: mongo
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=admin123
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=fixlab-db
+      - MONGO_REPLICA_HOST=mongo
+      - MONGO_REPLICA_PORT=27018
+      - MONGO_COMMAND=mongosh
+      - INIT_REPL_CMD=3
     volumes:
-      - ./database/data:/data/db
+      - ./apps/database/data:/data/db
     ports:
-      - 27017:27017
+      - 27018:27018
     networks:
       - backend
+    restart: always
+    healthcheck:
+      # Use "mongo" instead of "mongosh" before v5.0
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "admin",
+          "--port",
+          "27018",
+          "--eval",
+          "db.adminCommand('ping').ok",
+        ]
+      interval: 5s
+      timeout: 2s
+      retries: 20
 
-  # mongo-express:
-  #   image: mongo-express
-  #   container_name: mongo-ui
-  #   restart: unless-stopped
-  #   environment:
-  #     - ME_CONFIG_MONGODB_SERVER=mongo
-  #     - ME_CONFIG_MONGODB_ADMINUSERNAME=root
-  #     - ME_CONFIG_MONGODB_ADMINPASSWORD=admin123
-  #     - ME_CONFIG_MONGODB_URL=
-  #     - ME_CONFIG_BASICAUTH_USERNAME=
-  #     - ME_CONFIG_BASICAUTH_PASSWORD=
-  #   ports:
-  #     - 8081:8081
-  #   networks:
-  #     - backend
-  #   links:
-  #     - mongo:mongo
-  #   depends_on:
-  #     - mongo
-
-  # admin:
-  #   build:
-  #     target: production
-  #     dockerfile: ./docker/Dockerfile.admin
-  #   container_name: admin
-  #   restart: unless-stopped
-  #   env_file: ./admin/.env
-  #   environment:
-  #     - NODE_ENV=production
-  #   ports:
-  #     - "30002:3002"
-  #   networks:
-  #     - client
-
-  # client:
-  #   build:
-  #     target: production
-  #     dockerfile: ./docker/Dockerfile.client
-  #   container_name: client
-  #   restart: unless-stopped
-  #   env_file: ./client/.env
-  #   stdin_open: true
-  #   tty: true
-  #   volumes:
-  #     - ./server/public/:/app/server/public
-  #     - static-content:/app/server/static
-  #   environment:
-  #     - NODE_ENV=production
-  #   ports:
-  #     - "3001:3001"
-  #   networks:
-  #     - client
+  prisma-studio:
+    build:
+      context: .
+      target: prisma-runner
+      dockerfile: ./apps/server/Dockerfile
+    container_name: prisma-studio
+    restart: unless-stopped
+    env_file: ./apps/server/.env.example
+    environment:
+      - DATABASE_USERNAME=admin
+      - DATABASE_PASSWORD=password
+      - DATABASE_NAME=fixlab-db
+    ports:
+      - 5555:5555
+    networks:
+      - backend
+    depends_on:
+      - mongo
+    links:
+      - mongo
 
   server:
     build:
-      target: production
-      dockerfile: ./docker/Dockerfile.server
+      context: .
+      target: runner
+      dockerfile: ./apps/server/Dockerfile
     container_name: server
     restart: unless-stopped
-    env_file: ./server/.env
+    env_file: ./apps/server/.env.example
     environment:
       - NODE_ENV=production
-      - MONGO_DB_LINK=mongodb://mongo:27017
-      - MONGO_DB_AUTH_USERNAME=root
-      - MONGO_DB_AUTH_PASSWORD=admin123
-      - MONGO_DB_NAME=fixlab-db
+      - DATABASE_USERNAME=admin
+      - DATABASE_PASSWORD=password
       - SECRET=4u5I577c6zTbw7za
       - D_ADMIN_KEY=6315413c-58c1-11ee-8c99-0242ac120002
     volumes:
-      - ./server/public/:/app/server/public
-      - static-content:/app/server/static
+      - ./apps/server/public/:/app/apps/server/public
     ports:
-      - 4000:3000
+      - 30000:3000
     networks:
       - client
       - backend
@@ -95,6 +84,54 @@ services:
     links:
       - mongo
 
+  admin:
+    build:
+      context: .
+      target: runner
+      dockerfile: ./apps/admin/Dockerfile
+    container_name: admin
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    env_file: ./apps/admin/.env.example
+    environment:
+      - NODE_ENV=production
+      - DATABASE_USERNAME=admin
+      - DATABASE_PASSWORD=password
+    volumes:
+      - ./apps/admin/public:/app/apps/admin/public
+    ports:
+      - "30002:3002"
+    networks:
+      - client
+      - backend
+
+  client:
+    build:
+      context: .
+      target: runner
+      dockerfile: ./apps/client/Dockerfile
+    container_name: client
+    restart: unless-stopped
+    env_file: ./apps/client/.env.example
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./apps/client/public:/app/apps/client/public
+    environment:
+      - NODE_ENV=production
+      - DATABASE_USERNAME=admin
+      - DATABASE_PASSWORD=password
+      - NEXT_PUBLIC_TELEGRAM_TOKEN='6885833498:AAFGobowRzxbtdyFjqORjMKMDQPSdPSCA1c'
+      - NEXT_PUBLIC_TELEGRAM_CHAT_ID='-1006885833498'
+      - NEXT_PUBLIC_TWANK_PROPERTY_ID='62c6a7cfb0d10b6f3e7b3cf1'
+      - NEXT_PUBLIC_TWANK_WIDGET_ID='1g7bvv18l'
+    ports:
+      - "30001:3001"
+    networks:
+      - client
+      - backend
+
 networks:
   client:
     driver: bridge
@@ -102,7 +139,5 @@ networks:
     driver: bridge
 
 volumes:
-  static-content:
-    driver: local
   database:
     driver: local
