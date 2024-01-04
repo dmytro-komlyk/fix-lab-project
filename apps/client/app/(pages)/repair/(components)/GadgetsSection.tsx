@@ -52,19 +52,19 @@ const GadgetsSection = ({
       <div className='container flex flex-col lg:px-0'>
         <div className='flex items-center gap-1'>
           <Link
-            className='flex items-center gap-1 text-base font-[400] text-dark-blue'
+            className='text-dark-blue flex items-center gap-1 text-base font-[400] hover:opacity-70 focus:opacity-70'
             href='/'
           >
             <p> Головна</p>
           </Link>
           <MdKeyboardArrowRight className='text-dark-blue' size={20} />
-          <p className='text-base font-[400] text-dark-blue opacity-50'>
+          <p className='text-dark-blue text-base font-[400] opacity-50'>
             Ремонт
           </p>
         </div>
         <div className='mt-[30px] flex justify-between gap-6 max-lg:flex-col'>
           <div className='flex  flex-col max-lg:w-full max-md:w-full'>
-            <h3 className='mb-[24px] font-exo_2 text-xl font-bold leading-normal text-light-blue md:text-2xl'>
+            <h3 className='font-exo_2 text-light-blue mb-[24px] text-xl font-bold leading-normal md:text-2xl'>
               Що зламалося?
             </h3>
             <div className='mb-8 flex flex-col gap-[24px] text-base font-normal max-lg:gap-1 xl:max-w-[280px]'>

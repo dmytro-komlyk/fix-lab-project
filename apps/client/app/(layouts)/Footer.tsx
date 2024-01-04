@@ -57,7 +57,7 @@ export const Footer = ({
           <ul className='flex flex-col items-start gap-[10px]'>
             <li>
               <Link
-                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-center text-base font-semibold uppercase tracking-wide  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/repair/telefon/brands/apple-phone'
               >
                 Ремонт iphone
@@ -65,7 +65,7 @@ export const Footer = ({
             </li>
             <li>
               <Link
-                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-center text-base font-semibold uppercase tracking-wide  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/repair/telefon/brands/xiaomi-phone'
               >
                 Ремонт xiaomi
@@ -73,7 +73,7 @@ export const Footer = ({
             </li>
             <li>
               <Link
-                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-center text-base font-semibold uppercase tracking-wide  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/repair/telefon/brands/huawei-phone'
               >
                 Ремонт huawei
@@ -81,7 +81,7 @@ export const Footer = ({
             </li>
             <li>
               <Link
-                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-center text-base font-semibold uppercase tracking-wide  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/repair/telefon/brands/samsung-phone'
               >
                 Ремонт samsung
@@ -89,7 +89,7 @@ export const Footer = ({
             </li>
             <li>
               <Link
-                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-center text-base font-semibold uppercase tracking-wide  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/repair/noutbuk'
               >
                 Ремонт ноутбуків
@@ -97,7 +97,7 @@ export const Footer = ({
             </li>
             <li>
               <Link
-                className='text-center text-base font-semibold uppercase tracking-wide text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-center text-base font-semibold uppercase tracking-wide  transition-opacity hover:opacity-80  focus:opacity-80'
                 href='/repair/dzhojstik'
               >
                 Ремонт dualsense
@@ -107,8 +107,8 @@ export const Footer = ({
           <ul className='flex flex-col gap-[29px] md:hidden'>
             <li>
               <Link
-                className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis uppercase '
-                href='/#'
+                className='bg-white-dis flex h-12 w-12 items-center justify-center rounded-[50%] uppercase '
+                href='https://www.instagram.com/fixlab.com.ua/'
               >
                 <Image
                   className='h-[25px] w-[25px]'
@@ -121,7 +121,7 @@ export const Footer = ({
             </li>
             <li>
               <Link
-                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase '
+                className='bg-white-dis flex h-12  w-12 items-center justify-center rounded-[50%] uppercase '
                 href='/#'
               >
                 <Image
@@ -135,7 +135,7 @@ export const Footer = ({
             </li>
             <li>
               <Link
-                className='flex h-12 w-12  items-center justify-center rounded-[50%] bg-white-dis uppercase '
+                className='bg-white-dis flex h-12  w-12 items-center justify-center rounded-[50%] uppercase '
                 href='/#'
               >
                 <LiaViber size={28} fill='#8c5da7' />
@@ -148,7 +148,7 @@ export const Footer = ({
             <li>
               <Link
                 href='/repair'
-                className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-base font-semibold  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Ремонт
               </Link>
@@ -156,7 +156,7 @@ export const Footer = ({
             <li>
               <Link
                 href='/contacts'
-                className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-base font-semibold  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Контакти
               </Link>
@@ -164,7 +164,7 @@ export const Footer = ({
             <li>
               <Link
                 href='/blog'
-                className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-base font-semibold  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Блог
               </Link>
@@ -172,7 +172,7 @@ export const Footer = ({
             <li>
               <Link
                 href='/corporate'
-                className='text-base font-semibold capitalize text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
+                className='text-white-dis text-base font-semibold capitalize  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Для бізнесу
               </Link>
@@ -186,7 +186,7 @@ export const Footer = ({
                     <a
                       key={phoneNumber}
                       href={`tel:${phoneNumber.replace(/\s/g, '')}`}
-                      className='text-base font-medium leading-7 tracking-wide text-mid-green transition-colors hover:text-white-dis focus:text-white-dis'
+                      className='text-mid-green hover:text-white-dis focus:text-white-dis text-base font-medium leading-7 tracking-wide transition-colors'
                     >
                       {phoneNumber}
                     </a>
@@ -195,18 +195,18 @@ export const Footer = ({
               ))}
             </ul>
             <div className='flex flex-col items-start gap-1 '>
-              <span className='text-base  text-white-dis'>
+              <span className='text-white-dis  text-base'>
                 {contactsData[0]?.workingTime}
               </span>
-              <span className='text-base  text-white-dis '>
+              <span className='text-white-dis  text-base '>
                 {contactsData[0]?.workingDate}
               </span>
             </div>
             <ul className='flex  max-md:hidden md:flex md:gap-3'>
               <li>
                 <Link
-                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
-                  href='/#'
+                  className='bg-white-dis flex h-12 w-12 items-center justify-center rounded-[50%] transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
+                  href='https://www.instagram.com/fixlab.com.ua/'
                   aria-label='Соціальні мережі'
                   target='_blank'
                 >
@@ -221,8 +221,8 @@ export const Footer = ({
               </li>
               <li>
                 <Link
-                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
-                  href='/#'
+                  className='bg-white-dis flex h-12 w-12 items-center justify-center rounded-[50%] transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
+                  href='https://t.me/fixlab_saperka'
                   target='_blank'
                   aria-label='Соціальні мережі'
                 >
@@ -237,8 +237,8 @@ export const Footer = ({
               </li>
               <li>
                 <Link
-                  className='flex h-12 w-12 items-center justify-center rounded-[50%] bg-white-dis transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
-                  href='/#'
+                  className='bg-white-dis flex h-12 w-12 items-center justify-center rounded-[50%] transition-opacity  visited:no-underline hover:opacity-80  focus:opacity-80 '
+                  href='viber://chat?number=%2B380632272728'
                   aria-label='Соціальні мережі'
                   target='_blank'
                 >
