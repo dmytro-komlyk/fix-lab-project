@@ -155,11 +155,11 @@ const AddImagesSection = ({
                 }}
               />
             </label>
-            <FaFileImage
-              className='text-white-dis transition-all hover:scale-[1.03]  hover:opacity-80 focus:scale-[1.03]  focus:opacity-80'
-              size={40}
-            />
             <label className='relative cursor-pointer'>
+              <FaFileImage
+                className='text-white-dis transition-all hover:scale-[1.03]  hover:opacity-80 focus:scale-[1.03]  focus:opacity-80'
+                size={40}
+              />
               <input
                 className='hidden'
                 id='icon'
@@ -206,7 +206,7 @@ const AddImagesSection = ({
           }}
           modules={[Navigation, Pagination]}
         >
-          {reversedImagesData.map(item => {
+          {reversedImagesData.map((item: any) => {
             return (
               <SwiperSlide key={item.id} style={{ width: 600 }}>
                 <div className='relative my-6 mb-10 flex justify-center bg-modal-overlay '>
