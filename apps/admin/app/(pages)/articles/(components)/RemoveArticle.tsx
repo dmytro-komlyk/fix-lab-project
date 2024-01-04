@@ -1,7 +1,7 @@
 'use client'
 
 import { trpc } from '@admin/app/(utils)/trpc/client'
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -97,7 +97,7 @@ const RemoveArticle = ({
           ref={ref => {
             containerRefs.current[item.id] = ref
           }}
-          className='z-1 bg-mid-green absolute bottom-[-21.5px] left-[-25px] flex gap-4 p-[21px]'
+          className='z-1 absolute bottom-[-21.5px] left-[-25px] flex gap-4 bg-mid-green p-[21px]'
         >
           <button
             aria-label='Видалити'
@@ -105,7 +105,7 @@ const RemoveArticle = ({
             onClick={() => handleDeleteArticle(item.id)}
           >
             <AiOutlineCheckCircle
-              className='hover:fill-white-dis focus:fill-white-dis transition-colors'
+              className='transition-colors hover:fill-white-dis focus:fill-white-dis'
               size={30}
             />
           </button>

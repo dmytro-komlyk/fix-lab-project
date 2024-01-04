@@ -1,9 +1,9 @@
+import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { outputArticleSchema } from '@server/domain/articles/schemas/article.schema'
+import type { imageSchema } from '@server/domain/images/schemas/image.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import { outputArticleSchema } from '@server/domain/articles/schemas/article.schema'
-import { imageSchema } from '@server/domain/images/schemas/image.schema'
 import EditArticleSection from '../../(components)/EditArticleSection'
 
 interface IArticleAdminProps {
@@ -22,7 +22,7 @@ const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
 
   return (
     <main>
-      <section className='bg-footer-gradient-linear-blue flex w-full min-h-[100vh] py-[60px]'>
+      <section className='flex min-h-[100vh] w-full bg-footer-gradient-linear-blue py-[60px]'>
         <div className='container  relative flex flex-col items-center px-8 '>
           <div className='z-[1] mb-8 flex items-center gap-1 self-start  px-4'>
             <Link
@@ -36,7 +36,7 @@ const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
               {articleData?.title}
             </p>
           </div>
-          <h2 className='font-exo_2 text-white-dis mb-6  text-2xl font-bold max-lg:text-xl '>
+          <h2 className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
             {articleData?.title}
           </h2>
           {articleData ? (

@@ -1,23 +1,23 @@
 'use client'
 
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import {
+  closestCenter,
   DndContext,
   KeyboardSensor,
   PointerSensor,
-  closestCenter,
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
 import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { useState } from 'react'
 import { IoMdAddCircle } from 'react-icons/io'
 
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import { DraggableIssueItem } from './DraggableIssueItem'
 
 const EditIssuesList = ({
@@ -116,7 +116,7 @@ const EditIssuesList = ({
     }),
   )
 
-  function handleDragEnd(event: { id?: any; active?: any; over?: any }) {
+  function handleDragEnd(event: any) {
     const { active, over } = event
 
     if (event.id !== over.id) {

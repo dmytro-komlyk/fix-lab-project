@@ -1,7 +1,8 @@
 'use client'
 
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
+
 import RenderMarkdown from '../../(components)/RenderMarkdown'
 
 const PreviewArticlePage = ({
@@ -12,7 +13,7 @@ const PreviewArticlePage = ({
   >
 }) => {
   return (
-    <section className=' bg-white-dis overflow-hidden p-4  shadow-2xl'>
+    <section className=' overflow-hidden bg-white-dis p-4  shadow-2xl'>
       <div className='container relative flex flex-col xl:p-0'>
         <div className='flex w-[988px] flex-col '>
           <div className='flex items-center justify-between  gap-2'>

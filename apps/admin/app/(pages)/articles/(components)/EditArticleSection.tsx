@@ -2,13 +2,13 @@
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
+import { trpc } from '@admin/app/(utils)/trpc/client'
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-import { trpc } from '@admin/app/(utils)/trpc/client'
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import Image from 'next/image'
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
@@ -66,6 +66,36 @@ const EditArticleSection = ({
     }
   }
 
+  const handleImageUpload = async () => {
+    try {
+      if (selectedImage && altImage) {
+        const response = await uploadImg({
+          fileInput: selectedImage,
+          alt: altImage,
+          type: articleData.image.type || 'picture',
+        })
+        return response
+      }
+      toast.error(`Відсутнє зображення, або його опис...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+      return null
+    } catch (error) {
+      toast.error(`Помилка завантаження зображення...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+      throw new Error('Error uploading image')
+    }
+  }
+
   const updateArticle = trpc.articles.update.useMutation({
     onSuccess: () => {
       toast.success(`Оновлення збережено!`, {
@@ -113,45 +143,17 @@ const EditArticleSection = ({
           color: '#fff',
         },
       })
-      return
-    } else {
-      if (selectedImage) {
-        const uploadResponse = await handleImageUpload()
+    } else if (selectedImage) {
+      const uploadResponse = await handleImageUpload()
 
-        if (uploadResponse?.data.id) {
-          await updateArticle.mutateAsync({
-            isActive: true,
-            id: newArticleData.id,
-            slug: newArticleData.slug,
-            title: newArticleData.title,
-            text: newArticleData.text,
-            image_id: uploadResponse.data.id,
-            preview: newArticleData.preview,
-            metadata: {
-              title: newArticleData.metadata.title,
-              description: newArticleData.metadata.title,
-              keywords: newArticleData.metadata.title,
-            },
-          })
-          await deleteImage.mutateAsync(articleData.image.id)
-        } else {
-          await deleteImage.mutateAsync(uploadResponse?.data.id)
-          toast.error(`Помилка оновлення статті...`, {
-            style: {
-              borderRadius: '10px',
-              background: 'red',
-              color: '#fff',
-            },
-          })
-        }
-      } else {
-        updateArticle.mutate({
+      if (uploadResponse?.data.id) {
+        await updateArticle.mutateAsync({
           isActive: true,
           id: newArticleData.id,
           slug: newArticleData.slug,
           title: newArticleData.title,
           text: newArticleData.text,
-          image_id: articleData.image.id,
+          image_id: uploadResponse.data.id,
           preview: newArticleData.preview,
           metadata: {
             title: newArticleData.metadata.title,
@@ -159,7 +161,32 @@ const EditArticleSection = ({
             keywords: newArticleData.metadata.title,
           },
         })
+        await deleteImage.mutateAsync(articleData.image.id)
+      } else {
+        await deleteImage.mutateAsync(uploadResponse?.data.id)
+        toast.error(`Помилка оновлення статті...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'red',
+            color: '#fff',
+          },
+        })
       }
+    } else {
+      updateArticle.mutate({
+        isActive: true,
+        id: newArticleData.id,
+        slug: newArticleData.slug,
+        title: newArticleData.title,
+        text: newArticleData.text,
+        image_id: articleData.image.id,
+        preview: newArticleData.preview,
+        metadata: {
+          title: newArticleData.metadata.title,
+          description: newArticleData.metadata.title,
+          keywords: newArticleData.metadata.title,
+        },
+      })
     }
   }
 
@@ -179,43 +206,12 @@ const EditArticleSection = ({
     }
   }
 
-  const handleImageUpload = async () => {
-    try {
-      if (selectedImage && altImage) {
-        const response = await uploadImg({
-          fileInput: selectedImage,
-          alt: altImage,
-          type: articleData.image.type || 'picture',
-        })
-        return response
-      } else {
-        toast.error(`Відсутнє зображення, або його опис...`, {
-          style: {
-            borderRadius: '10px',
-            background: 'red',
-            color: '#fff',
-          },
-        })
-        return null
-      }
-    } catch (error) {
-      toast.error(`Помилка завантаження зображення...`, {
-        style: {
-          borderRadius: '10px',
-          background: 'red',
-          color: '#fff',
-        },
-      })
-      throw new Error('Error uploading image')
-    }
-  }
-
   return (
     <div className='flex w-full flex-col items-center justify-center gap-[60px] '>
-      <form className='text-white-dis flex w-full flex-col items-end justify-evenly gap-3 '>
+      <form className='flex w-full flex-col items-end justify-evenly gap-3 text-white-dis '>
         <div className='flex w-full items-start justify-between'>
           <div className='flex w-[500px] flex-col gap-3'>
-            <p className=' bold font-exo_2 mt-2 text-center text-xl'>
+            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
               Зображення
             </p>
             <div className='relative'>
@@ -246,11 +242,11 @@ const EditArticleSection = ({
               accept='image/*'
               onChange={handleImageChange}
             />
-            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
               Опис зображення(alt)
               <input
                 required
-                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                 type='text'
                 name='altImage'
                 value={altImage}
@@ -261,13 +257,13 @@ const EditArticleSection = ({
             </label>
           </div>
           <div className='flex w-[400px] flex-col'>
-            <p className=' bold font-exo_2 mt-2 text-center text-xl'>
+            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
               SEO налаштування
             </p>
-            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
               Seo title
               <input
-                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                 type='text'
                 name='metadata'
                 data-metadata-field='title'
@@ -275,10 +271,10 @@ const EditArticleSection = ({
                 onChange={handleInputChange}
               />
             </label>
-            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
               Seo description
               <input
-                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                 type='text'
                 name='metadata'
                 data-metadata-field='description'
@@ -286,10 +282,10 @@ const EditArticleSection = ({
                 onChange={handleInputChange}
               />
             </label>
-            <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
               Seo keywords
               <input
-                className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                 type='text'
                 name='metadata'
                 data-metadata-field='keywords'
@@ -299,33 +295,33 @@ const EditArticleSection = ({
             </label>
           </div>
         </div>
-        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
+        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
           Заголовок
           <input
             required
-            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
             type='text'
             name='title'
             value={newArticleData.title || ''}
             onChange={handleInputChange}
           />
         </label>
-        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
+        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
           Slug(url сторінки)
           <input
             required
-            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
             type='text'
             name='slug'
             value={newArticleData.slug || ''}
             onChange={handleInputChange}
           />
         </label>
-        <label className='font-exo_2 flex  w-full flex-col gap-1 text-center text-xl'>
+        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
           Опис статті
           <input
             required
-            className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
             type='text'
             name='preview'
             value={newArticleData.preview || ''}
@@ -337,7 +333,7 @@ const EditArticleSection = ({
         <AddImagesSection allImagesData={allImagesData} />
       </div>
       <div className='flex w-full flex-col  gap-2 '>
-        <p className='font-exo_2 text-white-dis text-center text-xl'>Стаття</p>
+        <p className='text-center font-exo_2 text-xl text-white-dis'>Стаття</p>
         <CustomEditor
           id='edit-article-content'
           setContent={setNewArticle}

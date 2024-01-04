@@ -1,8 +1,8 @@
+import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { outputArticleSchema } from '@server/domain/articles/schemas/article.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import { outputArticleSchema } from '@server/domain/articles/schemas/article.schema'
 import PreviewArticlePage from '../(components)/PreviewArticlePage'
 
 interface IArticleAdminProps {
@@ -20,7 +20,7 @@ const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
 
   return (
     <main>
-      <section className='bg-footer-gradient-linear-blue flex w-full min-h-[100vh] py-[60px]'>
+      <section className='flex min-h-[100vh] w-full bg-footer-gradient-linear-blue py-[60px]'>
         <div className='container  relative flex flex-col items-center px-8 '>
           <div className='z-[1] mb-8 flex items-center gap-1 self-start  px-4'>
             <Link

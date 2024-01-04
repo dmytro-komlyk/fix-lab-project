@@ -2,13 +2,13 @@
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
+import { trpc } from '@admin/app/(utils)/trpc/client'
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-import { trpc } from '@admin/app/(utils)/trpc/client'
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import Image from 'next/image'
 import SendButton from '../../(components)/SendButton'
 import EditBrandsList from './EditBrandsList'
 import EditIssuesList from './EditIssuesList'
@@ -81,7 +81,21 @@ const EditGadgetForm = ({
   })
 
   const deleteIcon = trpc.images.remove.useMutation()
-
+  const handleImageUpload = async () => {
+    try {
+      if (selectedIcon) {
+        const response = await uploadImg({
+          fileInput: selectedIcon,
+          alt: gadgetData.icon.alt,
+          type: gadgetData.icon.type,
+        })
+        return response
+      }
+      return null
+    } catch (error) {
+      throw new Error('Error uploading image')
+    }
+  }
   const handleSubmit = async (e: any) => {
     e.preventDefault()
     if (
@@ -102,58 +116,55 @@ const EditGadgetForm = ({
           color: '#fff',
         },
       })
-      return
-    } else {
-      if (selectedIcon) {
-        const uploadResponse = await handleImageUpload()
-        if (uploadResponse?.status === 201) {
-          if (uploadResponse.data) {
-            await updateGadget.mutateAsync({
-              isActive: true,
-              id: newGadgetData.id,
-              slug: newGadgetData.slug,
-              title: newGadgetData.title,
-              metadata: {
-                title: newGadgetData.metadata.title,
-                description: newGadgetData.metadata.title,
-                keywords: newGadgetData.metadata.title,
-              },
-              description: newGadgetData.description,
-              icon_id: uploadResponse.data.id,
-              gallery_ids: newGadgetData.gallery_ids.map(item => item) || [],
-              issues_ids: newGadgetData.issues_ids.map(item => item) || [],
-              brands_ids: newGadgetData.brands_ids.map(item => item) || [],
-            })
-            await deleteIcon.mutateAsync(gadgetData.icon_id)
-          }
-        } else {
-          await deleteIcon.mutateAsync(uploadResponse?.data.id)
-          toast.error(`Виникла при оновлені гаджету...`, {
-            style: {
-              borderRadius: '10px',
-              background: 'red',
-              color: '#fff',
+    } else if (selectedIcon) {
+      const uploadResponse = await handleImageUpload()
+      if (uploadResponse?.status === 201) {
+        if (uploadResponse.data) {
+          await updateGadget.mutateAsync({
+            isActive: true,
+            id: newGadgetData.id,
+            slug: newGadgetData.slug,
+            title: newGadgetData.title,
+            metadata: {
+              title: newGadgetData.metadata.title,
+              description: newGadgetData.metadata.title,
+              keywords: newGadgetData.metadata.title,
             },
+            description: newGadgetData.description,
+            icon_id: uploadResponse.data.id,
+            gallery_ids: newGadgetData.gallery_ids.map(item => item) || [],
+            issues_ids: newGadgetData.issues_ids.map(item => item) || [],
+            brands_ids: newGadgetData.brands_ids.map(item => item) || [],
           })
+          await deleteIcon.mutateAsync(gadgetData.icon_id)
         }
       } else {
-        updateGadget.mutate({
-          isActive: true,
-          id: newGadgetData.id,
-          slug: newGadgetData.slug,
-          title: newGadgetData.title,
-          metadata: {
-            title: newGadgetData.metadata.title,
-            description: newGadgetData.metadata.title,
-            keywords: newGadgetData.metadata.title,
+        await deleteIcon.mutateAsync(uploadResponse?.data.id)
+        toast.error(`Виникла при оновлені гаджету...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'red',
+            color: '#fff',
           },
-          description: newGadgetData.description,
-          icon_id: gadgetData.icon_id || '',
-          gallery_ids: newGadgetData.gallery_ids.map(item => item) || [],
-          issues_ids: newGadgetData.issues_ids.map(item => item) || [],
-          brands_ids: newGadgetData.brands_ids.map(item => item) || [],
         })
       }
+    } else {
+      updateGadget.mutate({
+        isActive: true,
+        id: newGadgetData.id,
+        slug: newGadgetData.slug,
+        title: newGadgetData.title,
+        metadata: {
+          title: newGadgetData.metadata.title,
+          description: newGadgetData.metadata.title,
+          keywords: newGadgetData.metadata.title,
+        },
+        description: newGadgetData.description,
+        icon_id: gadgetData.icon_id || '',
+        gallery_ids: newGadgetData.gallery_ids.map(item => item) || [],
+        issues_ids: newGadgetData.issues_ids.map(item => item) || [],
+        brands_ids: newGadgetData.brands_ids.map(item => item) || [],
+      })
     }
   }
 
@@ -173,29 +184,13 @@ const EditGadgetForm = ({
     }
   }
 
-  const handleImageUpload = async () => {
-    try {
-      if (selectedIcon) {
-        const response = await uploadImg({
-          fileInput: selectedIcon,
-          alt: gadgetData.icon.alt,
-          type: gadgetData.icon.type,
-        })
-        return response
-      }
-      return null
-    } catch (error) {
-      throw new Error('Error uploading image')
-    }
-  }
-
   return (
     <div className='flex flex-auto flex-col flex-wrap items-center justify-center gap-[20px]'>
-      <form className='text-white-dis flex w-full justify-between gap-8 '>
+      <form className='flex w-full justify-between gap-8 text-white-dis '>
         <div className='flex w-full flex-col gap-8'>
           <div className='flex w-full justify-evenly'>
             <div className='flex flex-col items-center justify-between gap-3'>
-              <p className=' bold  font-exo_2 text-center text-xl'>
+              <p className=' bold  text-center font-exo_2 text-xl'>
                 Іконка(svg)
               </p>
               {!newIcon ? (
@@ -228,17 +223,17 @@ const EditGadgetForm = ({
               />
             </div>
             <div className='flex w-[400px] flex-col'>
-              <p className=' bold font-exo_2 text-center text-xl'>
+              <p className=' bold text-center font-exo_2 text-xl'>
                 SEO налаштування
               </p>
               <label
                 htmlFor='metadata title'
-                className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'
+                className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
               >
                 Seo title
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='metadata'
                   data-metadata-field='title'
@@ -248,12 +243,12 @@ const EditGadgetForm = ({
               </label>
               <label
                 htmlFor='metadata description'
-                className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'
+                className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
               >
                 Seo description
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='metadata'
                   data-metadata-field='description'
@@ -263,12 +258,12 @@ const EditGadgetForm = ({
               </label>
               <label
                 htmlFor='metadata keywords'
-                className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'
+                className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
               >
                 Seo keywords
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='metadata'
                   data-metadata-field='keywords'
@@ -280,13 +275,13 @@ const EditGadgetForm = ({
           </div>
           <label
             htmlFor='title'
-            className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'
+            className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
           >
             Заголовок
             <input
               required
               maxLength={60}
-              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               type='text'
               name='title'
               value={newGadgetData.title || ''}
@@ -295,13 +290,13 @@ const EditGadgetForm = ({
           </label>
           <label
             htmlFor='title'
-            className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'
+            className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
           >
             Slug(url сторінки)
             <input
               required
               maxLength={60}
-              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               type='text'
               name='slug'
               value={newGadgetData.slug || ''}
@@ -310,12 +305,12 @@ const EditGadgetForm = ({
           </label>
           <label
             htmlFor='description'
-            className='font-exo_2 flex flex-col items-start gap-1 text-center text-xl'
+            className='flex flex-col items-start gap-1 text-center font-exo_2 text-xl'
           >
             Опис
             <textarea
               required
-              className='font-base text-md text-black-dis h-[150px] w-full p-2'
+              className='font-base h-[150px] w-full p-2 text-md text-black-dis'
               value={newGadgetData.description || ''}
               name='description'
               onChange={handleInputChange}
@@ -326,12 +321,12 @@ const EditGadgetForm = ({
       <div className=' flex w-full items-center justify-center gap-[100px]'>
         <div className='w-full'>
           <div className='flex  flex-col-reverse justify-center '>
-            <div className=' border-mid-grey mb-[20px] w-full border-b-2' />
+            <div className=' mb-[20px] w-full border-b-2 border-mid-grey' />
             <div className='mb-[10px] mt-8 flex justify-center gap-8'>
               <button type='button' onClick={() => setActiveTab('issues')}>
                 <span
                   className={`
-              font-exo_2 mb-6 text-2xl  font-bold  max-lg:text-xl
+              mb-6 font-exo_2 text-2xl  font-bold  max-lg:text-xl
               ${activeTab === 'issues' ? 'text-mid-green' : 'text-white-dis'}`}
                 >
                   Послуги
@@ -344,7 +339,7 @@ const EditGadgetForm = ({
               >
                 <span
                   className={`
-              font-exo_2 mb-6 text-2xl  font-bold  max-lg:text-xl
+              mb-6 font-exo_2 text-2xl  font-bold  max-lg:text-xl
               ${activeTab === 'brands' ? 'text-mid-green' : 'text-white-dis'}`}
                 >
                   Бренди

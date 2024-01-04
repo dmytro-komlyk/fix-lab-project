@@ -1,8 +1,8 @@
+import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
 import EditContactForm from '../(components)/EditContactForm '
 
 interface IContactAdminProps {

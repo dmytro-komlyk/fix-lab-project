@@ -1,4 +1,4 @@
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import { useSortable } from '@dnd-kit/sortable'
 import { GoGrabber } from 'react-icons/go'
 import { IoIosRemoveCircle } from 'react-icons/io'

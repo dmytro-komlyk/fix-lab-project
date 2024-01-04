@@ -3,6 +3,7 @@
 
 'use client'
 
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import {
   closestCenter,
   DndContext,
@@ -20,7 +21,6 @@ import {
 import { useState } from 'react'
 import { IoMdAddCircle } from 'react-icons/io'
 
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import { DraggableBenefitsItem } from './DraggaBenefitsItem'
 
 const EditBenefitsList = ({

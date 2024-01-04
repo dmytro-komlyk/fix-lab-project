@@ -1,13 +1,13 @@
 'use client'
 
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
-import { useState } from 'react'
-
 import { trpc } from '@admin/app/(utils)/trpc/client'
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
+
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
@@ -80,7 +80,21 @@ const EditBrandForm = ({
     },
   })
   const deleteIcon = trpc.images.remove.useMutation()
-
+  const handleIconUpload = async () => {
+    try {
+      if (selectedIcon) {
+        const response = await uploadImg({
+          fileInput: selectedIcon,
+          alt: brandData.icon.alt,
+          type: brandData.icon.type,
+        })
+        return response
+      }
+      return null
+    } catch (error) {
+      throw new Error('Error uploading image')
+    }
+  }
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
@@ -142,29 +156,13 @@ const EditBrandForm = ({
     }
   }
 
-  const handleIconUpload = async () => {
-    try {
-      if (selectedIcon) {
-        const response = await uploadImg({
-          fileInput: selectedIcon,
-          alt: brandData.icon.alt,
-          type: brandData.icon.type,
-        })
-        return response
-      }
-      return null
-    } catch (error) {
-      throw new Error('Error uploading image')
-    }
-  }
-
   return (
     <div className='container  flex flex-col items-center  gap-[60px] px-4 transition-all duration-300  ease-in-out'>
       <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
         <div className='flex w-full flex-col gap-8'>
           <div className='flex justify-between gap-3 '>
             <div className='flex flex-col gap-3'>
-              <p className=' bold font-exo_2 mt-2 text-center text-xl'>
+              <p className=' bold mt-2 text-center font-exo_2 text-xl'>
                 Іконка(.svg)
               </p>
               <div className='relative'>
@@ -259,11 +257,11 @@ const EditBrandForm = ({
               onChange={handleInputChange}
             />
           </label>
-          <label className='font-exo_2  flex flex-col gap-1 text-center text-xl'>
+          <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
             Slug(url сторінки)
             <input
               required
-              className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
               type='text'
               name='slug'
               value={newBrandData.slug || ''}

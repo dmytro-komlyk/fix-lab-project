@@ -3,6 +3,8 @@
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { createSlug } from '@admin/app/(utils)/createSlug'
+import { trpc } from '@admin/app/(utils)/trpc/client'
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -10,8 +12,6 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 
-import { trpc } from '@admin/app/(utils)/trpc/client'
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomAddContent from '../../(components)/CustomAddContent'
 import SendButton from '../../(components)/SendButton'
@@ -79,6 +79,36 @@ const AddArticleSection = ({
     }))
   }
 
+  const handleImageUpload = async () => {
+    try {
+      if (selectedImage && altImage) {
+        const response = await uploadImg({
+          fileInput: selectedImage,
+          alt: altImage || 'article',
+          type: 'picture',
+        })
+        return response
+      }
+      toast.error(`Відсутнє зображення, або його опис...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+      return null
+    } catch (error) {
+      toast.error(`Помилка завантаження зображення...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+      throw new Error('Error uploading image')
+    }
+  }
+
   const createArticle = trpc.articles.create.useMutation({
     onSuccess: () => {
       toast.success(`Статтю додано!`, {
@@ -123,7 +153,6 @@ const AddArticleSection = ({
           color: '#fff',
         },
       })
-      return
     } else {
       const uploadResponse = await handleImageUpload()
       if (uploadResponse?.status === 201) {
@@ -165,36 +194,6 @@ const AddArticleSection = ({
     }
   }
 
-  const handleImageUpload = async () => {
-    try {
-      if (selectedImage && altImage) {
-        const response = await uploadImg({
-          fileInput: selectedImage,
-          alt: altImage || 'article',
-          type: 'picture',
-        })
-        return response
-      }
-      toast.error(`Відсутнє зображення, або його опис...`, {
-        style: {
-          borderRadius: '10px',
-          background: 'red',
-          color: '#fff',
-        },
-      })
-      return null
-    } catch (error) {
-      toast.error(`Помилка завантаження зображення...`, {
-        style: {
-          borderRadius: '10px',
-          background: 'red',
-          color: '#fff',
-        },
-      })
-      throw new Error('Error uploading image')
-    }
-  }
-
   return (
     <Accordion
       itemClasses={{ base: 'border-white-dis ' }}
@@ -206,17 +205,17 @@ const AddArticleSection = ({
         key='1'
         startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
         title={
-          <span className='bg-top- font-exo_2 text-white-dis text-center text-2xl font-bold'>
+          <span className='bg-top- text-center font-exo_2 text-2xl font-bold text-white-dis'>
             Додати статтю
           </span>
         }
       >
         <div className='container flex flex-col items-center gap-[60px] px-4 transition-all duration-300  ease-in-out'>
-          <form className='text-white-dis flex  w-full justify-evenly gap-3 '>
+          <form className='flex w-full  justify-evenly gap-3 text-white-dis '>
             <div className='flex w-full flex-col gap-8'>
               <div className='flex justify-between gap-3 '>
                 <div className='flex flex-col gap-3'>
-                  <p className=' bold font-exo_2 mt-2 text-center text-xl'>
+                  <p className=' bold mt-2 text-center font-exo_2 text-xl'>
                     Зображення
                   </p>
                   <div className='flex flex-col gap-3'>
@@ -246,11 +245,11 @@ const AddArticleSection = ({
                     />
                   </div>
 
-                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                     Опис зображення(alt)
                     <input
                       required
-                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                       type='text'
                       name='altImage'
                       value={altImage}
@@ -261,14 +260,14 @@ const AddArticleSection = ({
                   </label>
                 </div>
                 <div className='flex w-[400px] flex-col justify-between'>
-                  <p className=' bold font-exo_2 mt-2 text-center text-xl'>
+                  <p className=' bold mt-2 text-center font-exo_2 text-xl'>
                     SEO налаштування
                   </p>
-                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                     Seo title
                     <input
                       required
-                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                       type='text'
                       name='title'
                       value={seoContent.title || ''}
@@ -277,11 +276,11 @@ const AddArticleSection = ({
                       }
                     />
                   </label>
-                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                     Seo description
                     <input
                       required
-                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                       type='text'
                       name='description'
                       value={seoContent.description || ''}
@@ -290,11 +289,11 @@ const AddArticleSection = ({
                       }
                     />
                   </label>
-                  <label className='font-exo_2  flex flex-col items-start gap-1 text-center text-xl'>
+                  <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
                     Seo keywords
                     <input
                       required
-                      className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                       type='text'
                       name='keywords'
                       value={seoContent.keywords || ''}
@@ -305,11 +304,11 @@ const AddArticleSection = ({
                   </label>
                 </div>
               </div>
-              <label className='font-exo_2  flex flex-col gap-1 text-center text-xl'>
+              <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
                 Заголовок
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='title'
                   value={contentTitle}
@@ -319,11 +318,11 @@ const AddArticleSection = ({
                   }}
                 />
               </label>
-              <label className='font-exo_2  flex flex-col gap-1 text-center text-xl'>
+              <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
                 Slug(url сторінки)
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='slug'
                   value={contentSlug}
@@ -332,11 +331,11 @@ const AddArticleSection = ({
                   }}
                 />
               </label>
-              <label className='font-exo_2  flex   flex-col gap-1 text-center text-xl'>
+              <label className='flex  flex-col   gap-1 text-center font-exo_2 text-xl'>
                 Опис статті
                 <input
                   required
-                  className='font-base text-md text-black-dis h-[45px] w-full indent-3'
+                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                   type='text'
                   name='preview'
                   value={contentPreview}
@@ -351,7 +350,7 @@ const AddArticleSection = ({
             <AddImagesSection allImagesData={allImagesData} />
           </div>
           <div className='flex w-full flex-col items-center gap-2 overflow-hidden '>
-            <p className='font-exo_2 text-white-dis  text-center text-xl'>
+            <p className='text-center font-exo_2  text-xl text-white-dis'>
               Стаття
             </p>
             <CustomAddContent

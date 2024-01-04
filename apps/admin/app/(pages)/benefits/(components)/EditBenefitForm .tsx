@@ -3,11 +3,12 @@
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+
 import SendButton from '../../(components)/SendButton'
 
 const EditBenefitForm = ({
@@ -61,7 +62,21 @@ const EditBenefitForm = ({
     },
   })
   const deleteImage = trpc.images.remove.useMutation()
-
+  const handleIconUpload = async () => {
+    try {
+      if (selectedIcon) {
+        const response = await uploadImg({
+          fileInput: selectedIcon,
+          alt: benefitData.icon.alt,
+          type: benefitData.icon.type || 'icon',
+        })
+        return response
+      }
+      return null
+    } catch (error) {
+      throw new Error('Error uploading image')
+    }
+  }
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
@@ -73,40 +88,34 @@ const EditBenefitForm = ({
           color: '#fff',
         },
       })
-      return
-    } else {
-      if (selectedIcon) {
-        const uploadResponse = await handleIconUpload()
+    } else if (selectedIcon) {
+      const uploadResponse = await handleIconUpload()
 
-        if (uploadResponse?.data.id) {
-          await updateBenefit.mutateAsync({
-            id: benefitData.id,
-            icon_id: uploadResponse.data.id,
-            title: newBenefitData.title,
-            isActive: true,
-          })
-          await deleteImage.mutateAsync(benefitData.icon.id)
-        } else {
-          await deleteImage.mutateAsync(uploadResponse?.data.id)
-          toast.error(
-            `Помилка оновлення послуги сервісного обслуговування...`,
-            {
-              style: {
-                borderRadius: '10px',
-                background: 'red',
-                color: '#fff',
-              },
-            },
-          )
-        }
-      } else {
-        updateBenefit.mutate({
+      if (uploadResponse?.data.id) {
+        await updateBenefit.mutateAsync({
           id: benefitData.id,
-          icon_id: benefitData.icon.id,
+          icon_id: uploadResponse.data.id,
           title: newBenefitData.title,
           isActive: true,
         })
+        await deleteImage.mutateAsync(benefitData.icon.id)
+      } else {
+        await deleteImage.mutateAsync(uploadResponse?.data.id)
+        toast.error(`Помилка оновлення послуги сервісного обслуговування...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'red',
+            color: '#fff',
+          },
+        })
       }
+    } else {
+      updateBenefit.mutate({
+        id: benefitData.id,
+        icon_id: benefitData.icon.id,
+        title: newBenefitData.title,
+        isActive: true,
+      })
     }
   }
 
@@ -123,22 +132,6 @@ const EditBenefitForm = ({
 
         reader.readAsDataURL(file)
       }
-    }
-  }
-
-  const handleIconUpload = async () => {
-    try {
-      if (selectedIcon) {
-        const response = await uploadImg({
-          fileInput: selectedIcon,
-          alt: benefitData.icon.alt,
-          type: benefitData.icon.type || 'icon',
-        })
-        return response
-      }
-      return null
-    } catch (error) {
-      throw new Error('Error uploading image')
     }
   }
 

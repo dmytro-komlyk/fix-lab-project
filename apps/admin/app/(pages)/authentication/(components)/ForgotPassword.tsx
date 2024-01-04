@@ -1,12 +1,12 @@
 'use client'
 
 import axios from 'axios'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import type { FormEventHandler } from 'react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { ThreeCircles } from 'react-loader-spinner'
+// import { ThreeCircles } from 'react-loader-spinner'
 
 const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
 
@@ -47,21 +47,21 @@ const ForgotPassword = () => {
       setLoading(false)
     }
   }
-
-  return loading ? (
-    <ThreeCircles
-      height='150'
-      width='150'
-      color='#fff'
-      wrapperStyle={{}}
-      wrapperClass=''
-      visible
-      ariaLabel='three-circles-rotating'
-      outerCircleColor=''
-      innerCircleColor=''
-      middleCircleColor=''
-    />
-  ) : (
+  // loading ? (
+  //   <ThreeCircles
+  //     height='150'
+  //     width='150'
+  //     color='#fff'
+  //     wrapperStyle={{}}
+  //     wrapperClass=''
+  //     visible
+  //     ariaLabel='three-circles-rotating'
+  //     outerCircleColor=''
+  //     innerCircleColor=''
+  //     middleCircleColor=''
+  //   />
+  // ) : (
+  return (
     !session.data && (
       <div className='flex flex-col items-center justify-center'>
         <h3 className='mb-8 text-center font-exo_2 text-2xl font-semibold leading-[29px] text-white-dis'>
@@ -86,7 +86,7 @@ const ForgotPassword = () => {
           >
             {loading ? (
               <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 '>
-                <ThreeCircles
+                {/* <ThreeCircles
                   height='50'
                   width='50'
                   color='#fff'
@@ -97,7 +97,7 @@ const ForgotPassword = () => {
                   outerCircleColor=''
                   innerCircleColor=''
                   middleCircleColor=''
-                />
+                /> */}
               </div>
             ) : (
               'Надіслати'

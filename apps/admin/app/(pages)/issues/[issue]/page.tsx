@@ -1,10 +1,10 @@
+import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { outputBenefitSchema } from '@server/domain/benefits/schemas/benefit.schema'
+import type { imageSchema } from '@server/domain/images/schemas/image.schema'
+import type { outputIssueSchema } from '@server/domain/issues/schemas/issue.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import { outputBenefitSchema } from '@server/domain/benefits/schemas/benefit.schema'
-import { imageSchema } from '@server/domain/images/schemas/image.schema'
-import { outputIssueSchema } from '@server/domain/issues/schemas/issue.schema'
 import EditIssuesForm from '../(components)/EditIssueForm '
 
 interface IIssueAdminProps {

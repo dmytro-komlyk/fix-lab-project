@@ -1,15 +1,15 @@
 'use client'
 
-import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
-import Image from 'next/image'
-import { useState } from 'react'
-
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
+import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { Accordion, AccordionItem } from '@nextui-org/react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
+
 import SendButton from '../../(components)/SendButton'
 
 const AddBenefitForm = () => {
@@ -53,6 +53,21 @@ const AddBenefitForm = () => {
     },
   })
   const deleteImage = trpc.images.remove.useMutation()
+  const handleImageUpload = async () => {
+    try {
+      if (selectedIcon) {
+        const response = await uploadImg({
+          fileInput: selectedIcon,
+          alt: benefitTitle,
+          type: 'icon',
+        })
+        return response
+      }
+      return null
+    } catch (error) {
+      throw new Error('Error uploading image')
+    }
+  }
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
@@ -64,7 +79,6 @@ const AddBenefitForm = () => {
           color: '#fff',
         },
       })
-      return
     } else {
       const uploadResponse = await handleImageUpload()
       if (uploadResponse?.status === 201) {
@@ -101,22 +115,6 @@ const AddBenefitForm = () => {
     }
   }
 
-  const handleImageUpload = async () => {
-    try {
-      if (selectedIcon) {
-        const response = await uploadImg({
-          fileInput: selectedIcon,
-          alt: benefitTitle,
-          type: 'icon',
-        })
-        return response
-      }
-      return null
-    } catch (error) {
-      throw new Error('Error uploading image')
-    }
-  }
-
   return (
     <Accordion
       itemClasses={{ base: 'border-white-dis ' }}
@@ -128,15 +126,15 @@ const AddBenefitForm = () => {
         key='1'
         startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
         title={
-          <span className='bg-top- font-exo_2 text-white-dis text-center text-2xl font-bold'>
+          <span className='bg-top- text-center font-exo_2 text-2xl font-bold text-white-dis'>
             Додати послугу сервісного обсуговування
           </span>
         }
       >
-        <div className='flex justify-center items-center w-full py-4'>
+        <div className='flex w-full items-center justify-center py-4'>
           <form
             onSubmit={handleSubmit}
-            className='flex w-[400px] justify-center items-center flex-col gap-3 text-white-dis '
+            className='flex w-[400px] flex-col items-center justify-center gap-3 text-white-dis '
           >
             <div className='relative'>
               {!uploadedIconId ? (

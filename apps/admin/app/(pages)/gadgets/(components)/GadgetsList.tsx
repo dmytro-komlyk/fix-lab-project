@@ -1,7 +1,7 @@
 'use client'
 
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
 import Image from 'next/image'
 import Link from 'next/link'
 

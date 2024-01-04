@@ -5,7 +5,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -71,7 +71,6 @@ const AddImagesSection = ({
           setContentImage(null)
           setSelectedImage(null)
           router.refresh()
-          return
         }
       } else {
         toast.error(`Додайте зображення і опис...`, {
@@ -156,11 +155,11 @@ const AddImagesSection = ({
                 }}
               />
             </label>
+            <FaFileImage
+              className='text-white-dis transition-all hover:scale-[1.03]  hover:opacity-80 focus:scale-[1.03]  focus:opacity-80'
+              size={40}
+            />
             <label className='relative cursor-pointer'>
-              <FaFileImage
-                className='text-white-dis transition-all hover:scale-[1.03]  hover:opacity-80 focus:scale-[1.03]  focus:opacity-80'
-                size={40}
-              />
               <input
                 className='hidden'
                 id='icon'

@@ -12,7 +12,7 @@ const EmptySection = () => {
           height={400}
           alt='as'
         />
-        <p className=' p-3 text-center text-white-dis font-exo_2 text-xl'>
+        <p className=' p-3 text-center font-exo_2 text-xl text-white-dis'>
           Тут поки що нічого немає...
         </p>
       </div>

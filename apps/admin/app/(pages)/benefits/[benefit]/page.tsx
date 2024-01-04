@@ -1,8 +1,8 @@
+import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { outputBenefitSchema } from '@server/domain/benefits/schemas/benefit.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import { outputBenefitSchema } from '@server/domain/benefits/schemas/benefit.schema'
 import EditBenefitForm from '../(components)/EditBenefitForm '
 
 interface IArticleAdminProps {
@@ -20,7 +20,7 @@ const BenefitPage: React.FC<IArticleAdminProps> = async ({ params }) => {
 
   return (
     <main>
-      <section className='bg-footer-gradient-linear-blue flex w-full min-h-[100vh] py-[60px]'>
+      <section className='flex min-h-[100vh] w-full bg-footer-gradient-linear-blue py-[60px]'>
         <div className='container  relative flex flex-col  px-8 '>
           <div className='z-[1] mb-8 flex items-center gap-1'>
             <Link

@@ -1,5 +1,5 @@
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
+import type { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -13,9 +13,9 @@ const ContactsPage = async () => {
     <main className='flex flex-auto'>
       <section className='flex h-[100vh] w-full  bg-footer-gradient-linear-blue py-[60px]'>
         <div className='container relative flex flex-col items-center justify-center px-8'>
-          <ul className='flex gap-6 justify-center items-center '>
+          <ul className='flex items-center justify-center gap-6 '>
             {contactsData.map(item => (
-              <li key={item.id} className=' shadow-2xl p-4 rounded-2xl'>
+              <li key={item.id} className=' rounded-2xl p-4 shadow-2xl'>
                 <Link href={`/contacts/${item.id}`}>
                   <Image
                     className='h-[140px] w-[220px] object-contain  object-center'

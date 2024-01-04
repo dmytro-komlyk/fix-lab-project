@@ -1,24 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsDefined,
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Length
-} from 'class-validator';
+import { IsDefined, IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class CreateUserDto {
-  // @ApiProperty({
-  //   example: false,
-  //   description: 'If false, will be disabled and unable to login'
-  // })
-  @IsDefined()
-  @IsOptional()
-  @IsBoolean()
-  readonly isActive: boolean;
-
   // @ApiProperty({
   //   example: 'Admin',
   //   description: 'Unique login identifier'

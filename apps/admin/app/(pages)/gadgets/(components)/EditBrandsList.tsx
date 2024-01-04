@@ -1,3 +1,4 @@
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import {
   closestCenter,
   DndContext,
@@ -12,11 +13,10 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
+import Image from 'next/image'
 import { useState } from 'react'
 import { IoMdAddCircle } from 'react-icons/io'
 
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import Image from 'next/image'
 import { DraggableBrandItem } from './DraggableBrandItem'
 
 const EditBrandsList = ({
@@ -117,7 +117,7 @@ const EditBrandsList = ({
       coordinateGetter: sortableKeyboardCoordinates,
     }),
   )
-  function handleDragEnd(event: { id?: any; active?: any; over?: any }) {
+  function handleDragEnd(event: any) {
     const { active, over } = event
 
     if (active.id.toString() !== over.id.toString()) {

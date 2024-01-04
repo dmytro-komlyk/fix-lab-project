@@ -1,6 +1,7 @@
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import Link from 'next/link'
 import { FaEdit } from 'react-icons/fa'
+
 import RemoveIssue from './RemoveIssue'
 
 const IssuesList = ({
@@ -19,17 +20,17 @@ const IssuesList = ({
               >,
             ) => (
               <li
-                className='border-dark-blue bg-white-dis group border-b-[0.5px] opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl'
+                className='group border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl'
                 key={item.id}
               >
                 <div className='flex items-center justify-between px-6 py-[20px]'>
-                  <h3 className='text-dark-blue font-semibold md:text-base xl:text-xl'>
+                  <h3 className='font-semibold text-dark-blue md:text-base xl:text-xl'>
                     {item.title}
                   </h3>
                   <div className='relative ml-4 flex items-center justify-center gap-4'>
                     <Link href={`/issues/${item.slug}`}>
                       <FaEdit
-                        className='hover:fill-mid-green focus:fill-mid-green transition-colors'
+                        className='transition-colors hover:fill-mid-green focus:fill-mid-green'
                         size={30}
                       />
                     </Link>

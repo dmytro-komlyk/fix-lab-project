@@ -2,13 +2,13 @@
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
+import { trpc } from '@admin/app/(utils)/trpc/client'
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-import { trpc } from '@admin/app/(utils)/trpc/client'
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import { useRouter } from 'next/navigation'
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import SendButton from '../../(components)/SendButton'
@@ -45,6 +45,22 @@ const EditIssuesForm = ({
     `editIssueAltImage${issueData.id}`,
     issueData.image.alt,
   )
+
+  const handleImageUpload = async () => {
+    try {
+      if (selectedImage) {
+        const response = await uploadImg({
+          fileInput: selectedImage,
+          alt: altImage,
+          type: issueData.image.type,
+        })
+        return response
+      }
+      return null
+    } catch (error) {
+      throw new Error('Error uploading image')
+    }
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -113,43 +129,13 @@ const EditIssuesForm = ({
           color: '#fff',
         },
       })
-    } else {
-      if (selectedImage) {
-        const uploadResponse = await handleImageUpload()
+    } else if (selectedImage) {
+      const uploadResponse = await handleImageUpload()
 
-        if (uploadResponse?.status === 201) {
-          await updateIssue.mutateAsync({
-            id: issueData.id,
-            image_id: uploadResponse.data.id,
-            title: newIssueData.title,
-            slug: newIssueData.slug,
-            price: newIssueData.price,
-            description: newIssueData.description,
-            info: newIssueData.info,
-            benefits_ids: newIssueData.benefits.map(benefit => benefit.id),
-            metadata: {
-              title: newIssueData.metadata.title,
-              description: newIssueData.metadata.description,
-              keywords: newIssueData.metadata.keywords,
-            },
-            gadgets_ids: newIssueData.gadgets_ids || [],
-          })
-          await deleteImage.mutateAsync(issueData.image.id)
-        } else {
-          await deleteImage.mutateAsync(uploadResponse?.data.id)
-          toast.error(`Помилка оновлення послуги...`, {
-            style: {
-              borderRadius: '10px',
-              background: 'red',
-              color: '#fff',
-            },
-          })
-          throw new Error('Error uploading image')
-        }
-      } else {
-        updateIssue.mutate({
+      if (uploadResponse?.status === 201) {
+        await updateIssue.mutateAsync({
           id: issueData.id,
-          image_id: issueData.image.id,
+          image_id: uploadResponse.data.id,
           title: newIssueData.title,
           slug: newIssueData.slug,
           price: newIssueData.price,
@@ -163,7 +149,35 @@ const EditIssuesForm = ({
           },
           gadgets_ids: newIssueData.gadgets_ids || [],
         })
+        await deleteImage.mutateAsync(issueData.image.id)
+      } else {
+        await deleteImage.mutateAsync(uploadResponse?.data.id)
+        toast.error(`Помилка оновлення послуги...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'red',
+            color: '#fff',
+          },
+        })
+        throw new Error('Error uploading image')
       }
+    } else {
+      updateIssue.mutate({
+        id: issueData.id,
+        image_id: issueData.image.id,
+        title: newIssueData.title,
+        slug: newIssueData.slug,
+        price: newIssueData.price,
+        description: newIssueData.description,
+        info: newIssueData.info,
+        benefits_ids: newIssueData.benefits.map(benefit => benefit.id),
+        metadata: {
+          title: newIssueData.metadata.title,
+          description: newIssueData.metadata.description,
+          keywords: newIssueData.metadata.keywords,
+        },
+        gadgets_ids: newIssueData.gadgets_ids || [],
+      })
     }
   }
 
@@ -180,22 +194,6 @@ const EditIssuesForm = ({
 
         reader.readAsDataURL(file)
       }
-    }
-  }
-
-  const handleImageUpload = async () => {
-    try {
-      if (selectedImage) {
-        const response = await uploadImg({
-          fileInput: selectedImage,
-          alt: altImage,
-          type: issueData.image.type,
-        })
-        return response
-      }
-      return null
-    } catch (error) {
-      throw new Error('Error uploading image')
     }
   }
 
@@ -235,9 +233,13 @@ const EditIssuesForm = ({
               accept='icon/*'
               onChange={handleImageChange}
             />
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+            <label
+              htmlFor='altImage'
+              className='flex flex-col items-start gap-1 text-center font-exo_2 text-xl'
+            >
               Опис зображення(alt)
               <input
+                id='first'
                 required
                 className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
                 type='text'
@@ -253,7 +255,10 @@ const EditIssuesForm = ({
             <p className=' bold mt-2 text-center font-exo_2 text-xl'>
               SEO налаштування
             </p>
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+            <label
+              className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
+              htmlFor='metadata'
+            >
               Seo title
               <input
                 className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
@@ -264,7 +269,10 @@ const EditIssuesForm = ({
                 onChange={handleInputChange}
               />
             </label>
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+            <label
+              className='flex flex-col items-start gap-1 text-center font-exo_2 text-xl'
+              htmlFor='metadata'
+            >
               Seo description
               <input
                 className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
@@ -275,7 +283,10 @@ const EditIssuesForm = ({
                 onChange={handleInputChange}
               />
             </label>
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+            <label
+              className='flex flex-col items-start gap-1 text-center font-exo_2 text-xl'
+              htmlFor='metadata'
+            >
               Seo keywords
               <input
                 className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
@@ -288,7 +299,10 @@ const EditIssuesForm = ({
             </label>
           </div>
         </div>
-        <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
+        <label
+          className='flex flex-col items-start gap-1 text-center font-exo_2 text-xl'
+          htmlFor='price'
+        >
           Вартість послуги
           <input
             required
@@ -299,7 +313,10 @@ const EditIssuesForm = ({
             onChange={handleInputChange}
           />
         </label>
-        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
+        <label
+          className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'
+          htmlFor='title'
+        >
           Заголовок
           <input
             required
@@ -310,7 +327,10 @@ const EditIssuesForm = ({
             onChange={handleInputChange}
           />
         </label>
-        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
+        <label
+          className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'
+          htmlFor='slug'
+        >
           Slug(url сторінки)
           <input
             required

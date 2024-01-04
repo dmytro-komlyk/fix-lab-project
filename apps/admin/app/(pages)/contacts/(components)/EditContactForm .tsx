@@ -1,14 +1,14 @@
 'use client'
 
-import { useState } from 'react'
-
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
 import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
+
 import SendButton from '../../(components)/SendButton'
 
 const EditContactForm = ({
@@ -53,6 +53,21 @@ const EditContactForm = ({
   })
 
   const deleteImage = trpc.images.remove.useMutation()
+  const handleImageUpload = async () => {
+    try {
+      if (selectedImage) {
+        const response = await uploadImg({
+          fileInput: selectedImage,
+          alt: contactData.image.alt,
+          type: contactData.image.type,
+        })
+        return response
+      }
+      return null
+    } catch (error) {
+      throw new Error('Error uploading image')
+    }
+  }
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
@@ -64,42 +79,11 @@ const EditContactForm = ({
           color: '#fff',
         },
       })
-      return
-    } else {
-      if (selectedImage) {
-        const uploadResponse = await handleImageUpload()
+    } else if (selectedImage) {
+      const uploadResponse = await handleImageUpload()
 
-        if (uploadResponse?.data.id) {
-          await updateContact.mutateAsync({
-            isActive: true,
-            id: contactData.id,
-            area: newContactData.area,
-            address: newContactData.address,
-            comment: newContactData.comment,
-            subways: newContactData.subways,
-            phones: newContactData.phones,
-            workingTime: newContactData.workingTime,
-            workingDate: newContactData.workingDate,
-            googleMapLink: newContactData.googleMapLink,
-            googlePluginLink: newContactData.googlePluginLink,
-            image_id: uploadResponse.data.id,
-          })
-          await deleteImage.mutateAsync(contactData.image.id)
-        } else {
-          await deleteImage.mutateAsync(uploadResponse?.data.id)
-          toast.error(
-            `Помилка оновлення послуги сервісного обслуговування...`,
-            {
-              style: {
-                borderRadius: '10px',
-                background: 'red',
-                color: '#fff',
-              },
-            },
-          )
-        }
-      } else {
-        updateContact.mutate({
+      if (uploadResponse?.data.id) {
+        await updateContact.mutateAsync({
           isActive: true,
           id: contactData.id,
           area: newContactData.area,
@@ -111,9 +95,34 @@ const EditContactForm = ({
           workingDate: newContactData.workingDate,
           googleMapLink: newContactData.googleMapLink,
           googlePluginLink: newContactData.googlePluginLink,
-          image_id: contactData.image.id,
+          image_id: uploadResponse.data.id,
+        })
+        await deleteImage.mutateAsync(contactData.image.id)
+      } else {
+        await deleteImage.mutateAsync(uploadResponse?.data.id)
+        toast.error(`Помилка оновлення послуги сервісного обслуговування...`, {
+          style: {
+            borderRadius: '10px',
+            background: 'red',
+            color: '#fff',
+          },
         })
       }
+    } else {
+      updateContact.mutate({
+        isActive: true,
+        id: contactData.id,
+        area: newContactData.area,
+        address: newContactData.address,
+        comment: newContactData.comment,
+        subways: newContactData.subways,
+        phones: newContactData.phones,
+        workingTime: newContactData.workingTime,
+        workingDate: newContactData.workingDate,
+        googleMapLink: newContactData.googleMapLink,
+        googlePluginLink: newContactData.googlePluginLink,
+        image_id: contactData.image.id,
+      })
     }
   }
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,22 +138,6 @@ const EditContactForm = ({
 
         reader.readAsDataURL(file)
       }
-    }
-  }
-
-  const handleImageUpload = async () => {
-    try {
-      if (selectedImage) {
-        const response = await uploadImg({
-          fileInput: selectedImage,
-          alt: contactData.image.alt,
-          type: contactData.image.type,
-        })
-        return response
-      }
-      return null
-    } catch (error) {
-      throw new Error('Error uploading image')
     }
   }
 

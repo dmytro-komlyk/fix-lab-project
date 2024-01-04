@@ -1,10 +1,10 @@
+import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { outputBrandSchema } from '@server/domain/brands/schemas/brand.schema'
+import type { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
+import type { outputIssueSchema } from '@server/domain/issues/schemas/issue.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import { outputBrandSchema } from '@server/domain/brands/schemas/brand.schema'
-import { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
-import { outputIssueSchema } from '@server/domain/issues/schemas/issue.schema'
 import EditGadgetForm from '../(components)/EditGadgetForm '
 
 interface IContactAdminProps {

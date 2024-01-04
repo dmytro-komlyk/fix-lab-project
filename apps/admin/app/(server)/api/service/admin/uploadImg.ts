@@ -36,7 +36,6 @@ const uploadImg = async ({ fileInput, alt, type }: UploadFileParams) => {
     const response = await axios.post(url, formData, config)
     return response
   } catch (error) {
-    console.log(error)
     throw new Error('Error uploading image')
   }
 }
