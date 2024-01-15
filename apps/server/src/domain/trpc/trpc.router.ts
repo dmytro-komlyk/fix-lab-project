@@ -1,9 +1,9 @@
 import { INestApplication, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
-import { OpenAPIV3 } from 'openapi-types';
-import swaggerUi from 'swagger-ui-express';
-import { generateOpenApiDocument } from 'trpc-openapi';
+// import { OpenAPIV3 } from 'openapi-types';
+// import swaggerUi from 'swagger-ui-express';
+// import { generateOpenApiDocument } from 'trpc-openapi';
 
 import { ArticlesRouter } from '../articles/articles.router';
 import { BenefitsRouter } from '../benefits/benefits.router';
@@ -54,16 +54,18 @@ export class TrpcRouter {
     auth: this.auth.authRouter
   });
 
-  openApiDocument: OpenAPIV3.Document = generateOpenApiDocument(this.appRouter, {
-    title: 'tRPC OpenAPI',
-    description: 'OpenAPI compliant REST API built using tRPC with Express',
-    version: '1.0.0',
-    baseUrl: process.env.APP_BASE_URL as string,
-    tags: ['users']
-  });
+  // createCaller = this.trpc.createCallerFactory(appRouter);
 
-  static getAppRouter(): AppRouter {
-    const prismaService = new PrismaService({});
+  // openApiDocument: OpenAPIV3.Document = generateOpenApiDocument(this.appRouter, {
+  //   title: 'tRPC OpenAPI',
+  //   description: 'OpenAPI compliant REST API built using tRPC with Express',
+  //   version: '1.0.0',
+  //   baseUrl: process.env.APP_BASE_URL as string,
+  //   tags: ['users']
+  // });
+
+  static getAppRouter(): any {
+    const prismaService = new PrismaService();
     const jwtService = new JwtService();
     const trpcService = new TrpcService(prismaService, jwtService);
 
@@ -83,7 +85,10 @@ export class TrpcRouter {
         new AuthService(prismaService, jwtService)
       )
     );
-    return trpcRouter.appRouter;
+    return {
+      appRouter: trpcRouter.appRouter,
+      createCallerFactory: trpcRouter.trpc.createCallerFactory
+    };
   }
 
   async applyMiddleware(app: INestApplication): Promise<void> {
@@ -94,13 +99,13 @@ export class TrpcRouter {
         createContext: this.trpc.createContext
       })
     );
-    app.use(
-      `/${process.env.APP_SWAGER}`,
-      swaggerUi.serve,
-      swaggerUi.setup(this.openApiDocument)
-    );
+    // app.use(
+    //   `/${process.env.APP_SWAGER}`,
+    //   swaggerUi.serve,
+    //   swaggerUi.setup(this.openApiDocument)
+    // );
   }
 }
 
-export const appRouter = TrpcRouter.getAppRouter();
+export const { appRouter, createCallerFactory } = TrpcRouter.getAppRouter();
 export type AppRouter = TrpcRouter['appRouter'];
