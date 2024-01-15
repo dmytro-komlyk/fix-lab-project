@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { TRPCError } from '@trpc/server';
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
 import { PrismaService } from '../prisma/prisma.service';
 import { createUserSchema, outputUserSchema } from './schemas/user.schema';
 

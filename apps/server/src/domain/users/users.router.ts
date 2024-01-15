@@ -12,23 +12,23 @@ export class UserRouter {
   ) {}
 
   usersRouter = this.trpc.router({
-    getByIdUser: this.trpc.protectedProcedure
+    getByIdUser: this.trpc.procedure
       .input(z.object({ id: z.string() }))
-      .query(async ({ input, ctx }) => {
+      .query(async ({ input }) => {
         const item = await this.usersService.findById(input.id);
         return { item };
       }),
 
-    getByEmailUser: this.trpc.protectedProcedure
+    getByEmailUser: this.trpc.procedure
       .input(z.object({ email: z.string().email() }))
-      .query(async ({ input, ctx }) => {
+      .query(async ({ input }) => {
         const item = await this.usersService.findByEmail(input.email);
         return { item };
       }),
 
     createUser: this.trpc.procedure
       .input(createUserSchema)
-      .mutation(async ({ input, ctx }) => {
+      .mutation(async ({ input }) => {
         const item = await this.usersService.create({ ...input });
         return { item };
       })
