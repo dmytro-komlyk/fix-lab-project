@@ -105,7 +105,7 @@ const SingleArticlePage = ({
                 </p>
               </div>
               <div className='flex flex-col gap-14 max-lg:gap-6'>
-                {contactsData.map(item => {
+                {contactsData.map((item: any) => {
                   return (
                     <div key={item.id} className='flex flex-col gap-[20px] '>
                       <div className=''>
@@ -119,7 +119,7 @@ const SingleArticlePage = ({
                       <div className='flex items-center gap-4'>
                         {item.subways.length > 1 ? (
                           <ul className=' flex flex-col gap-[8px]'>
-                            {item.subways.map(subway => (
+                            {item.subways.map((subway: any) => (
                               <li
                                 key={subway}
                                 className='flex items-center gap-[17px]'
@@ -148,7 +148,7 @@ const SingleArticlePage = ({
                           </>
                         )}
                       </div>
-                      {item.phones.map(phone => (
+                      {item.phones.map((phone: string) => (
                         <a
                           key={phone}
                           className='font-medium leading-none tracking-[1.7px] text-dark-blue transition-opacity  hover:opacity-70 focus:opacity-70'
@@ -171,10 +171,10 @@ const SingleArticlePage = ({
               </p>
             </div>
             <ul className='mb-[30px] flex flex-col items-center gap-[13px]'>
-              {contactsData.map(item => (
+              {contactsData.map((item: any) => (
                 <li key={item.id} className='flex flex-col items-center'>
                   <p className='font-[400] text-black-dis'>{item.area} р-н</p>
-                  {item.phones.map(phone => (
+                  {item.phones.map((phone: string) => (
                     <a
                       key={phone}
                       href={`tel:${phone.replace(/\s/g, '')}`}

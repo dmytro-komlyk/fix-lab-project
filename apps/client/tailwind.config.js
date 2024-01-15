@@ -80,6 +80,7 @@ module.exports = {
         'mscope-md': '115%',
         'mscope-lg': '80%',
         'mscope-xl': '65%',
+        '300%': '300%',
       },
       backgroundPosition: {
         'mscope-sm': 'top calc(50% - 8px) right calc(50% + 32px)',

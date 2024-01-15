@@ -15,10 +15,10 @@ const CallUsCard = ({
         Подзвонити нам
       </p>
       <ul className='flex flex-col items-center gap-[15px]'>
-        {contactsDataInit.map(item => (
+        {contactsDataInit.map((item: any) => (
           <li key={item.id} className='flex flex-col items-center'>
             <p className='font-[400] text-black-dis'>{item.area} р-н</p>
-            {item.phones.map(phone => (
+            {item.phones.map((phone: string) => (
               <a
                 key={phone}
                 href={`tel:${phone.replace(/\s/g, '')}`}
