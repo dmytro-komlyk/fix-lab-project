@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TRPCError } from '@trpc/server';
-import { compare } from 'bcrypt';
+import { compare } from 'bcryptjs';
 import { PrismaService } from './../prisma/prisma.service';
 import { loginSchema, outputAuthSchema, tokenSchema } from './schemas/auth.schema';
 
@@ -9,7 +9,7 @@ import { loginSchema, outputAuthSchema, tokenSchema } from './schemas/auth.schem
 export class AuthService {
   constructor(private prisma: PrismaService, private readonly jwt: JwtService) {}
 
-  async login(data: loginSchema): Promise<tokenSchema> {
+  async login(data: loginSchema): Promise<outputAuthSchema> {
     const { id, ...userData } = await this.validateUser(data);
 
     const payload = {
@@ -17,7 +17,7 @@ export class AuthService {
     };
     const token = await this.refreshToken(payload);
 
-    await this.prisma.user.update({
+    const { name, email } = await this.prisma.user.update({
       where: { email: userData.email },
       data: {
         ...userData,
@@ -25,7 +25,7 @@ export class AuthService {
       }
     });
 
-    return token;
+    return { id, name, email, ...token };
   }
 
   async validateUser(data: loginSchema): Promise<outputAuthSchema> {

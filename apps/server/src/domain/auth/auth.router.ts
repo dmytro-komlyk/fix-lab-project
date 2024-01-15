@@ -13,21 +13,17 @@ export class AuthRouter {
   ) {}
 
   authRouter = this.trpc.router({
-    register: this.trpc.procedure
-      .input(signUpSchema)
-      .mutation(async ({ input, ctx }) => {
-        const { email } = await this.usersService.create({ ...input });
-        const item = await this.authService.login({
-          email,
-          password: input.password
-        });
-        return { item };
-      }),
-    login: this.trpc.procedure
-      .input(loginSchema)
-      .mutation(async ({ input, ctx }) => {
-        const item = await this.authService.login({ ...input });
-        return { item };
-      })
+    register: this.trpc.procedure.input(signUpSchema).mutation(async ({ input }) => {
+      const { email } = await this.usersService.create({ ...input });
+      const item = await this.authService.login({
+        email,
+        password: input.password
+      });
+      return { item };
+    }),
+    login: this.trpc.procedure.input(loginSchema).mutation(async ({ input }) => {
+      const item = await this.authService.login({ ...input });
+      return { item };
+    })
   });
 }
