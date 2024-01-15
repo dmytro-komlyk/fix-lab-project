@@ -1,34 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
-import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
-
-import { UsersModule } from '@domain/users/users.module';
-import { AuthController } from './auth.controller';
+import { PrismaModule } from '../prisma/prisma.module';
+import { TrpcService } from '../trpc/trpc.service';
+import { UserService } from '../users/users.service';
+import { AuthRouter } from './auth.router';
 import { AuthService } from './auth.service';
 
-import { AuthGuard } from './guards/auth.guard';
-
 @Module({
-  imports: [
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('SECRET')
-      }),
-      inject: [ConfigService]
-    }),
-    PassportModule,
-    UsersModule
-  ],
-  controllers: [AuthController],
-  providers: [
-    AuthService,
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard
-    }
-  ]
+  imports: [PrismaModule],
+  providers: [AuthService, AuthRouter, UserService, TrpcService],
+  exports: [AuthService]
 })
 export class AuthModule {}

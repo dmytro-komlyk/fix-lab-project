@@ -29,20 +29,18 @@ COPY ${SERVICE_PATH}/.env.example ./${SERVICE_PATH}/.env
 
 ENV NODE_ENV production
 
-RUN pnpm db:generate
 RUN pnpm build:server
-RUN pnpm deploy --filter=server --prod /app/server
+RUN pnpm deploy --filter=server --prod /prod/${PACKAGE_NAME}
+RUN cd /prod/${PACKAGE_NAME} && pnpm db:generate
 
 FROM base as runner
-COPY --chown=node:node --from=builder /app/${PACKAGE_NAME} /app/${SERVICE_PATH}
+COPY --chown=node:node --from=builder /prod/${PACKAGE_NAME} /app/${SERVICE_PATH}
 COPY --chown=node:node --from=builder /app/${SERVICE_PATH}/dist /app/${SERVICE_PATH}/dist
 WORKDIR /app
 COPY tsconfig.json ./tsconfig.json
 
 WORKDIR /app/${SERVICE_PATH}
 USER node
-
-RUN pnpm db:generate
 
 ENV NODE_ENV=production
 ENV PORT 3000
