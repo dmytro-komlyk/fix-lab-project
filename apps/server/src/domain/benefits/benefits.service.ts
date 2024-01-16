@@ -34,7 +34,7 @@ export class BenefitsService {
 
     if (!benefit) {
       throw new TRPCError({
-        message: `Brand with ID "${id}" was not found`,
+        message: `Benefit with ID "${id}" was not found`,
         code: 'NOT_FOUND'
       });
     }

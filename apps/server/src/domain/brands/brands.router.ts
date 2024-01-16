@@ -19,33 +19,104 @@ export class BrandsRouter {
   ) {}
 
   brandsRouter = this.trpc.router({
-    getAll: this.trpc.procedure.query(async () => {
-      return await this.brandsService.findAll();
-    }),
-    getAllPublished: this.trpc.procedure.query(async () => {
-      return await this.brandsService.findActive();
-    }),
-    getBySlug: this.trpc.procedure
-      .input(z.string())
+    getAllBrands: this.trpc.protectedProcedure
+      .meta({
+        openapi: {
+          method: 'GET',
+          path: '/getAllBrands',
+          tags: ['brands'],
+          summary: 'Read all brands'
+        }
+      })
+      .input(z.void())
+      .output(z.array(outputBrandSchema))
+      .query(async () => {
+        return await this.brandsService.findAll();
+      }),
+    getAllPublishedBrands: this.trpc.procedure
+      .meta({
+        openapi: {
+          method: 'GET',
+          path: '/getAllPublishedBrands',
+          tags: ['brands'],
+          summary: 'Read all published brands'
+        }
+      })
+      .input(z.void())
+      .output(z.array(outputBrandSchema))
+      .query(async () => {
+        return await this.brandsService.findActive();
+      }),
+    getBySlugBrand: this.trpc.procedure
+      .meta({
+        openapi: {
+          method: 'GET',
+          path: '/getBySlugBrand',
+          tags: ['brands'],
+          summary: 'Read a brand by slug'
+        }
+      })
+      .input(z.object({ id: z.string() }))
       .output(outputBrandSchema)
       .query(async ({ input }) => {
-        return await this.brandsService.findBySlug(input);
+        return await this.brandsService.findBySlug(input.id);
       }),
-    getById: this.trpc.procedure.input(z.string()).query(async ({ input }) => {
-      return await this.brandsService.findById(input);
-    }),
-    create: this.trpc.procedure
+    getByIdBrand: this.trpc.procedure
+      .meta({
+        openapi: {
+          method: 'GET',
+          path: '/getByIdBrand',
+          tags: ['brands'],
+          summary: 'Read a brand by id'
+        }
+      })
+      .input(z.object({ id: z.string() }))
+      .output(outputBrandSchema)
+      .query(async ({ input }) => {
+        return await this.brandsService.findById(input.id);
+      }),
+    createBrand: this.trpc.protectedProcedure
+      .meta({
+        openapi: {
+          method: 'POST',
+          path: '/createBrand',
+          tags: ['brands'],
+          summary: 'Create a new brand'
+        }
+      })
       .input(createBrandSchema)
+      .output(outputBrandSchema)
       .mutation(async ({ input }) => {
         return await this.brandsService.create({ ...input });
       }),
-    update: this.trpc.procedure
+    updateBrand: this.trpc.protectedProcedure
+      .meta({
+        openapi: {
+          method: 'POST',
+          path: '/updateBrand',
+          tags: ['brands'],
+          summary: 'Update brand'
+        }
+      })
       .input(updateBrandSchema)
+      .output(outputBrandSchema)
       .mutation(async ({ input }) => {
         return await this.brandsService.update(input);
       }),
-    remove: this.trpc.procedure.input(z.string()).mutation(async ({ input }) => {
-      return await this.brandsService.remove(input);
-    })
+    removeBrand: this.trpc.protectedProcedure
+      .meta({
+        openapi: {
+          method: 'POST',
+          path: '/removeBrand',
+          tags: ['brands'],
+          summary: 'Remove brand'
+        }
+      })
+      .input(z.object({ id: z.string() }))
+      .output(z.object({ id: z.string() }))
+      .mutation(async ({ input }) => {
+        const id = await this.brandsService.remove(input.id);
+        return { id };
+      })
   });
 }

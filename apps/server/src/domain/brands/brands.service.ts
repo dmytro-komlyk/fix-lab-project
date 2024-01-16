@@ -1,12 +1,8 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnprocessableEntityException
-} from '@nestjs/common';
-import { Types } from 'mongoose';
+import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 
+import { TRPCError } from '@trpc/server';
 import {
   createBrandSchema,
   outputBrandSchema,
@@ -37,24 +33,26 @@ export class BrandsService {
     });
 
     if (!brand) {
-      throw new NotFoundException(`Brand with slug "${slug}" was not found`);
+      throw new TRPCError({
+        message: `Brand with slug "${slug}" was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     return brand;
   }
 
   public async findById(id: string): Promise<outputBrandSchema> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(`Incorrect ID - ${id}`);
-    }
-
     const brand = await this.prisma.brand.findUnique({
       where: { id },
       include: { icon: true }
     });
 
     if (!brand) {
-      throw new NotFoundException(`Brand with ID "${id}" was not found`);
+      throw new TRPCError({
+        message: `Brand with ID "${id}" was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     return brand;
@@ -66,9 +64,10 @@ export class BrandsService {
     });
 
     if (foundBrand) {
-      throw new UnprocessableEntityException(
-        `Brand with slug "${data.slug}" already exists`
-      );
+      throw new TRPCError({
+        message: `Brand with slug "${data.title}" already exists`,
+        code: 'FORBIDDEN'
+      });
     }
 
     const createdBrand = await this.prisma.brand.create({ data });
@@ -82,7 +81,10 @@ export class BrandsService {
     const brand = await this.findById(data.id);
 
     if (!brand) {
-      throw new NotFoundException(`Brand with ID ${id} was not found`);
+      throw new TRPCError({
+        message: `Brand with ID ${id} was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     const updatedBrand = await this.prisma.brand.update({
@@ -95,16 +97,13 @@ export class BrandsService {
   }
 
   public async remove(id: string): Promise<string> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(`Incorrect ID - ${id}`);
-    }
+    const brand = await this.prisma.brand.delete({ where: { id } }).catch(() => {
+      throw new TRPCError({
+        message: `Brand with ID ${id} was not found`,
+        code: 'NOT_FOUND'
+      });
+    });
 
-    const brand = await this.prisma.brand.delete({ where: { id } });
-
-    if (!brand) {
-      throw new NotFoundException(`Brand with ID ${id} was not found`);
-    }
-
-    return id;
+    return brand.id;
   }
 }
