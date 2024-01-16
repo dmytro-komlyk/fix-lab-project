@@ -19,29 +19,90 @@ export class ContactsRouter {
   ) {}
 
   contactsRouter = this.trpc.router({
-    getAll: this.trpc.procedure.query(async () => {
-      return await this.contactsService.findAll();
-    }),
-    getAllPublished: this.trpc.procedure
+    getAllContacts: this.trpc.procedure
+      .meta({
+        openapi: {
+          method: 'GET',
+          path: '/getAllContacts',
+          tags: ['contacts'],
+          summary: 'Read all contacts'
+        }
+      })
+      .input(z.void())
+      .output(z.array(outputContactSchema))
+      .query(async () => {
+        return await this.contactsService.findAll();
+      }),
+    getAllPublishedContacts: this.trpc.procedure
+      .meta({
+        openapi: {
+          method: 'GET',
+          path: '/getAllPublishedContacts',
+          tags: ['contacts'],
+          summary: 'Read all published contacts'
+        }
+      })
+      .input(z.void())
       .output(z.array(outputContactSchema))
       .query(async () => {
         return await this.contactsService.findActive();
       }),
-    getById: this.trpc.procedure.input(z.string()).query(async ({ input }) => {
-      return await this.contactsService.findById(input);
-    }),
-    create: this.trpc.procedure
+    getByIdContact: this.trpc.procedure
+      .meta({
+        openapi: {
+          method: 'GET',
+          path: '/getByIdContact',
+          tags: ['contacts'],
+          summary: 'Read a contact by id'
+        }
+      })
+      .input(z.object({ id: z.string() }))
+      .output(outputContactSchema)
+      .query(async ({ input }) => {
+        return await this.contactsService.findById(input.id);
+      }),
+    createContact: this.trpc.procedure
+      .meta({
+        openapi: {
+          method: 'POST',
+          path: '/createContact',
+          tags: ['contacts'],
+          summary: 'Create a new contact'
+        }
+      })
       .input(createContactSchema)
+      .output(outputContactSchema)
       .mutation(async ({ input }) => {
         return await this.contactsService.create({ ...input });
       }),
-    update: this.trpc.procedure
+    updateContact: this.trpc.procedure
+      .meta({
+        openapi: {
+          method: 'POST',
+          path: '/updateContact',
+          tags: ['contacts'],
+          summary: 'Update contact'
+        }
+      })
       .input(updateContactSchema)
+      .output(outputContactSchema)
       .mutation(async ({ input }) => {
         return await this.contactsService.update(input);
       }),
-    remove: this.trpc.procedure.input(z.string()).mutation(async ({ input }) => {
-      return await this.contactsService.remove(input);
-    })
+    removeContact: this.trpc.procedure
+      .meta({
+        openapi: {
+          method: 'POST',
+          path: '/removeContact',
+          tags: ['contacts'],
+          summary: 'Delete contact'
+        }
+      })
+      .input(z.object({ id: z.string() }))
+      .output(z.object({ id: z.string() }))
+      .mutation(async ({ input }) => {
+        const id = await this.contactsService.remove(input.id);
+        return { id };
+      })
   });
 }

@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Types } from 'mongoose';
+import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 
+import { TRPCError } from '@trpc/server';
 import {
   createContactSchema,
   outputContactSchema,
@@ -38,7 +38,10 @@ export class ContactsService {
     });
 
     if (!contact) {
-      throw new NotFoundException(`Contact with ID ${id} was not found`);
+      throw new TRPCError({
+        message: `Contact with ID "${id}" was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     return contact;
@@ -52,11 +55,13 @@ export class ContactsService {
 
   public async update(data: updateContactSchema): Promise<outputContactSchema> {
     const { id, ...newData } = data;
-
     const contact = await this.findById(id);
 
     if (!contact) {
-      throw new NotFoundException(`Contact with ID ${id} was not found`);
+      throw new TRPCError({
+        message: `Contact with ID ${id} was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     const updatedContact = await this.prisma.contact.update({
@@ -69,16 +74,13 @@ export class ContactsService {
   }
 
   public async remove(id: string): Promise<string> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(`Incorrect ID - ${id}`);
-    }
+    const contact = await this.prisma.contact.delete({ where: { id } }).catch(() => {
+      throw new TRPCError({
+        message: `Contact with ID ${id} was not found`,
+        code: 'NOT_FOUND'
+      });
+    });
 
-    const contact = await this.prisma.contact.delete({ where: { id } });
-
-    if (!contact) {
-      throw new NotFoundException(`Contact with ID ${id} was not found`);
-    }
-
-    return id;
+    return contact.id;
   }
 }
