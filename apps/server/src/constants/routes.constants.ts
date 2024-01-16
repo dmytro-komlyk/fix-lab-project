@@ -8,9 +8,8 @@ export const ROUTES = {
   issues: 'issues',
   benefits: 'benefits',
   images: 'images',
-  articles: 'articles'
+  articles: 'articles',
 };
 
-export const PUBLIC_FOLDER = 'public';
-export const PREFIX = 'api';
-export const STATIC_FOLDER = 'static';
+export const PUBLIC_FOLDER = process.env.APP_STATIC_ASSETS as string;
+export const PREFIX = process.env.APP_API as string;

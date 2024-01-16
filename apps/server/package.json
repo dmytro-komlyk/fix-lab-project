@@ -2,10 +2,8 @@
   "name": "server",
   "type": "commonjs",
   "version": "1.0.0",
-  "description": "fixlab nestjs repository",
-  "author": "",
+  "description": "Fixlab server based on Nestjs, tRPC, Prisma, MongoDB",
   "private": true,
-  "license": "UNLICENSED",
   "scripts": {
     "db:generate": "npx prisma generate",
     "db:push": "npx prisma db push",
@@ -31,8 +29,6 @@
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/jwt": "^10.1.0",
-    "@nestjs/mongoose": "^10.0.1",
-    "@nestjs/passport": "^10.0.1",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/serve-static": "^4.0.0",
     "@nestjs/swagger": "^7.1.8",
@@ -43,23 +39,9 @@
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
-    "devalue": "^4.3.2",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
-    "express-handlebars": "^7.1.2",
-    "generate-password": "^1.7.1",
-    "handlebars": "^4.7.8",
-    "hbs": "^4.2.0",
-    "mongodb": "^6.3.0",
-    "mongodb-memory-server": "^9.0.1",
     "mongoose": "^7.4.3",
     "multer": "1.4.5-lts.1",
-    "nodemailer": "^6.9.7",
     "openapi-types": "^12.1.3",
-    "passport": "^0.6.0",
-    "passport-jwt": "^4.0.1",
-    "passport-local": "^1.0.0",
-    "prisma-zod-generator": "^0.8.13",
-    "pug": "^3.0.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "superjson": "^2.2.1",
@@ -73,16 +55,11 @@
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
-    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/express": "^4.17.13",
     "@types/jest": "^29.5.10",
-    "@types/mocha": "^10.0.4",
     "@types/multer": "^1.4.10",
     "@types/node": "18.15.11",
-    "@types/nodemailer": "^6.4.14",
-    "@types/passport-jwt": "^3.0.9",
-    "@types/passport-local": "^1.0.35",
     "@types/supertest": "^2.0.11",
     "@types/swagger-ui-express": "^4.1.6",
     "@types/uuid": "^9.0.7",
@@ -104,5 +81,21 @@
     "tsconfig-paths": "4.2.0",
     "typescript": "^4.7.4"
   },
-  "main": "main.ts"
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
 }

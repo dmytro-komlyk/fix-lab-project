@@ -3,17 +3,15 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 import { TrpcRouter } from '@domain/trpc/trpc.router';
-import { useContainer } from 'class-validator';
 
 import { AppModule } from '@domain/app.module';
-
-import { MongoErrorsFilter } from '@filters/mongo-errors.filter';
-import { SwaggerHelper } from '@helpers/swagger.helper';
 
 import { PREFIX, PUBLIC_FOLDER } from '@constants/routes.constants';
 
 (async (): Promise<void> => {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    rawBody: true
+  });
 
   app.enableCors({
     origin: '*',
@@ -25,19 +23,14 @@ import { PREFIX, PUBLIC_FOLDER } from '@constants/routes.constants';
 
   app.setGlobalPrefix(PREFIX);
 
-  app.useGlobalFilters(new MongoErrorsFilter());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   app.useStaticAssets(`${process.cwd()}/${PUBLIC_FOLDER}`, {
     prefix: `/${PUBLIC_FOLDER}`
   });
 
-  useContainer(app.select(AppModule), { fallbackOnErrors: true });
-
   const trpc = app.get(TrpcRouter);
   trpc.applyMiddleware(app);
-
-  SwaggerHelper(app);
 
   await app.listen(process.env.PORT ?? 3000);
 })();
