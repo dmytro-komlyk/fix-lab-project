@@ -1,8 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Types } from 'mongoose';
+import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 
+import { TRPCError } from '@trpc/server';
 import {
   createGadgetSchema,
   outputGadgetSchema,
@@ -89,17 +89,16 @@ export class GadgetsService {
     });
 
     if (!gadget) {
-      throw new NotFoundException(`Gadget with slug "${slug}" was not found`);
+      throw new TRPCError({
+        message: `Gadget with slug "${slug}" was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     return gadget;
   }
 
   public async findById(id: string): Promise<outputGadgetSchema> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(`Incorrect ID - ${id}`);
-    }
-
     const gadget = await this.prisma.gadget.findUnique({
       where: { id },
       include: {
@@ -124,7 +123,10 @@ export class GadgetsService {
     });
 
     if (!gadget) {
-      throw new NotFoundException(`Gadget with ID "${id}" was not found`);
+      throw new TRPCError({
+        message: `Gadget with ID "${id}" was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     return gadget;
@@ -136,9 +138,10 @@ export class GadgetsService {
     });
 
     if (foundGadget) {
-      throw new BadRequestException(
-        `Gadget with slug "${data.slug}" already exists`
-      );
+      throw new TRPCError({
+        message: `Gadget with slug "${data.slug}" already exists`,
+        code: 'FORBIDDEN'
+      });
     }
 
     const createdGadget = await this.prisma.gadget.create({ data });
@@ -152,7 +155,10 @@ export class GadgetsService {
     const gadget = await this.findById(id);
 
     if (!gadget) {
-      throw new NotFoundException(`Gadget with ID ${id} was not found`);
+      throw new TRPCError({
+        message: `Gadget with ID ${id} was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     const updatedGadget = await this.prisma.gadget.update({
@@ -183,16 +189,13 @@ export class GadgetsService {
   }
 
   public async remove(id: string): Promise<string> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(`Incorrect ID - ${id}`);
-    }
+    const gadget = await this.prisma.gadget.delete({ where: { id } }).catch(() => {
+      throw new TRPCError({
+        message: `Gadget with ID ${id} was not found`,
+        code: 'NOT_FOUND'
+      });
+    });
 
-    const gadget = await this.prisma.gadget.delete({ where: { id } });
-
-    if (!gadget) {
-      throw new NotFoundException(`Gadget with ID ${id} was not found`);
-    }
-
-    return id;
+    return gadget.id;
   }
 }
