@@ -19,7 +19,7 @@ export class ContactsRouter {
   ) {}
 
   contactsRouter = this.trpc.router({
-    getAllContacts: this.trpc.procedure
+    getAllContacts: this.trpc.protectedProcedure
       .meta({
         openapi: {
           method: 'GET',
@@ -61,7 +61,7 @@ export class ContactsRouter {
       .query(async ({ input }) => {
         return await this.contactsService.findById(input.id);
       }),
-    createContact: this.trpc.procedure
+    createContact: this.trpc.protectedProcedure
       .meta({
         openapi: {
           method: 'POST',
@@ -75,7 +75,7 @@ export class ContactsRouter {
       .mutation(async ({ input }) => {
         return await this.contactsService.create({ ...input });
       }),
-    updateContact: this.trpc.procedure
+    updateContact: this.trpc.protectedProcedure
       .meta({
         openapi: {
           method: 'POST',
@@ -89,7 +89,7 @@ export class ContactsRouter {
       .mutation(async ({ input }) => {
         return await this.contactsService.update(input);
       }),
-    removeContact: this.trpc.procedure
+    removeContact: this.trpc.protectedProcedure
       .meta({
         openapi: {
           method: 'POST',
