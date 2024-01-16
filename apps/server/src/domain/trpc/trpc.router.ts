@@ -60,7 +60,7 @@ export class TrpcRouter {
     description: 'OpenAPI compliant REST API built using tRPC with Express',
     version: '1.0.0',
     baseUrl: process.env.APP_BASE_URL as string,
-    tags: ['users', 'benefits', 'brands', 'contacts', 'gadgets']
+    tags: ['users', 'benefits', 'brands', 'contacts', 'gadgets', 'images', 'issues']
   });
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

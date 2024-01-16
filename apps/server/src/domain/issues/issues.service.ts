@@ -1,8 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Types } from 'mongoose';
+import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 
+import { TRPCError } from '@trpc/server';
 import {
   createIssueSchema,
   outputIssueSchema,
@@ -61,7 +61,10 @@ export class IssuesService {
     });
 
     if (!issue) {
-      throw new NotFoundException(`Issue with slug "${slug}" was not found`);
+      throw new TRPCError({
+        message: `Issue with slug "${slug}" was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     return issue;
@@ -84,7 +87,10 @@ export class IssuesService {
     });
 
     if (!issue) {
-      throw new NotFoundException(`Issue with ID "${id}" was not found`);
+      throw new TRPCError({
+        message: `Issue with ID "${id}" was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     return issue;
@@ -98,7 +104,10 @@ export class IssuesService {
     });
 
     if (foundIssue) {
-      throw new BadRequestException(`Issue with slug "${data.slug}" already exists`);
+      throw new TRPCError({
+        message: `Issue with slug "${data.slug}" already exists`,
+        code: 'FORBIDDEN'
+      });
     }
 
     const createdIssue = await this.prisma.issue.create({
@@ -115,7 +124,10 @@ export class IssuesService {
     const issue = await this.findById(data.id);
 
     if (!issue) {
-      throw new NotFoundException(`Issue with ID ${id} was not found`);
+      throw new TRPCError({
+        message: `Issue with ID ${id} was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     const updatedIssue = await this.prisma.issue.update({
@@ -135,16 +147,13 @@ export class IssuesService {
   }
 
   public async remove(id: string): Promise<string> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(`Incorrect ID - ${id}`);
-    }
+    const contact = await this.prisma.issue.delete({ where: { id } }).catch(() => {
+      throw new TRPCError({
+        message: `Issue with ID ${id} was not found`,
+        code: 'NOT_FOUND'
+      });
+    });
 
-    const contact = await this.prisma.issue.delete({ where: { id } });
-
-    if (!contact) {
-      throw new NotFoundException(`Issue with ID ${id} was not found`);
-    }
-
-    return id;
+    return contact.id;
   }
 }
