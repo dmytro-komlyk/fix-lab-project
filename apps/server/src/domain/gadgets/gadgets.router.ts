@@ -19,7 +19,7 @@ export class GadgetsRouter {
   ) {}
 
   gadgetsRouter = this.trpc.router({
-    getAllGadgets: this.trpc.protectedProcedure
+    getAllGadgets: this.trpc.procedure
       .meta({
         openapi: {
           method: 'GET',
