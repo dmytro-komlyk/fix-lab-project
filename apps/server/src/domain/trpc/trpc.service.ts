@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/client';
 import { TRPCError, inferAsyncReturnType, initTRPC } from '@trpc/server';
 import type { CreateExpressContextOptions } from '@trpc/server/adapters/express';
+import { OpenApiMeta } from 'trpc-openapi';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -49,6 +50,7 @@ export class TrpcService {
     };
   };
   trpc = initTRPC
+    .meta<OpenApiMeta>()
     .context<inferAsyncReturnType<typeof this.createContext>>()
     .create();
   procedure = this.trpc.procedure;

@@ -1,8 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Types } from 'mongoose';
+import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 
+import { TRPCError } from '@trpc/server';
 import {
   createBenefitSchema,
   outputBenefitSchema,
@@ -27,17 +27,16 @@ export class BenefitsService {
   }
 
   public async findById(id: string): Promise<outputBenefitSchema> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(`Incorrect ID - ${id}`);
-    }
-
     const benefit = await this.prisma.benefit.findUnique({
       where: { id },
       include: { icon: true }
     });
 
     if (!benefit) {
-      throw new NotFoundException(`Brand with ID "${id}" was not found`);
+      throw new TRPCError({
+        message: `Brand with ID "${id}" was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     return benefit;
@@ -49,9 +48,10 @@ export class BenefitsService {
     });
 
     if (foundBenefit) {
-      throw new BadRequestException(
-        `Benefit with slug "${data.title}" already exists`
-      );
+      throw new TRPCError({
+        message: `Benefit with slug "${data.title}" already exists`,
+        code: 'FORBIDDEN'
+      });
     }
     const createdBenefit = await this.prisma.benefit.create({ data });
     const benefit = await this.findById(createdBenefit.id);
@@ -64,7 +64,10 @@ export class BenefitsService {
     const benefit = await this.findById(id);
 
     if (!benefit) {
-      throw new NotFoundException(`Benefit with ID ${id} was not found`);
+      throw new TRPCError({
+        message: `Benefit with ID ${id} was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     const updatedBenefit = await this.prisma.benefit.update({
@@ -77,16 +80,13 @@ export class BenefitsService {
   }
 
   public async remove(id: string): Promise<string> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(`Incorrect ID - ${id}`);
-    }
+    const benefit = await this.prisma.benefit.delete({ where: { id } }).catch(() => {
+      throw new TRPCError({
+        message: `Benefit with ID ${id} was not found`,
+        code: 'NOT_FOUND'
+      });
+    });
 
-    const benefit = await this.prisma.benefit.delete({ where: { id } });
-
-    if (!benefit) {
-      throw new NotFoundException(`Benefit with ID ${id} was not found`);
-    }
-
-    return id;
+    return benefit.id;
   }
 }
