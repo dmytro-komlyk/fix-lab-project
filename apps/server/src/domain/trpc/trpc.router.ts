@@ -68,7 +68,8 @@ export class TrpcRouter {
       'brands',
       'contacts',
       'issues',
-      'gadgets'
+      'gadgets',
+      'articles'
     ]
   });
 

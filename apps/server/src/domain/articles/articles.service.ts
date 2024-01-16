@@ -1,10 +1,10 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Types } from 'mongoose';
+import { Injectable } from '@nestjs/common';
 
 import { Article, Image } from '@prisma/client';
 
 import { PrismaService } from '../prisma/prisma.service';
 
+import { TRPCError } from '@trpc/server';
 import {
   createArticleSchema,
   outputArticleSchema,
@@ -70,17 +70,16 @@ export class ArticlesService {
       }
     });
     if (!article) {
-      throw new NotFoundException(`Article with slug "${query}" was not found`);
+      throw new TRPCError({
+        message: `Article with slug "${query}" was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     return article;
   }
 
   public async findById(id: string): Promise<outputArticleSchema> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(`Incorrect ID - ${id}`);
-    }
-
     const article = await this.prisma.article.findUnique({
       where: {
         id
@@ -91,7 +90,10 @@ export class ArticlesService {
     });
 
     if (!article) {
-      throw new NotFoundException(`Article with ID "${id}" was not found`);
+      throw new TRPCError({
+        message: `Article with ID "${id}" was not found`,
+        code: 'NOT_FOUND'
+      });
     }
 
     return article;
@@ -105,9 +107,10 @@ export class ArticlesService {
     });
 
     if (foundArticle) {
-      throw new BadRequestException(
-        `Article with slug "${dto.slug}" already exists`
-      );
+      throw new TRPCError({
+        message: `Article with slug "${dto.slug}" already exists`,
+        code: 'FORBIDDEN'
+      });
     }
 
     const createdArticle = await this.prisma.article.create({
@@ -118,31 +121,34 @@ export class ArticlesService {
     return article;
   }
 
-  public async update(dto: updateArticleSchema): Promise<outputArticleSchema> {
-    const { id, ...newData } = dto;
+  public async update(data: updateArticleSchema): Promise<outputArticleSchema> {
+    const { id, ...newData } = data;
+    const article = await this.findById(id);
 
-    await this.findById(id as string);
+    if (!article) {
+      throw new TRPCError({
+        message: `Article with ID ${id} was not found`,
+        code: 'NOT_FOUND'
+      });
+    }
 
-    const article = await this.prisma.article.update({
+    const updatedArticle = await this.prisma.article.update({
       where: { id },
       data: newData,
       include: { image: true }
     });
 
-    return article;
+    return updatedArticle;
   }
 
   public async remove(id: string): Promise<string> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(`Incorrect ID - ${id}`);
-    }
+    const article = await this.prisma.article.delete({ where: { id } }).catch(() => {
+      throw new TRPCError({
+        message: `Article with ID ${id} was not found`,
+        code: 'NOT_FOUND'
+      });
+    });
 
-    const article = await this.prisma.article.delete({ where: { id } });
-
-    if (!article) {
-      throw new NotFoundException(`Article with ID ${id} was not found`);
-    }
-
-    return id;
+    return article.id;
   }
 }
