@@ -1,8 +1,5 @@
 import SignUp from '../(components)/SignUp'
 
-export const runtime = 'edge'
-export const revalidate = 3600
-
 const SignUpPage = () => {
   return (
     <main className='flex h-full flex-auto'>

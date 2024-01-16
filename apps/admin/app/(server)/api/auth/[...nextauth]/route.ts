@@ -1,2 +1,10 @@
-export { GET, POST } from '@admin/auth'
-export const runtime = 'edge'
+import { handlers } from '@admin/app/(utils)/authOptions'
+import type { NextRequest } from 'next/server'
+
+const { GET: AuthGET, POST } = handlers
+export { POST }
+
+export async function GET(request: NextRequest) {
+  const response = await AuthGET(request)
+  return response
+}

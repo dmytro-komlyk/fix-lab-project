@@ -6,7 +6,6 @@ import React, { useState } from 'react'
 
 import { trpc } from './client'
 
-// const url = Backend_URL + Trpc;
 const url = process.env.NEXT_PUBLIC_TRPC_SERVER_URL as string
 
 export function TrpcProvider({ children }: { children: React.ReactNode }) {
