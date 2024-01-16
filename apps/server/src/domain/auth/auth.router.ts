@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TrpcService } from '../trpc/trpc.service';
 import { UserService } from '../users/users.service';
 import { AuthService } from './auth.service';
-import { loginSchema, signUpSchema } from './schemas/auth.schema';
+import { loginSchema, outputAuthSchema, signUpSchema } from './schemas/auth.schema';
 
 @Injectable()
 export class AuthRouter {
@@ -13,17 +13,37 @@ export class AuthRouter {
   ) {}
 
   authRouter = this.trpc.router({
-    register: this.trpc.procedure.input(signUpSchema).mutation(async ({ input }) => {
-      const { email } = await this.usersService.create({ ...input });
-      const item = await this.authService.login({
-        email,
-        password: input.password
-      });
-      return { item };
-    }),
-    login: this.trpc.procedure.input(loginSchema).mutation(async ({ input }) => {
-      const item = await this.authService.login({ ...input });
-      return { item };
-    })
+    register: this.trpc.procedure
+      .meta({
+        openapi: {
+          method: 'POST',
+          path: '/register',
+          tags: ['auth'],
+          summary: 'Register new user'
+        }
+      })
+      .input(signUpSchema)
+      .output(outputAuthSchema)
+      .mutation(async ({ input }) => {
+        const { email } = await this.usersService.create({ ...input });
+        return await this.authService.login({
+          email,
+          password: input.password
+        });
+      }),
+    login: this.trpc.procedure
+      .meta({
+        openapi: {
+          method: 'POST',
+          path: '/login',
+          tags: ['auth'],
+          summary: 'Login user'
+        }
+      })
+      .input(loginSchema)
+      .output(outputAuthSchema)
+      .mutation(async ({ input }) => {
+        return await this.authService.login({ ...input });
+      })
   });
 }
