@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Blog() {
-  const postsData = (await serverClient.articles.getByPagination({
+  const postsData = (await serverClient.articles.getByPaginationArticles({
     page: 1,
     sort: 'desc',
     limit: 9,

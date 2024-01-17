@@ -5,7 +5,7 @@ const CallUsCard = ({
   contactsDataInit,
 }: {
   contactsDataInit: Awaited<
-    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+    ReturnType<(typeof serverClient)['contacts']['getAllPublishedContacts']>
   >
 }) => {
   return (

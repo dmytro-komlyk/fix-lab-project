@@ -27,14 +27,14 @@ const SingleGadgetSection = ({
   contactsDataInit,
 }: {
   singleGadgetDataInit: Awaited<
-    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+    ReturnType<(typeof serverClient)['gadgets']['getBySlugGadget']>
   >
   contactsDataInit: Awaited<
-    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+    ReturnType<(typeof serverClient)['contacts']['getAllPublishedContacts']>
   >
 }) => {
-  const { data: singleGadgetData } = trpc.gadgets.getBySlug.useQuery(
-    singleGadgetDataInit.slug,
+  const { data: singleGadgetData } = trpc.gadgets.getBySlugGadget.useQuery(
+    { slug: singleGadgetDataInit.slug },
     {
       initialData: singleGadgetDataInit,
       refetchOnMount: false,
@@ -42,7 +42,7 @@ const SingleGadgetSection = ({
     },
   )
 
-  const { data: contactsData } = trpc.contacts.getAllPublished.useQuery(
+  const { data: contactsData } = trpc.contacts.getAllPublishedContacts.useQuery(
     undefined,
     {
       initialData: contactsDataInit,

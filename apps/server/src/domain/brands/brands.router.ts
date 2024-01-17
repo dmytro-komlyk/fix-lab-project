@@ -8,14 +8,14 @@ import { BrandsService } from './brands.service';
 import {
   createBrandSchema,
   outputBrandSchema,
-  updateBrandSchema
+  updateBrandSchema,
 } from './schemas/brand.schema';
 
 @Injectable()
 export class BrandsRouter {
   constructor(
     private readonly trpc: TrpcService,
-    private readonly brandsService: BrandsService
+    private readonly brandsService: BrandsService,
   ) {}
 
   brandsRouter = this.trpc.router({
@@ -25,8 +25,8 @@ export class BrandsRouter {
           method: 'GET',
           path: '/getAllBrands',
           tags: ['brands'],
-          summary: 'Read all brands'
-        }
+          summary: 'Read all brands',
+        },
       })
       .input(z.void())
       .output(z.array(outputBrandSchema))
@@ -39,8 +39,8 @@ export class BrandsRouter {
           method: 'GET',
           path: '/getAllPublishedBrands',
           tags: ['brands'],
-          summary: 'Read all published brands'
-        }
+          summary: 'Read all published brands',
+        },
       })
       .input(z.void())
       .output(z.array(outputBrandSchema))
@@ -53,13 +53,13 @@ export class BrandsRouter {
           method: 'GET',
           path: '/getBySlugBrand',
           tags: ['brands'],
-          summary: 'Read a brand by slug'
-        }
+          summary: 'Read a brand by slug',
+        },
       })
-      .input(z.object({ id: z.string() }))
+      .input(z.object({ slug: z.string() }))
       .output(outputBrandSchema)
       .query(async ({ input }) => {
-        return await this.brandsService.findBySlug(input.id);
+        return await this.brandsService.findBySlug(input.slug);
       }),
     getByIdBrand: this.trpc.procedure
       .meta({
@@ -67,8 +67,8 @@ export class BrandsRouter {
           method: 'GET',
           path: '/getByIdBrand',
           tags: ['brands'],
-          summary: 'Read a brand by id'
-        }
+          summary: 'Read a brand by id',
+        },
       })
       .input(z.object({ id: z.string() }))
       .output(outputBrandSchema)
@@ -81,8 +81,8 @@ export class BrandsRouter {
           method: 'POST',
           path: '/createBrand',
           tags: ['brands'],
-          summary: 'Create a new brand'
-        }
+          summary: 'Create a new brand',
+        },
       })
       .input(createBrandSchema)
       .output(outputBrandSchema)
@@ -95,8 +95,8 @@ export class BrandsRouter {
           method: 'POST',
           path: '/updateBrand',
           tags: ['brands'],
-          summary: 'Update brand'
-        }
+          summary: 'Update brand',
+        },
       })
       .input(updateBrandSchema)
       .output(outputBrandSchema)
@@ -109,14 +109,14 @@ export class BrandsRouter {
           method: 'POST',
           path: '/removeBrand',
           tags: ['brands'],
-          summary: 'Remove brand'
-        }
+          summary: 'Remove brand',
+        },
       })
       .input(z.object({ id: z.string() }))
       .output(z.object({ id: z.string() }))
       .mutation(async ({ input }) => {
         const id = await this.brandsService.remove(input.id);
         return { id };
-      })
+      }),
   });
 }

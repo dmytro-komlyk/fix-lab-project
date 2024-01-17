@@ -11,10 +11,10 @@ export const Footer = ({
   contactsDataInit,
 }: {
   contactsDataInit: Awaited<
-    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+    ReturnType<(typeof serverClient)['contacts']['getAllPublishedContacts']>
   >
 }) => {
-  const { data: contactsData } = trpc.contacts.getAllPublished.useQuery(
+  const { data: contactsData } = trpc.contacts.getAllPublishedContacts.useQuery(
     undefined,
     {
       initialData: contactsDataInit,

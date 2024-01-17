@@ -8,7 +8,7 @@ export const GadgetsSlider = ({
   gadgetsData,
 }: {
   gadgetsData: Awaited<
-    ReturnType<(typeof serverClient)['gadgets']['getAllPublished']>
+    ReturnType<(typeof serverClient)['gadgets']['getAllPublishedGadgets']>
   >
 }) => {
   const [ref] = useKeenSlider<HTMLDivElement>({

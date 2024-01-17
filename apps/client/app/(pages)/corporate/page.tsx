@@ -62,8 +62,8 @@ const sectionData = {
 export const dynamic = 'force-dynamic'
 
 export default async function Corporate() {
-  const contactsDataInit = await serverClient.contacts.getAllPublished()
-  const benefitsAll = await serverClient.benefits.getAllPublished()
+  const contactsDataInit = await serverClient.contacts.getAllPublishedContacts()
+  const benefitsAll = await serverClient.benefits.getAllPublishedBenefits()
   const benefits = benefitsAll.filter((benefit: any) =>
     sectionData.benefits.includes(benefit.title),
   )

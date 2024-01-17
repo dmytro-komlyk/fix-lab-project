@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 }
 export default async function Blog({ params }: { params: { page: string } }) {
   const currentPage = typeof params.page === 'string' ? Number(params.page) : 1
-  const postsData = (await serverClient.articles.getByPagination({
+  const postsData = (await serverClient.articles.getByPaginationArticles({
     page: currentPage,
     sort: 'desc',
     limit: 9,

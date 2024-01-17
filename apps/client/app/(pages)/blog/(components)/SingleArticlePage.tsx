@@ -25,10 +25,10 @@ const SingleArticlePage = ({
   articleData,
 }: {
   contactsData: Awaited<
-    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+    ReturnType<(typeof serverClient)['contacts']['getAllPublishedContacts']>
   >
   articleData: Awaited<
-    ReturnType<(typeof serverClient)['articles']['getBySlug']>
+    ReturnType<(typeof serverClient)['articles']['getBySlugArticle']>
   >
 }) => {
   const [submitSuccessInstantAdviceModal, setSubmitSuccessInstantAdviceModal] =

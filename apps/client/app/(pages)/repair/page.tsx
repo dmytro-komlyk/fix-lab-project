@@ -3,6 +3,7 @@ import { serverClient } from '@client/app/(utils)/trpc/serverClient'
 import type { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
 import type { Metadata } from 'next'
 
+import { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
 import GadgetsSection from './(components)/GadgetsSection'
 
 export const dynamic = 'force-dynamic'
@@ -28,8 +29,9 @@ export const metadata: Metadata = {
 
 const Repair = async () => {
   const gadgetsDataInit =
-    (await serverClient.gadgets.getAllPublished()) as outputGadgetSchema[]
-  const contactsDataInit = await serverClient.contacts.getAllPublished()
+    (await serverClient.gadgets.getAllPublishedGadgets()) as outputGadgetSchema[]
+  const contactsDataInit =
+    (await serverClient.contacts.getAllPublishedContacts()) as outputContactSchema[]
 
   return (
     <main className='flex-auto'>

@@ -11,12 +11,12 @@ export const GadgetBrandsSlider = ({
   gadgetDataInit,
 }: {
   gadgetDataInit: Awaited<
-    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+    ReturnType<(typeof serverClient)['gadgets']['getBySlugGadget']>
   >
 }) => {
   // Keen Slider
-  const { data: gadgetData } = trpc.gadgets.getBySlug.useQuery(
-    gadgetDataInit.slug,
+  const { data: gadgetData } = trpc.gadgets.getBySlugGadget.useQuery(
+    { slug: gadgetDataInit.slug },
     {
       initialData: gadgetDataInit,
       refetchOnMount: false,

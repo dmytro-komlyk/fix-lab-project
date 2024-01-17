@@ -3,6 +3,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
 
+import { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
 import TawkChat from './(components)/TawkChat'
 import { Footer, Header } from './(layouts)'
 import { serverClient } from './(utils)/trpc/serverClient'
@@ -72,7 +73,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const contactsDataInit = await serverClient.contacts.getAllPublished()
+  const contactsDataInit =
+    (await serverClient.contacts.getAllPublishedContacts()) as outputContactSchema[]
 
   return (
     <html

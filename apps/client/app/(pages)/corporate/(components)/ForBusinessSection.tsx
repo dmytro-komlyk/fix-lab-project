@@ -28,10 +28,10 @@ const ForBusinessSection = ({
 }: {
   sectionDataInit: any
   contactsDataInit: Awaited<
-    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+    ReturnType<(typeof serverClient)['contacts']['getAllPublishedContacts']>
   >
 }) => {
-  const { data: contactsData } = trpc.contacts.getAllPublished.useQuery(
+  const { data: contactsData } = trpc.contacts.getAllPublishedContacts.useQuery(
     undefined,
     {
       initialData: contactsDataInit,
@@ -76,7 +76,7 @@ const ForBusinessSection = ({
               <h3 className='max-w-[350px] font-exo_2 text-xl leading-[30px] text-[#FFFFFF] lg:mb-2.5 lg:max-w-full lg:text-2xl'>
                 В офісі зламалися компʼютери?
               </h3>
-              <BenefitsList itemsInit={sectionDataInit.benefits} />
+              <BenefitsList items={sectionDataInit.benefits} />
               <p className='mt-1.5 font-[400] text-white-dis'>
                 Обслуговуємо гаджети для корпоративних клієнтів по всій Україні.
               </p>

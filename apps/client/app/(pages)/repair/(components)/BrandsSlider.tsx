@@ -13,14 +13,14 @@ export const BrandsSlider = ({
   brandDataInit,
 }: {
   gadgetDataInit: Awaited<
-    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+    ReturnType<(typeof serverClient)['gadgets']['getBySlugGadget']>
   >
   brandDataInit: Awaited<
-    ReturnType<(typeof serverClient)['brands']['getBySlug']>
+    ReturnType<(typeof serverClient)['brands']['getBySlugBrand']>
   >
 }) => {
-  const { data: gadgetData } = trpc.gadgets.getBySlug.useQuery(
-    gadgetDataInit.slug,
+  const { data: gadgetData } = trpc.gadgets.getBySlugGadget.useQuery(
+    { slug: gadgetDataInit.slug },
     {
       initialData: gadgetDataInit,
       refetchOnMount: false,
@@ -28,8 +28,8 @@ export const BrandsSlider = ({
     },
   )
 
-  const { data: brandData } = trpc.brands.getBySlug.useQuery(
-    brandDataInit.slug,
+  const { data: brandData } = trpc.brands.getBySlugBrand.useQuery(
+    { slug: brandDataInit.slug },
     {
       initialData: brandDataInit,
       refetchOnMount: false,

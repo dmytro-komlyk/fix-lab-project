@@ -12,7 +12,6 @@ import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti'
 
 import { trpc } from '../(utils)/trpc/client'
 import type { serverClient } from '../(utils)/trpc/serverClient'
-// import type { IContactsProps } from './(components)/AddressLocationCard'
 import Button from './(components)/Button'
 
 const CourierModal = dynamic(() => import('./(components)/CourierModal'))
@@ -25,15 +24,14 @@ const gadgetsSinglePageRegex = /^\/repair\/([^/]+)\/?$/
 const blogIdRegex = /^\/blog\/(\d+)\/?$/
 const issueSinglePageRegex = /^\/repair\/([^/]+)\/([^/]+)\/?$/
 
-// : React.FC<IContactsProps>
 export const Header = ({
   contactsDataInit,
 }: {
   contactsDataInit: Awaited<
-    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+    ReturnType<(typeof serverClient)['contacts']['getAllPublishedContacts']>
   >
 }) => {
-  const { data: contactsData } = trpc.contacts.getAllPublished.useQuery(
+  const { data: contactsData } = trpc.contacts.getAllPublishedContacts.useQuery(
     undefined,
     {
       initialData: contactsDataInit,

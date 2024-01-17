@@ -3,6 +3,8 @@ import { serverClient } from '@client/app/(utils)/trpc/serverClient'
 import type { outputIssueSchema } from '@server/domain/issues/schemas/issue.schema'
 import type { Metadata } from 'next'
 
+import { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
+import { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
 import IssueSection from '../../(components)/IssueSection'
 
 interface IndexProps {
@@ -18,9 +20,9 @@ export async function generateMetadata({
   params,
 }: IndexProps): Promise<Metadata> {
   const { issue } = params
-  const singleIssueData = (await serverClient.issues.getBySlug(
-    issue,
-  )) as outputIssueSchema
+  const singleIssueData = (await serverClient.issues.getBySlugIssue({
+    slug: issue,
+  })) as outputIssueSchema
 
   return {
     title: singleIssueData.metadata.title,
@@ -30,11 +32,14 @@ export async function generateMetadata({
 }
 
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const singleIssueData = (await serverClient.issues.getBySlug(
-    params.issue,
-  )) as outputIssueSchema
-  const contactsData = await serverClient.contacts.getAllPublished()
-  const singleGadgetData = await serverClient.gadgets.getBySlug(params.gadget)
+  const singleIssueData = (await serverClient.issues.getBySlugIssue({
+    slug: params.issue,
+  })) as outputIssueSchema
+  const contactsData =
+    (await serverClient.contacts.getAllPublishedContacts()) as outputContactSchema[]
+  const singleGadgetData = (await serverClient.gadgets.getBySlugGadget({
+    slug: params.gadget,
+  })) as outputGadgetSchema
 
   return (
     <main className='h-full flex-auto'>

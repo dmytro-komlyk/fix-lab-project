@@ -21,9 +21,9 @@ export async function generateMetadata({
   params,
 }: IndexProps): Promise<Metadata> {
   const { brand } = params
-  const brandData = (await serverClient.brands.getBySlug(
-    brand,
-  )) as outputBrandSchema
+  const brandData = (await serverClient.brands.getBySlugBrand({
+    slug: brand,
+  })) as outputBrandSchema
 
   return {
     title: brandData.metadata.title,
@@ -32,14 +32,14 @@ export async function generateMetadata({
   }
 }
 const Index: React.FC<IndexProps> = async ({ params }) => {
-  const singleGadgetData = (await serverClient.gadgets.getBySlug(
-    params.gadget,
-  )) as outputGadgetSchema
+  const singleGadgetData = (await serverClient.gadgets.getBySlugGadget({
+    slug: params.gadget,
+  })) as outputGadgetSchema
   const contactsData =
-    (await serverClient.contacts.getAllPublished()) as outputContactSchema[]
-  const brandData = (await serverClient.brands.getBySlug(
-    params.brand,
-  )) as outputBrandSchema
+    (await serverClient.contacts.getAllPublishedContacts()) as outputContactSchema[]
+  const brandData = (await serverClient.brands.getBySlugBrand({
+    slug: params.brand,
+  })) as outputBrandSchema
 
   return (
     <main className='h-full flex-auto'>

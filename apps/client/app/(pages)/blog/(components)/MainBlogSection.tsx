@@ -13,7 +13,7 @@ const MainBlogSection = ({
   currentPage,
 }: {
   postsDataInit: Awaited<
-    ReturnType<(typeof serverClient)['articles']['getByPagination']>
+    ReturnType<(typeof serverClient)['articles']['getByPaginationArticles']>
   >
   currentPage: number
 }) => {

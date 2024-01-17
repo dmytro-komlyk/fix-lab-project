@@ -12,9 +12,9 @@ export async function generateMetadata({
 }: {
   params: { article: string }
 }): Promise<Metadata> {
-  const articleData = (await serverClient.articles.getBySlug(
-    params.article,
-  )) as outputArticleSchema
+  const articleData = (await serverClient.articles.getBySlugArticle({
+    slug: params.article,
+  })) as outputArticleSchema
   return {
     title: articleData.metadata.title,
     description: articleData.metadata.description,
@@ -24,10 +24,10 @@ export async function generateMetadata({
 
 const SingleArticle = async ({ params }: { params: { article: string } }) => {
   const contactsData =
-    (await serverClient.contacts.getAllPublished()) as outputContactSchema[]
-  const articleData = (await serverClient.articles.getBySlug(
-    params.article,
-  )) as outputArticleSchema
+    (await serverClient.contacts.getAllPublishedContacts()) as outputContactSchema[]
+  const articleData = (await serverClient.articles.getBySlugArticle({
+    slug: params.article,
+  })) as outputArticleSchema
 
   return (
     <main className='flex-auto'>

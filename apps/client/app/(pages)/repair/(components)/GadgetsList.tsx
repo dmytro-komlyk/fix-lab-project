@@ -7,7 +7,7 @@ export const GadgetsList = ({
   gadgetsData,
 }: {
   gadgetsData: Awaited<
-    ReturnType<(typeof serverClient)['gadgets']['getAllPublished']>
+    ReturnType<(typeof serverClient)['gadgets']['getAllPublishedGadgets']>
   >
 }) => {
   return (

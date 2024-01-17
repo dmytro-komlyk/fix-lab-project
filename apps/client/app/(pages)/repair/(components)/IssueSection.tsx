@@ -30,32 +30,33 @@ const IssueSection = ({
   contactsDataInit,
 }: {
   singleIssueDataInit: Awaited<
-    ReturnType<(typeof serverClient)['issues']['getBySlug']>
+    ReturnType<(typeof serverClient)['issues']['getBySlugIssue']>
   >
   singleGadgetDataInit: Awaited<
-    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+    ReturnType<(typeof serverClient)['gadgets']['getBySlugGadget']>
   >
   contactsDataInit: Awaited<
-    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+    ReturnType<(typeof serverClient)['contacts']['getAllPublishedContacts']>
   >
 }) => {
-  const { data: singleIssueData } = trpc.issues.getBySlug.useQuery(
-    singleIssueDataInit.slug,
+  const { data: singleIssueData } = trpc.issues.getBySlugIssue.useQuery(
+    { slug: singleIssueDataInit.slug },
     {
       initialData: singleIssueDataInit,
       refetchOnMount: false,
       refetchOnReconnect: false,
     },
   )
-  const { data: singleGadgetData } = trpc.gadgets.getBySlug.useQuery(
-    singleGadgetDataInit.slug,
+
+  const { data: singleGadgetData } = trpc.gadgets.getBySlugGadget.useQuery(
+    { slug: singleGadgetDataInit.slug },
     {
       initialData: singleGadgetDataInit,
       refetchOnMount: false,
       refetchOnReconnect: false,
     },
   )
-  const { data: contactsData } = trpc.contacts.getAllPublished.useQuery(
+  const { data: contactsData } = trpc.contacts.getAllPublishedContacts.useQuery(
     undefined,
     {
       initialData: contactsDataInit,
@@ -144,7 +145,7 @@ const IssueSection = ({
                   </h2>
                   {singleIssueData.benefits.length > 0 && (
                     <div className='mb-8'>
-                      <BenefitsList itemsInit={singleIssueData.benefits} />
+                      <BenefitsList items={singleIssueData.benefits} />
                     </div>
                   )}
                   <div className='mb-14'>

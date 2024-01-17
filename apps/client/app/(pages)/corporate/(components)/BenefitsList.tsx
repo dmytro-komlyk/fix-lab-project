@@ -1,24 +1,15 @@
-'use client'
-
 import { SERVER_URL } from '@client/app/(lib)/constants'
-import { trpc } from '@client/app/(utils)/trpc/client'
 import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
 import type { outputBenefitSchema } from '@server/domain/benefits/schemas/benefit.schema'
 import Image from 'next/image'
 
 export const BenefitsList = ({
-  itemsInit,
+  items,
 }: {
-  itemsInit: Awaited<
-    ReturnType<(typeof serverClient)['benefits']['getAllPublished']>
+  items: Awaited<
+    ReturnType<(typeof serverClient)['benefits']['getAllPublishedBenefits']>
   >
 }) => {
-  const { data: items } = trpc.benefits.getAllPublished.useQuery(undefined, {
-    initialData: itemsInit,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-  })
-
   return (
     <div className='flex flex-wrap gap-x-3.5 gap-y-[17px] lg:gap-[18px]'>
       {items?.map((item: outputBenefitSchema) => {

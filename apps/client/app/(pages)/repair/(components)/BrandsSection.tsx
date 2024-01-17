@@ -29,24 +29,24 @@ const BrandsSection = ({
   brandDataInit,
 }: {
   gadgetDataInit: Awaited<
-    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+    ReturnType<(typeof serverClient)['gadgets']['getBySlugGadget']>
   >
   contactsDataInit: Awaited<
-    ReturnType<(typeof serverClient)['contacts']['getAllPublished']>
+    ReturnType<(typeof serverClient)['contacts']['getAllPublishedContacts']>
   >
   brandDataInit: Awaited<
-    ReturnType<(typeof serverClient)['brands']['getBySlug']>
+    ReturnType<(typeof serverClient)['brands']['getBySlugBrand']>
   >
 }) => {
-  const { data: gadgetData } = trpc.gadgets.getBySlug.useQuery(
-    gadgetDataInit.slug,
+  const { data: gadgetData } = trpc.gadgets.getBySlugGadget.useQuery(
+    { slug: gadgetDataInit.slug },
     {
       initialData: gadgetDataInit,
       refetchOnMount: false,
       refetchOnReconnect: false,
     },
   )
-  const { data: contactsData } = trpc.contacts.getAllPublished.useQuery(
+  const { data: contactsData } = trpc.contacts.getAllPublishedContacts.useQuery(
     undefined,
     {
       initialData: contactsDataInit,
@@ -54,8 +54,8 @@ const BrandsSection = ({
       refetchOnReconnect: false,
     },
   )
-  const { data: brandData } = trpc.brands.getBySlug.useQuery(
-    brandDataInit.slug,
+  const { data: brandData } = trpc.brands.getBySlugBrand.useQuery(
+    { slug: brandDataInit.slug },
     {
       initialData: brandDataInit,
       refetchOnMount: false,

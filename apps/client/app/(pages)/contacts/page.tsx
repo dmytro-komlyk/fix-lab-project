@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function Contacts() {
   const contactsData =
-    (await serverClient.contacts.getAllPublished()) as outputContactSchema[]
+    (await serverClient.contacts.getAllPublishedContacts()) as outputContactSchema[]
   return (
     <main className=' flex-auto'>
       <ContactsSection contactsData={contactsData} />

@@ -23,10 +23,10 @@ const GadgetsSection = ({
   gadgetsDataInit,
 }: {
   gadgetsDataInit: Awaited<
-    ReturnType<(typeof serverClient)['gadgets']['getAllPublished']>
+    ReturnType<(typeof serverClient)['gadgets']['getAllPublishedGadgets']>
   >
 }) => {
-  const { data: gadgetsData } = trpc.gadgets.getAllPublished.useQuery(
+  const { data: gadgetsData } = trpc.gadgets.getAllPublishedGadgets.useQuery(
     undefined,
     {
       initialData: gadgetsDataInit,
