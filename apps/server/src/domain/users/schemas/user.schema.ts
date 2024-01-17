@@ -10,8 +10,11 @@ export const updateUserSchema = createUserSchema.extend({
   id: z.string().min(1),
 });
 
-export const outputUserSchema = createUserSchema.extend({
+export const outputUserSchema = z.object({
   id: z.string().min(1),
+  name: z.string().min(1),
+  email: z.string().email(),
+  password: z.string().min(1),
   accessToken: z.string().min(1),
   refreshToken: z.string().min(1),
 });

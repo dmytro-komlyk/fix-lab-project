@@ -64,7 +64,7 @@ export class UserService {
         code: 'NOT_FOUND',
       });
     }
-
+    console.log(user);
     return user;
   }
 }
