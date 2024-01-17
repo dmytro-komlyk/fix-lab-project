@@ -1,42 +1,39 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Types } from 'mongoose';
-
-import { Image } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service';
 
+import { TRPCError } from '@trpc/server';
 import { imageSchema, uploadImageSchema } from './schemas/image.schema';
 
 @Injectable()
 export class ImagesService {
   constructor(private prisma: PrismaService) {}
 
-  public async findAll(): Promise<Image[]> {
+  public async findAll(): Promise<imageSchema[]> {
     return await this.prisma.image.findMany();
   }
-  public async findAllIcons(): Promise<Image[]> {
+  public async findAllIcons(): Promise<imageSchema[]> {
     return await this.prisma.image.findMany({ where: { type: 'icon ' } });
   }
-  public async findAllPictures(): Promise<Image[]> {
+  public async findAllPictures(): Promise<imageSchema[]> {
     return await this.prisma.image.findMany({ where: { type: 'picture ' } });
   }
-  public async findAllBlog(): Promise<Image[]> {
+  public async findAllBlog(): Promise<imageSchema[]> {
     return await this.prisma.image.findMany({ where: { type: 'blog ' } });
   }
 
   public async findById(id: string): Promise<imageSchema> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(`Incorrect ID - ${id}`);
-    }
-
     const image = await this.prisma.image.findUnique({
       where: {
-        id
-      }
+        id,
+      },
     });
 
     if (!image) {
-      throw new NotFoundException(`Image with ID "${id}" was not found`);
+      throw new TRPCError({
+        message: `Image with ID "${id}" was not found`,
+        code: 'NOT_FOUND',
+      });
     }
 
     return image;
@@ -51,27 +48,33 @@ export class ImagesService {
 
   public async update(data: imageSchema): Promise<imageSchema> {
     const { id, ...newData } = data;
-    await this.findById(id);
+    const image = await this.findById(id);
 
-    const image = await this.prisma.image.update({
+    if (!image) {
+      throw new TRPCError({
+        message: `Image with ID ${id} was not found`,
+        code: 'NOT_FOUND',
+      });
+    }
+
+    const updatedImage = await this.prisma.image.update({
       where: { id },
-      data: newData
+      data: newData,
     });
 
-    return image;
+    return updatedImage;
   }
 
   public async remove(id: string): Promise<string> {
-    if (!Types.ObjectId.isValid(id)) {
-      throw new NotFoundException(`Incorrect ID - ${id}`);
-    }
+    const image = await this.prisma.image
+      .delete({ where: { id } })
+      .catch(() => {
+        throw new TRPCError({
+          message: `Image with ID ${id} was not found`,
+          code: 'NOT_FOUND',
+        });
+      });
 
-    const image = await this.prisma.image.delete({ where: { id } });
-
-    if (!image) {
-      throw new NotFoundException(`Image with ID ${id} was not found`);
-    }
-
-    return id;
+    return image.id;
   }
 }

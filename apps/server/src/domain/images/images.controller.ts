@@ -5,16 +5,18 @@ import {
   ParseFilePipe,
   Post,
   UploadedFile,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { ImagesService } from './images.service';
 
-import { imageSchema, uploadImageSchema } from './schemas/image.schema';
+import { imageSchema } from './schemas/image.schema';
 
 import { FileStorageHelper } from '@helpers/file-storage.helper';
+
+import { AddImageDto } from './dto/add-image.dto';
 
 import { ROUTES } from '@constants/routes.constants';
 
@@ -24,27 +26,27 @@ export class ImagesController {
   constructor(private readonly imagesService: ImagesService) {}
 
   @ApiOperation({
-    summary: 'upload icon image'
+    summary: 'upload icon image',
   })
   @Post('/upload-icon')
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: FileStorageHelper('icons')
-    })
+      storage: FileStorageHelper('icons'),
+    }),
   )
   public async uploadIcon(
-    @Body() body: uploadImageSchema,
+    @Body() body: AddImageDto,
     @UploadedFile(
       new ParseFilePipe({
-        validators: [new FileTypeValidator({ fileType: '.(svg|SVG)' })]
-      })
+        validators: [new FileTypeValidator({ fileType: '.(svg|SVG)' })],
+      }),
     )
-    file: Express.Multer.File
+    file: Express.Multer.File,
   ): Promise<imageSchema> {
     const pictureData = {
       file: file,
       alt: body.alt,
-      type: body.type
+      type: body.type,
     };
 
     const imageData = await this.imagesService.upload(pictureData);
@@ -53,27 +55,27 @@ export class ImagesController {
   }
 
   @ApiOperation({
-    summary: 'upload picture image'
+    summary: 'upload picture image',
   })
   @Post('/upload-picture')
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: FileStorageHelper('pictures')
-    })
+      storage: FileStorageHelper('pictures'),
+    }),
   )
   public async uploadPicture(
-    @Body() body: uploadImageSchema,
+    @Body() body: AddImageDto,
     @UploadedFile(
       new ParseFilePipe({
-        validators: []
-      })
+        validators: [],
+      }),
     )
-    file: Express.Multer.File
+    file: Express.Multer.File,
   ): Promise<imageSchema> {
     const pictureData = {
       file: file,
       alt: body.alt,
-      type: body.type
+      type: body.type,
     };
 
     const imageData = await this.imagesService.upload(pictureData);
@@ -82,27 +84,27 @@ export class ImagesController {
   }
 
   @ApiOperation({
-    summary: 'upload blog image'
+    summary: 'upload blog image',
   })
   @Post('/upload-blog')
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: FileStorageHelper('blog')
-    })
+      storage: FileStorageHelper('blog'),
+    }),
   )
   public async uploadBlog(
-    @Body() body: uploadImageSchema,
+    @Body() body: AddImageDto,
     @UploadedFile(
       new ParseFilePipe({
-        validators: []
-      })
+        validators: [],
+      }),
     )
-    file: Express.Multer.File
+    file: Express.Multer.File,
   ): Promise<imageSchema> {
     const pictureData = {
       file: file,
       alt: body.alt,
-      type: body.type
+      type: body.type,
     };
 
     const imageData = await this.imagesService.upload(pictureData);
