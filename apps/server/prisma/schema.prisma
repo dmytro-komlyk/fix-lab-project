@@ -147,7 +147,7 @@ model User {
   name                 String         @unique
   email                String         @unique
   password             String
-  acessToken           String         
+  accessToken          String         
   refreshToken         String
 
   @@map("users")

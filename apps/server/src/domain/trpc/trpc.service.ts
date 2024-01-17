@@ -13,19 +13,20 @@ export class TrpcService {
   decodeAndVerifyJwtToken = async (token: string) => {
     try {
       const decodedToken = await this.jwt.verifyAsync(token, {
-        secret: process.env.JWT_SECRET_KEY
+        secret: process.env.JWT_SECRET_KEY,
       });
+      console.log(decodedToken, 'decode');
       const user = this.prisma.user.findUnique({
         where: {
-          id: decodedToken.sub
-        }
+          id: decodedToken.sub,
+        },
       });
       return user;
     } catch (error) {
       // Token verification failed
       throw new TRPCError({
         code: 'UNAUTHORIZED',
-        message: 'Error decoding or verifying JWT token'
+        message: 'Error decoding or verifying JWT token',
       });
     }
   };
@@ -33,7 +34,7 @@ export class TrpcService {
   getUserFromHeader = async (req: any): Promise<User | null> => {
     if (req.headers.authorization) {
       const user = await this.decodeAndVerifyJwtToken(
-        req.headers.authorization.split(' ')[1]
+        req.headers.authorization.split(' ')[1],
       );
       return user;
     }
@@ -46,7 +47,7 @@ export class TrpcService {
     // This is just an example of something you might want to do in your ctx fn
     const user = await this.getUserFromHeader(opts?.req);
     return {
-      user
+      user,
     };
   };
   trpc = initTRPC

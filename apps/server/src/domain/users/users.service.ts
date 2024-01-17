@@ -11,14 +11,14 @@ export class UserService {
   async create(data: createUserSchema): Promise<outputUserSchema> {
     const user = await this.prisma.user.findUnique({
       where: {
-        email: data.email
-      }
+        email: data.email,
+      },
     });
 
     if (user) {
       throw new TRPCError({
         message: `User with email "${data.email}" already exists`,
-        code: 'FORBIDDEN'
+        code: 'FORBIDDEN',
       });
     }
 
@@ -26,9 +26,9 @@ export class UserService {
       data: {
         ...data,
         password: await hash(data.password, 10),
-        acessToken: '',
-        refreshToken: ''
-      }
+        accessToken: '',
+        refreshToken: '',
+      },
     });
 
     return newUser;
@@ -37,14 +37,14 @@ export class UserService {
   async findByEmail(email: string): Promise<outputUserSchema> {
     const user = await this.prisma.user.findUnique({
       where: {
-        email: email
-      }
+        email: email,
+      },
     });
 
     if (!user) {
       throw new TRPCError({
         message: `User with email ${email} was not found`,
-        code: 'NOT_FOUND'
+        code: 'NOT_FOUND',
       });
     }
 
@@ -54,14 +54,14 @@ export class UserService {
   async findById(id: string): Promise<outputUserSchema> {
     const user = await this.prisma.user.findUnique({
       where: {
-        id: id
-      }
+        id: id,
+      },
     });
 
     if (!user) {
       throw new TRPCError({
         message: `User with ID ${id} was not found`,
-        code: 'NOT_FOUND'
+        code: 'NOT_FOUND',
       });
     }
 

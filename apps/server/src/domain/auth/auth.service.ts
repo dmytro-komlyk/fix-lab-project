@@ -3,17 +3,24 @@ import { JwtService } from '@nestjs/jwt';
 import { TRPCError } from '@trpc/server';
 import { compare } from 'bcryptjs';
 import { PrismaService } from './../prisma/prisma.service';
-import { loginSchema, outputAuthSchema, tokenSchema } from './schemas/auth.schema';
+import {
+  loginSchema,
+  outputAuthSchema,
+  tokenSchema,
+} from './schemas/auth.schema';
 
 @Injectable()
 export class AuthService {
-  constructor(private prisma: PrismaService, private readonly jwt: JwtService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly jwt: JwtService,
+  ) {}
 
   async login(data: loginSchema): Promise<outputAuthSchema> {
     const { id, ...userData } = await this.validateUser(data);
 
     const payload = {
-      sub: id
+      sub: id,
     };
     const token = await this.refreshToken(payload);
 
@@ -21,8 +28,8 @@ export class AuthService {
       where: { email: userData.email },
       data: {
         ...userData,
-        ...token
-      }
+        ...token,
+      },
     });
 
     return { id, name, email, ...token };
@@ -31,14 +38,14 @@ export class AuthService {
   async validateUser(data: loginSchema): Promise<outputAuthSchema> {
     const user = await this.prisma.user.findUnique({
       where: {
-        email: data.email
-      }
+        email: data.email,
+      },
     });
 
     if (!user) {
       throw new TRPCError({
         message: `User with email ${data.email} was not found`,
-        code: 'NOT_FOUND'
+        code: 'NOT_FOUND',
       });
     }
 
@@ -51,14 +58,14 @@ export class AuthService {
 
   async refreshToken(payload: { sub: string }): Promise<tokenSchema> {
     return {
-      acessToken: await this.jwt.signAsync(payload, {
+      accessToken: await this.jwt.signAsync(payload, {
         expiresIn: '1h',
-        secret: process.env.JWT_SECRET_KEY
+        secret: process.env.JWT_SECRET_KEY,
       }),
       refreshToken: await this.jwt.signAsync(payload, {
         expiresIn: '7h',
-        secret: process.env.JWT_REFRESH_TOKEN_KEY
-      })
+        secret: process.env.JWT_REFRESH_TOKEN_KEY,
+      }),
     };
   }
 }
