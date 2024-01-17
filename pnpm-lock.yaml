@@ -389,7 +389,7 @@ importers:
         specifier: ^13.4.12
         version: 13.5.6
       '@prisma/nextjs-monorepo-workaround-plugin':
-        specifier: ^5.7.1
+        specifier: ^5.8.1
         version: 5.8.1
       '@semantic-release/changelog':
         specifier: ^6.0.3
@@ -6284,7 +6284,7 @@ packages:
       aggregate-error: 3.1.0
       fs-extra: 11.2.0
       lodash: 4.17.21
-      semantic-release: 19.0.5
+      semantic-release: 19.0.5(encoding@0.1.13)
     dev: true
 
   /@semantic-release/commit-analyzer@9.0.2(semantic-release@19.0.5):
@@ -6300,7 +6300,7 @@ packages:
       import-from: 4.0.0
       lodash: 4.17.21
       micromatch: 4.0.5
-      semantic-release: 19.0.5
+      semantic-release: 19.0.5(encoding@0.1.13)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -6324,7 +6324,7 @@ packages:
       lodash: 4.17.21
       micromatch: 4.0.5
       p-reduce: 2.1.0
-      semantic-release: 19.0.5
+      semantic-release: 19.0.5(encoding@0.1.13)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -6404,7 +6404,7 @@ packages:
       rc: 1.2.8
       read-pkg: 5.2.0
       registry-auth-token: 5.0.2
-      semantic-release: 19.0.5
+      semantic-release: 19.0.5(encoding@0.1.13)
       semver: 7.5.4
       tempy: 1.0.1
     dev: true
@@ -6425,7 +6425,7 @@ packages:
       into-stream: 6.0.0
       lodash: 4.17.21
       read-pkg-up: 7.0.1
-      semantic-release: 19.0.5
+      semantic-release: 19.0.5(encoding@0.1.13)
     transitivePeerDependencies:
       - supports-color
     dev: true

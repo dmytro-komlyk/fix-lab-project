@@ -1,10 +1,10 @@
 import { AddressSection } from '@client/app/(layouts)'
 import { serverClient } from '@client/app/(utils)/trpc/serverClient'
+import type { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
+import type { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
 import type { outputIssueSchema } from '@server/domain/issues/schemas/issue.schema'
 import type { Metadata } from 'next'
 
-import { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
-import { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
 import IssueSection from '../../(components)/IssueSection'
 
 interface IndexProps {

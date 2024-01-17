@@ -1,9 +1,9 @@
 import './globals.css'
 
+import type { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
 import type { Metadata } from 'next'
 import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
 
-import { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
 import TawkChat from './(components)/TawkChat'
 import { Footer, Header } from './(layouts)'
 import { serverClient } from './(utils)/trpc/serverClient'

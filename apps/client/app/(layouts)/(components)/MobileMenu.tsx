@@ -71,7 +71,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               onClick={toggleMobileMenu}
             >
               <MdOutlineClose
-                className='h-8 w-8 fill-white-dis  transition-opacity hover:opacity-80 focus:opacity-80'
+                className='size-8 fill-white-dis transition-opacity  hover:opacity-80 focus:opacity-80'
                 aria-hidden='true'
               />
             </button>

@@ -65,7 +65,7 @@ export const ColabSlider = () => {
             <h3 className='w-[191px] font-exo_2 text-xl font-semibold leading-tight text-white-dis'>
               {item.title}
             </h3>
-            <div className='absolute -bottom-3 left-0 h-6 w-6 rounded-full bg-gradient-linear-green' />
+            <div className='absolute -bottom-3 left-0 size-6 rounded-full bg-gradient-linear-green' />
           </li>
         ))}
       </ul>

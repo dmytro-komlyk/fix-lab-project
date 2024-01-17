@@ -389,7 +389,7 @@ export const Header = ({
             className=' text-gray-700 -m-2.5 cursor-pointer items-center justify-center rounded-md p-2.5 transition-opacity hover:opacity-80 focus:opacity-80  md:pl-8'
             onClick={toggleMobileMenu}
           >
-            <FaBars className='h-8 w-8' aria-hidden='true' color='#F8F8F8' />
+            <FaBars className='size-8' aria-hidden='true' color='#F8F8F8' />
           </div>
         </div>
       </nav>

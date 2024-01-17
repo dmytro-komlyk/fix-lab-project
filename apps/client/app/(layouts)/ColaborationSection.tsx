@@ -11,7 +11,7 @@ export const ColaborationSection = () => {
         </h2>
         <div
           data-aos='zoom-in'
-          className='absolute right-[130px] top-[-130px] hidden h-[150px] w-[150px] rotate-[-10deg] rounded-full shadow-[-8px_29px_76px_30px_rgba(0,144,255,0.44)] lg:flex'
+          className='absolute right-[130px] top-[-130px] hidden size-[150px] rotate-[-10deg] rounded-full shadow-[-8px_29px_76px_30px_rgba(0,144,255,0.44)] lg:flex'
         />
         <div className='hover-laptop absolute right-[-40px] top-[-240px] hidden transition duration-300 ease-in-out hover:rotate-12 lg:flex'>
           <Image

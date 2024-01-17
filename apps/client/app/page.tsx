@@ -1,5 +1,6 @@
-import { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
-import { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
+import type { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
+import type { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
+
 import { AOSInit } from './(components)/AOSInit'
 import {
   AddressSection,

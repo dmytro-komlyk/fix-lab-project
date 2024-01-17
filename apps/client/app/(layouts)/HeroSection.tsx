@@ -132,7 +132,7 @@ export const HeroSection = () => {
 
   return (
     <section className='section xl:bg-herp-xl w-full bg-dark-blue bg-hero-xl py-0 md:bg-hero-md lg:bg-hero-lg xl:bg-hero-xl'>
-      <div className='lg relative h-full w-full bg-mscope-img bg-mscope-sm bg-no-repeat pb-[80px] pt-[156px] md:container max-md:pb-[30px] md:bg-mscope-md md:pt-[162px] lg:bg-mscope-lg xl:bg-mscope-xl xl:px-0'>
+      <div className='lg relative size-full bg-mscope-img bg-mscope-sm bg-no-repeat pb-[80px] pt-[156px] md:container max-md:pb-[30px] md:bg-mscope-md md:pt-[162px] lg:bg-mscope-lg xl:bg-mscope-xl xl:px-0'>
         <Image
           className='absolute left-[51%] top-[58%] max-w-[300px] -translate-x-1/2 -translate-y-1/2 text-white-dis max-xl:left-[48%] max-xl:top-[55%]  max-md:left-[44%] max-md:top-[54%] max-md:hidden  max-[430px]:left-[44%] max-[430px]:top-[54%] max-[430px]:w-[170px]'
           width={246}

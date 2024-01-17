@@ -105,7 +105,7 @@ const CourierModal: React.FC<CourierModalProps> = ({
       animate={{ opacity: 1, transition: { duration: 0.1 } }}
       exit={{ opacity: 0, transition: { duration: 0.1 } }}
       ref={modalRef}
-      className='fixed left-0 top-0 z-50 h-full w-full overflow-y-auto overflow-x-hidden bg-modal-overlay backdrop-blur-[6px] '
+      className='fixed left-0 top-0 z-50 size-full overflow-y-auto overflow-x-hidden bg-modal-overlay backdrop-blur-[6px]'
     >
       <div
         onClick={onBackdropCloseModal}
@@ -124,7 +124,7 @@ const CourierModal: React.FC<CourierModalProps> = ({
             onClick={toggleCourierModal}
           >
             <AiOutlineCloseCircle
-              className='h-[26px] w-[26px] fill-white-dis  transition-opacity  hover:opacity-80 focus:opacity-80'
+              className='size-[26px] fill-white-dis transition-opacity  hover:opacity-80  focus:opacity-80'
               aria-hidden='true'
             />
           </button>

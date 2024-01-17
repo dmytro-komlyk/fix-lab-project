@@ -1,9 +1,9 @@
 import { AddressSection, ColaborationSection } from '@client/app/(layouts)'
 import { serverClient } from '@client/app/(utils)/trpc/serverClient'
+import type { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
 import type { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
 import type { Metadata } from 'next'
 
-import { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
 import GadgetsSection from './(components)/GadgetsSection'
 
 export const dynamic = 'force-dynamic'

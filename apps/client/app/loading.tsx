@@ -7,7 +7,7 @@ function Loading() {
             <div className='loader-icon1 loader' />
             <div className='loader-icon2 loader' />
             <div className='loader-icon3 loader' />
-            <p className='bg-300% animate-gradient bg-gradient-to-r from-dodger-blue via-dark-blue to-mid-green bg-clip-text text-base font-bold uppercase text-transparent md:text-xl'>
+            <p className='animate-gradient bg-gradient-to-r from-dodger-blue via-dark-blue to-mid-green bg-300% bg-clip-text text-base font-bold uppercase text-transparent md:text-xl'>
               Завантаження
             </p>
           </div>

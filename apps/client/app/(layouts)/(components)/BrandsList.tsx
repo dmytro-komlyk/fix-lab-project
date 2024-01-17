@@ -43,7 +43,7 @@ const BrandsList: React.FC<IBrandsListProps> = ({ categoryData }) => {
           const { width, height, name } = item.attributes
           return (
             <li
-              className='flex h-[77px] w-[77px]  items-center justify-center rounded-[50%] bg-white-dis'
+              className='flex size-[77px] items-center  justify-center rounded-[50%] bg-white-dis'
               key={item.id}
             >
               {img && (
