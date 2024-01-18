@@ -8,7 +8,9 @@ import RemoveBenefit from './RemoveBenefit'
 const BenefitsList = ({
   benefitsData,
 }: {
-  benefitsData: Awaited<ReturnType<(typeof serverClient)['benefits']['getAll']>>
+  benefitsData: Awaited<
+    ReturnType<(typeof serverClient)['benefits']['getAllBenefits']>
+  >
 }) => {
   return (
     <div className=' flex flex-col items-center justify-center gap-8 pb-12'>

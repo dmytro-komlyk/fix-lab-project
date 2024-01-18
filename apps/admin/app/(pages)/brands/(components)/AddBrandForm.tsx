@@ -1,7 +1,7 @@
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
+import uploadImg from '@admin/app/(server)/api/service/image/uploadImg'
 import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'

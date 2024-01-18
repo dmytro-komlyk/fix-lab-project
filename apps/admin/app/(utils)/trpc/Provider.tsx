@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 
 import { trpc } from './client'
 
-const url = process.env.NEXT_PUBLIC_TRPC_SERVER_URL as string
+const url = process.env.NEXT_PUBLIC_SERVER_TRPC_URL as string
 
 export function TrpcProvider({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient({}))
@@ -15,6 +15,11 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
       links: [
         httpBatchLink({
           url,
+          async headers() {
+            return {
+              authorization: '',
+            }
+          },
         }),
       ],
     }),

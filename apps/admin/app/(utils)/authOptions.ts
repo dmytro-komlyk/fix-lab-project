@@ -3,40 +3,17 @@ import NextAuth, { type NextAuthOptions } from 'next-auth'
 import { JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { Session, User } from 'next-auth/types'
+import { outputAuthSchema } from './../../../server/src/domain/auth/schemas/auth.schema'
 import { serverClient } from './trpc/serverClient'
-
-// async function refreshAccessToken(tokenObject: JWT) {
-//   try {
-//     // Get a new set of tokens with a refreshToken
-//     const tokenResponse = await axios.post(
-//       process.env.APP_URL + 'auth/refreshToken',
-//       {
-//         token: tokenObject.refreshToken,
-//       },
-//     )
-
-//     return {
-//       ...token,
-//       accessToken: refreshedTokens.access_token,
-//       accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
-//       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken
-//     }
-//   } catch (error) {
-//     return {
-//       ...tokenObject,
-//       error: 'RefreshAccessTokenError',
-//     }
-//   }
-// }
 
 export const authOptions: NextAuthOptions = {
   debug: true,
   pages: {
-    signIn: '/auth/signin',
-    newUser: '/auth/signup',
+    signIn: '/authentication/signin',
+    newUser: '/authentication/signup',
   },
-  secret: process.env.NEXTAUTH_SECRET,
-  session: { strategy: 'jwt' },
+  // secret: process.env.NEXTAUTH_SECRET,
+  // session: { strategy: 'jwt' },
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -48,11 +25,12 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials: any, req): Promise<any> {
-        const { login, password, ...restCredentials } = credentials
+      async authorize(credentials: any): Promise<outputAuthSchema | null> {
+        const { login, password } = credentials
         const creds = await loginSchema.parseAsync({ email: login, password })
-        const { item: user } = await serverClient.auth.login(creds)
-        console.log(user, '2')
+
+        const user = await serverClient.auth.login(creds)
+
         if (user) {
           return user
         } else {
@@ -64,8 +42,10 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     jwt: async ({ token, user }: { token: JWT; user: User }): Promise<JWT> => {
-      // console.log({ ...token, ...user }, 'JWT')
-      return { ...token, ...user }
+      if (user) {
+        token = user
+      }
+      return token
     },
     session: async ({
       session,
@@ -74,7 +54,6 @@ export const authOptions: NextAuthOptions = {
       session: Session
       token: JWT
     }): Promise<Session> => {
-      // console.log(session, token, 'CATCH')
       session.user = token
       return session
     },

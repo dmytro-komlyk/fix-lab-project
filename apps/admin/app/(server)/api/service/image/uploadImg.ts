@@ -7,11 +7,11 @@ interface UploadFileParams {
   alt: string
   type: string
 }
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL as string
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_API_URL as string
+
 const uploadImg = async ({ fileInput, alt, type }: UploadFileParams) => {
   const url = `${apiUrl}/images/upload-${type}`
   const session = await getSession()
-
   if (session?.user.accessToken === undefined) {
     throw new Error('Headers are undefined')
   }
@@ -26,7 +26,6 @@ const uploadImg = async ({ fileInput, alt, type }: UploadFileParams) => {
   if (!fileInput) {
     throw new Error('No file')
   }
-
   const formData = new FormData()
   formData.append('file', fileInput)
   formData.append('alt', alt)
@@ -40,4 +39,4 @@ const uploadImg = async ({ fileInput, alt, type }: UploadFileParams) => {
   }
 }
 
-export default uploadImg
+export { uploadImg }

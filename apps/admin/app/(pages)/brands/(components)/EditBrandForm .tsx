@@ -1,6 +1,6 @@
 'use client'
 
-import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
+import uploadImg from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'

@@ -1,7 +1,7 @@
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
@@ -14,7 +14,9 @@ import SendButton from '../../(components)/SendButton'
 const EditBenefitForm = ({
   benefitData,
 }: {
-  benefitData: Awaited<ReturnType<(typeof serverClient)['benefits']['getById']>>
+  benefitData: Awaited<
+    ReturnType<(typeof serverClient)['benefits']['getByIdBenefit']>
+  >
 }) => {
   const [newBenefitData, setNewBenefitData] = useLocalStorage(
     `editNewBenefitData${benefitData.id}`,

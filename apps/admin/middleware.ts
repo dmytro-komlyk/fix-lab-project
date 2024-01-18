@@ -1,4 +1,4 @@
-import { auth } from './auth'
+import { auth } from './app/(utils)/authOptions'
 
 export const middleware = auth
 

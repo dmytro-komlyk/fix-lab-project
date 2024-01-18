@@ -4,7 +4,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
-import uploadImg from '@admin/app/(server)/api/service/admin/uploadImg'
+import uploadImg from '@admin/app/(server)/api/service/image/uploadImg'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Image from 'next/image'

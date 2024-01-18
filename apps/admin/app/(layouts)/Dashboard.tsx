@@ -1,4 +1,4 @@
-import { auth } from '@admin/auth'
+import { auth } from '@admin/app/(utils)/authOptions'
 import Image from 'next/image'
 import Link from 'next/link'
 import { HiLockClosed } from 'react-icons/hi'
@@ -7,7 +7,6 @@ import AuthButtons from './AuthButtons'
 
 const Dashboard = async () => {
   const session = await auth()
-  console.log(session, 'SESSION')
   return (
     <div className='fixed left-0 flex h-[100vh] w-[400px] shrink flex-col justify-between  bg-[#09338F] pt-12'>
       <div className='relative ml-8 mr-2 flex flex-col'>
@@ -24,7 +23,7 @@ const Dashboard = async () => {
             priority
           />
         </Link>
-        {session?.user?.name && (
+        {true && (
           <div>
             <ul className='flex flex-col gap-4'>
               <li>
