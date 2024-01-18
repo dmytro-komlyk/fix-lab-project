@@ -15,12 +15,13 @@ export class TrpcService {
       const decodedToken = await this.jwt.verifyAsync(token, {
         secret: process.env.JWT_SECRET_KEY,
       });
-      console.log(decodedToken, 'decode');
+
       const user = this.prisma.user.findUnique({
         where: {
           id: decodedToken.sub,
         },
       });
+
       return user;
     } catch (error) {
       // Token verification failed
@@ -46,8 +47,10 @@ export class TrpcService {
     // Will be available as `ctx` in all your resolvers
     // This is just an example of something you might want to do in your ctx fn
     const user = await this.getUserFromHeader(opts?.req);
+    const userContext = user ? user.id : null;
+
     return {
-      user,
+      user: userContext,
     };
   };
   trpc = initTRPC
@@ -56,9 +59,12 @@ export class TrpcService {
     .create();
   procedure = this.trpc.procedure;
   authorised = this.trpc.middleware(async ({ ctx, next }) => {
+    console.log(ctx, 'middlewareTRPC');
     if (!ctx.user) throw new TRPCError({ code: 'UNAUTHORIZED' });
 
-    return next();
+    return next({
+      ctx,
+    });
   });
   protectedProcedure = this.trpc.procedure.use(this.authorised);
   router = this.trpc.router;

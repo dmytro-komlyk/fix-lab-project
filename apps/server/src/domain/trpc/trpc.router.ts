@@ -40,7 +40,7 @@ export class TrpcRouter {
     private readonly images: ImagesRouter,
     private readonly gadget: GadgetsRouter,
     private readonly users: UserRouter,
-    private readonly auth: AuthRouter
+    private readonly auth: AuthRouter,
   ) {}
 
   appRouter = this.trpc.router({
@@ -52,26 +52,29 @@ export class TrpcRouter {
     contacts: this.contacts.contactsRouter,
     images: this.images.imagesRouter,
     users: this.users.usersRouter,
-    auth: this.auth.authRouter
+    auth: this.auth.authRouter,
   });
 
-  openApiDocument: OpenAPIV3.Document = generateOpenApiDocument(this.appRouter, {
-    title: 'tRPC OpenAPI',
-    description: 'OpenAPI compliant REST API built using tRPC with Express',
-    version: '1.0.0',
-    baseUrl: process.env.APP_BASE_URL as string,
-    tags: [
-      'auth',
-      'users',
-      'images',
-      'benefits',
-      'brands',
-      'contacts',
-      'issues',
-      'gadgets',
-      'articles'
-    ]
-  });
+  openApiDocument: OpenAPIV3.Document = generateOpenApiDocument(
+    this.appRouter,
+    {
+      title: 'tRPC OpenAPI',
+      description: 'OpenAPI compliant REST API built using tRPC with Express',
+      version: '1.0.0',
+      baseUrl: process.env.APP_BASE_URL as string,
+      tags: [
+        'auth',
+        'users',
+        'images',
+        'benefits',
+        'brands',
+        'contacts',
+        'issues',
+        'gadgets',
+        'articles',
+      ],
+    },
+  );
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   static getAppRouter() {
@@ -92,12 +95,12 @@ export class TrpcRouter {
       new AuthRouter(
         trpcService,
         new UserService(prismaService),
-        new AuthService(prismaService, jwtService)
-      )
+        new AuthService(prismaService, jwtService),
+      ),
     );
     return {
       appRouter: trpcRouter.appRouter,
-      createCallerFactory: trpcRouter.trpc.createCallerFactory
+      createCallerFactory: trpcRouter.trpc.createCallerFactory,
     };
   }
 
@@ -115,13 +118,13 @@ export class TrpcRouter {
       `/${process.env.APP_API}/${process.env.APP_TRPC}`,
       createExpressMiddleware({
         router: this.appRouter,
-        createContext: this.trpc.createContext
-      })
+        createContext: this.trpc.createContext,
+      }),
     );
     app.use(
       `/${process.env.APP_SWAGER}`,
       swaggerUi.serve,
-      swaggerUi.setup(this.openApiDocument)
+      swaggerUi.setup(this.openApiDocument),
     );
   }
 }

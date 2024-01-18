@@ -8,14 +8,14 @@ import { BenefitsService } from './benefits.service';
 import {
   createBenefitSchema,
   outputBenefitSchema,
-  updateBenefitSchema
+  updateBenefitSchema,
 } from './schemas/benefit.schema';
 
 @Injectable()
 export class BenefitsRouter {
   constructor(
     private readonly trpc: TrpcService,
-    private readonly benefitsService: BenefitsService
+    private readonly benefitsService: BenefitsService,
   ) {}
 
   benefitsRouter = this.trpc.router({
@@ -25,8 +25,8 @@ export class BenefitsRouter {
           method: 'GET',
           path: '/getAllBenefits',
           tags: ['benefits'],
-          summary: 'Read all benefits'
-        }
+          summary: 'Read all benefits',
+        },
       })
       .input(z.void())
       .output(z.array(outputBenefitSchema))
@@ -39,8 +39,8 @@ export class BenefitsRouter {
           method: 'GET',
           path: '/getAllPublishedBenefits',
           tags: ['benefits'],
-          summary: 'Read all published benefits'
-        }
+          summary: 'Read all published benefits',
+        },
       })
       .input(z.void())
       .output(z.array(outputBenefitSchema))
@@ -53,22 +53,22 @@ export class BenefitsRouter {
           method: 'GET',
           path: '/getByIdBenefit',
           tags: ['benefits'],
-          summary: 'Read a benefit by id'
-        }
+          summary: 'Read a benefit by id',
+        },
       })
       .input(z.object({ id: z.string() }))
       .output(outputBenefitSchema)
       .query(async ({ input }) => {
         return await this.benefitsService.findById(input.id);
       }),
-    createBenefit: this.trpc.protectedProcedure
+    createBenefit: this.trpc.procedure
       .meta({
         openapi: {
           method: 'POST',
           path: '/createBenefit',
           tags: ['benefits'],
-          summary: 'Create a new benefit'
-        }
+          summary: 'Create a new benefit',
+        },
       })
       .input(createBenefitSchema)
       .output(outputBenefitSchema)
@@ -81,8 +81,8 @@ export class BenefitsRouter {
           method: 'POST',
           path: '/updateBenefit',
           tags: ['benefits'],
-          summary: 'Update benefit'
-        }
+          summary: 'Update benefit',
+        },
       })
       .input(updateBenefitSchema)
       .output(outputBenefitSchema)
@@ -95,14 +95,14 @@ export class BenefitsRouter {
           method: 'POST',
           path: '/removeBenefit',
           tags: ['benefits'],
-          summary: 'Delete benefit'
-        }
+          summary: 'Delete benefit',
+        },
       })
       .input(z.object({ id: z.string() }))
       .output(z.object({ id: z.string() }))
       .mutation(async ({ input }) => {
         const id = await this.benefitsService.remove(input.id);
         return { id };
-      })
+      }),
   });
 }
