@@ -11,7 +11,7 @@ import { MdDelete } from 'react-icons/md'
 const RemoveBrand = ({
   item,
 }: {
-  item: Awaited<ReturnType<(typeof serverClient)['brands']['getBySlug']>>
+  item: Awaited<ReturnType<(typeof serverClient)['brands']['getBySlugBrand']>>
 }) => {
   const [showRemoveContainers, setShowRemoveContainers] = useState<{
     [key: string]: boolean
@@ -26,7 +26,7 @@ const RemoveBrand = ({
     }))
   }
 
-  const removeBrandRemoveBrand = trpc.brands.remove.useMutation({
+  const removeBrandRemoveBrand = trpc.brands.removeBrand.useMutation({
     onSuccess: async () => {
       router.refresh()
       toast.success(`Бренд видалено!`, {
@@ -51,7 +51,7 @@ const RemoveBrand = ({
 
   const handleDeleteArticle = async (
     articleItem: Awaited<
-      ReturnType<(typeof serverClient)['brands']['getBySlug']>
+      ReturnType<(typeof serverClient)['brands']['getBySlugBrand']>
     >,
   ) => {
     removeBrandRemoveBrand.mutate(articleItem.id)

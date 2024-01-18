@@ -15,10 +15,11 @@ interface IContactAdminProps {
 export const dynamic = 'force-dynamic'
 
 const BrandPage: React.FC<IContactAdminProps> = async ({ params }) => {
-  const brandData = (await serverClient.brands.getBySlug(
-    params.brand,
-  )) as outputBrandSchema
-  const allImagesData = (await serverClient.images.getAll()) as imageSchema[]
+  const brandData = (await serverClient.brands.getBySlugBrand({
+    slug: params.brand,
+  })) as outputBrandSchema
+  const allImagesData =
+    (await serverClient.images.getAllImages()) as imageSchema[]
 
   return (
     <main>

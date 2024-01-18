@@ -1,7 +1,7 @@
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import uploadImg from '@admin/app/(server)/api/service/image/uploadImg'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
@@ -19,7 +19,9 @@ import SendButton from '../../(components)/SendButton'
 const AddArticleSection = ({
   allImagesData,
 }: {
-  allImagesData: Awaited<ReturnType<(typeof serverClient)['images']['getAll']>>
+  allImagesData: Awaited<
+    ReturnType<(typeof serverClient)['images']['getAllImages']>
+  >
 }) => {
   const router = useRouter()
   const [seoContent, setSeoContent] = useLocalStorage<{
@@ -109,7 +111,7 @@ const AddArticleSection = ({
     }
   }
 
-  const createArticle = trpc.articles.create.useMutation({
+  const createArticle = trpc.articles.createArticle.useMutation({
     onSuccess: () => {
       toast.success(`Статтю додано!`, {
         style: {
@@ -131,7 +133,7 @@ const AddArticleSection = ({
       })
     },
   })
-  const deleteImage = trpc.images.remove.useMutation()
+  const deleteImage = trpc.images.removeImage.useMutation()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()

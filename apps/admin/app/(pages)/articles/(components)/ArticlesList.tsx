@@ -7,7 +7,9 @@ import RemoveArticle from './RemoveArticle'
 const ArticlesList = ({
   articlesData,
 }: {
-  articlesData: Awaited<ReturnType<(typeof serverClient)['articles']['getAll']>>
+  articlesData: Awaited<
+    ReturnType<(typeof serverClient)['articles']['getAllArticles']>
+  >
 }) => {
   return (
     <div className=' flex flex-col items-center justify-center gap-8 pb-12'>

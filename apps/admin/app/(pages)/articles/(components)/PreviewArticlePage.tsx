@@ -9,7 +9,7 @@ const PreviewArticlePage = ({
   articleData,
 }: {
   articleData: Awaited<
-    ReturnType<(typeof serverClient)['articles']['getBySlug']>
+    ReturnType<(typeof serverClient)['articles']['getBySlugArticle']>
   >
 }) => {
   return (

@@ -25,17 +25,21 @@ const EditBrandsList = ({
   setNewGadgetData,
 }: {
   newGadgetData: Awaited<
-    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+    ReturnType<(typeof serverClient)['gadgets']['getBySlugGadget']>
   >
   brandsData: Awaited<
-    ReturnType<(typeof serverClient)['brands']['getAllPublished']>
+    ReturnType<(typeof serverClient)['brands']['getAllPublishedBrands']>
   >
   setNewGadgetData: (
-    data: Awaited<ReturnType<(typeof serverClient)['gadgets']['getBySlug']>>,
+    data: Awaited<
+      ReturnType<(typeof serverClient)['gadgets']['getBySlugGadget']>
+    >,
   ) => void
 }) => {
   const [filteredBrandsData, setFilteredBrandsData] = useState<
-    Awaited<ReturnType<(typeof serverClient)['brands']['getAllPublished']>>
+    Awaited<
+      ReturnType<(typeof serverClient)['brands']['getAllPublishedBrands']>
+    >
   >(
     brandsData.filter(
       item => !newGadgetData.brands.some(brand => brand.id === item.id),
@@ -43,7 +47,9 @@ const EditBrandsList = ({
   )
 
   const handleAddBrandItemClick = (
-    item: Awaited<ReturnType<(typeof serverClient)['brands']['getBySlug']>>,
+    item: Awaited<
+      ReturnType<(typeof serverClient)['brands']['getBySlugBrand']>
+    >,
   ) => {
     const updatedSelectedBrandsArray = [...newGadgetData.brands]
 
@@ -71,7 +77,7 @@ const EditBrandsList = ({
 
   const handleRemoveBrandItemClick = (
     clickedBrand: Awaited<
-      ReturnType<(typeof serverClient)['brands']['getBySlug']>
+      ReturnType<(typeof serverClient)['brands']['getBySlugBrand']>
     >,
   ) => {
     const updatedSelectedBrandsArray = [...newGadgetData.brands]

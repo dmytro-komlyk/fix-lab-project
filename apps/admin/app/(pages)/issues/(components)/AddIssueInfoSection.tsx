@@ -1,7 +1,7 @@
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import uploadImg from '@admin/app/(server)/api/service/image/uploadImg'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
@@ -19,7 +19,9 @@ import SendButton from '../../(components)/SendButton'
 const AddIssueInfoSection = ({
   allImagesData,
 }: {
-  allImagesData: Awaited<ReturnType<(typeof serverClient)['images']['getAll']>>
+  allImagesData: Awaited<
+    ReturnType<(typeof serverClient)['images']['getAllImages']>
+  >
 }) => {
   const router = useRouter()
 
@@ -86,7 +88,7 @@ const AddIssueInfoSection = ({
       [key]: value,
     }))
   }
-  const createIssue = trpc.issues.create.useMutation({
+  const createIssue = trpc.issues.createIssue.useMutation({
     onSuccess: () => {
       toast.success(`Послугу додано!`, {
         style: {
@@ -108,7 +110,7 @@ const AddIssueInfoSection = ({
       })
     },
   })
-  const deleteImage = trpc.images.remove.useMutation()
+  const deleteImage = trpc.images.removeImage.useMutation()
   const handleImageUpload = async () => {
     try {
       if (selectedImage) {

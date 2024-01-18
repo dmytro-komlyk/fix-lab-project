@@ -4,7 +4,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
-import uploadImg from '@admin/app/(server)/api/service/image/uploadImg'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Image from 'next/image'
@@ -20,7 +20,9 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 const AddImagesSection = ({
   allImagesData,
 }: {
-  allImagesData: Awaited<ReturnType<(typeof serverClient)['images']['getAll']>>
+  allImagesData: Awaited<
+    ReturnType<(typeof serverClient)['images']['getAllImages']>
+  >
 }) => {
   const router = useRouter()
 
@@ -94,7 +96,7 @@ const AddImagesSection = ({
   }
 
   const reversedImagesData: Awaited<
-    ReturnType<(typeof serverClient)['images']['getAll']>
+    ReturnType<(typeof serverClient)['images']['getAllImages']>
   > = [...allImagesData].reverse()
 
   return (

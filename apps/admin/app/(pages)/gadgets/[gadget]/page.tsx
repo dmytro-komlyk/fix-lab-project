@@ -16,11 +16,13 @@ interface IContactAdminProps {
 export const dynamic = 'force-dynamic'
 
 const GadgetPage: React.FC<IContactAdminProps> = async ({ params }) => {
-  const gadgetData = (await serverClient.gadgets.getBySlug(
-    params.gadget,
-  )) as outputGadgetSchema
-  const issuesData = (await serverClient.issues.getAll()) as outputIssueSchema[]
-  const brandsData = (await serverClient.brands.getAll()) as outputBrandSchema[]
+  const gadgetData = (await serverClient.gadgets.getBySlugGadget({
+    slug: params.gadget,
+  })) as outputGadgetSchema
+  const issuesData =
+    (await serverClient.issues.getAllIssues()) as outputIssueSchema[]
+  const brandsData =
+    (await serverClient.brands.getAllBrands()) as outputBrandSchema[]
   return (
     <main className=' flex flex-auto'>
       <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>

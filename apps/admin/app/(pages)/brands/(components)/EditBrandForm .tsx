@@ -1,6 +1,6 @@
 'use client'
 
-import uploadImg from '@admin/app/(server)/api/service/image/uploadImg'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
@@ -16,8 +16,12 @@ const EditBrandForm = ({
   brandData,
   allImagesData,
 }: {
-  brandData: Awaited<ReturnType<(typeof serverClient)['brands']['getBySlug']>>
-  allImagesData: Awaited<ReturnType<(typeof serverClient)['images']['getAll']>>
+  brandData: Awaited<
+    ReturnType<(typeof serverClient)['brands']['getBySlugBrand']>
+  >
+  allImagesData: Awaited<
+    ReturnType<(typeof serverClient)['images']['getAllImages']>
+  >
 }) => {
   const router = useRouter()
 
@@ -57,7 +61,7 @@ const EditBrandForm = ({
     setNewArticle(brandData.article || '')
   }
 
-  const updateBrand = trpc.brands.update.useMutation({
+  const updateBrand = trpc.brands.updateBrand.useMutation({
     onSuccess: () => {
       toast.success(`Оновлення збережено!`, {
         style: {
@@ -79,7 +83,7 @@ const EditBrandForm = ({
       })
     },
   })
-  const deleteIcon = trpc.images.remove.useMutation()
+  const deleteIcon = trpc.images.removeImage.useMutation()
   const handleIconUpload = async () => {
     try {
       if (selectedIcon) {

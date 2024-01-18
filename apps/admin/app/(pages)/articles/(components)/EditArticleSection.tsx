@@ -1,7 +1,7 @@
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import uploadImg from '@admin/app/(server)/api/service/image/uploadImg'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
@@ -18,9 +18,11 @@ const EditArticleSection = ({
   allImagesData,
 }: {
   articleData: Awaited<
-    ReturnType<(typeof serverClient)['articles']['getBySlug']>
+    ReturnType<(typeof serverClient)['articles']['getBySlugArticle']>
   >
-  allImagesData: Awaited<ReturnType<(typeof serverClient)['images']['getAll']>>
+  allImagesData: Awaited<
+    ReturnType<(typeof serverClient)['images']['getAllImages']>
+  >
 }) => {
   const router = useRouter()
   const [newArticleData, setNewArticleData] = useLocalStorage(
@@ -96,7 +98,7 @@ const EditArticleSection = ({
     }
   }
 
-  const updateArticle = trpc.articles.update.useMutation({
+  const updateArticle = trpc.articles.updateArticle.useMutation({
     onSuccess: () => {
       toast.success(`Оновлення збережено!`, {
         style: {
@@ -120,7 +122,7 @@ const EditArticleSection = ({
     },
   })
 
-  const deleteImage = trpc.images.remove.useMutation()
+  const deleteImage = trpc.images.removeImage.useMutation()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()

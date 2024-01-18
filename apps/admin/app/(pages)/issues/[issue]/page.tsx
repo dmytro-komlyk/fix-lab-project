@@ -16,12 +16,13 @@ interface IIssueAdminProps {
 export const dynamic = 'force-dynamic'
 
 const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
-  const issueData = (await serverClient.issues.getBySlug(
-    params.issue,
-  )) as outputIssueSchema
+  const issueData = (await serverClient.issues.getBySlugIssue({
+    slug: params.issue,
+  })) as outputIssueSchema
   const benefitsData =
-    (await serverClient.benefits.getAll()) as outputBenefitSchema[]
-  const allImagesData = (await serverClient.images.getAll()) as imageSchema[]
+    (await serverClient.benefits.getAllBenefits()) as outputBenefitSchema[]
+  const allImagesData =
+    (await serverClient.images.getAllImages()) as imageSchema[]
 
   return (
     <main className=' flex flex-auto'>

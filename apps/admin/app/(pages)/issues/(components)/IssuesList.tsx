@@ -7,7 +7,9 @@ import RemoveIssue from './RemoveIssue'
 const IssuesList = ({
   issuesData,
 }: {
-  issuesData: Awaited<ReturnType<(typeof serverClient)['issues']['getAll']>>
+  issuesData: Awaited<
+    ReturnType<(typeof serverClient)['issues']['getAllIssues']>
+  >
 }) => {
   return (
     <div className=' flex flex-col items-center justify-center gap-8 pb-12'>
@@ -16,7 +18,7 @@ const IssuesList = ({
           {issuesData.map(
             (
               item: Awaited<
-                ReturnType<(typeof serverClient)['issues']['getBySlug']>
+                ReturnType<(typeof serverClient)['issues']['getBySlugIssue']>
               >,
             ) => (
               <li

@@ -1,7 +1,7 @@
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import uploadImg from '@admin/app/(server)/api/service/image/uploadImg'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
@@ -18,9 +18,15 @@ const EditGadgetForm = ({
   issuesData,
   brandsData,
 }: {
-  gadgetData: Awaited<ReturnType<(typeof serverClient)['gadgets']['getBySlug']>>
-  issuesData: Awaited<ReturnType<(typeof serverClient)['issues']['getAll']>>
-  brandsData: Awaited<ReturnType<(typeof serverClient)['brands']['getAll']>>
+  gadgetData: Awaited<
+    ReturnType<(typeof serverClient)['gadgets']['getBySlugGadget']>
+  >
+  issuesData: Awaited<
+    ReturnType<(typeof serverClient)['issues']['getAllIssues']>
+  >
+  brandsData: Awaited<
+    ReturnType<(typeof serverClient)['brands']['getAllBrands']>
+  >
 }) => {
   const router = useRouter()
   const [newGadgetData, setNewGadgetData] = useLocalStorage(
@@ -55,7 +61,7 @@ const EditGadgetForm = ({
     }
   }
 
-  const updateGadget = trpc.gadgets.update.useMutation({
+  const updateGadget = trpc.gadgets.updateGadget.useMutation({
     onSuccess: () => {
       toast.success(`Послугу оновлено!`, {
         style: {
@@ -80,7 +86,7 @@ const EditGadgetForm = ({
     },
   })
 
-  const deleteIcon = trpc.images.remove.useMutation()
+  const deleteIcon = trpc.images.removeImage.useMutation()
   const handleImageUpload = async () => {
     try {
       if (selectedIcon) {

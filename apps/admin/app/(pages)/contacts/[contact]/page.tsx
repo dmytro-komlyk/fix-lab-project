@@ -14,9 +14,9 @@ interface IContactAdminProps {
 export const dynamic = 'force-dynamic'
 
 const ContactPage: React.FC<IContactAdminProps> = async ({ params }) => {
-  const contactData = (await serverClient.contacts.getById(
-    params.contact,
-  )) as outputContactSchema
+  const contactData = (await serverClient.contacts.getByIdContact({
+    id: params.contact,
+  })) as outputContactSchema
   return (
     <main className=' flex flex-auto'>
       <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>

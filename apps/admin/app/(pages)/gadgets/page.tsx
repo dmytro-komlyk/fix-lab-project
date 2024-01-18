@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 
 const GadgetsPage = async () => {
   const gadgetsData =
-    (await serverClient.gadgets.getAll()) as outputGadgetSchema[]
+    (await serverClient.gadgets.getAllGadgets()) as outputGadgetSchema[]
   return (
     <main className='flex flex-auto'>
       <section className=' flex w-full justify-center bg-footer-gradient-linear-blue py-[60px]'>

@@ -7,7 +7,9 @@ import RemoveBrand from './RemoveBrand'
 const BrandsList = ({
   brandsData,
 }: {
-  brandsData: Awaited<ReturnType<(typeof serverClient)['brands']['getAll']>>
+  brandsData: Awaited<
+    ReturnType<(typeof serverClient)['brands']['getAllBrands']>
+  >
 }) => {
   return (
     <div className=' flex flex-col items-center justify-center gap-8 pb-12'>

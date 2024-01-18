@@ -8,7 +8,9 @@ import Link from 'next/link'
 export const GadgetsList = ({
   gadgetsData,
 }: {
-  gadgetsData: Awaited<ReturnType<(typeof serverClient)['gadgets']['getAll']>>
+  gadgetsData: Awaited<
+    ReturnType<(typeof serverClient)['gadgets']['getAllGadgets']>
+  >
 }) => {
   return (
     <ul className='z-2 flex flex-wrap justify-center gap-2 max-xl:max-w-full xl:w-[954px] xl:gap-6'>

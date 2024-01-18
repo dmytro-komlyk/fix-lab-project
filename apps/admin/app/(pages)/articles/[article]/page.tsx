@@ -14,9 +14,9 @@ interface IArticleAdminProps {
 export const dynamic = 'force-dynamic'
 
 const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
-  const articleData = (await serverClient.articles.getBySlug(
-    params.article,
-  )) as outputArticleSchema
+  const articleData = (await serverClient.articles.getBySlugArticle({
+    slug: params.article,
+  })) as outputArticleSchema
 
   return (
     <main>

@@ -1,7 +1,7 @@
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import uploadImg from '@admin/app/(server)/api/service/image/uploadImg'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
@@ -19,7 +19,9 @@ import SendButton from '../../(components)/SendButton'
 const AddBrandForm = ({
   allImagesData,
 }: {
-  allImagesData: Awaited<ReturnType<(typeof serverClient)['images']['getAll']>>
+  allImagesData: Awaited<
+    ReturnType<(typeof serverClient)['images']['getAllImages']>
+  >
 }) => {
   const router = useRouter()
   const [brandTitle, setBrandTitle] = useLocalStorage<string | ''>(
@@ -75,7 +77,7 @@ const AddBrandForm = ({
     setAltIcon('')
   }
 
-  const createBrand = trpc.brands.create.useMutation({
+  const createBrand = trpc.brands.createBrand.useMutation({
     onSuccess: () => {
       toast.success(`Бренд додано!`, {
         style: {
@@ -97,7 +99,7 @@ const AddBrandForm = ({
       })
     },
   })
-  const deleteIcon = trpc.images.remove.useMutation()
+  const deleteIcon = trpc.images.removeImage.useMutation()
   const handleIconUpload = async () => {
     try {
       if (selectedIcon) {

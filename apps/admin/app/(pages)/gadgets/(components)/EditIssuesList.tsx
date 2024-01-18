@@ -26,22 +26,28 @@ const EditIssuesList = ({
   setNewGadgetData,
 }: {
   newGadgetData: Awaited<
-    ReturnType<(typeof serverClient)['gadgets']['getBySlug']>
+    ReturnType<(typeof serverClient)['gadgets']['getBySlugGadget']>
   >
-  issuesData: Awaited<ReturnType<(typeof serverClient)['issues']['getAll']>>
+  issuesData: Awaited<
+    ReturnType<(typeof serverClient)['issues']['getAllIssues']>
+  >
   setNewGadgetData: (
-    data: Awaited<ReturnType<(typeof serverClient)['gadgets']['getBySlug']>>,
+    data: Awaited<
+      ReturnType<(typeof serverClient)['gadgets']['getBySlugGadget']>
+    >,
   ) => void
 }) => {
   const [filteredIssuesData, setFilteredIssuesData] = useState<
-    Awaited<ReturnType<(typeof serverClient)['issues']['getAll']>>
+    Awaited<ReturnType<(typeof serverClient)['issues']['getAllIssues']>>
   >(
     issuesData.filter(
       item => !newGadgetData.issues.some(issue => issue.id === item.id),
     ),
   )
   const handleAddIssueItemClick = (
-    item: Awaited<ReturnType<(typeof serverClient)['issues']['getBySlug']>>,
+    item: Awaited<
+      ReturnType<(typeof serverClient)['issues']['getBySlugIssue']>
+    >,
   ) => {
     const updatedSelectedIssuesArray = [...newGadgetData.issues]
 
@@ -69,7 +75,7 @@ const EditIssuesList = ({
 
   const handleRemoveIssueItemClick = (
     clickedIssue: Awaited<
-      ReturnType<(typeof serverClient)['issues']['getBySlug']>
+      ReturnType<(typeof serverClient)['issues']['getBySlugIssue']>
     >,
   ) => {
     const updatedSelectedIssuesArray = [...newGadgetData.issues]

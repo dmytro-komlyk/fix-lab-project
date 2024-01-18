@@ -9,8 +9,10 @@ import IssuesList from './(components)/IssuesList'
 export const dynamic = 'force-dynamic'
 
 const IssuesPage = async () => {
-  const issuesData = (await serverClient.issues.getAll()) as outputIssueSchema[]
-  const allImagesData = (await serverClient.images.getAll()) as imageSchema[]
+  const issuesData =
+    (await serverClient.issues.getAllIssues()) as outputIssueSchema[]
+  const allImagesData =
+    (await serverClient.images.getAllImages()) as imageSchema[]
 
   return (
     <main>

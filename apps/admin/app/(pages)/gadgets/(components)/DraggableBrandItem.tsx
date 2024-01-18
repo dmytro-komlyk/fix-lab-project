@@ -5,9 +5,11 @@ import { IoIosRemoveCircle } from 'react-icons/io'
 
 interface DraggableBrandItemProps {
   id: string
-  item: Awaited<ReturnType<(typeof serverClient)['brands']['getBySlug']>>
+  item: Awaited<ReturnType<(typeof serverClient)['brands']['getBySlugBrand']>>
   onRemove: (
-    item: Awaited<ReturnType<(typeof serverClient)['brands']['getBySlug']>>,
+    item: Awaited<
+      ReturnType<(typeof serverClient)['brands']['getBySlugBrand']>
+    >,
   ) => void
 }
 

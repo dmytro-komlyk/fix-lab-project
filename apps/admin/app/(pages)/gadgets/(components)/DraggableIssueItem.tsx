@@ -5,9 +5,11 @@ import { IoIosRemoveCircle } from 'react-icons/io'
 
 interface DraggableIssueItemProps {
   id: string
-  item: Awaited<ReturnType<(typeof serverClient)['issues']['getBySlug']>>
+  item: Awaited<ReturnType<(typeof serverClient)['issues']['getBySlugIssue']>>
   onRemove: (
-    item: Awaited<ReturnType<(typeof serverClient)['issues']['getBySlug']>>,
+    item: Awaited<
+      ReturnType<(typeof serverClient)['issues']['getBySlugIssue']>
+    >,
   ) => void
 }
 

@@ -11,7 +11,7 @@ import { MdDelete } from 'react-icons/md'
 const RemoveIssue = ({
   item,
 }: {
-  item: Awaited<ReturnType<(typeof serverClient)['issues']['getBySlug']>>
+  item: Awaited<ReturnType<(typeof serverClient)['issues']['getBySlugIssue']>>
 }) => {
   const [showRemoveContainers, setShowRemoveContainers] = useState<{
     [key: string]: boolean
@@ -26,9 +26,9 @@ const RemoveIssue = ({
     }))
   }
 
-  const deleteImage = trpc.images.remove.useMutation()
+  const deleteImage = trpc.images.removeImage.useMutation()
 
-  const removeIssueRemoveIssue = trpc.issues.remove.useMutation({
+  const removeIssueRemoveIssue = trpc.issues.removeIssue.useMutation({
     onSuccess: () => {
       deleteImage.mutate(item.image_id)
       router.refresh()

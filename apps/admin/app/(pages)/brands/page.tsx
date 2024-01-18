@@ -9,8 +9,10 @@ import BrandsList from './(components)/BrandsList'
 export const dynamic = 'force-dynamic'
 
 const BrandsPage = async () => {
-  const brandsData = (await serverClient.brands.getAll()) as outputBrandSchema[]
-  const allImagesData = (await serverClient.images.getAll()) as imageSchema[]
+  const brandsData =
+    (await serverClient.brands.getAllBrands()) as outputBrandSchema[]
+  const allImagesData =
+    (await serverClient.images.getAllImages()) as imageSchema[]
 
   return (
     <main>

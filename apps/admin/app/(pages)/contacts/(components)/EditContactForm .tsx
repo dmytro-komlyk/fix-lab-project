@@ -1,7 +1,7 @@
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import uploadImg from '@admin/app/(server)/api/service/image/uploadImg'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
@@ -14,7 +14,9 @@ import SendButton from '../../(components)/SendButton'
 const EditContactForm = ({
   contactData,
 }: {
-  contactData: Awaited<ReturnType<(typeof serverClient)['contacts']['getById']>>
+  contactData: Awaited<
+    ReturnType<(typeof serverClient)['contacts']['getByIdContact']>
+  >
 }) => {
   const [newContactData, setNewContactData] = useLocalStorage(
     `editContactData${contactData.id}`,
@@ -30,7 +32,7 @@ const EditContactForm = ({
     const { name, value } = e.target
     setNewContactData({ ...newContactData, [name]: value })
   }
-  const updateContact = trpc.contacts.update.useMutation({
+  const updateContact = trpc.contacts.updateContact.useMutation({
     onSuccess: () => {
       toast.success(`Оновлення збережено!`, {
         style: {
@@ -52,7 +54,7 @@ const EditContactForm = ({
     },
   })
 
-  const deleteImage = trpc.images.remove.useMutation()
+  const deleteImage = trpc.images.removeImage.useMutation()
   const handleImageUpload = async () => {
     try {
       if (selectedImage) {

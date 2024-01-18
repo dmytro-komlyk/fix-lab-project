@@ -10,8 +10,9 @@ export const dynamic = 'force-dynamic'
 
 export default async function ArticlesPage() {
   const articlesData =
-    (await serverClient.articles.getAll()) as outputArticleSchema[]
-  const allImagesData = (await serverClient.images.getAll()) as imageSchema[]
+    (await serverClient.articles.getAllArticles()) as outputArticleSchema[]
+  const allImagesData =
+    (await serverClient.images.getAllImages()) as imageSchema[]
 
   return (
     <main>

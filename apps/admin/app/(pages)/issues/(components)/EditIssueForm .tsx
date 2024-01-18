@@ -1,7 +1,7 @@
 'use client'
 
 import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import uploadImg from '@admin/app/(server)/api/service/image/uploadImg'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import Image from 'next/image'
@@ -19,9 +19,15 @@ const EditIssuesForm = ({
   benefitsData,
   allImagesData,
 }: {
-  issueData: Awaited<ReturnType<(typeof serverClient)['issues']['getBySlug']>>
-  benefitsData: Awaited<ReturnType<(typeof serverClient)['benefits']['getAll']>>
-  allImagesData: Awaited<ReturnType<(typeof serverClient)['images']['getAll']>>
+  issueData: Awaited<
+    ReturnType<(typeof serverClient)['issues']['getBySlugIssue']>
+  >
+  benefitsData: Awaited<
+    ReturnType<(typeof serverClient)['benefits']['getAllBenefits']>
+  >
+  allImagesData: Awaited<
+    ReturnType<(typeof serverClient)['images']['getAllImages']>
+  >
 }) => {
   const router = useRouter()
 
@@ -82,7 +88,7 @@ const EditIssuesForm = ({
     }
   }
 
-  const updateIssue = trpc.issues.update.useMutation({
+  const updateIssue = trpc.issues.updateIssue.useMutation({
     onSuccess: () => {
       toast.success(`Послугу оновлено!`, {
         style: {
@@ -105,7 +111,7 @@ const EditIssuesForm = ({
     },
   })
 
-  const deleteImage = trpc.images.remove.useMutation()
+  const deleteImage = trpc.images.removeImage.useMutation()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()

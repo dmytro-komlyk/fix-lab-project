@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable import/no-extraneous-dependencies */
-
 'use client'
 
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
@@ -29,11 +26,15 @@ const EditBenefitsList = ({
   setNewIssueData,
 }: {
   newIssueData: Awaited<
-    ReturnType<(typeof serverClient)['issues']['getBySlug']>
+    ReturnType<(typeof serverClient)['issues']['getBySlugIssue']>
   >
-  benefitsData: Awaited<ReturnType<(typeof serverClient)['benefits']['getAll']>>
+  benefitsData: Awaited<
+    ReturnType<(typeof serverClient)['benefits']['getAllBenefits']>
+  >
   setNewIssueData: (
-    data: Awaited<ReturnType<(typeof serverClient)['issues']['getBySlug']>>,
+    data: Awaited<
+      ReturnType<(typeof serverClient)['issues']['getBySlugIssue']>
+    >,
   ) => void
 }) => {
   const [filteredBenefitsData, setFilteredBenefitsData] = useState(
@@ -43,7 +44,9 @@ const EditBenefitsList = ({
   )
 
   const handleAddBenefitItemClick = (
-    item: Awaited<ReturnType<(typeof serverClient)['benefits']['getById']>>,
+    item: Awaited<
+      ReturnType<(typeof serverClient)['benefits']['getByIdBenefit']>
+    >,
   ) => {
     const updatedSelectedBenefitsArray = [...newIssueData.benefits]
 
@@ -70,7 +73,9 @@ const EditBenefitsList = ({
   }
 
   const handleRemoveBenefitItemClick = (
-    item: Awaited<ReturnType<(typeof serverClient)['benefits']['getById']>>,
+    item: Awaited<
+      ReturnType<(typeof serverClient)['benefits']['getByIdBenefit']>
+    >,
   ) => {
     const updatedSelectedBenefitsArray = [...newIssueData.benefits]
 
