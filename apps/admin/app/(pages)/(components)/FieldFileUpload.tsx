@@ -79,4 +79,4 @@ const FieldFileUpload = ({ name }: { name: string }) => {
   )
 }
 
-export { FieldFileUpload }
+export default FieldFileUpload

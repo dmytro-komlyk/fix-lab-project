@@ -7,6 +7,7 @@ import AuthButtons from './AuthButtons'
 
 const Dashboard = async () => {
   const session = await auth()
+
   return (
     <div className='fixed left-0 flex h-[100vh] w-[400px] shrink flex-col justify-between  bg-[#09338F] pt-12'>
       <div className='relative ml-8 mr-2 flex flex-col'>
@@ -23,7 +24,7 @@ const Dashboard = async () => {
             priority
           />
         </Link>
-        {true && (
+        {session?.user && (
           <div>
             <ul className='flex flex-col gap-4'>
               <li>
@@ -88,7 +89,7 @@ const Dashboard = async () => {
           </div>
         )}
       </div>
-      {!session?.user?.name ? (
+      {!session?.user ? (
         <div className='m-4 flex flex-col gap-4'>
           <Link
             href='/authentication/signin'

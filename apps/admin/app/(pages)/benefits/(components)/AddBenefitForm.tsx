@@ -10,8 +10,13 @@ import { IoMdAddCircle } from 'react-icons/io'
 import * as Yup from 'yup'
 
 import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
-import { FieldFileUpload } from '../../(components)/FieldFileUpload'
 import SendButton from '../../(components)/SendButton'
+
+import dynamic from 'next/dynamic'
+
+const FieldFileUpload = dynamic(
+  () => import('../../(components)/FieldFileUpload'),
+)
 
 const AddBenefitForm = () => {
   const router = useRouter()

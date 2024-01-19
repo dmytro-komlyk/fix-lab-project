@@ -1,25 +1,35 @@
 'use client'
 
-import Link from 'next/link'
+import { Button, Input } from '@nextui-org/react'
+import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
 import { signIn, useSession } from 'next-auth/react'
-import type { FormEventHandler } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-// import { ThreeCircles } from 'react-loader-spinner'
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import { FiLogIn } from 'react-icons/fi'
+import { HiMail } from 'react-icons/hi'
+// import { ColorRing } from 'react-loader-spinner'
+import * as Yup from 'yup'
 
 const SignIn = () => {
-  const [loading, setLoading] = useState(false)
   const session = useSession()
+  const router = useRouter()
+  const [isVisiblePassword, setIsVisiblePassword] = useState(false)
+  const toggleVisibilityPassword = () =>
+    setIsVisiblePassword(!isVisiblePassword)
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async event => {
-    event.preventDefault()
-    setLoading(true)
-
+  const handleSubmit = async (
+    values: any,
+    { setSubmitting, resetForm }: FormikHelpers<any>,
+  ) => {
+    setSubmitting(true)
+    console.log(values)
     try {
-      const formData = new FormData(event.currentTarget)
       const res = await signIn('credentials', {
-        login: formData.get('login'),
-        password: formData.get('password'),
+        login: values.email,
+        password: values.password,
         callbackUrl: '/',
       })
 
@@ -40,32 +50,114 @@ const SignIn = () => {
           color: '#fff',
         },
       })
-    } finally {
-      setLoading(false)
     }
+    setSubmitting(false)
   }
 
-  // return loading ? (
-  //   <ThreeCircles
-  //     height='150'
-  //     width='150'
-  //     color='#fff'
-  //     wrapperStyle={{}}
-  //     wrapperClass=''
-  //     visible
-  //     ariaLabel='three-circles-rotating'
-  //     outerCircleColor=''
-  //     innerCircleColor=''
-  //     middleCircleColor=''
-  //   />
-  // ) : (
+  // if (loading) {
+  //   return (
+  //     <ColorRing
+  //       visible={true}
+  //       height='100'
+  //       width='100'
+  //       ariaLabel='color-ring-loading'
+  //       wrapperStyle={{}}
+  //       wrapperClass='color-ring-wrapper'
+  //       colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+  //     />
+  //   )
+  // }
   return (
     !session.data && (
       <div className='flex flex-col items-center justify-center '>
         <h3 className='mb-8 text-center font-exo_2 text-2xl font-semibold leading-[29px] text-white-dis'>
           Логін
         </h3>
-        <form
+        <Formik
+          initialValues={{ login: '', password: '' }}
+          validationSchema={Yup.object({
+            email: Yup.string()
+              .max(30, 'Must be 30 characters or less')
+              .email('Invalid email address')
+              .required('Please enter your email'),
+            password: Yup.string().required('Please enter your password'),
+          })}
+          onSubmit={handleSubmit}
+        >
+          {(props: FormikProps<any>) => (
+            <Form
+              onSubmit={props.handleSubmit}
+              className='flex flex-col items-center justify-center gap-6'
+            >
+              <Field name='login'>
+                {({ meta, field }: any) => (
+                  <Input
+                    type='email'
+                    isInvalid={meta.touched && meta.error}
+                    errorMessage={meta.touched && meta.error && meta.error}
+                    placeholder='email@example.com'
+                    classNames={{
+                      input: [],
+                      inputWrapper: [],
+                      innerWrapper: [
+                        'flex',
+                        'flex-row',
+                        'rounded-md',
+                        'border',
+                      ],
+                    }}
+                    endContent={<HiMail className='text-xl text-slate-400' />}
+                    {...field}
+                  />
+                )}
+              </Field>
+
+              <Field name='password'>
+                {({ meta, field }: any) => (
+                  <Input
+                    type={isVisiblePassword ? 'text' : 'password'}
+                    isInvalid={meta.touched && meta.error}
+                    errorMessage={meta.touched && meta.error && meta.error}
+                    classNames={{
+                      input: [],
+                      inputWrapper: [],
+                      innerWrapper: [
+                        'flex',
+                        'flex-row',
+                        'rounded-md',
+                        'border',
+                      ],
+                    }}
+                    placeholder='пароль'
+                    endContent={
+                      <button
+                        className='focus:outline-none'
+                        type='button'
+                        onClick={toggleVisibilityPassword}
+                      >
+                        {isVisiblePassword ? (
+                          <AiFillEyeInvisible className='text-xl hover:text-slate-200 text-slate-400' />
+                        ) : (
+                          <AiFillEye className='text-xl hover:text-slate-200 text-slate-400' />
+                        )}
+                      </button>
+                    }
+                    {...field}
+                  />
+                )}
+              </Field>
+              <Button
+                type='submit'
+                isLoading={props.isSubmitting}
+                className='flex items-center justify-center gap-x-2 rounded-md border border-slate-600 bg-slate-700 py-3 px-4 text-slate-300 transition hover:text-purple-400'
+              >
+                <FiLogIn className='text-xl' />
+                Увійти
+              </Button>
+            </Form>
+          )}
+        </Formik>
+        {/* <form
           className='flex flex-col items-center justify-center gap-6'
           onSubmit={handleSubmit}
         >
@@ -102,12 +194,12 @@ const SignIn = () => {
                   innerCircleColor=''
                   middleCircleColor=''
                 /> */}
-              </div>
+        {/* </div>
             ) : (
               'Увійти'
             )}
           </button>
-        </form>
+        </form> */}
         <Link
           className='font-exo_2 text-xl font-bold text-white-dis'
           href='/authentication/forgot-password'

@@ -1,11 +1,11 @@
-import './globals.css'
-
 import type { Metadata } from 'next'
 import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
+import './globals.css'
 
 import Dashboard from './(layouts)/Dashboard'
-import Providers from './(providers)/Providers'
+import { auth } from './(utils)/authOptions'
+import { Providers } from './providers'
 
 const inter = Inter({
   weight: ['300', '400', '700', '500', '600'],
@@ -42,6 +42,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const session = await auth()
   return (
     <html
       lang='uk'
@@ -49,7 +50,7 @@ export default async function RootLayout({
     >
       <body className='h-[100vh]'>
         <Toaster />
-        <Providers>
+        <Providers session={session}>
           <div className='flex'>
             <Dashboard />
             <div className='h-[100vh] w-full pl-[400px]'>{children}</div>

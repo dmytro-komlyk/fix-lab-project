@@ -3,20 +3,24 @@ import type { outputBenefitSchema } from '@server/domain/benefits/schemas/benefi
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
+import { auth } from '@admin/app/(utils)/authOptions'
 import EditBenefitForm from '../(components)/EditBenefitForm '
 
-interface IArticleAdminProps {
+interface IBenefitAdminProps {
   params: {
-    benefit: string
+    id: string
   }
 }
 
 export const dynamic = 'force-dynamic'
 
-const BenefitPage: React.FC<IArticleAdminProps> = async ({ params }) => {
-  const benefitData = (await serverClient.benefits.getById(
-    params.benefit,
-  )) as outputBenefitSchema
+const BenefitPage: React.FC<IBenefitAdminProps> = async ({ params }) => {
+  const session = await auth()
+  const benefitData = (await serverClient({
+    user: session?.user,
+  }).benefits.getByIdBenefit({
+    id: params.id,
+  })) as outputBenefitSchema
 
   return (
     <main>

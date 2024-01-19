@@ -4,11 +4,18 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { httpBatchLink } from '@trpc/client'
 import React, { useState } from 'react'
 
+import { Session } from 'next-auth/types'
 import { trpc } from './client'
 
 const url = process.env.NEXT_PUBLIC_SERVER_TRPC_URL as string
 
-export function TrpcProvider({ children }: { children: React.ReactNode }) {
+export function TrpcProvider({
+  children,
+  session,
+}: {
+  children: React.ReactNode
+  session: Session | null
+}) {
   const [queryClient] = useState(() => new QueryClient({}))
   const [trpcClient] = useState(() =>
     trpc.createClient({
@@ -17,7 +24,7 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
           url,
           async headers() {
             return {
-              authorization: '',
+              authorization: `Bearer ${session?.user.accessToken}`,
             }
           },
         }),

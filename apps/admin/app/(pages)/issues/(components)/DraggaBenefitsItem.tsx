@@ -9,9 +9,11 @@ export function DraggableBenefitsItem({
   onRemove,
 }: {
   id: string
-  item: Awaited<ReturnType<(typeof serverClient)['benefits']['getById']>>
+  item: Awaited<ReturnType<(typeof serverClient)['benefits']['getByIdBenefit']>>
   onRemove: (
-    item: Awaited<ReturnType<(typeof serverClient)['benefits']['getById']>>,
+    item: Awaited<
+      ReturnType<(typeof serverClient)['benefits']['getByIdBenefit']>
+    >,
   ) => void
 }) {
   const { attributes, listeners, setNodeRef, transform, transition } =

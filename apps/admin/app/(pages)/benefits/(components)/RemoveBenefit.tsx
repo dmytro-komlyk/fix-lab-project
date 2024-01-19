@@ -2,7 +2,6 @@
 
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from 'react-icons/ai'
@@ -13,19 +12,17 @@ const RemoveBenefit = ({
 }: {
   item: Awaited<ReturnType<(typeof serverClient)['benefits']['getByIdBenefit']>>
 }) => {
-  const benefit = trpc.benefits.getByIdBenefit.useQuery(
-    { id: item.id },
-    {
-      initialData: item,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    },
-  )
+  // const benefit = trpc.benefits.getByIdBenefit.useQuery(
+  //   { id: item.id },
+  //   {
+  //     initialData: item,
+  //   },
+  // )
 
   const [showRemoveContainers, setShowRemoveContainers] = useState<{
     [key: string]: boolean
   }>({})
-  const router = useRouter()
+  // const router = useRouter()
   const containerRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
 
   const toggleRemoveContainer = (itemId: string) => {
@@ -37,7 +34,8 @@ const RemoveBenefit = ({
   const removeImage = trpc.images.removeImage.useMutation()
   const removeBenefit = trpc.benefits.removeBenefit.useMutation({
     onSuccess: async () => {
-      router.refresh()
+      removeImage.mutate({ id: item.icon_id })
+
       toast.success(`Послугу сервісного обслуговування видалено!`, {
         style: {
           borderRadius: '10px',
@@ -55,10 +53,6 @@ const RemoveBenefit = ({
           color: '#fff',
         },
       })
-    },
-
-    onSettled: () => {
-      benefit.refetch()
     },
   })
 
@@ -98,24 +92,24 @@ const RemoveBenefit = ({
       <button
         aria-label='Видалити'
         type='button'
-        onClick={() => toggleRemoveContainer(benefit.data.id)}
+        onClick={() => toggleRemoveContainer(item.id)}
       >
         <MdDelete
           className='transition-colors hover:fill-[red] focus:fill-[red]'
           size={30}
         />
       </button>
-      {showRemoveContainers[benefit.data.id] && (
+      {showRemoveContainers[item.id] && (
         <div
           ref={ref => {
-            containerRefs.current[benefit.data.id] = ref
+            containerRefs.current[item.id] = ref
           }}
           className='z-1 absolute bottom-[-21.5px] left-[-25px] flex gap-4 bg-mid-green p-[21px]'
         >
           <button
             aria-label='Видалити'
             type='button'
-            onClick={() => handleDeleteArticle(benefit.data.id)}
+            onClick={() => handleDeleteArticle(item.id)}
           >
             <AiOutlineCheckCircle
               className='transition-colors hover:fill-white-dis focus:fill-white-dis'
@@ -125,7 +119,7 @@ const RemoveBenefit = ({
           <button
             aria-label='Закрити'
             type='button'
-            onClick={() => toggleRemoveContainer(benefit.data.id)}
+            onClick={() => toggleRemoveContainer(item.id)}
           >
             <AiOutlineCloseCircle
               className='transition-colors hover:fill-[red] focus:fill-[red]'
