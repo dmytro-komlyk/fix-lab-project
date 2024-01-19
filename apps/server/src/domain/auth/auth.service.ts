@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/client';
+import { expiresInToMilliseconds } from '@server/helpers/time-converted.helper';
 import { TRPCError } from '@trpc/server';
 import { compare } from 'bcryptjs';
 import { PrismaService } from './../prisma/prisma.service';
@@ -35,7 +37,7 @@ export class AuthService {
     return { id, name, email, ...token };
   }
 
-  async validateUser(data: loginSchema): Promise<outputAuthSchema> {
+  async validateUser(data: loginSchema): Promise<User> {
     const user = await this.prisma.user.findUnique({
       where: {
         email: data.email,
@@ -62,6 +64,7 @@ export class AuthService {
         expiresIn: '1h',
         secret: process.env.JWT_SECRET_KEY,
       }),
+      accessTokenExpires: expiresInToMilliseconds('1h') as number,
       refreshToken: await this.jwt.signAsync(payload, {
         expiresIn: '7h',
         secret: process.env.JWT_REFRESH_TOKEN_KEY,

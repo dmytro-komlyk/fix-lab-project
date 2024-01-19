@@ -11,13 +11,17 @@ export const signUpSchema = loginSchema.extend({
 
 export const tokenSchema = z.object({
   accessToken: z.string().min(1),
+  accessTokenExpires: z.number().min(1),
   refreshToken: z.string().min(1),
 });
 
-export const outputAuthSchema = tokenSchema.extend({
+export const outputAuthSchema = z.object({
   id: z.string().min(1),
   email: z.string().email(),
-  name: z.string(),
+  name: z.string().min(1),
+  accessToken: z.string().min(1),
+  accessTokenExpires: z.number().min(1),
+  refreshToken: z.string().min(1),
 });
 
 export type loginSchema = z.TypeOf<typeof loginSchema>;

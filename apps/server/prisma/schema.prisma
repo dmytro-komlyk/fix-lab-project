@@ -148,7 +148,8 @@ model User {
   email                String         @unique
   password             String
   accessToken          String         
+  accessTokenExpires   Int
   refreshToken         String
-
+  
   @@map("users")
 }

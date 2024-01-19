@@ -33,6 +33,7 @@ export class TrpcService {
   };
 
   getUserFromHeader = async (req: any): Promise<User | null> => {
+    console.log(req.headers);
     if (req.headers.authorization) {
       const user = await this.decodeAndVerifyJwtToken(
         req.headers.authorization.split(' ')[1],
@@ -47,7 +48,16 @@ export class TrpcService {
     // Will be available as `ctx` in all your resolvers
     // This is just an example of something you might want to do in your ctx fn
     const user = await this.getUserFromHeader(opts?.req);
-    const userContext = user ? user.id : null;
+
+    const userContext = user
+      ? {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          accessToken: user.accessToken,
+          accessTokenExpires: user.accessTokenExpires,
+        }
+      : null;
 
     return {
       user: userContext,
@@ -59,12 +69,9 @@ export class TrpcService {
     .create();
   procedure = this.trpc.procedure;
   authorised = this.trpc.middleware(async ({ ctx, next }) => {
-    console.log(ctx, 'middlewareTRPC');
     if (!ctx.user) throw new TRPCError({ code: 'UNAUTHORIZED' });
 
-    return next({
-      ctx,
-    });
+    return next();
   });
   protectedProcedure = this.trpc.procedure.use(this.authorised);
   router = this.trpc.router;
