@@ -6,7 +6,7 @@ declare module 'next-auth' {
    * a prop on the `SessionProvider` React Context
    */
   interface User {
-    id: number
+    id: string
     email: string
     name: string
     accessToken: string
@@ -14,7 +14,13 @@ declare module 'next-auth' {
   }
 
   interface Session extends DefaultSession {
-    user: User
+    user: {
+      id: string
+      email: string
+      name: string
+      accessToken: string
+      accessTokenExpires: number
+    } | null
     expires: string
     error: string
   }

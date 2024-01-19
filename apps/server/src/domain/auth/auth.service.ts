@@ -61,10 +61,10 @@ export class AuthService {
   async refreshToken(payload: { sub: string }): Promise<tokenSchema> {
     return {
       accessToken: await this.jwt.signAsync(payload, {
-        expiresIn: '1h',
+        expiresIn: '1d',
         secret: process.env.JWT_SECRET_KEY,
       }),
-      accessTokenExpires: expiresInToMilliseconds('1h') as number,
+      accessTokenExpires: expiresInToMilliseconds('1d') as number,
       refreshToken: await this.jwt.signAsync(payload, {
         expiresIn: '7h',
         secret: process.env.JWT_REFRESH_TOKEN_KEY,

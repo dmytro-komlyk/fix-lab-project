@@ -1,139 +1,195 @@
 'use client'
 
-import axios from 'axios'
+import { Button, Input } from '@nextui-org/react'
+import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useSession } from 'next-auth/react'
-import type { FormEventHandler } from 'react'
-import { useState } from 'react'
-import toast from 'react-hot-toast'
+import { useCallback, useState } from 'react'
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import { FaUserAlt } from 'react-icons/fa'
+import { HiMail } from 'react-icons/hi'
+import { object, ref, string } from 'yup'
 // import { ThreeCircles } from 'react-loader-spinner'
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
-
 const SignUp = () => {
-  const [loading, setLoading] = useState(false)
-  const session = useSession()
   const router = useRouter()
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async event => {
-    event.preventDefault()
-    setLoading(true)
+  const [isVisiblePassword, setIsVisiblePassword] = useState(false)
+  const [isVisiblePasswordConfirm, setIsVisiblePasswordConfirm] =
+    useState(false)
 
-    try {
-      const formData = new FormData(event.currentTarget)
-      const res = await axios.post(`${apiUrl}/users`, {
-        name: formData.get('name'),
-        login: formData.get('login'),
-        email: formData.get('email'),
-        password: formData.get('password'),
-        isActive: true,
-      })
+  const toggleVisibilityPassword = () =>
+    setIsVisiblePassword(!isVisiblePassword)
+  const toggleVisibilityPasswordConfirm = () =>
+    setIsVisiblePasswordConfirm(!isVisiblePasswordConfirm)
 
-      if (res.status === 201) {
-        toast.success(`Адміна успішно зареєстровано!`, {
-          style: {
-            borderRadius: '10px',
-            background: 'grey',
-            color: '#fff',
-          },
-        })
-        router.push('/auth/signin')
-      } else {
-        toast.error(
-          `Помилка авторизації!!! Перевірте дані логіну чи паролю...`,
-          {
-            style: {
-              borderRadius: '10px',
-              background: 'grey',
-              color: '#fff',
-            },
-          },
-        )
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
+  const handleSubmit = useCallback(
+    async (values: any, { setSubmitting, resetForm }: FormikHelpers<any>) => {
+      setSubmitting(true)
+      console.log(values)
+      // const user = serverClient({ user: null }).auth.register({ })
 
-  // return loading ? (
-  //   <ThreeCircles
-  //     height='150'
-  //     width='150'
-  //     color='#fff'
-  //     wrapperStyle={{}}
-  //     wrapperClass=''
-  //     visible
-  //     ariaLabel='three-circles-rotating'
-  //     outerCircleColor=''
-  //     innerCircleColor=''
-  //     middleCircleColor=''
-  //   />
-  // ) : (
+      //       toast.success(`Адміна успішно зареєстровано!`, {
+      //         style: {
+      //           borderRadius: '10px',
+      //           background: 'grey',
+      //           color: '#fff',
+      //         },
+      //       })
+      //       router.push('/')
+      //       toast.error(
+      //         `Помилка авторизації!!! Перевірте дані логіну чи паролю...`,
+      //         {
+      //           style: {
+      //             borderRadius: '10px',
+      //             background: 'grey',
+      //             color: '#fff',
+      //           },
+      //         },
+      //       )
+
+      setSubmitting(false)
+    },
+    [],
+  )
+
   return (
-    !session.data && (
-      <div className='flex flex-col items-center justify-center '>
-        <h3 className='mb-8 text-center font-exo_2 text-2xl font-semibold leading-[29px] text-white-dis'>
-          Реєстрація
-        </h3>
-        <form
-          className='flex flex-col items-center justify-center gap-6'
-          onSubmit={handleSubmit}
-        >
-          <input
-            className='h-[58px] w-[402px] rounded-2xl px-6 py-2'
-            type='text'
-            name='name'
-            required
-            placeholder="Ім'я"
-          />
-          <input
-            className='h-[58px] w-[402px] rounded-2xl px-6 py-2'
-            type='text'
-            name='login'
-            required
-            placeholder='Логін'
-          />
-          <input
-            className='h-[58px] w-[402px] rounded-2xl px-6 py-2'
-            type='text'
-            name='email'
-            required
-            placeholder='Email'
-          />
-          <input
-            className='h-[58px] w-[402px] rounded-2xl px-6 py-2'
-            type='password'
-            name='password'
-            placeholder='Пароль'
-            required
-          />
-          <button
-            className='m relative m-4 h-[60px] w-full justify-center rounded-2xl bg-mid-green text-center font-exo_2 text-2xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
-            type='submit'
-            disabled={loading}
+    <div className='flex flex-col items-center justify-center '>
+      <h3 className='mb-8 text-center font-exo_2 text-2xl font-semibold leading-[29px] text-white-dis'>
+        Реєстрація
+      </h3>
+      <Formik
+        initialValues={{
+          name: '',
+          email: '',
+          password: '',
+          passwordConfirmation: '',
+        }}
+        validationSchema={object({
+          name: string()
+            .min(3, 'Must be 3 characters or more')
+            .required('Please enter your name'),
+          email: string()
+            .max(30, 'Must be 30 characters or less')
+            .email('Invalid email address'),
+          password: string()
+            .min(6, 'password must be at least 6 characters')
+            .required('Please enter your password'),
+          passwordConfirmation: string()
+            .label('confirm password')
+            .oneOf([ref('password')], 'Passwords must match')
+            .required('Please enter your confirm password'),
+        })}
+        onSubmit={handleSubmit}
+      >
+        {(props: FormikProps<any>) => (
+          <Form
+            onSubmit={props.handleSubmit}
+            className='flex flex-col items-center justify-center gap-6'
           >
-            {loading ? (
-              <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 '>
-                {/* <ThreeCircles
-                  height='50'
-                  width='50'
-                  color='#fff'
-                  wrapperStyle={{}}
-                  wrapperClass=''
-                  visible
-                  ariaLabel='three-circles-rotating'
-                  outerCircleColor=''
-                  innerCircleColor=''
-                  middleCircleColor=''
-                /> */}
-              </div>
-            ) : (
-              'Зареєструватися'
-            )}
-          </button>
-        </form>
-      </div>
-    )
+            <Field name='name'>
+              {({ meta, field }: any) => (
+                <Input
+                  type='text'
+                  classNames={{
+                    input: [],
+                    inputWrapper: [],
+                    innerWrapper: ['flex', 'flex-row', 'rounded-md', 'border'],
+                  }}
+                  isInvalid={meta.touched && meta.error}
+                  errorMessage={meta.touched && meta.error && meta.error}
+                  placeholder="Ім'я"
+                  endContent={<FaUserAlt className='text-xl text-slate-400' />}
+                  {...field}
+                />
+              )}
+            </Field>
+            <Field name='email'>
+              {({ meta, field }: any) => (
+                <Input
+                  type='email'
+                  isInvalid={meta.touched && meta.error}
+                  errorMessage={meta.touched && meta.error && meta.error}
+                  classNames={{
+                    input: [],
+                    inputWrapper: [],
+                    innerWrapper: ['flex', 'flex-row', 'rounded-md', 'border'],
+                  }}
+                  placeholder='пошта'
+                  endContent={<HiMail className='text-xl text-slate-400' />}
+                  {...field}
+                />
+              )}
+            </Field>
+            <Field name='password'>
+              {({ meta, field }: any) => (
+                <Input
+                  type={isVisiblePassword ? 'text' : 'password'}
+                  isInvalid={meta.touched && meta.error}
+                  errorMessage={meta.touched && meta.error && meta.error}
+                  classNames={{
+                    input: [],
+                    inputWrapper: [],
+                    innerWrapper: ['flex', 'flex-row', 'rounded-md', 'border'],
+                  }}
+                  placeholder='пароль'
+                  endContent={
+                    <button
+                      className='focus:outline-none'
+                      type='button'
+                      onClick={toggleVisibilityPassword}
+                    >
+                      {isVisiblePassword ? (
+                        <AiFillEyeInvisible className='text-xl hover:text-slate-200 text-slate-400' />
+                      ) : (
+                        <AiFillEye className='text-xl hover:text-slate-200 text-slate-400' />
+                      )}
+                    </button>
+                  }
+                  {...field}
+                />
+              )}
+            </Field>
+            <Field name='passwordConfirmation'>
+              {({ meta, field }: any) => (
+                <Input
+                  type={isVisiblePasswordConfirm ? 'text' : 'password'}
+                  isInvalid={meta.touched && meta.error}
+                  errorMessage={meta.touched && meta.error && meta.error}
+                  classNames={{
+                    input: [],
+                    inputWrapper: [],
+                    innerWrapper: ['flex', 'flex-row', 'rounded-md', 'border'],
+                  }}
+                  placeholder='підтвердьте пароль'
+                  endContent={
+                    <button
+                      className='focus:outline-none'
+                      type='button'
+                      onClick={toggleVisibilityPasswordConfirm}
+                    >
+                      {isVisiblePasswordConfirm ? (
+                        <AiFillEyeInvisible className='text-xl hover:text-slate-200 text-slate-400' />
+                      ) : (
+                        <AiFillEye className='text-xl hover:text-slate-200 text-slate-400' />
+                      )}
+                    </button>
+                  }
+                  {...field}
+                />
+              )}
+            </Field>
+            <Button
+              type='submit'
+              isLoading={props.isSubmitting}
+              className='flex items-center justify-center gap-x-2 rounded-md border border-slate-600 bg-slate-700 py-3 px-4 text-slate-300 transition hover:text-purple-400'
+            >
+              <HiMail className='text-xl' />
+              Зареєструвати
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    </div>
   )
 }
 

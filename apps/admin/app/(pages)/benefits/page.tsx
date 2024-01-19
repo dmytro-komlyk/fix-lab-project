@@ -10,8 +10,9 @@ export const dynamic = 'force-dynamic'
 
 const BenefitsPage = async () => {
   const session = await auth()
+  const user = session?.user ? session.user : null
   const benefitsData = (await serverClient({
-    user: session?.user,
+    user,
   }).benefits.getAllBenefits()) as outputBenefitSchema[]
   return (
     <main>
