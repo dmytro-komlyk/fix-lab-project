@@ -13,13 +13,13 @@ export class ImagesService {
     return await this.prisma.image.findMany();
   }
   public async findAllIcons(): Promise<imageSchema[]> {
-    return await this.prisma.image.findMany({ where: { type: 'icon ' } });
+    return await this.prisma.image.findMany({ where: { type: 'icon' } });
   }
   public async findAllPictures(): Promise<imageSchema[]> {
-    return await this.prisma.image.findMany({ where: { type: 'picture ' } });
+    return await this.prisma.image.findMany({ where: { type: 'picture' } });
   }
   public async findAllBlog(): Promise<imageSchema[]> {
-    return await this.prisma.image.findMany({ where: { type: 'blog ' } });
+    return await this.prisma.image.findMany({ where: { type: 'blog' } });
   }
 
   public async findById(id: string): Promise<imageSchema> {

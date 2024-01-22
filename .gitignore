@@ -11,3 +11,6 @@ node_modules
 # Database
 data
 .vercel
+
+# Docker
+docker-compose.local.yml
