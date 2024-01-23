@@ -4,8 +4,14 @@ import { ErrorMessage, Field } from 'formik'
 import Image from 'next/image'
 import React, { useState } from 'react'
 
-const FieldFileUpload = ({ name }: { name: string }) => {
-  const [newImage, setNewImage] = useState<string | null>(null)
+const FieldFileUpload = ({
+  name,
+  initSrc,
+}: {
+  name: string
+  initSrc: string
+}) => {
+  const [newImage, setNewImage] = useState<string | null>(initSrc)
 
   const convertToBase64 = (file: any) => {
     return new Promise((resolve, reject) => {
@@ -35,7 +41,7 @@ const FieldFileUpload = ({ name }: { name: string }) => {
         // toast.error('Image size must be of 2MB or less')
       }
     } else {
-      setNewImage(null)
+      setNewImage(initSrc ? initSrc : null)
     }
   }
 
@@ -49,7 +55,7 @@ const FieldFileUpload = ({ name }: { name: string }) => {
         <div className='flex justify-center'>
           <Image
             className='h-[100px] w-[100px]'
-            src={newImage ? newImage : ''}
+            src={newImage ? newImage : initSrc}
             width={100}
             height={100}
             alt='test'
@@ -65,7 +71,7 @@ const FieldFileUpload = ({ name }: { name: string }) => {
                 type='file'
                 accept='image/*'
                 className='form-control'
-                required
+                required={!initSrc}
                 onChange={e => handleImageChange(e, setFieldValue)}
               />
             )

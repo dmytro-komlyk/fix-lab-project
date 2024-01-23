@@ -12,8 +12,8 @@ const apiUrl = process.env.NEXT_PUBLIC_SERVER_API_URL as string
 const uploadImg = async ({ fileInput, alt, type }: UploadFileParams) => {
   const url = `${apiUrl}/images/upload-${type}`
   const session = await getSession()
-  console.log(session)
-  if (session?.user.accessToken === undefined) {
+
+  if (session?.user?.accessToken === undefined) {
     throw new Error('Headers are undefined')
   }
 
