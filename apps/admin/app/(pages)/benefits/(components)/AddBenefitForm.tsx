@@ -18,8 +18,13 @@ const FieldFileUpload = dynamic(
   () => import('../../(components)/FieldFileUpload'),
 )
 
+// const SelectImage = dynamic(
+//   () => import('../../(components)/SelectImage'),
+// )
+
 const AddBenefitForm = () => {
   const router = useRouter()
+  // const icons = trpc.images.getAllIcons.useQuery()
 
   const createBenefit = trpc.benefits.createBenefit.useMutation({
     onSuccess: () => {
@@ -30,6 +35,7 @@ const AddBenefitForm = () => {
           color: '#fff',
         },
       })
+
       router.refresh()
     },
     onError: () => {
@@ -53,16 +59,17 @@ const AddBenefitForm = () => {
           type: 'icon',
         })
         if (uploadResponse.status === 201) {
-          createBenefit.mutate({
+          await createBenefit.mutateAsync({
             icon_id: uploadResponse.data.id,
             title: values.title,
           })
+          resetForm()
         }
       } catch (err) {
+        // need added toast show errors
         console.log(err)
       }
       setSubmitting(false)
-      resetForm()
     },
     [],
   )
@@ -98,7 +105,8 @@ const AddBenefitForm = () => {
                 onSubmit={props.handleSubmit}
                 className='flex w-[400px] flex-col items-center justify-center gap-3 text-white-dis '
               >
-                <FieldFileUpload name='file' />
+                <FieldFileUpload name='file' initSrc='' />
+
                 <Field name='title'>
                   {({ meta, field }: any) => (
                     <Input
