@@ -16,10 +16,10 @@ declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: string
-      email?: string
-      name?: string
-      accessToken?: string
-      accessTokenExpires?: number
+      email: string
+      name: string
+      accessToken: string
+      accessTokenExpires: number
     } | null
     expires: string
     error: string
