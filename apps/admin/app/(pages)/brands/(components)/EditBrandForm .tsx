@@ -1,65 +1,38 @@
 'use client'
 
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
-import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import toast from 'react-hot-toast'
 
+import { SERVER_URL } from '@admin/app/(lib)/constants'
+import { Input } from '@nextui-org/react'
+import { outputBrandSchema as IBrand } from '@server/domain/brands/schemas/brand.schema'
+import { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
+import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
+import { useCallback, useState } from 'react'
+import * as Yup from 'yup'
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
+import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SendButton from '../../(components)/SendButton'
 
 const EditBrandForm = ({
   brandData,
-  allImagesData,
+  allPicturesData,
 }: {
-  brandData: Awaited<
-    ReturnType<(typeof serverClient)['brands']['getBySlugBrand']>
-  >
-  allImagesData: Awaited<
-    ReturnType<(typeof serverClient)['images']['getAllImages']>
-  >
+  brandData: IBrand
+  allPicturesData: IImage[]
 }) => {
   const router = useRouter()
-
-  const [newBrandData, setNewBrandData] = useState({ ...brandData })
-  const [selectedIcon, setSelectedIcon] = useState<File | null>(null)
-  const [newIcon, setNewIcon] = useState<string | ArrayBuffer | null>(null)
-  const [newArticle, setNewArticle] = useState<string | ''>(
-    brandData.article || '',
+  const brand = trpc.brands.getByIdBrand.useQuery(
+    { id: brandData.id },
+    { initialData: brandData },
   )
+  const images = trpc.images.getAllPictures.useQuery(undefined, {
+    initialData: allPicturesData,
+  })
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-
-    if (name === 'metadata') {
-      const metadataField = e.target.getAttribute('data-metadata-field')
-
-      if (metadataField) {
-        setNewBrandData({
-          ...newBrandData,
-          metadata: {
-            ...newBrandData.metadata,
-            [metadataField]: value,
-          },
-        })
-      }
-    } else {
-      setNewBrandData({ ...newBrandData, [name]: value })
-    }
-  }
-
-  const clearState = () => {
-    setNewBrandData({ ...newBrandData })
-    if (selectedIcon) {
-      setSelectedIcon(null)
-    }
-    setNewIcon(null)
-    setNewArticle(brandData.article || '')
-  }
+  const [brandArticle, setBrandArticle] = useState<string>(brand.data.article)
 
   const updateBrand = trpc.brands.updateBrand.useMutation({
     onSuccess: () => {
@@ -70,7 +43,6 @@ const EditBrandForm = ({
           color: '#fff',
         },
       })
-      clearState()
       router.refresh()
     },
     onError: () => {
@@ -83,213 +55,202 @@ const EditBrandForm = ({
       })
     },
   })
-  const deleteIcon = trpc.images.removeImage.useMutation()
-  const handleIconUpload = async () => {
-    try {
-      if (selectedIcon) {
-        const response = await uploadImg({
-          fileInput: selectedIcon,
-          alt: brandData.icon.alt,
-          type: brandData.icon.type,
-        })
-        return response
-      }
-      return null
-    } catch (error) {
-      throw new Error('Error uploading image')
-    }
-  }
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
 
-    if (selectedIcon) {
-      const uploadResponse = await handleIconUpload()
-      if (uploadResponse?.data.id) {
-        await updateBrand.mutateAsync({
-          id: brandData.id,
-          icon_id: uploadResponse.data.id,
-          title: newBrandData.title,
-          slug: newBrandData.slug,
-          article: newArticle,
-          metadata: {
-            title: newBrandData.metadata.title,
-            description: newBrandData.metadata.description,
-            keywords: newBrandData.metadata.keywords,
-          },
-        })
-        await deleteIcon.mutateAsync(brandData.icon.id)
-      } else {
-        await deleteIcon.mutateAsync(uploadResponse?.data.id)
-        toast.error(`Помилка оновлення статті...`, {
-          style: {
-            borderRadius: '10px',
-            background: 'red',
-            color: '#fff',
-          },
-        })
-      }
-    } else {
-      updateBrand.mutate({
-        id: brandData.id,
-        icon_id: brandData.icon_id,
-        title: newBrandData.title,
-        slug: newBrandData.slug,
-        article: newArticle,
+  const handleSubmit = useCallback(
+    async (values: any, { setSubmitting }: FormikHelpers<any>) => {
+      setSubmitting(true)
+      const { id, slug, icon_id, isActive } = brand.data
+      const { file, title, metaTitle, metaDescription, metaKeywords } = values
+      const dataToUpdate = {
+        id,
+        slug,
+        title,
         metadata: {
-          title: newBrandData.metadata.title,
-          description: newBrandData.metadata.description,
-          keywords: newBrandData.metadata.keywords,
+          title: metaTitle,
+          description: metaDescription,
+          keywords: metaKeywords,
         },
-      })
-    }
-  }
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.files && e.currentTarget.files.length > 0) {
-      const file = e.currentTarget.files[0]
-
-      if (file) {
-        setSelectedIcon(file)
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          setNewIcon(reader.result as string | ArrayBuffer | null)
-        }
-
-        reader.readAsDataURL(file)
+        article: brandArticle,
+        icon_id,
+        isActive,
       }
-    }
-  }
+      console.log(dataToUpdate, file)
+      // try {
+      //   if (values.file.name) {
+      //     const uploadResponse = await uploadImg({
+      //       fileInput: file,
+      //       alt: file.name.split('.')[0],
+      //       type: 'icon',
+      //     })
+      //     if (uploadResponse.status === 201) {
+      //       await updateBrand.mutateAsync({
+      //         ...dataToUpdate,
+      //         icon_id: uploadResponse.data.id,
+      //       })
+      //     }
+      //   } else {
+      //     await updateBrand.mutateAsync({
+      //       ...dataToUpdate,
+      //     })
+      //   }
+      // } catch (err) {
+      //   console.log(err)
+      // }
+      setSubmitting(false)
+    },
+    [],
+  )
 
   return (
-    <div className='container  flex flex-col items-center  gap-[60px] px-4 transition-all duration-300  ease-in-out'>
-      <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
-        <div className='flex w-full flex-col gap-8'>
-          <div className='flex justify-between gap-3 '>
-            <div className='flex flex-col gap-3'>
-              <p className=' bold mt-2 text-center font-exo_2 text-xl'>
+    <div className='container  flex flex-col items-center  gap-[60px] transition-all duration-300  ease-in-out'>
+      <Formik
+        initialValues={{
+          file: brand.data.icon.file,
+          title: brand.data.title,
+          metaTitle: brand.data.metadata.title,
+          metaKeywords: brand.data.metadata.keywords,
+          metaDescription: brand.data.metadata.description,
+        }}
+        validationSchema={Yup.object({
+          title: Yup.string()
+            .min(3, 'Must be 3 characters or more')
+            .required('Please enter your title'),
+        })}
+        onSubmit={handleSubmit}
+      >
+        {(props: FormikProps<any>) => (
+          <Form
+            onSubmit={props.handleSubmit}
+            className='flex mx-auto my-0 flex-col items-center justify-center gap-3 text-white-dis '
+          >
+            <div className='w-6/12'>
+              <p className='text-center font-exo_2 text-xl text-white-dis'>
                 Іконка(.svg)
               </p>
-              <div className='relative'>
-                {!newIcon ? (
-                  brandData.icon && (
-                    <Image
-                      className='max-h-[150px] w-[250px] object-contain object-center'
-                      src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/icons/${brandData.icon.file.filename}`}
-                      width={100}
-                      height={100}
-                      alt={brandData?.icon.alt || ''}
+              <FieldFileUpload
+                name='file'
+                initSrc={`${SERVER_URL}/${brand.data.icon.file.path}`}
+              />
+            </div>
+            <div className='flex flex-col w-6/12'>
+              <p className='text-center font-exo_2 text-xl text-white-dis'>
+                Seo
+              </p>
+              <div className='flex flex-col gap-4'>
+                <Field name='metaTitle'>
+                  {({ meta, field }: any) => (
+                    <Input
+                      type='text'
+                      // isInvalid={meta.touched && meta.error}
+                      // errorMessage={meta.touched && meta.error && meta.error}
+                      placeholder='Seo title'
+                      classNames={{
+                        input: [
+                          'font-base',
+                          'h-[45px]',
+                          'w-full',
+                          'indent-3',
+                          'text-md',
+                          'text-black-dis',
+                        ],
+                      }}
+                      {...field}
                     />
-                  )
-                ) : (
-                  <div>
-                    <Image
-                      className='max-h-[150px] w-[250px] object-contain object-center'
-                      src={typeof newIcon === 'string' ? newIcon : ''}
-                      width={100}
-                      height={100}
-                      alt={brandData.title}
+                  )}
+                </Field>
+                <Field name='metaKeywords'>
+                  {({ meta, field }: any) => (
+                    <Input
+                      type='text'
+                      // isInvalid={meta.touched && meta.error}
+                      // errorMessage={meta.touched && meta.error && meta.error}
+                      placeholder='Seo keywords'
+                      classNames={{
+                        input: [
+                          'font-base',
+                          'h-[45px]',
+                          'w-full',
+                          'indent-3',
+                          'text-md',
+                          'text-black-dis',
+                        ],
+                      }}
+                      {...field}
                     />
-                  </div>
+                  )}
+                </Field>
+                <Field name='metaDescription'>
+                  {({ meta, field }: any) => (
+                    <Input
+                      type='text'
+                      // isInvalid={meta.touched && meta.error}
+                      // errorMessage={meta.touched && meta.error && meta.error}
+                      placeholder='Seo description'
+                      classNames={{
+                        input: [
+                          'font-base',
+                          'h-[45px]',
+                          'w-full',
+                          'indent-3',
+                          'text-md',
+                          'text-black-dis',
+                        ],
+                      }}
+                      {...field}
+                    />
+                  )}
+                </Field>
+              </div>
+            </div>
+            <div className='w-full'>
+              <p className='text-center font-exo_2 text-xl text-white-dis'>
+                Заголовок
+              </p>
+              <Field name='title'>
+                {({ meta, field }: any) => (
+                  <Input
+                    type='text'
+                    isInvalid={meta.touched && meta.error}
+                    errorMessage={meta.touched && meta.error && meta.error}
+                    placeholder='Заголовок'
+                    classNames={{
+                      input: [
+                        'font-base',
+                        'h-[45px]',
+                        'w-full',
+                        'indent-3',
+                        'text-md',
+                        'text-black-dis',
+                      ],
+                    }}
+                    {...field}
+                  />
                 )}
-                <input
-                  className=' text-white-dis'
-                  id='icon'
-                  type='file'
-                  accept='icon/*'
-                  onChange={handleImageChange}
+              </Field>
+            </div>
+            <div className='w-full'>
+              <AddImagesSection allImagesData={images.data} />
+            </div>
+            <div className='flex w-full flex-col justify-center gap-[50px]'>
+              <div className='flex w-full flex-col  gap-2 '>
+                <p className='text-center font-exo_2 text-xl text-white-dis'>
+                  Стаття
+                </p>
+                <CustomEditor
+                  id='edit-brand-article-content'
+                  setContent={setBrandArticle}
+                  content={brandArticle}
                 />
               </div>
-              <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-                alt(Опис зображення)
-                <input
-                  required
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                  type='text'
-                  name='altIcon'
-                  value={newBrandData.icon.alt || ''}
-                  onChange={handleInputChange}
-                />
-              </label>
             </div>
-            <div className='flex w-[400px] flex-col justify-between'>
-              <p className=' bold mt-2 text-center font-exo_2 text-xl'>
-                SEO налаштування
-              </p>
-              <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-                Seo title
-                <input
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                  type='text'
-                  name='metadata'
-                  data-metadata-field='title'
-                  value={newBrandData.metadata.title || ''}
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-                Seo description
-                <input
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                  type='text'
-                  name='metadata'
-                  data-metadata-field='description'
-                  value={newBrandData.metadata.description || ''}
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-                Seo keywords
-                <input
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                  type='text'
-                  name='metadata'
-                  data-metadata-field='keywords'
-                  value={newBrandData.metadata.keywords || ''}
-                  onChange={handleInputChange}
-                />
-              </label>
-            </div>
-          </div>
-          <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-            Заголовок
-            <input
-              required
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-              type='text'
-              name='title'
-              value={newBrandData.title || ''}
-              onChange={handleInputChange}
+            <SendButton
+              type={'submit'}
+              disabled={!props.isValid}
+              isLoading={props.isSubmitting}
             />
-          </label>
-          <label className='flex  flex-col gap-1 text-center font-exo_2 text-xl'>
-            Slug(url сторінки)
-            <input
-              required
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-              type='text'
-              name='slug'
-              value={newBrandData.slug || ''}
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
-      </form>
-      <div className='w-full'>
-        <AddImagesSection allImagesData={allImagesData} />
-      </div>
-      <div className='flex w-full flex-col justify-center gap-[50px]'>
-        <div className='flex w-full flex-col  gap-2 '>
-          <p className='text-center font-exo_2 text-xl text-white-dis'>
-            Стаття
-          </p>
-          <CustomEditor
-            id='edit-brand-article-content'
-            setContent={setNewArticle}
-            content={newArticle}
-          />
-        </div>
-      </div>
-      <SendButton handleSubmit={handleSubmit} />
+          </Form>
+        )}
+      </Formik>
     </div>
   )
 }

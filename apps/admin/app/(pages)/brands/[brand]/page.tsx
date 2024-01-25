@@ -1,9 +1,10 @@
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import type { outputBrandSchema } from '@server/domain/brands/schemas/brand.schema'
-import type { imageSchema } from '@server/domain/images/schemas/image.schema'
+import type { outputBrandSchema as IBrand } from '@server/domain/brands/schemas/brand.schema'
+import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
+import { auth } from '@admin/app/(utils)/authOptions'
 import EditBrandForm from '../(components)/EditBrandForm '
 
 interface IContactAdminProps {
@@ -15,11 +16,17 @@ interface IContactAdminProps {
 export const dynamic = 'force-dynamic'
 
 const BrandPage: React.FC<IContactAdminProps> = async ({ params }) => {
-  const brandData = (await serverClient.brands.getBySlugBrand({
+  const session = await auth()
+  const user = session?.user ? session.user : null
+
+  const brandData = (await serverClient({
+    user,
+  }).brands.getBySlugBrand({
     slug: params.brand,
-  })) as outputBrandSchema
-  const allImagesData =
-    (await serverClient.images.getAllImages()) as imageSchema[]
+  })) as IBrand
+  const allPicturesData = (await serverClient({
+    user,
+  }).images.getAllPictures()) as IImage[]
 
   return (
     <main>
@@ -36,10 +43,13 @@ const BrandPage: React.FC<IContactAdminProps> = async ({ params }) => {
               {brandData.title}
             </p>
           </div>
-          <h2 className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
+          <h2 className='mb-6 font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '>
             {brandData.title}
           </h2>
-          <EditBrandForm allImagesData={allImagesData} brandData={brandData} />
+          <EditBrandForm
+            allPicturesData={allPicturesData}
+            brandData={brandData}
+          />
         </div>
       </section>
     </main>
