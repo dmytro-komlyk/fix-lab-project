@@ -30,12 +30,12 @@ const SelectImage = ({
         listboxProps={{
           itemClasses: {
             base: [
-              'bg-red-900',
+              'bg-default-200',
               'rounded-md',
               'text-default-500',
               'transition-opacity',
               'data-[hover=true]:text-foreground',
-              'data-[hover=true]:bg-default-100',
+              'data-[hover=true]:bg-default-600',
               'dark:data-[hover=true]:bg-default-50',
               'data-[selectable=true]:focus:bg-default-50',
               'data-[pressed=true]:opacity-70',

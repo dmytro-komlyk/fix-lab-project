@@ -1,6 +1,7 @@
 import { auth } from '@admin/app/(utils)/authOptions'
 import Image from 'next/image'
-import Link from 'next/link'
+// import Link from 'next/link'
+import { Link } from '@nextui-org/react'
 import { HiLockClosed } from 'react-icons/hi'
 
 import AuthButtons from './AuthButtons'
@@ -27,29 +28,35 @@ const Dashboard = async () => {
         {session?.user && (
           <div>
             <ul className='flex flex-col gap-4'>
-              <li>
+              <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/articles'
+                  isDisabled
                   className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
                 >
                   Блог
                 </Link>
+                <HiLockClosed size={30} color='#fff' />
               </li>
-              <li>
+              <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/gadgets'
+                  isDisabled
                   className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
                 >
                   Гаджети
                 </Link>
+                <HiLockClosed size={30} color='#fff' />
               </li>
               <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/issues'
+                  isDisabled
                   className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Послуги
                 </Link>
+                <HiLockClosed size={30} color='#fff' />
               </li>
               <li className='flex items-center justify-between gap-2'>
                 <Link
@@ -62,23 +69,28 @@ const Dashboard = async () => {
               <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/brands'
+                  isDisabled
                   className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Бренди
                 </Link>
+                <HiLockClosed size={30} color='#fff' />
               </li>
 
               <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/contacts'
+                  isDisabled
                   className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Контакти
                 </Link>
+                <HiLockClosed size={30} color='#fff' />
               </li>
               <li className='flex items-center justify-between gap-2 opacity-70'>
                 <Link
                   href='/#'
+                  isDisabled
                   className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Медіа
