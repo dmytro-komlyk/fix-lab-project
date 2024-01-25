@@ -1,6 +1,6 @@
 'use client'
 
-import { NextUIProvider } from '@nextui-org/react'
+import { NextUIProvider } from '@nextui-org/system'
 import { SessionProvider } from 'next-auth/react'
 import React from 'react'
 
@@ -15,11 +15,11 @@ const Providers = ({
   session: Session | null
 }) => {
   return (
-    <NextUIProvider>
-      <SessionProvider session={session}>
-        <TrpcProvider session={session}>{children}</TrpcProvider>
-      </SessionProvider>
-    </NextUIProvider>
+    <SessionProvider session={session}>
+      <TrpcProvider session={session}>
+        <NextUIProvider>{children} </NextUIProvider>
+      </TrpcProvider>
+    </SessionProvider>
   )
 }
 

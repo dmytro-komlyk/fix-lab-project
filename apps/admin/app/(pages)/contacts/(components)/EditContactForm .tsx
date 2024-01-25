@@ -1,37 +1,26 @@
 'use client'
 
-import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
-import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-import SendButton from '../../(components)/SendButton'
+import { SERVER_URL } from '@admin/app/(lib)/constants'
+import { Input } from '@nextui-org/react'
+import type { outputContactSchema as IContact } from '@server/domain/contacts/schemas/contact.schema'
+import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
+import { useCallback } from 'react'
+import * as Yup from 'yup'
+import FieldFileUpload from '../../(components)/FieldFileUpload'
 
-const EditContactForm = ({
-  contactData,
-}: {
-  contactData: Awaited<
-    ReturnType<(typeof serverClient)['contacts']['getByIdContact']>
-  >
-}) => {
-  const [newContactData, setNewContactData] = useLocalStorage(
-    `editContactData${contactData.id}`,
-    {
-      ...contactData,
-    },
-  )
-  const [selectedImage, setSelectedImage] = useState<File | null>(null)
-  const [newImage, setNewImage] = useState<string | ArrayBuffer | null>(null)
+const EditContactForm = ({ contactData }: { contactData: IContact }) => {
+  // const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  // const [newImage, setNewImage] = useState<string | ArrayBuffer | null>(null)
   const router = useRouter()
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setNewContactData({ ...newContactData, [name]: value })
-  }
+  const contact = trpc.contacts.getByIdContact.useQuery(
+    { id: contactData.id },
+    { initialData: contactData },
+  )
   const updateContact = trpc.contacts.updateContact.useMutation({
     onSuccess: () => {
       toast.success(`Оновлення збережено!`, {
@@ -54,104 +43,255 @@ const EditContactForm = ({
     },
   })
 
-  const deleteImage = trpc.images.removeImage.useMutation()
-  const handleImageUpload = async () => {
-    try {
-      if (selectedImage) {
-        const response = await uploadImg({
-          fileInput: selectedImage,
-          alt: contactData.image.alt,
-          type: contactData.image.type,
-        })
-        return response
-      }
-      return null
-    } catch (error) {
-      throw new Error('Error uploading image')
-    }
-  }
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
+  const handleSubmit = useCallback(
+    async (values: any, { setSubmitting }: FormikHelpers<any>) => {
+      setSubmitting(true)
+    },
+    [],
+  )
 
-    if (!newContactData.area && !selectedImage) {
-      toast.error(`Всі поля повинні бути заповнені...`, {
-        style: {
-          borderRadius: '10px',
-          background: 'grey',
-          color: '#fff',
-        },
-      })
-    } else if (selectedImage) {
-      const uploadResponse = await handleImageUpload()
+  // const deleteImage = trpc.images.removeImage.useMutation()
+  // const handleImageUpload = async () => {
+  //   try {
+  //     if (selectedImage) {
+  //       const response = await uploadImg({
+  //         fileInput: selectedImage,
+  //         alt: contactData.image.alt,
+  //         type: contactData.image.type,
+  //       })
+  //       return response
+  //     }
+  //     return null
+  //   } catch (error) {
+  //     throw new Error('Error uploading image')
+  //   }
+  // }
+  // const handleSubmit = async (e: any) => {
+  //   e.preventDefault()
 
-      if (uploadResponse?.data.id) {
-        await updateContact.mutateAsync({
-          isActive: true,
-          id: contactData.id,
-          area: newContactData.area,
-          address: newContactData.address,
-          comment: newContactData.comment,
-          subways: newContactData.subways,
-          phones: newContactData.phones,
-          workingTime: newContactData.workingTime,
-          workingDate: newContactData.workingDate,
-          googleMapLink: newContactData.googleMapLink,
-          googlePluginLink: newContactData.googlePluginLink,
-          image_id: uploadResponse.data.id,
-        })
-        await deleteImage.mutateAsync(contactData.image.id)
-      } else {
-        await deleteImage.mutateAsync(uploadResponse?.data.id)
-        toast.error(`Помилка оновлення послуги сервісного обслуговування...`, {
-          style: {
-            borderRadius: '10px',
-            background: 'red',
-            color: '#fff',
-          },
-        })
-      }
-    } else {
-      updateContact.mutate({
-        isActive: true,
-        id: contactData.id,
-        area: newContactData.area,
-        address: newContactData.address,
-        comment: newContactData.comment,
-        subways: newContactData.subways,
-        phones: newContactData.phones,
-        workingTime: newContactData.workingTime,
-        workingDate: newContactData.workingDate,
-        googleMapLink: newContactData.googleMapLink,
-        googlePluginLink: newContactData.googlePluginLink,
-        image_id: contactData.image.id,
-      })
-    }
-  }
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.files && e.currentTarget.files.length > 0) {
-      const file = e.currentTarget.files[0]
+  //   if (!newContactData.area && !selectedImage) {
+  //     toast.error(`Всі поля повинні бути заповнені...`, {
+  //       style: {
+  //         borderRadius: '10px',
+  //         background: 'grey',
+  //         color: '#fff',
+  //       },
+  //     })
+  //   } else if (selectedImage) {
+  //     const uploadResponse = await handleImageUpload()
 
-      if (file) {
-        setSelectedImage(file)
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          setNewImage(reader.result as string | ArrayBuffer | null)
-        }
+  //     if (uploadResponse?.data.id) {
+  //       await updateContact.mutateAsync({
+  //         isActive: true,
+  //         id: contactData.id,
+  //         area: newContactData.area,
+  //         address: newContactData.address,
+  //         comment: newContactData.comment,
+  //         subways: newContactData.subways,
+  //         phones: newContactData.phones,
+  //         workingTime: newContactData.workingTime,
+  //         workingDate: newContactData.workingDate,
+  //         googleMapLink: newContactData.googleMapLink,
+  //         googlePluginLink: newContactData.googlePluginLink,
+  //         image_id: uploadResponse.data.id,
+  //       })
+  //       await deleteImage.mutateAsync(contactData.image.id)
+  //     } else {
+  //       await deleteImage.mutateAsync(uploadResponse?.data.id)
+  //       toast.error(`Помилка оновлення послуги сервісного обслуговування...`, {
+  //         style: {
+  //           borderRadius: '10px',
+  //           background: 'red',
+  //           color: '#fff',
+  //         },
+  //       })
+  //     }
+  //   } else {
+  //     updateContact.mutate({
+  //       isActive: true,
+  //       id: contactData.id,
+  //       area: newContactData.area,
+  //       address: newContactData.address,
+  //       comment: newContactData.comment,
+  //       subways: newContactData.subways,
+  //       phones: newContactData.phones,
+  //       workingTime: newContactData.workingTime,
+  //       workingDate: newContactData.workingDate,
+  //       googleMapLink: newContactData.googleMapLink,
+  //       googlePluginLink: newContactData.googlePluginLink,
+  //       image_id: contactData.image.id,
+  //     })
+  //   }
+  // }
+  // const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.currentTarget.files && e.currentTarget.files.length > 0) {
+  //     const file = e.currentTarget.files[0]
 
-        reader.readAsDataURL(file)
-      }
-    }
-  }
+  //     if (file) {
+  //       setSelectedImage(file)
+  //       const reader = new FileReader()
+  //       reader.onloadend = () => {
+  //         setNewImage(reader.result as string | ArrayBuffer | null)
+  //       }
+
+  //       reader.readAsDataURL(file)
+  //     }
+  //   }
+  // }
 
   return (
     <div className='flex flex-col items-center justify-center gap-[50px]'>
-      <form className='flex w-full flex-wrap items-end justify-evenly gap-3 text-white-dis '>
+      <Formik
+        initialValues={{
+          file: contact.data.image.file,
+          area: contact.data.area,
+          address: contact.data.address,
+          comment: contact.data.comment,
+          subways: contact.data.subways,
+          phones: contact.data.phones,
+          workingTime: contact.data.workingTime,
+          workingDate: contact.data.workingDate,
+          googleMapLink: contact.data.googleMapLink,
+          googlePluginLink: contact.data.googlePluginLink,
+        }}
+        // NEED ADD VALIDATTION
+        validationSchema={Yup.object({
+          area: Yup.string(),
+          address: Yup.string(),
+          comment: Yup.string(),
+          subways: Yup.string(),
+          phones: Yup.string(),
+          workingTime: Yup.string(),
+          workingDate: Yup.string(),
+          googleMapLink: Yup.string(),
+          googlePluginLink: Yup.string(),
+        })}
+        onSubmit={handleSubmit}
+      >
+        {(props: FormikProps<any>) => (
+          <Form
+            onSubmit={props.handleSubmit}
+            className='flex w-full flex-wrap items-end justify-evenly gap-3 text-white-dis'
+          >
+            <FieldFileUpload
+              name='file'
+              initSrc={`${SERVER_URL}/${contact.data.image.file.path}`}
+            />
+            <Field name='area'>
+              {({ meta, field }: any) => (
+                <Input
+                  type='text'
+                  // isInvalid={meta.touched && meta.error}
+                  // errorMessage={meta.touched && meta.error && meta.error}
+                  placeholder='Район'
+                  classNames={{
+                    input: [
+                      'font-base',
+                      'h-[45px]',
+                      'w-full',
+                      'indent-3',
+                      'text-md',
+                      'text-black-dis',
+                    ],
+                  }}
+                  {...field}
+                />
+              )}
+            </Field>
+            <Field name='address'>
+              {({ meta, field }: any) => (
+                <Input
+                  type='text'
+                  // isInvalid={meta.touched && meta.error}
+                  // errorMessage={meta.touched && meta.error && meta.error}
+                  placeholder='Адрес'
+                  classNames={{
+                    input: [
+                      'font-base',
+                      'h-[45px]',
+                      'w-full',
+                      'indent-3',
+                      'text-md',
+                      'text-black-dis',
+                    ],
+                  }}
+                  {...field}
+                />
+              )}
+            </Field>
+            <Field name='comment'>
+              {({ meta, field }: any) => (
+                <Input
+                  type='text'
+                  // isInvalid={meta.touched && meta.error}
+                  // errorMessage={meta.touched && meta.error && meta.error}
+                  placeholder='Коментар'
+                  classNames={{
+                    input: [
+                      'font-base',
+                      'h-[45px]',
+                      'w-full',
+                      'indent-3',
+                      'text-md',
+                      'text-black-dis',
+                    ],
+                  }}
+                  {...field}
+                />
+              )}
+            </Field>
+            <Field name='subways'>
+              {({ meta, field }: any) => (
+                <Input
+                  type='text'
+                  // isInvalid={meta.touched && meta.error}
+                  // errorMessage={meta.touched && meta.error && meta.error}
+                  placeholder='Станції метро'
+                  classNames={{
+                    input: [
+                      'font-base',
+                      'h-[45px]',
+                      'w-full',
+                      'indent-3',
+                      'text-md',
+                      'text-black-dis',
+                    ],
+                  }}
+                  {...field}
+                />
+              )}
+            </Field>
+            <Field name='phones'>
+              {({ meta, field }: any) => (
+                <Input
+                  type='text'
+                  // isInvalid={meta.touched && meta.error}
+                  // errorMessage={meta.touched && meta.error && meta.error}
+                  placeholder='Телефон'
+                  classNames={{
+                    input: [
+                      'font-base',
+                      'h-[45px]',
+                      'w-full',
+                      'indent-3',
+                      'text-md',
+                      'text-black-dis',
+                    ],
+                  }}
+                  {...field}
+                />
+              )}
+            </Field>
+          </Form>
+        )}
+      </Formik>
+      {/* <form className='flex w-full flex-wrap items-end justify-evenly gap-3 text-white-dis '>
         <div className='flex w-[400px] flex-col gap-2'>
           <div className='relative'>
             {!newImage ? (
               <Image
                 className='h-[240px] w-[320px] object-cover object-center'
-                src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/pictures/${contactData.image.file.filename}`}
+                src={`${SERVER_URL}/${contactData.image.file.path}`}
                 width={300}
                 height={200}
                 alt={contactData.image_id}
@@ -277,7 +417,7 @@ const EditContactForm = ({
           </label>
         </div>
       </form>
-      <SendButton handleSubmit={handleSubmit} />
+      <SendButton handleSubmit={handleSubmit} /> */}
     </div>
   )
 }

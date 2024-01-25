@@ -1,8 +1,7 @@
 import { loginSchema } from '@server/domain/auth/schemas/auth.schema'
 import { expiresInToMilliseconds } from '@server/helpers/time-converted.helper'
-import NextAuth, { type NextAuthOptions } from 'next-auth'
+import NextAuth, { Session, User, type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { Session, User } from 'next-auth/types'
 import { outputAuthSchema } from './../../../server/src/domain/auth/schemas/auth.schema'
 import { serverClient } from './trpc/serverClient'
 
@@ -33,6 +32,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials: any): Promise<outputAuthSchema | null> {
         const { login, password } = credentials
         const creds = await loginSchema.parseAsync({ email: login, password })
+
         const user = await serverClient({ user: null }).auth.login(creds)
 
         if (user) {

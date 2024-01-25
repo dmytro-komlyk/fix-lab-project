@@ -1,5 +1,6 @@
-import type { outputBenefitSchema } from '@server/domain/benefits/schemas/benefit.schema'
+import type { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
 
+// import { auth } from '@admin/app/(utils)/authOptions'
 import { auth } from '@admin/app/(utils)/authOptions'
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import EmptySection from '../(components)/EmptySection'
@@ -11,9 +12,11 @@ export const dynamic = 'force-dynamic'
 const BenefitsPage = async () => {
   const session = await auth()
   const user = session?.user ? session.user : null
+
   const benefitsData = (await serverClient({
     user,
-  }).benefits.getAllBenefits()) as outputBenefitSchema[]
+  }).benefits.getAllBenefits()) as IBenefit[]
+
   return (
     <main>
       <section className='flex min-h-[100vh] w-full bg-footer-gradient-linear-blue py-[60px]'>

@@ -1,41 +1,52 @@
-import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import type { outputBenefitSchema } from '@server/domain/benefits/schemas/benefit.schema'
-import Link from 'next/link'
+import { SERVER_URL } from '@admin/app/(lib)/constants'
+import {
+  Button,
+  ButtonGroup,
+  Card,
+  CardBody,
+  Image,
+  Link,
+} from '@nextui-org/react'
+import type { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
 import { FaEdit } from 'react-icons/fa'
-
 import RemoveBenefit from './RemoveBenefit'
 
-const BenefitsList = ({
-  benefitsData,
-}: {
-  benefitsData: Awaited<
-    ReturnType<(typeof serverClient)['benefits']['getAllBenefits']>
-  >
-}) => {
+const BenefitsList = ({ benefitsData }: { benefitsData: IBenefit[] }) => {
   return (
     <div className=' flex flex-col items-center justify-center gap-8 pb-12'>
       <div className=' flex w-full flex-col items-center justify-center gap-8'>
-        <ul className='flex w-full flex-col shadow-2xl'>
-          {benefitsData.map((item: outputBenefitSchema) => (
-            <li
-              className='group border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl'
+        <ul className='flex w-full flex-col gap-4 shadow-2xl'>
+          {benefitsData.map((item: IBenefit) => (
+            <Card
               key={item.id}
+              className='group border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl'
+              shadow='sm'
             >
-              <div className='flex items-center justify-between px-6 py-[20px]'>
-                <h3 className='font-semibold text-dark-blue md:text-base xl:text-xl'>
+              <CardBody className='flex flex-row gap-6 items-center overflow-visible py-2 px-4'>
+                <Image
+                  alt='Icon benefit'
+                  className='object-cover rounded-xl'
+                  src={`${SERVER_URL}/${item.icon.file.path}`}
+                  width={50}
+                />
+                <h3 className='font-semibold text-dark-blue md:text-lg xl:text-xl'>
                   {item.title}
                 </h3>
-                <div className='relative ml-4 flex items-center justify-center gap-4'>
-                  <Link href={`/benefits/${item.id}`}>
+                <ButtonGroup className='ml-auto'>
+                  <Button
+                    href={`/benefits/${item.id}`}
+                    as={Link}
+                    className='min-w-2 px-3'
+                  >
                     <FaEdit
                       className='transition-colors hover:fill-mid-green focus:fill-mid-green'
-                      size={30}
+                      size='2em'
                     />
-                  </Link>
+                  </Button>
                   <RemoveBenefit item={item} />
-                </div>
-              </div>
-            </li>
+                </ButtonGroup>
+              </CardBody>
+            </Card>
           ))}
         </ul>
         {/* {benefitsData.totalPages > 1 && (

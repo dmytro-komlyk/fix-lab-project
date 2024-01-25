@@ -8,7 +8,7 @@ import EditBenefitForm from '../(components)/EditBenefitForm '
 
 interface IBenefitAdminProps {
   params: {
-    id: string
+    benefit: string
   }
 }
 
@@ -16,10 +16,12 @@ export const dynamic = 'force-dynamic'
 
 const BenefitPage: React.FC<IBenefitAdminProps> = async ({ params }) => {
   const session = await auth()
+  const user = session?.user ? session.user : null
+
   const benefitData = (await serverClient({
-    user: session?.user,
+    user,
   }).benefits.getByIdBenefit({
-    id: params.id,
+    id: params.benefit,
   })) as outputBenefitSchema
 
   return (

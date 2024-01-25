@@ -25,16 +25,20 @@ COPY . /app
 WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY --from=dependencies /app/${SERVICE_PATH}/node_modules ./${SERVICE_PATH}/node_modules
-COPY ${SERVICE_PATH}/.env.example ./${SERVICE_PATH}/.env
+COPY ${SERVICE_PATH}/.env.docker.example ./${SERVICE_PATH}/.env
 
 ENV NODE_ENV production
 
+RUN pnpm db:generate
 RUN pnpm build:server
 RUN pnpm deploy --filter=server --prod /prod/${PACKAGE_NAME}
-RUN cd /prod/${PACKAGE_NAME} && pnpm db:generate
+
+COPY ${SERVICE_PATH}/migrate-and-start.sh ./prod/${PACKAGE_NAME}/migrate-and-start.sh
+RUN chmod +x /prod/${PACKAGE_NAME}/migrate-and-start.sh
 
 FROM base as runner
 COPY --chown=node:node --from=builder /prod/${PACKAGE_NAME} /app/${SERVICE_PATH}
+COPY --chown=node:node --from=builder /app/${SERVICE_PATH}/.env /app/${SERVICE_PATH}/.env
 COPY --chown=node:node --from=builder /app/${SERVICE_PATH}/dist /app/${SERVICE_PATH}/dist
 WORKDIR /app
 COPY tsconfig.json ./tsconfig.json
@@ -47,7 +51,7 @@ ENV PORT 3000
 ENV HOSTNAME 0.0.0.0
 EXPOSE 3000
 
-CMD [ "pnpm", "start:prod" ]
+CMD ["./migrate-and-start.sh"]
 
 FROM base as prisma-runner
 COPY --chown=node:node --from=runner /app/${SERVICE_PATH} /app/apps/prisma

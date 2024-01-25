@@ -10,11 +10,10 @@ export const imageSchema = z.object({
     mimetype: z.string(),
     originalname: z.string(),
     path: z.string(),
-    size: z.number()
+    size: z.number(),
   }),
   alt: z.string(),
   type: z.string(),
-  gadget_gallery_ids: z.array(z.string())
 });
 
 export const uploadImageSchema = z.object({
@@ -26,10 +25,10 @@ export const uploadImageSchema = z.object({
     mimetype: z.string(),
     originalname: z.string(),
     path: z.string(),
-    size: z.number()
+    size: z.number(),
   }),
   alt: z.string().min(1),
-  type: z.string().min(1)
+  type: z.string().min(1),
 });
 
 export type imageSchema = z.TypeOf<typeof imageSchema>;
