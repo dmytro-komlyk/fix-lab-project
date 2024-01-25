@@ -36,11 +36,6 @@ jobs:
         with:
           target: production
           file: ./docker/Dockerfile.server
-          secrets: |
-            MONGO_DB_AUTH_USERNAME=${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
-            MONGO_DB_AUTH_PASSWORD=${{ secrets.MONGO_INITDB_ROOT_PASSWORD }}
-            SECRET=${{ secrets.SECRET }}
-            D_ADMIN_KEY=${{ secrets.D_ADMIN_KEY }}
           push: true
           tags: |
             ghcr.io/iryna-gry/prod-fixlab-server:latest
