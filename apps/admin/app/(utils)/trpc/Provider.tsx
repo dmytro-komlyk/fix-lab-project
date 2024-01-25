@@ -23,9 +23,11 @@ export function TrpcProvider({
         httpBatchLink({
           url,
           async headers() {
-            return {
-              authorization: `Bearer ${session?.user.accessToken}`,
-            }
+            return session?.user
+              ? {
+                  authorization: `Bearer ${session?.user.accessToken}`,
+                }
+              : {}
           },
         }),
       ],

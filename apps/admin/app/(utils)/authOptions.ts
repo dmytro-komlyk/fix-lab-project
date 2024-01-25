@@ -9,10 +9,10 @@ import { serverClient } from './trpc/serverClient'
 export const authOptions: NextAuthOptions = {
   debug: true,
   pages: {
+    error: '../authentication/signin',
     signIn: '../authentication/signin',
     newUser: '../authentication/signup',
   },
-  // secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
     maxAge: expiresInToMilliseconds(
