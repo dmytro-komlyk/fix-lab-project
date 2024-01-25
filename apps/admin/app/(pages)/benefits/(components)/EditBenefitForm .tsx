@@ -3,15 +3,15 @@
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import toast from 'react-hot-toast'
 
-import { SERVER_URL } from '@admin/app/(lib)/constants'
 import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { Input } from '@nextui-org/react'
 import { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
 import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useCallback } from 'react'
+import { useState } from 'react'
 import * as Yup from 'yup'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
+import SelectImage from '../../(components)/SelectImage'
 import SendButton from '../../(components)/SendButton'
 
 const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
@@ -21,6 +21,10 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
     { id: benefitData.id },
     { initialData: benefitData },
   )
+  const [selectedIcon, setSelectIcon] = useState<string | null>(
+    benefit.data.icon_id as string,
+  )
+  const icons = trpc.images.getAllIcons.useQuery(undefined)
 
   const updateBenefit = trpc.benefits.updateBenefit.useMutation({
     onSuccess: () => {
@@ -48,11 +52,21 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
     },
   })
 
-  const handleSubmit = useCallback(
-    async (values: any, { setSubmitting }: FormikHelpers<any>) => {
-      setSubmitting(true)
+  const handleSubmit = async (
+    values: any,
+    { setSubmitting }: FormikHelpers<any>,
+  ) => {
+    setSubmitting(true)
 
-      try {
+    try {
+      console.log(values, selectedIcon)
+      if (selectedIcon) {
+        await updateBenefit.mutateAsync({
+          ...benefit.data,
+          icon_id: selectedIcon,
+          title: values.title,
+        })
+      } else {
         if (values.file.name) {
           const uploadResponse = await uploadImg({
             fileInput: values.file,
@@ -72,13 +86,12 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
             title: values.title,
           })
         }
-      } catch (err) {
-        console.log(err)
       }
-      setSubmitting(false)
-    },
-    [],
-  )
+    } catch (err) {
+      console.log(err)
+    }
+    setSubmitting(false)
+  }
 
   return (
     <Formik
@@ -88,20 +101,28 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
       }}
       validationSchema={Yup.object({
         title: Yup.string()
-          .min(3, 'Must be 3 characters or more')
-          .required('Please enter your title'),
+          .min(3, 'Має бути 3 або більше символів')
+          .required('Введіть назву'),
       })}
       onSubmit={handleSubmit}
     >
       {(props: FormikProps<any>) => (
         <Form
           onSubmit={props.handleSubmit}
-          className='flex w-[400px] mx-auto my-0 flex-col items-center justify-center gap-3 text-white-dis '
+          className='flex w-[400px] mx-auto my-0 flex-col items-center justify-center gap-6 text-white-dis '
         >
-          <FieldFileUpload
-            name='file'
-            initSrc={`${SERVER_URL}/${benefit.data.icon.file.path}`}
-          />
+          <div className='flex flex-col gap-4 items-center w-full'>
+            <FieldFileUpload name='file' isRequired={false} />
+            <p className='text-white-dis'>або</p>
+            {icons.isSuccess && (
+              <SelectImage
+                icons={icons.data}
+                setSelect={setSelectIcon}
+                defaultSelectedKeys={selectedIcon ? [selectedIcon] : null}
+              />
+            )}
+            <div className='text-danger'></div>
+          </div>
           <Field name='title'>
             {({ meta, field }: any) => (
               <Input

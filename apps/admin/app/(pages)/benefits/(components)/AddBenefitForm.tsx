@@ -4,27 +4,26 @@ import { trpc } from '@admin/app/(utils)/trpc/client'
 import { Accordion, AccordionItem, Input } from '@nextui-org/react'
 import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useCallback } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 import * as Yup from 'yup'
 
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import SendButton from '../../(components)/SendButton'
 
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import dynamic from 'next/dynamic'
 
 const FieldFileUpload = dynamic(
   () => import('../../(components)/FieldFileUpload'),
 )
 
-// const SelectImage = dynamic(
-//   () => import('../../(components)/SelectImage'),
-// )
+const SelectImage = dynamic(() => import('../../(components)/SelectImage'))
 
 const AddBenefitForm = () => {
   const router = useRouter()
-  // const icons = trpc.images.getAllIcons.useQuery()
+  const icons = trpc.images.getAllIcons.useQuery(undefined)
+  const [selectedIcon, setSelectIcon] = useState<string | null>(null)
 
   const createBenefit = trpc.benefits.createBenefit.useMutation({
     onSuccess: () => {
@@ -35,7 +34,6 @@ const AddBenefitForm = () => {
           color: '#fff',
         },
       })
-
       router.refresh()
     },
     onError: () => {
@@ -49,10 +47,19 @@ const AddBenefitForm = () => {
     },
   })
 
-  const handleSubmit = useCallback(
-    async (values: any, { setSubmitting, resetForm }: FormikHelpers<any>) => {
-      setSubmitting(true)
-      try {
+  const handleSubmit = async (
+    values: any,
+    { setSubmitting, resetForm }: FormikHelpers<any>,
+  ) => {
+    setSubmitting(true)
+    try {
+      if (selectedIcon) {
+        await createBenefit.mutateAsync({
+          icon_id: selectedIcon,
+          title: values.title,
+        })
+        resetForm()
+      } else {
         const uploadResponse = await uploadImg({
           fileInput: values.file,
           alt: values.file.name.split('.')[0],
@@ -65,14 +72,13 @@ const AddBenefitForm = () => {
           })
           resetForm()
         }
-      } catch (err) {
-        // need added toast show errors
-        console.log(err)
       }
-      setSubmitting(false)
-    },
-    [],
-  )
+    } catch (err) {
+      // need added toast show errors
+      console.log(err)
+    }
+    setSubmitting(false)
+  }
 
   return (
     <Accordion
@@ -95,18 +101,28 @@ const AddBenefitForm = () => {
             initialValues={{ title: '', file: null }}
             validationSchema={Yup.object({
               title: Yup.string()
-                .min(3, 'Must be 3 characters or more')
-                .required('Please enter your title'),
+                .min(3, 'Має бути 3 або більше символів')
+                .required('Введіть назву'),
             })}
             onSubmit={handleSubmit}
           >
             {(props: FormikProps<any>) => (
               <Form
                 onSubmit={props.handleSubmit}
-                className='flex w-[400px] flex-col items-center justify-center gap-3 text-white-dis '
+                className='flex w-[400px] flex-col gap-6 items-center justify-center text-white-dis'
               >
-                <FieldFileUpload name='file' initSrc='' />
-
+                <div className='flex flex-col gap-4 items-center w-full'>
+                  <FieldFileUpload name='file' isRequired={false} />
+                  <p className='text-white-dis'>або</p>
+                  {icons.isSuccess && (
+                    <SelectImage
+                      icons={icons.data}
+                      setSelect={setSelectIcon}
+                      defaultSelectedKeys={selectedIcon ? [selectedIcon] : null}
+                    />
+                  )}
+                  <div className='text-danger'></div>
+                </div>
                 <Field name='title'>
                   {({ meta, field }: any) => (
                     <Input

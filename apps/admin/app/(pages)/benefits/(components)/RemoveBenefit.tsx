@@ -50,20 +50,30 @@ const RemoveBenefit = ({ item }: { item: IBenefit }) => {
   return (
     <Popover
       placement='right'
+      showArrow={true}
       isOpen={isOpen}
       onOpenChange={open => setIsOpen(open)}
     >
       <PopoverTrigger>
         <Button isIconOnly aria-label='Delete benefit'>
-          <MdDelete size='2em' />
+          <MdDelete
+            size='2em'
+            className='transition-colors hover:fill-[red] focus:fill-[red]'
+          />
         </Button>
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent className='p-0'>
         <ButtonGroup>
-          <Button onClick={() => handleDeleteBenefit(item.id)}>
+          <Button
+            className='transition-colors [&>svg]:hover:fill-[green] [&>svg]:focus:fill-[green]'
+            onClick={() => handleDeleteBenefit(item.id)}
+          >
             <FaCheck size='2em' />
           </Button>
-          <Button onClick={() => setIsOpen(false)}>
+          <Button
+            className='transition-colors [&>svg]:hover:fill-[red] [&>svg]:focus:fill-[red]'
+            onClick={() => setIsOpen(false)}
+          >
             <MdCancel size='2em' />
           </Button>
         </ButtonGroup>

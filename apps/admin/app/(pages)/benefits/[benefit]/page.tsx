@@ -17,6 +17,7 @@ export const dynamic = 'force-dynamic'
 const BenefitPage: React.FC<IBenefitAdminProps> = async ({ params }) => {
   const session = await auth()
   const user = session?.user ? session.user : null
+
   const benefitData = (await serverClient({
     user,
   }).benefits.getByIdBenefit({
