@@ -45,10 +45,10 @@ export default async function RootLayout({
   const session = await auth()
   return (
     <html
-      lang='uk'
-      className={`${inter.variable} ${manrope.variable} ${exo2.variable} ${gugi.variable} h-full`}
+      lang='en'
+      className={`dark ${inter.variable} ${manrope.variable} ${exo2.variable} ${gugi.variable} h-full`}
     >
-      <body className='h-[100vh]'>
+      <body suppressHydrationWarning={true} className='h-[100vh]'>
         <Toaster />
         <Providers session={session}>
           <div className='flex'>

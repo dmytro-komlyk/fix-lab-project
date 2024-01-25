@@ -22,9 +22,11 @@ export function TrpcProvider({
         httpBatchLink({
           url: SERVER_TRPC_URL,
           async headers() {
-            return {
-              authorization: `Bearer ${session?.user?.accessToken}`,
-            }
+            return session?.user
+              ? {
+                  authorization: `Bearer ${session?.user.accessToken}`,
+                }
+              : {}
           },
         }),
       ],
