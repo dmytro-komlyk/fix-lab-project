@@ -35,7 +35,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           target: production
-          file: ./docker/Dockerfile.server
+          file: ./apps/server/Dockerfile
           push: true
           tags: |
             ghcr.io/iryna-gry/prod-fixlab-server:latest
@@ -45,7 +45,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           target: production
-          file: ./docker/Dockerfile.client
+          file: ./apps/client/Dockerfile
           push: true
           tags: |
             ghcr.io/iryna-gry/prod-fixlab-client:latest
@@ -55,7 +55,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           target: production
-          file: ./docker/Dockerfile.admin
+          file: ./apps/admin/Dockerfile
           push: true
           tags: |
             ghcr.io/iryna-gry/prod-fixlab-admin:latest
