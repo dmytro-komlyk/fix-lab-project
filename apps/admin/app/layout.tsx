@@ -46,7 +46,7 @@ export default async function RootLayout({
   return (
     <html
       lang='en'
-      className={`dark ${inter.variable} ${manrope.variable} ${exo2.variable} ${gugi.variable} h-full`}
+      className={`light ${inter.variable} ${manrope.variable} ${exo2.variable} ${gugi.variable} h-full`}
     >
       <body suppressHydrationWarning={true} className='h-[100vh]'>
         <Toaster />
