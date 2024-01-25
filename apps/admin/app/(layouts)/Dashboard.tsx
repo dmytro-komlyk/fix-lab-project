@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { HiLockClosed } from 'react-icons/hi'
 
-import AuthButtons from './AuthButtons'
+import ExitButton from './ExitButton'
 
 const Dashboard = async () => {
   const session = await auth()
@@ -105,7 +105,7 @@ const Dashboard = async () => {
           </Link>
         </div>
       ) : (
-        <AuthButtons />
+        <ExitButton />
       )}
     </div>
   )

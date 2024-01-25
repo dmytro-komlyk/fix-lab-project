@@ -37,6 +37,22 @@ const SignIn = () => {
           })
         }
       } catch (error) {
+        // toast.custom(t => (
+        //   <div
+        //     className={`${
+        //       t.visible ? 'animate-enter' : 'animate-leave'
+        //     } max-w-md w-full bg-white items-center shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        //   >
+        //     <div className='flex-1 w-0 p-4'>
+        //       <div className='flex items-center'>
+        //         <p>
+        //           Помилка авторизації, перевірте правильність вводу пошти та
+        //           пароля
+        //         </p>
+        //       </div>
+        //     </div>
+        //   </div>
+        // ))
         toast.error(
           `Помилка авторизації, перевірте правильність вводу пошти та пароля`,
           {
@@ -80,11 +96,14 @@ const SignIn = () => {
                   type='email'
                   variant='bordered'
                   label='Введіть пошту'
-                  // labelPlacement='outside'
                   isInvalid={meta.touched && meta.error}
                   errorMessage={meta.touched && meta.error ? meta.error : null}
                   classNames={{
+                    label: ['text-white'],
                     input: ['text-white'],
+                    inputWrapper: [
+                      'group-data-[focus=true]:border-default-200',
+                    ],
                   }}
                   endContent={
                     <HiMail
@@ -103,7 +122,14 @@ const SignIn = () => {
                   variant='bordered'
                   isInvalid={meta.touched && meta.error}
                   errorMessage={meta.touched && meta.error}
-                  placeholder='Введіть пароль'
+                  label='Введіть пароль'
+                  classNames={{
+                    label: ['text-white'],
+                    input: ['text-white'],
+                    inputWrapper: [
+                      'group-data-[focus=true]:border-default-200',
+                    ],
+                  }}
                   endContent={
                     <button
                       className='focus:outline-none'
@@ -130,7 +156,7 @@ const SignIn = () => {
             <Button
               type='submit'
               isLoading={isLoading}
-              className='group flex h-[65px] w-[320px] justify-around rounded-2xl bg-mid-green text-center font-exo_2 text-xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
+              className='group flex h-[65px] w-[320px] justify-center rounded-2xl bg-mid-green text-center font-exo_2 text-xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
             >
               Увійти
               <FiLogIn className='text-xl' />
