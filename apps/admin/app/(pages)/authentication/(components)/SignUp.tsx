@@ -103,7 +103,11 @@ const SignUp = () => {
                 <Input
                   type='text'
                   classNames={{
+                    label: ['text-white'],
                     input: ['text-white'],
+                    inputWrapper: [
+                      'group-data-[focus=true]:border-default-200',
+                    ],
                   }}
                   variant='bordered'
                   isInvalid={meta.touched && meta.error}
@@ -125,7 +129,11 @@ const SignUp = () => {
                   isInvalid={meta.touched && meta.error}
                   errorMessage={meta.touched && meta.error ? meta.error : null}
                   classNames={{
+                    label: ['text-white'],
                     input: ['text-white'],
+                    inputWrapper: [
+                      'group-data-[focus=true]:border-default-200',
+                    ],
                   }}
                   endContent={
                     <HiMail
@@ -144,7 +152,11 @@ const SignUp = () => {
                   isInvalid={meta.touched && meta.error}
                   errorMessage={meta.touched && meta.error && meta.error}
                   classNames={{
+                    label: ['text-white'],
                     input: ['text-white'],
+                    inputWrapper: [
+                      'group-data-[focus=true]:border-default-200',
+                    ],
                   }}
                   variant='bordered'
                   label='Введіть пароль'
@@ -178,7 +190,11 @@ const SignUp = () => {
                   isInvalid={meta.touched && meta.error}
                   errorMessage={meta.touched && meta.error && meta.error}
                   classNames={{
+                    label: ['text-white'],
                     input: ['text-white'],
+                    inputWrapper: [
+                      'group-data-[focus=true]:border-default-200',
+                    ],
                   }}
                   variant='bordered'
                   label='Підтвердити пароль'
@@ -208,9 +224,8 @@ const SignUp = () => {
             <Button
               type='submit'
               isLoading={isLoading}
-              className='group flex h-[65px] w-[320px] justify-around rounded-2xl bg-mid-green text-center font-exo_2 text-xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
+              className='group flex h-[65px] w-[320px] justify-center rounded-2xl bg-mid-green text-center font-exo_2 text-xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
             >
-              <HiMail size={45} className='text-xl' />
               Зареєструвати
             </Button>
           </Form>
