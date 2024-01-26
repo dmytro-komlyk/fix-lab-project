@@ -2,26 +2,26 @@ ARG NODE_VERSION=18
 
 FROM --platform=linux/amd64 node:${NODE_VERSION}-alpine3.17 as base
 
-ARG PACKAGE_NAME=client
 # ARG PNPM_VERSION=8.9.0
+ARG PACKAGE_NAME=client
 ARG SERVICE_PATH=apps/client
+
+ARG SERVER_PACKAGE_NAME=server
+ARG SERVER_SERVICE_PATH=apps/server
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-# RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
-#     npm i --global --no-update-notifier --no-fund pnpm@${PNPM_VERSION}
-
 FROM base AS dependencies
 WORKDIR /app
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json .npmrc ./
 COPY ${SERVICE_PATH}/package.json ./${SERVICE_PATH}/package.json
-COPY apps/server/package.json ./apps/server/package.json
+COPY ${SERVER_SERVICE_PATH}/package.json ./${SERVER_SERVICE_PATH}/package.json
 COPY ${SERVICE_PATH}/next.config.js ./${SERVICE_PATH}/next.config.js
 # --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter ${PACKAGE_NAME}
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter server
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter ${SERVER_PACKAGE_NAME}
 
 FROM base AS builder
 COPY . /app
@@ -34,7 +34,6 @@ COPY ${SERVICE_PATH}/.env.docker.example ./${SERVICE_PATH}/.env.local
 ENV NEXT_TELEMETRY_DISABLED 1
 RUN pnpm db:generate 
 RUN pnpm build:${PACKAGE_NAME}
-# RUN pnpm deploy --filter=${PACKAGE_NAME} --prod /app/${PACKAGE_NAME}
 
 FROM base as runner
 WORKDIR /app
