@@ -12,18 +12,16 @@
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
     "paths": {
-      "*": ["./*"],
-      "@/*": ["./client/*"],
-      "@admin/*": ["./admin/*"],
-      "@client/*": ["./client/*"],
-      "@server/*": ["./server/src/*"],
-      "@domain/*": ["./server/src/domain/*"],
-      "@shared/*": ["./server/src/shared/*"],
-      "@filters/*": ["./server/src/filters/*"],
-      "@helpers/*": ["./server/src/helpers/*"],
-      "@decorators/*": ["./server/src/decorators/*"],
-      "@constants/*": ["./server/src/constants/*"],
-      "@trpc/*": ["./server/src/domain/trpc/*"]
+      "@admin/*": ["./apps/admin/*"],
+      "@client/*": ["./apps/client/*"],
+      "@server/*": ["./apps/server/src/*"],
+      "@domain/*": ["./apps/server/src/domain/*"],
+      "@shared/*": ["./apps/server/src/shared/*"],
+      "@filters/*": ["./apps/server/src/filters/*"],
+      "@helpers/*": ["./apps/server/src/helpers/*"],
+      "@decorators/*": ["./apps/server/src/decorators/*"],
+      "@constants/*": ["./apps/server/src/constants/*"],
+      "@trpc/*": ["./apps/server/src/domain/trpc/*"]
     }
   }
 }

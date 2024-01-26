@@ -3,51 +3,52 @@ services:
   mongo:
     image: mongo:6.0
     container_name: mongo
-    hostname: mongo
     environment:
       - MONGO_INITDB_ROOT_USERNAME=
       - MONGO_INITDB_ROOT_PASSWORD=
+      - MONGO_INITDB_DATABASE=
+      - MONGO_REPLICA_HOST=mongo
+      - MONGO_REPLICA_PORT=27017
+      - MONGO_COMMAND=mongosh
+      - INIT_REPL_CMD=3
     volumes:
       - ./database/data:/data/db
     ports:
       - 27017:27017
     networks:
       - backend
-
-  mongo-express:
-    image: mongo-express
-    container_name: mongo-ui
-    restart: unless-stopped
-    environment:
-      - ME_CONFIG_MONGODB_SERVER=mongo
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=
-      - ME_CONFIG_MONGODB_URL=
-      - ME_CONFIG_BASICAUTH_USERNAME=
-      - ME_CONFIG_BASICAUTH_PASSWORD=
-    ports:
-      - 8081:8081
-    networks:
-      - backend
-    links:
-      - mongo:mongo
-    depends_on:
-      - mongo
+    restart: always
+    healthcheck:
+      # Use "mongo" instead of "mongosh" before v5.0
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "admin",
+          "--port",
+          "27017",
+          "--eval",
+          "db.adminCommand('ping').ok",
+        ]
+      interval: 5s
+      timeout: 2s
+      retries: 20
 
   server:
-    image: ghcr.io/dmytro-komlyk/prod-fixlab-server:latest
+    image: ghcr.io/iryna-gry/prod-fixlab-server:latest
     container_name: server
     restart: unless-stopped
-    env_file: ./server/.env.example
+    env_file: ./server/.env.docker
     environment:
-      - PORT=3000
       - NODE_ENV=production
-      - MONGO_DB_LINK=
-      - MONGO_DB_NAME=
-      - MONGO_DB_AUTH_USERNAME=
-      - MONGO_DB_AUTH_PASSWORD=
-      - SECRET=
-      - D_ADMIN_KEY=
+      - DATABASE_USERNAME=
+      - DATABASE_PASSWORD=
+      - DATABASE_NAME=
+      - DATABASE_URL=
+      - JWT_SECRET_KEY=
+      - JWT_REFRESH_TOKEN_KEY=
+    volumes:
+      - ./server/public/:/app/server/public
     ports:
       - 30000:3000
     networks:
@@ -59,13 +60,21 @@ services:
       - mongo
 
   client:
-    image: ghcr.io/dmytro-komlyk/prod-fixlab-client:latest
+    image: ghcr.io/iryna-gry/prod-fixlab-client:latest
     container_name: client
     restart: unless-stopped
-    env_file: ./client/.env.example
+    env_file: ./client/.env.docker
+    stdin_open: true
+    tty: true
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_SERVER_API_KEY=
+      - DATABASE_USERNAME=
+      - DATABASE_PASSWORD=
+      - DATABASE_NAME=
+      - NEXT_PUBLIC_TELEGRAM_TOKEN=
+      - NEXT_PUBLIC_TELEGRAM_CHAT_ID=
+      - NEXT_PUBLIC_TWANK_PROPERTY_ID=
+      - NEXT_PUBLIC_TWANK_WIDGET_ID=
     ports:
       - "30001:3001"
     networks:

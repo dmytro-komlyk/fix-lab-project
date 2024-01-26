@@ -1,6 +1,17 @@
-.DS_Store
+# dependencies
 node_modules
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# misc
+.DS_Store
+*.pem
 
 # Database
-/database/data
+data
+seed
 .vercel
+
+# Docker
+docker-compose.local.yml
