@@ -17,9 +17,11 @@ FROM base AS dependencies
 WORKDIR /app
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json .npmrc ./
 COPY ${SERVICE_PATH}/package.json ./${SERVICE_PATH}/package.json
+COPY apps/server/package.json ./apps/server/package.json
 COPY ${SERVICE_PATH}/next.config.js ./${SERVICE_PATH}/next.config.js
 # --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter ${PACKAGE_NAME}
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter server
 
 FROM base AS builder
 COPY . /app
@@ -32,7 +34,7 @@ COPY ${SERVICE_PATH}/.env.docker.example ./${SERVICE_PATH}/.env.local
 ENV NEXT_TELEMETRY_DISABLED 1
 RUN pnpm db:generate 
 RUN pnpm build:${PACKAGE_NAME}
-RUN pnpm deploy --filter=${PACKAGE_NAME} --prod /app/${PACKAGE_NAME}
+# RUN pnpm deploy --filter=${PACKAGE_NAME} --prod /app/${PACKAGE_NAME}
 
 FROM base as runner
 WORKDIR /app
