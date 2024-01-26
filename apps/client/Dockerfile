@@ -26,6 +26,7 @@ COPY . /app
 WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY --from=dependencies /app/${SERVICE_PATH}/node_modules ./${SERVICE_PATH}/node_modules
+COPY --from=dependencies /app/apps/server/node_modules ./apps/server/node_modules
 COPY ${SERVICE_PATH}/.env.docker.example ./${SERVICE_PATH}/.env.local
 
 ENV NEXT_TELEMETRY_DISABLED 1
