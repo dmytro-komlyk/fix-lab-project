@@ -15,14 +15,18 @@ $MONGO_COMMAND admin --port $MONGO_REPLICA_PORT --eval "$INIT_USER_CMD" || echo 
 echo "REPLICA SET ONLINE"; wait $MONGOD_PID;
 
 FROM mongo:${MONGO_VERSION} As mongo-seed
+
+ARG SERVICE_PATH=apps/database
+
 WORKDIR /data
-COPY apps/database/seed/articles.json ./seed/articles.json
-COPY apps/database/seed/images.json ./seed/images.json
-COPY apps/database/seed/contacts.json ./seed/contacts.json
-COPY apps/database/seed/benefits.json ./seed/benefits.json
-COPY apps/database/seed/brands.json ./seed/brands.json
-COPY apps/database/seed/issues.json ./seed/issues.json
-COPY apps/database/seed/gadgets.json ./seed/gadgets.json
+
+COPY ${SERVICE_PATH}/seed/articles.json ./seed/articles.json
+COPY ${SERVICE_PATH}/seed/images.json ./seed/images.json
+COPY ${SERVICE_PATH}/seed/contacts.json ./seed/contacts.json
+COPY ${SERVICE_PATH}/seed/benefits.json ./seed/benefits.json
+COPY ${SERVICE_PATH}/seed/brands.json ./seed/brands.json
+COPY ${SERVICE_PATH}/seed/issues.json ./seed/issues.json
+COPY ${SERVICE_PATH}/seed/gadgets.json ./seed/gadgets.json
 
 COPY apps/database/init-seed.sh ./init-seed.sh
 RUN chmod +x /data/init-seed.sh
