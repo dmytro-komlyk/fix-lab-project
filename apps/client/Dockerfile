@@ -29,7 +29,7 @@ WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY --from=dependencies /app/${SERVICE_PATH}/node_modules ./${SERVICE_PATH}/node_modules
 COPY --from=dependencies /app/apps/server/node_modules ./apps/server/node_modules
-COPY ${SERVICE_PATH}/.env.docker.example ./${SERVICE_PATH}/.env.local
+COPY ${SERVICE_PATH}/.env.docker.local.example ./${SERVICE_PATH}/.env.local
 
 ENV NEXT_TELEMETRY_DISABLED 1
 RUN pnpm db:generate 
@@ -45,6 +45,7 @@ USER nextjs
 
 COPY --from=builder --chown=nextjs:nodejs /app/${SERVICE_PATH}/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/${SERVICE_PATH}/.next/static ./${SERVICE_PATH}/.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/${SERVICE_PATH}/.env.local ./${SERVICE_PATH}/.env.local
 
 WORKDIR /app/${SERVICE_PATH}
 
