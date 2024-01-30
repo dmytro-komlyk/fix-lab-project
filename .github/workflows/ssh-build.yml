@@ -49,6 +49,8 @@ jobs:
           push: true
           tags: |
             ghcr.io/iryna-gry/prod-fixlab-client:latest
+          build-args: |
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
 
       - name: "Build Admin"
         if: contains(github.event.pull_request.labels.*.name, 'frontend-admin')
