@@ -9,8 +9,7 @@ const nextConfig = {
     return config
   },
   images: {
-    domains: ['95.217.34.212'],
-    unoptimized: true,
+    formats: ['image/avif', 'image/webp'],
   },
   output: 'standalone',
 }
