@@ -35,5 +35,5 @@ import { PREFIX, PUBLIC_FOLDER } from '@constants/routes.constants';
   const trpc = app.get(TrpcRouter);
   trpc.applyMiddleware(app);
 
-  await app.listen(process.env.APP_PORT ?? 3000);
+  await app.listen(process.env.APP_PORT || 3000);
 })();

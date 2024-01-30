@@ -33,7 +33,6 @@ export class TrpcService {
   };
 
   getUserFromHeader = async (req: any): Promise<User | null> => {
-    console.log(req.headers);
     if (req.headers.authorization) {
       const user = await this.decodeAndVerifyJwtToken(
         req.headers.authorization.split(' ')[1],
