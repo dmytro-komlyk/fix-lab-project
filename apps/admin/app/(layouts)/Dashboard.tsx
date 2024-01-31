@@ -10,7 +10,7 @@ const Dashboard = async () => {
   const session = await auth()
 
   return (
-    <div className='fixed left-0 flex h-[100vh] w-[400px] shrink flex-col justify-between  bg-[#09338F] pt-12'>
+    <div className='fixed left-0 flex h-[100vh] w-[400px] shrink flex-col justify-between bg-[#09338F] pt-12'>
       <div className='relative ml-8 mr-2 flex flex-col'>
         <Link
           href='/'
@@ -51,12 +51,10 @@ const Dashboard = async () => {
               <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/issues'
-                  isDisabled
                   className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Послуги
                 </Link>
-                <HiLockClosed size={30} color='#fff' />
               </li>
               <li className='flex items-center justify-between gap-2'>
                 <Link
