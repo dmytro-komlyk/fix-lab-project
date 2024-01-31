@@ -1,93 +1,44 @@
 'use client'
 
-import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
-import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
-import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import { Accordion, AccordionItem } from '@nextui-org/react'
-import Image from 'next/image'
+import {
+  Accordion,
+  AccordionItem,
+  Card,
+  CardBody,
+  CardHeader,
+  Input,
+} from '@nextui-org/react'
+import type { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
+import * as Yup from 'yup'
 
-import AddImagesSection from '../../(components)/AddImagesSection'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
+import { createIssueSchema } from '@server/domain/issues/schemas/issue.schema'
+import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
 import CustomAddContent from '../../(components)/CustomAddContent'
+import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SendButton from '../../(components)/SendButton'
+import ListBoxBenefits from './ListBoxBenefits'
 
 const AddIssueInfoSection = ({
-  allImagesData,
+  benefitsData,
 }: {
-  allImagesData: Awaited<
-    ReturnType<(typeof serverClient)['images']['getAllImages']>
-  >
+  benefitsData: IBenefit[]
 }) => {
   const router = useRouter()
-
-  const [seoContent, setSeoContent] = useLocalStorage<{
-    title: string
-    description: string
-    keywords: string
-  }>('addIssueInfoSeoContent', {
-    title: '',
-    description: '',
-    keywords: '',
+  const benefits = trpc.benefits.getAllBenefits.useQuery(undefined, {
+    initialData: benefitsData,
   })
-  const [selectedImage, setSelectedImage] = useState<File | null>(null)
-  const [contentImage, setContentImage] = useState<string | ArrayBuffer | null>(
-    null,
-  )
 
-  const [contentInfoIssue, setContentInfoIssue] = useLocalStorage<string | ''>(
-    'addIssueInfoInfoIssue',
-    '',
-  )
-  const [contentArticleIssue, setContentArticleIssue] = useLocalStorage<
-    string | ''
-  >('addIssueInfoArticleIssue', '')
+  const [listBenefits, setListBenefits] = useState<string[]>([])
+  const [contentInfoIssue, setContentInfoIssue] = useState<string>('')
+  const [contentDescriptionIssue, setContentDescriptionIssue] =
+    useState<string>('')
 
-  const [contentTitle, setContentTitle] = useLocalStorage<string>(
-    'addIssueInfoTitle',
-    '',
-  )
-
-  const [contentIssuePrice, setContentIssuePrice] = useLocalStorage<string>(
-    'addIssueInfoPrice',
-    '',
-  )
-
-  const [contentSlug, setContentSlug] = useLocalStorage<string>(
-    'addIssueInfoSlug',
-    '',
-  )
-  const [altImage, setAltImage] = useLocalStorage<string | ''>(
-    'addIssueInfoAltImage',
-    '',
-  )
-
-  const clearState = () => {
-    setSeoContent({
-      title: '',
-      description: '',
-      keywords: '',
-    })
-    setSelectedImage(null)
-    setContentImage(null)
-    setContentInfoIssue('')
-    setContentTitle('')
-    setContentIssuePrice('')
-    setContentSlug('')
-    setAltImage('')
-    setContentArticleIssue('')
-  }
-
-  const handleInputChange = (key: string, value: string) => {
-    setSeoContent((prevData: any) => ({
-      ...prevData,
-      [key]: value,
-    }))
-  }
   const createIssue = trpc.issues.createIssue.useMutation({
     onSuccess: () => {
       toast.success(`Послугу додано!`, {
@@ -97,7 +48,6 @@ const AddIssueInfoSection = ({
           color: '#fff',
         },
       })
-      clearState()
       router.refresh()
     },
     onError: () => {
@@ -110,91 +60,48 @@ const AddIssueInfoSection = ({
       })
     },
   })
-  const deleteImage = trpc.images.removeImage.useMutation()
-  const handleImageUpload = async () => {
+
+  const handleSubmit = async (
+    values: any,
+    { setSubmitting, resetForm }: FormikHelpers<any>,
+  ) => {
+    setSubmitting(true)
+    const { file, ...restValues } = values
+    const issueValues = {
+      slug: restValues.slug,
+      price: restValues.price,
+      title: restValues.title,
+      info: contentInfoIssue,
+      description: contentDescriptionIssue,
+      metadata: {
+        title: restValues.seoTitle,
+        description: restValues.seoDescription,
+        keywords: restValues.seoKeywords,
+      },
+      benefits_ids: Array.from(listBenefits),
+    } as createIssueSchema
+
     try {
-      if (selectedImage) {
-        const response = await uploadImg({
-          fileInput: selectedImage,
-          alt: altImage,
-          type: 'picture',
-        })
-        return response
-      }
-      return null
-    } catch (error) {
-      throw new Error('Error uploading image')
-    }
-  }
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-
-    if (
-      !(
-        selectedImage &&
-        contentTitle &&
-        contentSlug &&
-        contentIssuePrice &&
-        contentArticleIssue &&
-        contentInfoIssue &&
-        seoContent.title &&
-        seoContent.description &&
-        seoContent.keywords &&
-        altImage
-      )
-    ) {
-      toast.error(`Всі поля повинні бути заповнені...`, {
-        style: {
-          borderRadius: '10px',
-          background: 'grey',
-          color: '#fff',
-        },
+      const uploadResponse = await uploadImg({
+        fileInput: file,
+        alt: file.name.split('.')[0],
+        type: 'picture',
       })
-    } else {
-      const uploadResponse = await handleImageUpload()
-      if (uploadResponse?.status === 201) {
-        createIssue.mutate({
-          slug: contentSlug,
-          title: contentTitle,
-          price: contentIssuePrice,
+      if (uploadResponse.status === 201) {
+        await createIssue.mutateAsync({
+          ...issueValues,
           image_id: uploadResponse.data.id,
-          metadata: {
-            title: seoContent.title,
-            description: seoContent.description,
-            keywords: seoContent.keywords,
-          },
-          description: contentArticleIssue,
-          info: contentInfoIssue,
-          benefits_ids: [],
-          gadgets_ids: [],
         })
-      } else {
-        await deleteImage.mutateAsync(uploadResponse?.data.id)
-        toast.error(`Помилка додаванні статті...`, {
-          style: {
-            borderRadius: '10px',
-            background: 'grey',
-            color: '#fff',
-          },
-        })
+        resetForm()
+        setListBenefits([])
+        setContentInfoIssue('')
+        setContentDescriptionIssue('')
       }
+    } catch (err) {
+      // need added toast show errors
+      console.log(err)
     }
-  }
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.files && e.currentTarget.files.length > 0) {
-      const file = e.currentTarget.files[0]
-
-      if (file) {
-        setSelectedImage(file)
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          setContentImage(reader.result as string | ArrayBuffer | null)
-        }
-
-        reader.readAsDataURL(file)
-      }
-    }
+    setSubmitting(false)
   }
 
   return (
@@ -209,210 +116,223 @@ const AddIssueInfoSection = ({
         startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
         title={
           <span className='text-center font-exo_2 text-2xl font-bold text-white-dis'>
-            Додати послугу з додатковою інформацією
+            Додати нову послугу
           </span>
         }
       >
-        <div className='container  flex flex-col items-center  gap-[60px] px-4 transition-all duration-300  ease-in-out'>
-          <form className='flex w-full items-end justify-evenly gap-3 text-white-dis '>
-            <div className='flex w-full flex-col gap-8'>
-              <div className='flex justify-between gap-3 '>
-                <div className='flex flex-col gap-3'>
-                  <p className=' bold mt-2 text-center font-exo_2 text-xl'>
-                    Зображення
-                  </p>
-                  <div className='relative'>
-                    {!contentImage ? (
-                      <div className=' flex h-[300px] w-[500px] items-center justify-center'>
-                        <p>NO IMAGE</p>
-                      </div>
-                    ) : (
-                      <div>
-                        <Image
-                          className='max-h-[300px] w-[500px] object-contain object-center'
-                          src={
-                            typeof contentImage === 'string' ? contentImage : ''
-                          }
-                          width={400}
-                          height={100}
-                          alt=''
-                        />
-                      </div>
+        <Formik
+          initialValues={{
+            seoTitle: '',
+            seoDescription: '',
+            seoKeywords: '',
+            title: '',
+            price: '',
+            slug: '',
+            file: null,
+          }}
+          validationSchema={Yup.object({
+            seoTitle: Yup.string().min(1).required('Введіть заголовок'),
+            seoDescription: Yup.string().min(1).required('Введіть опис'),
+            seoKeywords: Yup.string().min(1).required('Введіть ключі'),
+            title: Yup.string().min(1).required('Введіть заголовок'),
+            price: Yup.string().min(1).required('Введіть вартість'),
+            slug: Yup.string().min(3).required('Введіть ЧПУ'),
+          })}
+          onSubmit={handleSubmit}
+        >
+          {(props: FormikProps<any>) => (
+            <Form
+              onSubmit={props.handleSubmit}
+              className='flex flex-wrap w-full gap-8 py-6 items-center justify-center text-white-dis'
+            >
+              <Card className='order-2 flex flex-col w-[45%] h-72 !bg-[#09338F]'>
+                <CardHeader className='flex flex-col !items-center'>
+                  <h3 className='text-lg text-white-dis'>СЕО</h3>
+                </CardHeader>
+                <CardBody className='gap-4'>
+                  <Field name='seoTitle'>
+                    {({ meta, field }: any) => (
+                      <Input
+                        type='text'
+                        variant='bordered'
+                        isInvalid={meta.touched && meta.error ? true : false}
+                        errorMessage={meta.touched && meta.error}
+                        placeholder='Заголовок'
+                        classNames={{
+                          input: [
+                            'font-base',
+                            'h-[45px]',
+                            'w-full',
+                            'indent-3',
+                            'text-md',
+                            'text-black-dis',
+                          ],
+                          inputWrapper: ['bg-white-dis'],
+                        }}
+                        {...field}
+                      />
                     )}
-                    <input
-                      className=' text-white-dis'
-                      id='icon'
-                      type='file'
-                      accept='icon/*'
-                      onChange={handleImageChange}
-                    />
-                  </div>
-
-                  <label
-                    className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
-                    htmlFor='altImage'
-                  >
-                    Опис зображення(alt)
-                    <input
-                      required
-                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  </Field>
+                  <Field name='seoDescription'>
+                    {({ meta, field }: any) => (
+                      <Input
+                        type='text'
+                        variant='bordered'
+                        isInvalid={meta.touched && meta.error ? true : false}
+                        errorMessage={meta.touched && meta.error && meta.error}
+                        placeholder='Опис'
+                        classNames={{
+                          input: [
+                            'font-base',
+                            'h-[45px]',
+                            'w-full',
+                            'indent-3',
+                            'text-md',
+                            'text-black-dis',
+                          ],
+                          inputWrapper: ['bg-white-dis'],
+                        }}
+                        {...field}
+                      />
+                    )}
+                  </Field>
+                  <Field name='seoKeywords'>
+                    {({ meta, field }: any) => (
+                      <Input
+                        type='text'
+                        variant='bordered'
+                        isInvalid={meta.touched && meta.error ? true : false}
+                        errorMessage={meta.touched && meta.error && meta.error}
+                        placeholder='Ключі'
+                        classNames={{
+                          input: [
+                            'font-base',
+                            'h-[45px]',
+                            'w-full',
+                            'indent-3',
+                            'text-md',
+                            'text-black-dis',
+                          ],
+                          inputWrapper: ['bg-white-dis'],
+                        }}
+                        {...field}
+                      />
+                    )}
+                  </Field>
+                </CardBody>
+              </Card>
+              <div className='order-1 flex flex-col justify-end gap-4 w-[45%] h-72'>
+                <Field name='slug'>
+                  {({ meta, field }: any) => (
+                    <Input
                       type='text'
-                      name='altImage'
-                      value={altImage}
-                      onChange={e => {
-                        setAltImage(e.target.value)
+                      isInvalid={meta.touched && meta.error}
+                      errorMessage={meta.touched && meta.error && meta.error}
+                      placeholder='ЧПУ(slug)'
+                      classNames={{
+                        input: [
+                          'font-base',
+                          'h-[45px]',
+                          'w-full',
+                          'indent-3',
+                          'text-md',
+                          'text-black-dis',
+                        ],
                       }}
+                      {...field}
                     />
-                  </label>
-                </div>
-                <div className='flex w-[400px] flex-col justify-between'>
-                  <p className=' bold mt-2 text-center font-exo_2 text-xl'>
-                    SEO налаштування
-                  </p>
-                  <label
-                    className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
-                    htmlFor='title'
-                  >
-                    Seo title
-                    <input
-                      required
-                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  )}
+                </Field>
+                <Field name='price'>
+                  {({ meta, field }: any) => (
+                    <Input
                       type='text'
-                      name='title'
-                      value={seoContent.title || ''}
-                      onChange={e => handleInputChange('title', e.target.value)}
+                      variant='bordered'
+                      isInvalid={meta.touched && meta.error ? true : false}
+                      errorMessage={meta.touched && meta.error && meta.error}
+                      placeholder='Вартість послуги'
+                      classNames={{
+                        input: [
+                          'font-base',
+                          'h-[45px]',
+                          'w-full',
+                          'indent-3',
+                          'text-md',
+                          'text-black-dis',
+                        ],
+                        inputWrapper: ['bg-white-dis'],
+                      }}
+                      {...field}
                     />
-                  </label>
-                  <label
-                    className='flex flex-col items-start gap-1 text-center font-exo_2 text-xl'
-                    htmlFor='description'
-                  >
-                    Seo description
-                    <input
-                      required
-                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
+                  )}
+                </Field>
+                <Field name='title'>
+                  {({ meta, field }: any) => (
+                    <Input
                       type='text'
-                      name='description'
-                      value={seoContent.description || ''}
-                      onChange={e =>
-                        handleInputChange('description', e.target.value)
-                      }
+                      isInvalid={meta.touched && meta.error}
+                      errorMessage={meta.touched && meta.error && meta.error}
+                      placeholder='Заголовок'
+                      classNames={{
+                        input: [
+                          'font-base',
+                          'h-[45px]',
+                          'w-full',
+                          'indent-3',
+                          'text-md',
+                          'text-black-dis',
+                        ],
+                      }}
+                      {...field}
                     />
-                  </label>
-                  <label
-                    className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
-                    htmlFor='keywords'
-                  >
-                    Seo keywords
-                    <input
-                      required
-                      className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                      type='text'
-                      name='keywords'
-                      value={seoContent.keywords || ''}
-                      onChange={e =>
-                        handleInputChange('keywords', e.target.value)
-                      }
-                    />
-                  </label>
-                </div>
+                  )}
+                </Field>
               </div>
-              <label
-                className='flex flex-col items-start gap-1 text-center font-exo_2 text-xl'
-                htmlFor='price'
-              >
-                Вартість послуги
-                <input
-                  required
-                  className='font-base h-[45px] w-[300px] indent-3 text-md text-black-dis'
-                  type='text'
-                  name='price'
-                  value={contentIssuePrice}
-                  onChange={e => setContentIssuePrice(e.target.value)}
+              <div className='order-3 w-[45%] flex justify-center'>
+                <ListBoxBenefits
+                  items={benefits.data}
+                  listBenefits={listBenefits}
+                  setListBenefits={setListBenefits}
                 />
-              </label>
-              <label
-                className='flex flex-col gap-1 text-center font-exo_2 text-xl'
-                htmlFor='title'
-              >
-                Заголовок
-                <input
-                  required
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                  type='text'
-                  name='title'
-                  value={contentTitle}
-                  onChange={e => {
-                    setContentSlug(createSlug(e.target.value))
-                    setContentTitle(e.target.value)
-                  }}
+              </div>
+              <div className='order-4 w-[45%]'>
+                <FieldFileUpload
+                  name='file'
+                  initSrc={null}
+                  isRequired={true}
+                  size={{ width: 250, height: 250 }}
                 />
-              </label>
-              <label
-                className='flex  flex-col gap-1 text-center font-exo_2 text-xl'
-                htmlFor='slug'
-              >
-                Slug(url сторінки)
-                <input
-                  required
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                  type='text'
-                  name='slug'
-                  value={contentSlug}
-                  onChange={e => {
-                    setContentSlug(e.target.value)
-                  }}
+              </div>
+              <div className='order-6 flex flex-col gap-6 w-[80%]'>
+                <p className='text-center font-exo_2 text-xl text-white-dis'>
+                  Інформація про послугу
+                </p>
+                <CustomAddContent
+                  id='add-issue-info-content'
+                  setContent={setContentInfoIssue}
+                  content={contentInfoIssue}
                 />
-              </label>
-            </div>
-          </form>
-          <div className='w-full'>
-            <AddImagesSection allImagesData={allImagesData} />
-          </div>
-          <div className='flex w-full flex-col items-center gap-2 '>
-            <p className='text-center font-exo_2 text-xl text-white-dis'>
-              Інформація послуги
-            </p>
-            <CustomAddContent
-              id='add-issue-info-content'
-              setContent={setContentInfoIssue}
-              content={contentInfoIssue}
-            />
-          </div>
-          <div className='w-full'>
-            <AddImagesSection allImagesData={allImagesData} />
-          </div>
-          <div className='flex w-full flex-col items-center gap-2 '>
-            <p className='text-center font-exo_2 text-xl text-white-dis'>
-              Стаття послуги
-            </p>
-            <CustomAddContent
-              id='add-issue-article-content'
-              setContent={setContentArticleIssue}
-              content={contentArticleIssue}
-            />
-          </div>
-          <div className='flex w-full flex-col items-center justify-center'>
-            <div className='flex w-full  flex-col-reverse  justify-center '>
-              <div className='  w-full border-b-2 border-mid-grey' />
-              <p className='mb-6 text-center font-exo_2 text-2xl font-bold  text-white-dis  max-lg:text-xl'>
-                Послуги сервісного обслуговування
-              </p>
-            </div>
-          </div>
-          <div className=' flex h-[200px] w-full flex-col items-center justify-center gap-2 overflow-auto '>
-            <p className='font-exo_2 text-2xl font-bold text-white-dis'>
-              В розробці...
-            </p>
-            <p className='font-exo_2 text-xl font-bold text-white-dis'>
-              Послуги сервісного обслуговування можна додати після створення, в
-              розділі редагування послуги...
-            </p>
-          </div>
-          <div className='mb-8'>
-            <SendButton handleSubmit={handleSubmit} />
-          </div>
-        </div>
+              </div>
+              <div className='order-7 flex flex-col gap-6 w-[80%]'>
+                <p className='text-center font-exo_2 text-xl text-white-dis'>
+                  Детальний опис послуги
+                </p>
+                <CustomAddContent
+                  id='add-issue-article-content'
+                  setContent={setContentDescriptionIssue}
+                  content={contentDescriptionIssue}
+                />
+              </div>
+              <div className='order-last'>
+                <SendButton
+                  type={'submit'}
+                  disabled={!props.isValid}
+                  isLoading={props.isSubmitting}
+                />
+              </div>
+            </Form>
+          )}
+        </Formik>
       </AccordionItem>
     </Accordion>
   )

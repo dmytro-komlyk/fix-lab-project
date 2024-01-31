@@ -5,7 +5,8 @@ import type { outputIssueSchema } from '@server/domain/issues/schemas/issue.sche
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import EditIssuesForm from '../(components)/EditIssueForm '
+import { auth } from '@admin/app/(utils)/authOptions'
+import EditIssuesForm from '../(components)/EditIssueForm'
 
 interface IIssueAdminProps {
   params: {
@@ -16,13 +17,18 @@ interface IIssueAdminProps {
 export const dynamic = 'force-dynamic'
 
 const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
-  const issueData = (await serverClient.issues.getBySlugIssue({
+  const session = await auth()
+  const user = session?.user ? session.user : null
+
+  const issueData = (await serverClient({ user }).issues.getBySlugIssue({
     slug: params.issue,
   })) as outputIssueSchema
-  const benefitsData =
-    (await serverClient.benefits.getAllBenefits()) as outputBenefitSchema[]
-  const allImagesData =
-    (await serverClient.images.getAllImages()) as imageSchema[]
+  const benefitsData = (await serverClient({
+    user,
+  }).benefits.getAllBenefits()) as outputBenefitSchema[]
+  const allImagesData = (await serverClient({
+    user,
+  }).images.getAllImages()) as imageSchema[]
 
   return (
     <main className=' flex flex-auto'>
@@ -43,11 +49,7 @@ const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
           <h2 className='mb-6 self-center font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
             {issueData.title}
           </h2>
-          <EditIssuesForm
-            issueData={issueData}
-            benefitsData={benefitsData}
-            allImagesData={allImagesData}
-          />
+          <EditIssuesForm issueData={issueData} benefitsData={benefitsData} />
         </div>
       </section>
     </main>
