@@ -1,8 +1,10 @@
-import { loginSchema } from '@server/domain/auth/schemas/auth.schema'
+import {
+  loginSchema,
+  outputAuthSchema,
+} from '@server/domain/auth/schemas/auth.schema'
 import { expiresInToMilliseconds } from '@server/helpers/time-converted.helper'
 import NextAuth, { Session, User, type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { outputAuthSchema } from './../../../server/src/domain/auth/schemas/auth.schema'
 import { serverClient } from './trpc/serverClient'
 
 export const authOptions: NextAuthOptions = {
