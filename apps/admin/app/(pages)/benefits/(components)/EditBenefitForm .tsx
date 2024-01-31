@@ -59,7 +59,6 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
     setSubmitting(true)
 
     try {
-      console.log(values, selectedIcon)
       if (selectedIcon) {
         await updateBenefit.mutateAsync({
           ...benefit.data,
@@ -112,7 +111,12 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
           className='flex w-[400px] mx-auto my-0 flex-col items-center justify-center gap-6 text-white-dis '
         >
           <div className='flex flex-col gap-4 items-center w-full'>
-            <FieldFileUpload name='file' isRequired={false} />
+            <FieldFileUpload
+              name='file'
+              initSrc={null}
+              size={{ width: 100, height: 100 }}
+              isRequired={false}
+            />
             <p className='text-white-dis'>або</p>
             {icons.isSuccess && (
               <SelectImage

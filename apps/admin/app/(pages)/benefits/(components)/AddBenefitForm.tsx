@@ -112,7 +112,12 @@ const AddBenefitForm = () => {
                 className='flex w-[400px] flex-col gap-6 items-center justify-center text-white-dis'
               >
                 <div className='flex flex-col gap-4 items-center w-full'>
-                  <FieldFileUpload name='file' isRequired={false} />
+                  <FieldFileUpload
+                    name='file'
+                    initSrc={null}
+                    size={{ width: 100, height: 100 }}
+                    isRequired={false}
+                  />
                   <p className='text-white-dis'>або</p>
                   {icons.isSuccess && (
                     <SelectImage

@@ -14,7 +14,7 @@ import RemoveBenefit from './RemoveBenefit'
 const BenefitsList = ({ benefitsData }: { benefitsData: IBenefit[] }) => {
   return (
     <div className=' flex flex-col items-center justify-center gap-8 pb-12'>
-      <div className=' flex w-full flex-col items-center justify-center gap-8'>
+      <div className='flex w-full flex-col items-center justify-center gap-8'>
         <ul className='flex w-full flex-col gap-4 shadow-2xl'>
           {benefitsData.map((item: IBenefit) => (
             <Card
