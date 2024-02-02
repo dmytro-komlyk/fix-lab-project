@@ -8,6 +8,8 @@ import {
   CardBody,
   CardHeader,
   Input,
+  Tab,
+  Tabs,
 } from '@nextui-org/react'
 import type { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
 import { useRouter } from 'next/navigation'
@@ -33,7 +35,7 @@ const AddIssueInfoSection = ({
   const benefits = trpc.benefits.getAllBenefits.useQuery(undefined, {
     initialData: benefitsData,
   })
-
+  const [selectedTab, setSelectedTab] = useState<any>('issue-info')
   const [listBenefits, setListBenefits] = useState<string[]>([])
   const [contentInfoIssue, setContentInfoIssue] = useState<string>('')
   const [contentDescriptionIssue, setContentDescriptionIssue] =
@@ -108,7 +110,7 @@ const AddIssueInfoSection = ({
     <Accordion
       itemClasses={{ base: 'border-white-dis ' }}
       variant='bordered'
-      className=' shadow-2xl'
+      className='shadow-2xl'
     >
       <AccordionItem
         textValue='1'
@@ -143,30 +145,25 @@ const AddIssueInfoSection = ({
           {(props: FormikProps<any>) => (
             <Form
               onSubmit={props.handleSubmit}
-              className='flex flex-wrap w-full gap-8 py-6 items-center justify-center text-white-dis'
+              className='flex flex-wrap w-full gap-x-8 gap-y-12 py-6 items-center justify-center text-white-dis'
             >
               <Card className='order-2 flex flex-col w-[45%] h-72 !bg-[#09338F]'>
                 <CardHeader className='flex flex-col !items-center'>
-                  <h3 className='text-lg text-white-dis'>СЕО</h3>
+                  <h3 className='text-lg text-white-dis'>СЕО налаштування</h3>
                 </CardHeader>
-                <CardBody className='gap-4'>
+                <CardBody className='gap-y-5'>
                   <Field name='seoTitle'>
                     {({ meta, field }: any) => (
                       <Input
                         type='text'
+                        label='Title'
+                        labelPlacement='inside'
                         variant='bordered'
                         isInvalid={meta.touched && meta.error ? true : false}
                         errorMessage={meta.touched && meta.error}
-                        placeholder='Заголовок'
                         classNames={{
-                          input: [
-                            'font-base',
-                            'h-[45px]',
-                            'w-full',
-                            'indent-3',
-                            'text-md',
-                            'text-black-dis',
-                          ],
+                          label: ['font-base', 'text-md', 'text-black-dis'],
+                          input: ['font-base', 'text-md', 'text-black-dis'],
                           inputWrapper: ['bg-white-dis'],
                         }}
                         {...field}
@@ -177,19 +174,14 @@ const AddIssueInfoSection = ({
                     {({ meta, field }: any) => (
                       <Input
                         type='text'
+                        label='Description'
+                        labelPlacement='inside'
                         variant='bordered'
                         isInvalid={meta.touched && meta.error ? true : false}
                         errorMessage={meta.touched && meta.error && meta.error}
-                        placeholder='Опис'
                         classNames={{
-                          input: [
-                            'font-base',
-                            'h-[45px]',
-                            'w-full',
-                            'indent-3',
-                            'text-md',
-                            'text-black-dis',
-                          ],
+                          label: ['font-base', 'text-md', 'text-black-dis'],
+                          input: ['font-base', 'text-md', 'text-black-dis'],
                           inputWrapper: ['bg-white-dis'],
                         }}
                         {...field}
@@ -200,19 +192,14 @@ const AddIssueInfoSection = ({
                     {({ meta, field }: any) => (
                       <Input
                         type='text'
+                        label='Keywords'
+                        labelPlacement='inside'
                         variant='bordered'
                         isInvalid={meta.touched && meta.error ? true : false}
                         errorMessage={meta.touched && meta.error && meta.error}
-                        placeholder='Ключі'
                         classNames={{
-                          input: [
-                            'font-base',
-                            'h-[45px]',
-                            'w-full',
-                            'indent-3',
-                            'text-md',
-                            'text-black-dis',
-                          ],
+                          label: ['font-base', 'text-md', 'text-black-dis'],
+                          input: ['font-base', 'text-md', 'text-black-dis'],
                           inputWrapper: ['bg-white-dis'],
                         }}
                         {...field}
@@ -226,18 +213,15 @@ const AddIssueInfoSection = ({
                   {({ meta, field }: any) => (
                     <Input
                       type='text'
-                      isInvalid={meta.touched && meta.error}
+                      label='ЧПУ(slug)'
+                      labelPlacement='inside'
+                      variant='bordered'
+                      isInvalid={meta.touched && meta.error ? true : false}
                       errorMessage={meta.touched && meta.error && meta.error}
-                      placeholder='ЧПУ(slug)'
                       classNames={{
-                        input: [
-                          'font-base',
-                          'h-[45px]',
-                          'w-full',
-                          'indent-3',
-                          'text-md',
-                          'text-black-dis',
-                        ],
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
+                        inputWrapper: ['bg-white-dis'],
                       }}
                       {...field}
                     />
@@ -247,19 +231,14 @@ const AddIssueInfoSection = ({
                   {({ meta, field }: any) => (
                     <Input
                       type='text'
+                      label='Вартість послуги'
+                      labelPlacement='inside'
                       variant='bordered'
                       isInvalid={meta.touched && meta.error ? true : false}
                       errorMessage={meta.touched && meta.error && meta.error}
-                      placeholder='Вартість послуги'
                       classNames={{
-                        input: [
-                          'font-base',
-                          'h-[45px]',
-                          'w-full',
-                          'indent-3',
-                          'text-md',
-                          'text-black-dis',
-                        ],
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
                         inputWrapper: ['bg-white-dis'],
                       }}
                       {...field}
@@ -270,18 +249,15 @@ const AddIssueInfoSection = ({
                   {({ meta, field }: any) => (
                     <Input
                       type='text'
-                      isInvalid={meta.touched && meta.error}
+                      label='Заголовок'
+                      labelPlacement='inside'
+                      variant='bordered'
+                      isInvalid={meta.touched && meta.error ? true : false}
                       errorMessage={meta.touched && meta.error && meta.error}
-                      placeholder='Заголовок'
                       classNames={{
-                        input: [
-                          'font-base',
-                          'h-[45px]',
-                          'w-full',
-                          'indent-3',
-                          'text-md',
-                          'text-black-dis',
-                        ],
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
+                        inputWrapper: ['bg-white-dis'],
                       }}
                       {...field}
                     />
@@ -300,28 +276,48 @@ const AddIssueInfoSection = ({
                   name='file'
                   initSrc={null}
                   isRequired={true}
-                  size={{ width: 250, height: 250 }}
+                  size={{ width: 450, height: 300 }}
                 />
               </div>
-              <div className='order-6 flex flex-col gap-6 w-[80%]'>
-                <p className='text-center font-exo_2 text-xl text-white-dis'>
-                  Інформація про послугу
-                </p>
-                <CustomAddContent
-                  id='add-issue-info-content'
-                  setContent={setContentInfoIssue}
-                  content={contentInfoIssue}
-                />
-              </div>
-              <div className='order-7 flex flex-col gap-6 w-[80%]'>
-                <p className='text-center font-exo_2 text-xl text-white-dis'>
-                  Детальний опис послуги
-                </p>
-                <CustomAddContent
-                  id='add-issue-article-content'
-                  setContent={setContentDescriptionIssue}
-                  content={contentDescriptionIssue}
-                />
+              <div className='order-6 w-[92%] h-[500px]'>
+                <Card className='max-w-full w-full h-full'>
+                  <CardBody className='overflow-hidden'>
+                    <Tabs
+                      fullWidth
+                      size='md'
+                      aria-label=''
+                      color='primary'
+                      selectedKey={selectedTab}
+                      onSelectionChange={setSelectedTab}
+                      classNames={{
+                        panel: 'h-full',
+                      }}
+                    >
+                      <Tab
+                        key='issue-info'
+                        title='Додати інформація про послугу'
+                        className='flex justify-around overflow-hidden'
+                      >
+                        <CustomAddContent
+                          id='add-issue-info-content'
+                          setContent={setContentInfoIssue}
+                          content={contentInfoIssue}
+                        />
+                      </Tab>
+                      <Tab
+                        key='issue-description'
+                        title='Додати детальний опис послуги'
+                        className='flex justify-around overflow-hidden'
+                      >
+                        <CustomAddContent
+                          id='add-issue-description-content'
+                          setContent={setContentDescriptionIssue}
+                          content={contentDescriptionIssue}
+                        />
+                      </Tab>
+                    </Tabs>
+                  </CardBody>
+                </Card>
               </div>
               <div className='order-last'>
                 <SendButton

@@ -1,6 +1,5 @@
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import type { outputBenefitSchema } from '@server/domain/benefits/schemas/benefit.schema'
-import type { imageSchema } from '@server/domain/images/schemas/image.schema'
 import type { outputIssueSchema } from '@server/domain/issues/schemas/issue.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
@@ -26,14 +25,11 @@ const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
   const benefitsData = (await serverClient({
     user,
   }).benefits.getAllBenefits()) as outputBenefitSchema[]
-  const allImagesData = (await serverClient({
-    user,
-  }).images.getAllImages()) as imageSchema[]
 
   return (
-    <main className=' flex flex-auto'>
-      <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>
-        <div className='relative flex flex-col px-8'>
+    <main className='flex flex-auto h-full'>
+      <section className='w-full overflow-y-auto bg-footer-gradient-linear-blue py-[60px]'>
+        <div className='container relative flex flex-col px-8'>
           <div className='z-[1] mb-8 flex items-center gap-1'>
             <Link
               className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0] transition-opacity  hover:opacity-70 focus:opacity-70'
