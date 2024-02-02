@@ -21,7 +21,7 @@ export const GadgetsList = ({
           >
             <Link
               href={`/repair/${item.slug}`}
-              className='flex w-full flex-col justify-between rounded-2xl pb-[23px] pl-[31px] pr-[21px] pt-[33px]  transition-colors delay-75 duration-300 ease-in-out hover:bg-dark-blue md:h-full xl:h-[261px]'
+              className='flex w-full flex-col justify-between rounded-2xl pb-[23px] pl-[31px] pr-[21px] pt-[33px] transition-colors delay-75 duration-300 ease-in-out hover:bg-dark-blue md:h-full xl:h-[261px]'
             >
               <div className='relative ml-auto h-[80px] w-full max-w-[104px]'>
                 {item.icon && (
