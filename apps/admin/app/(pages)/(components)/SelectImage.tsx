@@ -61,12 +61,12 @@ const SelectImage = ({
             <div key={item.key} className='flex items-center gap-2'>
               <Avatar
                 alt={item.data?.alt}
-                className='flex-shrink-0'
+                className='flex-shrink-0 bg-transparent overflow-visible'
                 size='sm'
                 src={`${SERVER_URL}/${item.data?.file.path}`}
               />
               <div className='flex flex-col'>
-                <span>{item.data?.alt}</span>
+                <span className='text-white-dis'>{item.data?.alt}</span>
               </div>
             </div>
           ))
@@ -77,12 +77,12 @@ const SelectImage = ({
             <div className='flex gap-2 items-center'>
               <Avatar
                 alt={icon.alt}
-                className='flex-shrink-0'
+                className='flex-shrink-0 bg-transparent overflow-visible'
                 size='sm'
                 src={`${SERVER_URL}/${icon.file.path}`}
               />
               <div className='flex flex-col'>
-                <span className='text-small'>{icon.alt}</span>
+                <span className='text-small text-white-dis'>{icon.alt}</span>
               </div>
             </div>
           </SelectItem>

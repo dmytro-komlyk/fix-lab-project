@@ -1,22 +1,23 @@
 'use client'
 
 import { SERVER_URL } from '@admin/app/(lib)/constants'
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
-import { Accordion, AccordionItem } from '@nextui-org/react'
+import { Accordion, AccordionItem, Button, Input } from '@nextui-org/react'
 import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { FaFileImage, FaSave } from 'react-icons/fa'
+import { CiSaveDown2 } from 'react-icons/ci'
 import { IoMdAddCircle } from 'react-icons/io'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import * as Yup from 'yup'
 
-import { AiFillCloseSquare } from 'react-icons/ai'
+import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+import FieldFileUpload from './FieldFileUpload'
 
 const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
   const router = useRouter()
@@ -26,6 +27,7 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
   const [contentImage, setContentImage] = useState<string | ArrayBuffer | null>(
     null,
   )
+
   const handleCopyLink = (url: string) => {
     navigator.clipboard.writeText(url)
     toast.success(`Посилання скопійовано!`, {
@@ -37,57 +39,54 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
     })
   }
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.files && e.currentTarget.files.length > 0) {
-      const file = e.currentTarget.files[0]
+  // const handleImageUpload = async (e: any) => {
+  //   e.preventDefault()
 
-      if (file) {
-        setSelectedImage(file)
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          setContentImage(reader.result as string | ArrayBuffer | null)
-        }
+  //   try {
+  //     if (selectedImage && altImage) {
+  //       const response = await uploadImg({
+  //         fileInput: selectedImage,
+  //         alt: altImage,
+  //         type: 'picture',
+  //       })
+  //       if (response.status === 201) {
+  //         setAltImage('')
+  //         setContentImage(null)
+  //         setSelectedImage(null)
+  //         router.refresh()
+  //       }
+  //     } else {
+  //       toast.error(`Додайте зображення і опис...`, {
+  //         style: {
+  //           borderRadius: '10px',
+  //           background: 'grey',
+  //           color: '#fff',
+  //         },
+  //       })
+  //     }
+  //   } catch (error) {
+  //     toast.error(`Помилка завантаження...`, {
+  //       style: {
+  //         borderRadius: '10px',
+  //         background: 'red',
+  //         color: '#fff',
+  //       },
+  //     })
+  //     throw new Error('Error uploading image')
+  //   }
+  // }
 
-        reader.readAsDataURL(file)
-      }
-    }
-  }
-
-  const handleImageUpload = async (e: any) => {
-    e.preventDefault()
-
+  const handleSubmit = async (
+    values: any,
+    { setSubmitting, resetForm }: FormikHelpers<any>,
+  ) => {
+    setSubmitting(true)
     try {
-      if (selectedImage && altImage) {
-        const response = await uploadImg({
-          fileInput: selectedImage,
-          alt: altImage,
-          type: 'picture',
-        })
-        if (response.status === 201) {
-          setAltImage('')
-          setContentImage(null)
-          setSelectedImage(null)
-          router.refresh()
-        }
-      } else {
-        toast.error(`Додайте зображення і опис...`, {
-          style: {
-            borderRadius: '10px',
-            background: 'grey',
-            color: '#fff',
-          },
-        })
-      }
-    } catch (error) {
-      toast.error(`Помилка завантаження...`, {
-        style: {
-          borderRadius: '10px',
-          background: 'red',
-          color: '#fff',
-        },
-      })
-      throw new Error('Error uploading image')
+    } catch (err) {
+      // need added toast show errors
+      console.log(err)
     }
+    setSubmitting(false)
   }
 
   const reversedImagesData: IImage[] = [...allImagesData].reverse()
@@ -96,87 +95,75 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
     <Accordion
       itemClasses={{ base: 'border-white-dis ' }}
       variant='bordered'
-      className=' w-full shadow-2xl'
+      className='w-full shadow-2xl'
     >
       <AccordionItem
         textValue='1'
         key='1'
-        startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
+        startContent={<IoMdAddCircle size='1em' color='#fff' fill='#fff' />}
         className='flex flex-col'
         title={
-          <span className='bg-top- text-center font-exo_2 text-2xl font-bold text-white-dis'>
+          <span className='bg-top- text-center font-exo_2 text-xl font-bold text-white-dis'>
             Додати зображення для редактора
           </span>
         }
       >
-        <div className='flex flex-col items-center justify-center gap-3 self-center px-4'>
-          {!contentImage ? (
-            <div className='flex h-[100px] w-full items-center justify-center'>
-              <p>НЕМАЄ ЗОБРАЖЕННЯ</p>
-            </div>
-          ) : (
-            <div className='flex justify-center'>
-              <Image
-                className='h-[100px] w-[100px]'
-                src={typeof contentImage === 'string' ? contentImage : ''}
-                width={100}
-                height={100}
-                alt='test'
-              />
-              <button
-                aria-label='Видалити зображення'
-                type='button'
-                className='absolute right-0 top-0 rounded-bl-xl bg-black-dis p-2 text-white-dis  '
-                onClick={() => {
-                  setSelectedImage(null)
-                  setContentImage(null)
-                  setAltImage('')
-                }}
-              >
-                <AiFillCloseSquare
-                  className='transition-colors hover:text-[red]  focus:text-[red]'
-                  size='1em'
-                />
-              </button>
-            </div>
-          )}
-          <div className='flex items-end gap-2'>
-            <label className='flex w-[300px] flex-col items-center justify-center gap-1  font-exo_2 text-xl text-white-dis'>
-              Опис зображення(alt)
-              <input
-                required
-                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                type='text'
-                name='altImage'
-                value={altImage}
-                onChange={e => {
-                  setAltImage(e.target.value)
-                }}
-              />
-            </label>
-            <label className='relative cursor-pointer'>
-              <FaFileImage
-                className='text-white-dis transition-all hover:scale-[1.03]  hover:opacity-80 focus:scale-[1.03]  focus:opacity-80'
-                size='3em'
-              />
-              <input
-                className='hidden'
-                id='icon'
-                type='file'
-                accept='icon/*'
-                onChange={handleImageChange}
-              />
-            </label>
-            <button
-              aria-label='Зберегти '
-              className=' text-white-dis transition-all hover:scale-[1.03]  hover:opacity-80 focus:scale-[1.03]  focus:opacity-80'
-              type='button'
-              onClick={handleImageUpload}
+        <Formik
+          initialValues={{
+            file: null,
+            alt: '',
+          }}
+          validationSchema={Yup.object({
+            alt: Yup.string()
+              .min(3, 'Має бути 3 або більше символів')
+              .required('Введіть опис'),
+          })}
+          onSubmit={handleSubmit}
+        >
+          {(props: FormikProps<any>) => (
+            <Form
+              onSubmit={props.handleSubmit}
+              className='flex flex-col flex-wrap w-full gap-4 items-center justify-center text-white-dis'
             >
-              <FaSave size='3em' />
-            </button>
-          </div>
-        </div>
+              <FieldFileUpload
+                name='file'
+                size={{ width: 250, height: 250 }}
+                isRequired={false}
+              />
+              <Field name='alt'>
+                {({ meta, field }: any) => (
+                  <Input
+                    type='text'
+                    isInvalid={meta.touched && meta.error}
+                    errorMessage={meta.touched && meta.error && meta.error}
+                    placeholder='alt'
+                    classNames={{
+                      input: [
+                        'font-base',
+                        'h-[25px]',
+                        'w-[100px]',
+                        'indent-3',
+                        'text-md',
+                        'text-black-dis',
+                      ],
+                    }}
+                    {...field}
+                  />
+                )}
+              </Field>
+              <Button
+                isIconOnly
+                type='submit'
+                // isLoading={isLoading}
+                // disabled={disabled}
+                aria-label='Upload image'
+                className='bg-transparent text-white-dis'
+              >
+                <CiSaveDown2 size='3em' />
+              </Button>
+            </Form>
+          )}
+        </Formik>
 
         <Swiper
           grabCursor

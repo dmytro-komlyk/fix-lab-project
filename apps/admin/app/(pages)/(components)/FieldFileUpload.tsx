@@ -1,8 +1,8 @@
 'use client'
 
-import { Button, Tooltip } from '@nextui-org/react'
+import { Button, Image, Tooltip } from '@nextui-org/react'
 import { Field } from 'formik'
-import Image from 'next/image'
+import NextImage from 'next/image'
 import React, { useState } from 'react'
 import { FaFileUpload } from 'react-icons/fa'
 import { MdCancel } from 'react-icons/md'
@@ -65,22 +65,27 @@ const FieldFileUpload = ({
           const { setFieldValue } = form
           return (
             <div
-              className={`relative flex flex-col items-center gap-4 w-full border rounded-xl ${newImage ? 'p-0' : 'pb-4'}`}
+              className={`relative flex flex-col items-center text-center gap-4 border rounded-xl ${newImage ? 'p-0' : 'pb-4'}`}
+              style={{
+                width: '100%',
+                height: `${String(size.height)}px`,
+              }}
             >
               {!newImage ? (
                 <div
-                  className={`flex w-full h-[${String(size!.height)}px] items-center justify-center`}
+                  className={`flex w-full h-full justify-center items-center`}
                 >
                   <p>НЕМАЄ ЗОБРАЖЕННЯ</p>
                 </div>
               ) : (
                 <div className='flex w-full h-full'>
                   <Image
-                    className={`w-full h-[${String(size!.height)}px] rounded-xl`}
+                    as={NextImage}
+                    classNames={{ img: 'h-full' }}
                     src={newImage}
                     width={size.width}
                     height={size.height}
-                    alt='test'
+                    alt='Uploaded Image'
                   />
                   <Button
                     isIconOnly
