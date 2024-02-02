@@ -41,12 +41,10 @@ const Dashboard = async () => {
               <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/gadgets'
-                  isDisabled
                   className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
                 >
                   Гаджети
                 </Link>
-                <HiLockClosed size={30} color='#fff' />
               </li>
               <li className='flex items-center justify-between gap-2'>
                 <Link

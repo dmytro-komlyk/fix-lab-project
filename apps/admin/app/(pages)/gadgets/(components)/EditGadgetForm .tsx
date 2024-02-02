@@ -1,78 +1,89 @@
 'use client'
 
-import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
-import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import toast from 'react-hot-toast'
 
+import { SERVER_URL } from '@admin/app/(lib)/constants'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Checkbox,
+  CheckboxGroup,
+  Image,
+  Input,
+  Tab,
+  Tabs,
+  Textarea,
+  cn,
+} from '@nextui-org/react'
+import type { outputBrandSchema as IBrand } from '@server/domain/brands/schemas/brand.schema'
+import type {
+  outputGadgetSchema as IGadget,
+  createGadgetSchema,
+} from '@server/domain/gadgets/schemas/gadget.schema'
+import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
+import type { outputIssueSchema as IIssue } from '@server/domain/issues/schemas/issue.schema'
+import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
+import { useState } from 'react'
+import { FaExchangeAlt } from 'react-icons/fa'
+import * as Yup from 'yup'
+import FieldFileUpload from '../../(components)/FieldFileUpload'
+import SelectImage from '../../(components)/SelectImage'
 import SendButton from '../../(components)/SendButton'
-import EditBrandsList from './EditBrandsList'
-import EditIssuesList from './EditIssuesList'
 
 const EditGadgetForm = ({
   gadgetData,
   issuesData,
   brandsData,
+  iconsData,
 }: {
-  gadgetData: Awaited<
-    ReturnType<(typeof serverClient)['gadgets']['getBySlugGadget']>
-  >
-  issuesData: Awaited<
-    ReturnType<(typeof serverClient)['issues']['getAllIssues']>
-  >
-  brandsData: Awaited<
-    ReturnType<(typeof serverClient)['brands']['getAllBrands']>
-  >
+  gadgetData: IGadget
+  issuesData: IIssue[]
+  brandsData: IBrand[]
+  iconsData: IImage[]
 }) => {
   const router = useRouter()
-  const [newGadgetData, setNewGadgetData] = useLocalStorage(
-    `newGadgetData${gadgetData.id}`,
-    {
-      ...gadgetData,
-    },
+
+  const gadget = trpc.gadgets.getByIdGadget.useQuery(
+    { id: gadgetData.id },
+    { initialData: gadgetData },
   )
-  const [selectedIcon, setSelectedIcon] = useState<File | null>(null)
-  const [newIcon, setNewIcon] = useState<string | ArrayBuffer | null>(null)
-  const [activeTab, setActiveTab] = useState<'issues' | 'brands'>('issues')
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target
+  const [selectedIcon, setSelectIcon] = useState<string | null>(
+    gadget.data.icon_id,
+  )
+  const [selectedTab, setSelectedTab] = useState<any>('brands')
+  const [groupSelectedBrands, setGroupSelectedBrands] = useState<any>(
+    gadget.data.brands_ids,
+  )
+  const [groupSelectedIssues, setGroupSelectedIssues] = useState<any>(
+    gadget.data.issues_ids,
+  )
 
-    if (name === 'metadata') {
-      const metadataField = e.target.getAttribute('data-metadata-field')
-
-      if (metadataField) {
-        setNewGadgetData({
-          ...newGadgetData,
-          metadata: {
-            ...newGadgetData.metadata,
-            [metadataField]: value,
-          },
-        })
-      }
-    } else {
-      setNewGadgetData({ ...newGadgetData, [name]: value })
-    }
-  }
+  const issues = trpc.issues.getAllIssues.useQuery(undefined, {
+    initialData: issuesData,
+  })
+  const brands = trpc.brands.getAllBrands.useQuery(undefined, {
+    initialData: brandsData,
+  })
+  const icons = trpc.images.getAllIcons.useQuery(undefined, {
+    initialData: iconsData,
+  })
 
   const updateGadget = trpc.gadgets.updateGadget.useMutation({
     onSuccess: () => {
-      toast.success(`Послугу оновлено!`, {
+      toast.success(`Гаджет ${gadget.data.title} оновлено!`, {
         style: {
           borderRadius: '10px',
           background: 'grey',
           color: '#fff',
         },
       })
+      router.push('/gadgets')
       router.refresh()
-      setSelectedIcon(null)
-      setNewIcon(null)
     },
 
     onError: async () => {
@@ -84,296 +95,432 @@ const EditGadgetForm = ({
         },
       })
     },
+
+    onSettled: () => {
+      gadget.refetch()
+    },
   })
 
-  const deleteIcon = trpc.images.removeImage.useMutation()
-  const handleImageUpload = async () => {
+  const handleSubmit = async (
+    values: any,
+    { setSubmitting, resetForm }: FormikHelpers<any>,
+  ) => {
+    setSubmitting(true)
+    const { file, ...restValues } = values
+    const gadgetValues = {
+      slug: restValues.slug,
+      title: restValues.title,
+      description: restValues.description,
+      metadata: {
+        title: restValues.seoTitle,
+        description: restValues.seoDescription,
+        keywords: restValues.seoKeywords,
+      },
+      brands_ids: groupSelectedBrands,
+      issues_ids: groupSelectedIssues,
+    } as createGadgetSchema
     try {
-      if (selectedIcon) {
-        const response = await uploadImg({
-          fileInput: selectedIcon,
-          alt: gadgetData.icon.alt,
-          type: gadgetData.icon.type,
+      if (file) {
+        const uploadResponse = await uploadImg({
+          fileInput: file,
+          alt: file.name.split('.')[0],
+          type: 'icon',
         })
-        return response
-      }
-      return null
-    } catch (error) {
-      throw new Error('Error uploading image')
-    }
-  }
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-    if (
-      !(
-        newGadgetData.title &&
-        newGadgetData.slug &&
-        newGadgetData.description &&
-        newGadgetData.icon.id &&
-        newGadgetData.metadata.description &&
-        newGadgetData.metadata.keywords &&
-        newGadgetData.metadata.title
-      )
-    ) {
-      toast.error(`Всі поля повинні бути заповнені...`, {
-        style: {
-          borderRadius: '10px',
-          background: 'red',
-          color: '#fff',
-        },
-      })
-    } else if (selectedIcon) {
-      const uploadResponse = await handleImageUpload()
-      if (uploadResponse?.status === 201) {
-        if (uploadResponse.data) {
+        if (uploadResponse.status === 201) {
           await updateGadget.mutateAsync({
-            isActive: true,
-            id: newGadgetData.id,
-            slug: newGadgetData.slug,
-            title: newGadgetData.title,
-            metadata: {
-              title: newGadgetData.metadata.title,
-              description: newGadgetData.metadata.title,
-              keywords: newGadgetData.metadata.title,
-            },
-            description: newGadgetData.description,
+            ...gadget.data,
+            ...gadgetValues,
             icon_id: uploadResponse.data.id,
-            gallery_ids: newGadgetData.gallery_ids.map(item => item) || [],
-            issues_ids: newGadgetData.issues_ids.map(item => item) || [],
-            brands_ids: newGadgetData.brands_ids.map(item => item) || [],
           })
-          await deleteIcon.mutateAsync(gadgetData.icon_id)
         }
       } else {
-        await deleteIcon.mutateAsync(uploadResponse?.data.id)
-        toast.error(`Виникла при оновлені гаджету...`, {
-          style: {
-            borderRadius: '10px',
-            background: 'red',
-            color: '#fff',
-          },
-        })
+        await updateGadget.mutateAsync({ ...gadget.data, ...gadgetValues })
       }
-    } else {
-      updateGadget.mutate({
-        isActive: true,
-        id: newGadgetData.id,
-        slug: newGadgetData.slug,
-        title: newGadgetData.title,
-        metadata: {
-          title: newGadgetData.metadata.title,
-          description: newGadgetData.metadata.title,
-          keywords: newGadgetData.metadata.title,
-        },
-        description: newGadgetData.description,
-        icon_id: gadgetData.icon_id || '',
-        gallery_ids: newGadgetData.gallery_ids.map(item => item) || [],
-        issues_ids: newGadgetData.issues_ids.map(item => item) || [],
-        brands_ids: newGadgetData.brands_ids.map(item => item) || [],
-      })
+    } catch (err) {
+      // need added toast show errors
+      console.log(err)
     }
-  }
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.files && e.currentTarget.files.length > 0) {
-      const file = e.currentTarget.files[0]
-
-      if (file) {
-        setSelectedIcon(file)
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          setNewIcon(reader.result as string | ArrayBuffer | null)
-        }
-
-        reader.readAsDataURL(file)
-      }
-    }
+    setSubmitting(false)
   }
 
   return (
     <div className='flex flex-auto flex-col flex-wrap items-center justify-center gap-[20px]'>
-      <form className='flex w-full justify-between gap-8 text-white-dis '>
-        <div className='flex w-full flex-col gap-8'>
-          <div className='flex w-full justify-evenly'>
-            <div className='flex flex-col items-center justify-between gap-3'>
-              <p className=' bold  text-center font-exo_2 text-xl'>
-                Іконка(svg)
-              </p>
-              {!newIcon ? (
-                gadgetData.icon && (
-                  <Image
-                    className='h-[140px] w-[220px] object-contain  object-center'
-                    src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/icons/${gadgetData.icon.file.filename}`}
-                    width={300}
-                    height={200}
-                    alt={gadgetData.icon.alt}
-                  />
-                )
-              ) : (
-                <div>
-                  <Image
-                    className='h-[140px] w-[220px] object-contain object-center'
-                    src={typeof newIcon === 'string' ? newIcon : ''}
-                    width={0}
-                    height={0}
-                    alt={gadgetData.title}
-                  />
-                </div>
+      <Formik
+        initialValues={{
+          seoTitle: gadget.data.metadata.title,
+          seoDescription: gadget.data.metadata.description,
+          seoKeywords: gadget.data.metadata.keywords,
+          title: gadget.data.title,
+          description: gadget.data.description,
+          slug: gadget.data.slug,
+          file: null,
+        }}
+        validationSchema={Yup.object({
+          seoTitle: Yup.string().min(1).required('Введіть заголовок'),
+          seoDescription: Yup.string().min(1).required('Введіть опис'),
+          seoKeywords: Yup.string().min(1).required('Введіть ключі'),
+          title: Yup.string().min(1).required('Введіть заголовок'),
+          description: Yup.string().min(1).required('Введіть опис'),
+          slug: Yup.string().min(3).required('Введіть ЧПУ'),
+        })}
+        onSubmit={handleSubmit}
+      >
+        {(props: FormikProps<any>) => (
+          <Form
+            onSubmit={props.handleSubmit}
+            className='flex flex-wrap w-full gap-y-12 gap-x-8 py-6 items-center justify-center text-white-dis'
+          >
+            <Card className='order-2 flex flex-col w-[45%] h-72 !bg-[#09338F]'>
+              <CardHeader className='flex flex-col !items-center'>
+                <h3 className='text-lg text-white-dis'>СЕО налаштування</h3>
+              </CardHeader>
+              <CardBody className='gap-y-5'>
+                <Field name='seoTitle'>
+                  {({ meta, field }: any) => (
+                    <Input
+                      type='text'
+                      label='Title'
+                      labelPlacement='inside'
+                      variant='bordered'
+                      isInvalid={meta.touched && meta.error ? true : false}
+                      errorMessage={meta.touched && meta.error}
+                      classNames={{
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
+                        inputWrapper: ['bg-white-dis'],
+                      }}
+                      {...field}
+                    />
+                  )}
+                </Field>
+                <Field name='seoDescription'>
+                  {({ meta, field }: any) => (
+                    <Input
+                      type='text'
+                      label='Description'
+                      labelPlacement='inside'
+                      variant='bordered'
+                      isInvalid={meta.touched && meta.error ? true : false}
+                      errorMessage={meta.touched && meta.error && meta.error}
+                      classNames={{
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
+                        inputWrapper: ['bg-white-dis'],
+                      }}
+                      {...field}
+                    />
+                  )}
+                </Field>
+                <Field name='seoKeywords'>
+                  {({ meta, field }: any) => (
+                    <Input
+                      type='text'
+                      label='Keywords'
+                      labelPlacement='inside'
+                      variant='bordered'
+                      isInvalid={meta.touched && meta.error ? true : false}
+                      errorMessage={meta.touched && meta.error && meta.error}
+                      classNames={{
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
+                        inputWrapper: ['bg-white-dis'],
+                      }}
+                      {...field}
+                    />
+                  )}
+                </Field>
+              </CardBody>
+            </Card>
+            <div className='order-1 flex flex-col items-center justify-end gap-4 w-[45%] h-72'>
+              <FieldFileUpload
+                name='file'
+                initSrc={null}
+                size={{ width: 150, height: 150 }}
+                isRequired={false}
+              />
+              <p className='text-white-dis'>або</p>
+              {icons.isSuccess && (
+                <SelectImage
+                  icons={icons.data}
+                  setSelect={setSelectIcon}
+                  defaultSelectedKeys={selectedIcon ? [selectedIcon] : null}
+                />
               )}
-              <input
-                className=' text-white-dis'
-                id='icon'
-                type='file'
-                accept='icon/*'
-                onChange={handleImageChange}
+              <div className='text-danger'></div>
+            </div>
+            <div className='order-3 flex flex-col justify-end gap-5 w-[45%] h-full'>
+              <Field name='slug'>
+                {({ meta, field }: any) => (
+                  <Input
+                    type='text'
+                    label='ЧПУ(slug)'
+                    labelPlacement='inside'
+                    variant='bordered'
+                    isInvalid={meta.touched && meta.error ? true : false}
+                    errorMessage={meta.touched && meta.error && meta.error}
+                    classNames={{
+                      label: ['font-base', 'text-md', 'text-black-dis'],
+                      input: ['font-base', 'text-md', 'text-black-dis'],
+                      inputWrapper: ['bg-white-dis'],
+                    }}
+                    {...field}
+                  />
+                )}
+              </Field>
+              <Field name='title'>
+                {({ meta, field }: any) => (
+                  <Input
+                    type='text'
+                    label='Заголовок'
+                    labelPlacement='inside'
+                    variant='bordered'
+                    isInvalid={meta.touched && meta.error ? true : false}
+                    errorMessage={meta.touched && meta.error && meta.error}
+                    classNames={{
+                      label: ['font-base', 'text-md', 'text-black-dis'],
+                      input: ['font-base', 'text-md', 'text-black-dis'],
+                      inputWrapper: ['bg-white-dis'],
+                    }}
+                    {...field}
+                  />
+                )}
+              </Field>
+              <Field name='description'>
+                {({ meta, field }: any) => (
+                  <Textarea
+                    type='text'
+                    label='Опис'
+                    labelPlacement='inside'
+                    variant='bordered'
+                    isInvalid={meta.touched && meta.error ? true : false}
+                    errorMessage={meta.touched && meta.error && meta.error}
+                    classNames={{
+                      label: ['font-base', 'text-md', 'text-black-dis'],
+                      input: ['font-base', 'text-md', 'text-black-dis'],
+                      inputWrapper: ['bg-white-dis'],
+                    }}
+                    {...field}
+                  />
+                )}
+              </Field>
+            </div>
+            <div className='order-3 flex flex-col text-center justify-end gap-4 w-[45%] h-full'>
+              NEED ADDED FILE UPLOAD COMPONENT
+            </div>
+            <div className='order-5 flex flex-col justify-end gap-4 w-[92%] h-[500px]'>
+              <Card className='max-w-full w-full h-full'>
+                <CardBody className='overflow-hidden'>
+                  <Tabs
+                    fullWidth
+                    size='md'
+                    aria-label=''
+                    color='primary'
+                    selectedKey={selectedTab}
+                    onSelectionChange={setSelectedTab}
+                    classNames={{
+                      panel: 'h-full',
+                    }}
+                  >
+                    <Tab
+                      key='brands'
+                      title='Додати бренди'
+                      className='flex justify-around overflow-hidden'
+                    >
+                      <CheckboxGroup
+                        value={groupSelectedBrands}
+                        onChange={setGroupSelectedBrands}
+                        color='success'
+                        classNames={{
+                          base: 'w-[47%] pr-2 overflow-y-auto',
+                          wrapper: 'items-center',
+                        }}
+                      >
+                        {groupSelectedBrands.length ? (
+                          brands.data
+                            .filter(brand =>
+                              groupSelectedBrands.includes(brand.id),
+                            )
+                            .map(brand => (
+                              <Checkbox
+                                key={brand.id}
+                                aria-label={brand.title}
+                                classNames={{
+                                  base: cn(
+                                    'inline-flex max-w-md w-full bg-content1 m-0',
+                                    'hover:bg-content2 items-center justify-start',
+                                    'cursor-pointer rounded-lg gap-2 p-4 border-2 border-transparent',
+                                    'border-grey',
+                                  ),
+                                  label: 'w-full',
+                                }}
+                                value={brand.id}
+                              >
+                                <div className='w-full h-[32px] flex flex-row justify-between gap-2'>
+                                  <Image
+                                    width={100}
+                                    height={32}
+                                    src={`${SERVER_URL}/${brand.icon.file.path}`}
+                                    alt={brand.icon.alt}
+                                    classNames={{
+                                      img: 'h-full',
+                                      wrapper: 'w-[30%] h-full',
+                                    }}
+                                  />
+                                  <p className='w-[70%]'>{brand.title}</p>
+                                </div>
+                              </Checkbox>
+                            ))
+                        ) : (
+                          <div className='h-full w-full flex justify-center items-center'>
+                            <p className='font-base text-black-dis'>Порожньо</p>
+                          </div>
+                        )}
+                      </CheckboxGroup>
+                      <div className='flex items-center'>
+                        <FaExchangeAlt className='fill-[#09338F]' size='2em' />
+                      </div>
+                      <CheckboxGroup
+                        value={groupSelectedBrands}
+                        onChange={setGroupSelectedBrands}
+                        classNames={{
+                          base: 'w-[47%] pr-2 overflow-y-auto',
+                          wrapper: 'items-center',
+                        }}
+                      >
+                        {brands.data &&
+                          brands.data
+                            .filter(
+                              brand => !groupSelectedBrands.includes(brand.id),
+                            )
+                            .map(brand => (
+                              <Checkbox
+                                key={brand.id}
+                                aria-label={brand.title}
+                                classNames={{
+                                  base: cn(
+                                    'inline-flex max-w-md w-full bg-content1 m-0',
+                                    'hover:bg-content2 items-center justify-start',
+                                    'cursor-pointer rounded-lg gap-2 p-4 border-2 border-transparent',
+                                    'border-grey',
+                                  ),
+                                  label: 'w-full',
+                                }}
+                                value={brand.id}
+                              >
+                                <div className='w-full h-[32px] flex flex-row justify-between gap-2'>
+                                  <Image
+                                    width={100}
+                                    height={32}
+                                    src={`${SERVER_URL}/${brand.icon.file.path}`}
+                                    alt={brand.icon.alt}
+                                    classNames={{
+                                      img: 'h-full',
+                                      wrapper: 'w-[30%] h-full',
+                                    }}
+                                  />
+                                  <p className='w-[70%]'>{brand.title}</p>
+                                </div>
+                              </Checkbox>
+                            ))}
+                      </CheckboxGroup>
+                    </Tab>
+                    <Tab
+                      key='issues'
+                      title='Додати послуги'
+                      className='flex justify-around overflow-hidden'
+                    >
+                      <CheckboxGroup
+                        value={groupSelectedIssues}
+                        onChange={setGroupSelectedIssues}
+                        color='success'
+                        classNames={{
+                          base: 'w-[47%] pr-2 overflow-y-auto',
+                          wrapper: 'items-center',
+                        }}
+                      >
+                        {groupSelectedIssues.length ? (
+                          issues.data
+                            .filter(issue =>
+                              groupSelectedIssues.includes(issue.id),
+                            )
+                            .map(issue => (
+                              <Checkbox
+                                key={issue.id}
+                                aria-label={issue.title}
+                                classNames={{
+                                  base: cn(
+                                    'inline-flex max-w-md w-full bg-content1 m-0',
+                                    'hover:bg-content2 items-center justify-start',
+                                    'cursor-pointer rounded-lg gap-2 p-2 border-2 border-transparent',
+                                    'border-grey',
+                                  ),
+                                  label: 'w-full',
+                                }}
+                                value={issue.id}
+                              >
+                                <div className='w-full h-[32px] flex flex-row justify-between gap-2'>
+                                  <p>{issue.title}</p>
+                                </div>
+                              </Checkbox>
+                            ))
+                        ) : (
+                          <div className='h-full w-full flex justify-center items-center'>
+                            <p className='font-base text-black-dis'>Порожньо</p>
+                          </div>
+                        )}
+                      </CheckboxGroup>
+                      <div className='flex items-center'>
+                        <FaExchangeAlt className='fill-[#09338F]' size='2em' />
+                      </div>
+                      <CheckboxGroup
+                        value={groupSelectedIssues}
+                        onChange={setGroupSelectedIssues}
+                        classNames={{
+                          base: 'w-[47%] pr-2 overflow-y-auto',
+                          wrapper: 'items-center',
+                        }}
+                      >
+                        {issues.data &&
+                          issues.data
+                            .filter(
+                              issue => !groupSelectedIssues.includes(issue.id),
+                            )
+                            .map(issue => (
+                              <Checkbox
+                                key={issue.id}
+                                aria-label={issue.title}
+                                classNames={{
+                                  base: cn(
+                                    'inline-flex max-w-md w-full bg-content1 m-0',
+                                    'hover:bg-content2 items-center justify-start',
+                                    'cursor-pointer rounded-lg gap-2 p-2 border-2 border-transparent',
+                                    'border-grey',
+                                  ),
+                                  label: 'w-full',
+                                }}
+                                value={issue.id}
+                              >
+                                <div className='w-full flex flex-row justify-between gap-2'>
+                                  <p>{issue.title}</p>
+                                </div>
+                              </Checkbox>
+                            ))}
+                      </CheckboxGroup>
+                    </Tab>
+                  </Tabs>
+                </CardBody>
+              </Card>
+            </div>
+            <div className='order-last'>
+              <SendButton
+                type={'submit'}
+                disabled={!props.isValid}
+                isLoading={props.isSubmitting}
               />
             </div>
-            <div className='flex w-[400px] flex-col'>
-              <p className=' bold text-center font-exo_2 text-xl'>
-                SEO налаштування
-              </p>
-              <label
-                htmlFor='metadata title'
-                className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
-              >
-                Seo title
-                <input
-                  required
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                  type='text'
-                  name='metadata'
-                  data-metadata-field='title'
-                  value={newGadgetData.metadata.title || ''}
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label
-                htmlFor='metadata description'
-                className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
-              >
-                Seo description
-                <input
-                  required
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                  type='text'
-                  name='metadata'
-                  data-metadata-field='description'
-                  value={newGadgetData.metadata.description || ''}
-                  onChange={handleInputChange}
-                />
-              </label>
-              <label
-                htmlFor='metadata keywords'
-                className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
-              >
-                Seo keywords
-                <input
-                  required
-                  className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                  type='text'
-                  name='metadata'
-                  data-metadata-field='keywords'
-                  value={newGadgetData.metadata.keywords || ''}
-                  onChange={handleInputChange}
-                />
-              </label>
-            </div>
-          </div>
-          <label
-            htmlFor='title'
-            className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
-          >
-            Заголовок
-            <input
-              required
-              maxLength={60}
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-              type='text'
-              name='title'
-              value={newGadgetData.title || ''}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label
-            htmlFor='title'
-            className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'
-          >
-            Slug(url сторінки)
-            <input
-              required
-              maxLength={60}
-              className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-              type='text'
-              name='slug'
-              value={newGadgetData.slug || ''}
-              onChange={handleInputChange}
-            />
-          </label>
-          <label
-            htmlFor='description'
-            className='flex flex-col items-start gap-1 text-center font-exo_2 text-xl'
-          >
-            Опис
-            <textarea
-              required
-              className='font-base h-[150px] w-full p-2 text-md text-black-dis'
-              value={newGadgetData.description || ''}
-              name='description'
-              onChange={handleInputChange}
-            />
-          </label>
-        </div>
-      </form>
-      <div className=' flex w-full items-center justify-center gap-[100px]'>
-        <div className='w-full'>
-          <div className='flex  flex-col-reverse justify-center '>
-            <div className=' mb-[20px] w-full border-b-2 border-mid-grey' />
-            <div className='mb-[10px] mt-8 flex justify-center gap-8'>
-              <button type='button' onClick={() => setActiveTab('issues')}>
-                <span
-                  className={`
-              mb-6 font-exo_2 text-2xl  font-bold  max-lg:text-xl
-              ${activeTab === 'issues' ? 'text-mid-green' : 'text-white-dis'}`}
-                >
-                  Послуги
-                </span>
-              </button>
-              <button
-                type='button'
-                className={`tab-button `}
-                onClick={() => setActiveTab('brands')}
-              >
-                <span
-                  className={`
-              mb-6 font-exo_2 text-2xl  font-bold  max-lg:text-xl
-              ${activeTab === 'brands' ? 'text-mid-green' : 'text-white-dis'}`}
-                >
-                  Бренди
-                </span>
-              </button>
-            </div>
-          </div>
-          <div className=' flex h-[400px] justify-center overflow-auto '>
-            {activeTab === 'issues' && (
-              <EditIssuesList
-                newGadgetData={newGadgetData}
-                issuesData={issuesData}
-                setNewGadgetData={setNewGadgetData}
-              />
-            )}
-            {activeTab === 'brands' && (
-              <EditBrandsList
-                brandsData={brandsData}
-                newGadgetData={newGadgetData}
-                setNewGadgetData={setNewGadgetData}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-      <div className='mt-8'>
-        <SendButton handleSubmit={handleSubmit} />
-      </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   )
 }

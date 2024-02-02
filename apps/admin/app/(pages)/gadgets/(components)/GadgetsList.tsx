@@ -1,20 +1,14 @@
 'use client'
 
-import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import type { outputGadgetSchema } from '@server/domain/gadgets/schemas/gadget.schema'
+import { SERVER_URL } from '@admin/app/(lib)/constants'
+import type { outputGadgetSchema as IGadget } from '@server/domain/gadgets/schemas/gadget.schema'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export const GadgetsList = ({
-  gadgetsData,
-}: {
-  gadgetsData: Awaited<
-    ReturnType<(typeof serverClient)['gadgets']['getAllGadgets']>
-  >
-}) => {
+export const GadgetsList = ({ gadgetsData }: { gadgetsData: IGadget[] }) => {
   return (
     <ul className='z-2 flex flex-wrap justify-center gap-2 max-xl:max-w-full xl:w-[954px] xl:gap-6'>
-      {gadgetsData.map((item: outputGadgetSchema) => {
+      {gadgetsData.map((item: IGadget) => {
         return (
           <li
             key={item.id}
@@ -28,7 +22,7 @@ export const GadgetsList = ({
                 {item.icon && (
                   <Image
                     className='w-auto transition-transform delay-75 duration-300 ease-in-out group-hover:scale-[1.2]'
-                    src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/icons/${item.icon.file.filename}`}
+                    src={`${SERVER_URL}/${item.icon.file.path}`}
                     fill
                     alt={item.icon.alt}
                   />
