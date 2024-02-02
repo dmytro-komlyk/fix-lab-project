@@ -79,46 +79,6 @@ const RemoveIssue = ({ item }: { item: IIssue }) => {
         </ButtonGroup>
       </PopoverContent>
     </Popover>
-    //   <button
-    //     aria-label='Видалити'
-    //     type='button'
-    //     onClick={() => toggleRemoveContainer(item.id)}
-    //   >
-    //     <MdDelete
-    //       className='transition-colors hover:fill-[red] focus:fill-[red]'
-    //       size={30}
-    //     />
-    //   </button>
-    //   {showRemoveContainers[item.id] && (
-    //     <div
-    //       ref={ref => {
-    //         containerRefs.current[item.id] = ref
-    //       }}
-    //       className='z-1 absolute bottom-[-21.5px] left-[-25px] flex gap-4 bg-mid-green p-[21px]'
-    //     >
-    //       <button
-    //         aria-label='Видалити'
-    //         type='button'
-    //         onClick={() => handleDeleteArticle(item.id)}
-    //       >
-    //         <AiOutlineCheckCircle
-    //           className='transition-colors hover:fill-white-dis focus:fill-white-dis'
-    //           size={30}
-    //         />
-    //       </button>
-    //       <button
-    //         aria-label='Закрити'
-    //         type='button'
-    //         onClick={() => toggleRemoveContainer(item.id)}
-    //       >
-    //         <AiOutlineCloseCircle
-    //           className='transition-colors hover:fill-[red] focus:fill-[red]'
-    //           size={30}
-    //         />
-    //       </button>
-    //     </div>
-    //   )}
-    // </>
   )
 }
 

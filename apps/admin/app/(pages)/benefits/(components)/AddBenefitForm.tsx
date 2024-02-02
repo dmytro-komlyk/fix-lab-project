@@ -116,7 +116,6 @@ const AddBenefitForm = () => {
                     name='file'
                     initSrc={null}
                     size={{ width: 150, height: 150 }}
-                    isRequired={false}
                   />
                   <p className='text-white-dis'>або</p>
                   {icons.isSuccess && (

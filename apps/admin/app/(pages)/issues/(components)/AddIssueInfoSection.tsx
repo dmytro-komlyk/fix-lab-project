@@ -275,7 +275,6 @@ const AddIssueInfoSection = ({
                 <FieldFileUpload
                   name='file'
                   initSrc={null}
-                  isRequired={true}
                   size={{ width: 450, height: 300 }}
                 />
               </div>

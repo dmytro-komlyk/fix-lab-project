@@ -271,7 +271,6 @@ const EditIssuesForm = ({
               <FieldFileUpload
                 name='file'
                 initSrc={`${SERVER_URL}/${issue.data.image.file.path}`}
-                isRequired={true}
                 size={{ width: 450, height: 300 }}
               />
             </div>

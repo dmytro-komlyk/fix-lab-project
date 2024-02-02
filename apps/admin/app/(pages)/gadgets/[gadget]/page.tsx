@@ -49,7 +49,7 @@ const GadgetPage: React.FC<IContactAdminProps> = async ({ params }) => {
               {gadgetData.title}
             </p>
           </div>
-          <h2 className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
+          <h2 className='mb-6 self-center font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
             {gadgetData.title}
           </h2>
           <EditGadgetForm

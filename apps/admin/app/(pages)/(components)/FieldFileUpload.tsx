@@ -10,12 +10,10 @@ import { MdCancel } from 'react-icons/md'
 const FieldFileUpload = ({
   name,
   initSrc,
-  isRequired,
   size,
 }: {
   name: string
   initSrc: string | null
-  isRequired: boolean
   size: {
     width: number
     height: number
@@ -68,6 +66,7 @@ const FieldFileUpload = ({
               className={`relative flex flex-col items-center text-center gap-4 border rounded-xl ${newImage ? 'p-0' : 'pb-4'}`}
               style={{
                 width: '100%',
+                maxWidth: `${String(size.width)}px`,
                 height: `${String(size.height)}px`,
               }}
             >
