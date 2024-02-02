@@ -114,7 +114,7 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
             <FieldFileUpload
               name='file'
               initSrc={null}
-              size={{ width: 100, height: 100 }}
+              size={{ width: 150, height: 150 }}
               isRequired={false}
             />
             <p className='text-white-dis'>або</p>

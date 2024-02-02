@@ -115,7 +115,7 @@ const AddBenefitForm = () => {
                   <FieldFileUpload
                     name='file'
                     initSrc={null}
-                    size={{ width: 100, height: 100 }}
+                    size={{ width: 150, height: 150 }}
                     isRequired={false}
                   />
                   <p className='text-white-dis'>або</p>
@@ -132,18 +132,15 @@ const AddBenefitForm = () => {
                   {({ meta, field }: any) => (
                     <Input
                       type='text'
-                      isInvalid={meta.touched && meta.error}
+                      label='Заголовок'
+                      labelPlacement='inside'
+                      variant='bordered'
+                      isInvalid={meta.touched && meta.error ? true : false}
                       errorMessage={meta.touched && meta.error && meta.error}
-                      placeholder='Заголовок'
                       classNames={{
-                        input: [
-                          'font-base',
-                          'h-[45px]',
-                          'w-full',
-                          'indent-3',
-                          'text-md',
-                          'text-black-dis',
-                        ],
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
+                        inputWrapper: ['bg-white-dis'],
                       }}
                       {...field}
                     />
