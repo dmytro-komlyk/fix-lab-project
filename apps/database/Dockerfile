@@ -13,3 +13,22 @@ until ($MONGO_COMMAND admin --port $MONGO_REPLICA_PORT --eval "$INIT_REPL_CMD");
 $MONGO_COMMAND admin --port $MONGO_REPLICA_PORT --eval "$INIT_USER_CMD" || echo "Error creating user."; \
 # we are done but we keep the container by waiting on signals from the mongo task
 echo "REPLICA SET ONLINE"; wait $MONGOD_PID;
+
+FROM mongo:${MONGO_VERSION} As mongo-seed
+
+ARG SERVICE_PATH=apps/database
+
+WORKDIR /data
+
+COPY ${SERVICE_PATH}/seed/articles.json ./seed/articles.json
+COPY ${SERVICE_PATH}/seed/images.json ./seed/images.json
+COPY ${SERVICE_PATH}/seed/contacts.json ./seed/contacts.json
+COPY ${SERVICE_PATH}/seed/benefits.json ./seed/benefits.json
+COPY ${SERVICE_PATH}/seed/brands.json ./seed/brands.json
+COPY ${SERVICE_PATH}/seed/issues.json ./seed/issues.json
+COPY ${SERVICE_PATH}/seed/gadgets.json ./seed/gadgets.json
+
+COPY apps/database/init-seed.sh ./init-seed.sh
+RUN chmod +x /data/init-seed.sh
+
+CMD ["./init-seed.sh"]

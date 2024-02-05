@@ -111,7 +111,11 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
           className='flex w-[400px] mx-auto my-0 flex-col items-center justify-center gap-6 text-white-dis '
         >
           <div className='flex flex-col gap-4 items-center w-full'>
-            <FieldFileUpload name='file' isRequired={false} />
+            <FieldFileUpload
+              name='file'
+              initSrc={null}
+              size={{ width: 150, height: 150 }}
+            />
             <p className='text-white-dis'>або</p>
             {icons.isSuccess && (
               <SelectImage

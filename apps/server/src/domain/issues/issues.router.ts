@@ -8,14 +8,14 @@ import { IssuesService } from './issues.service';
 import {
   createIssueSchema,
   outputIssueSchema,
-  updateIssueSchema
+  updateIssueSchema,
 } from './schemas/issue.schema';
 
 @Injectable()
 export class IssuesRouter {
   constructor(
     private readonly trpc: TrpcService,
-    private readonly issuesService: IssuesService
+    private readonly issuesService: IssuesService,
   ) {}
 
   issuesRouter = this.trpc.router({
@@ -25,8 +25,8 @@ export class IssuesRouter {
           method: 'GET',
           path: '/getAllIssues',
           tags: ['issues'],
-          summary: 'Read all issues'
-        }
+          summary: 'Read all issues',
+        },
       })
       .input(z.void())
       .output(z.array(outputIssueSchema))
@@ -39,8 +39,8 @@ export class IssuesRouter {
           method: 'GET',
           path: '/getAllPublishedIssues',
           tags: ['issues'],
-          summary: 'Read all published issues'
-        }
+          summary: 'Read all published issues',
+        },
       })
       .input(z.void())
       .output(z.array(outputIssueSchema))
@@ -53,12 +53,12 @@ export class IssuesRouter {
           method: 'GET',
           path: '/getByIdIssue',
           tags: ['issues'],
-          summary: 'Read a issue by id'
-        }
+          summary: 'Read a issue by id',
+        },
       })
       .input(z.object({ id: z.string() }))
       .output(outputIssueSchema)
-      .mutation(async ({ input }) => {
+      .query(async ({ input }) => {
         return await this.issuesService.findById(input.id);
       }),
     getBySlugIssue: this.trpc.procedure
@@ -67,8 +67,8 @@ export class IssuesRouter {
           method: 'GET',
           path: '/getBySlugIssue',
           tags: ['issues'],
-          summary: 'Read a issue by slug'
-        }
+          summary: 'Read a issue by slug',
+        },
       })
       .input(z.object({ slug: z.string() }))
       .output(outputIssueSchema)
@@ -81,8 +81,8 @@ export class IssuesRouter {
           method: 'POST',
           path: '/createIssue',
           tags: ['issues'],
-          summary: 'Create a new issue'
-        }
+          summary: 'Create a new issue',
+        },
       })
       .input(createIssueSchema)
       .output(outputIssueSchema)
@@ -95,8 +95,8 @@ export class IssuesRouter {
           method: 'POST',
           path: '/updateIssue',
           tags: ['issues'],
-          summary: 'Update issue'
-        }
+          summary: 'Update issue',
+        },
       })
       .input(updateIssueSchema)
       .output(outputIssueSchema)
@@ -109,14 +109,14 @@ export class IssuesRouter {
           method: 'POST',
           path: '/removeIssue',
           tags: ['issues'],
-          summary: 'Delete issue'
-        }
+          summary: 'Delete issue',
+        },
       })
       .input(z.object({ id: z.string() }))
       .output(z.object({ id: z.string() }))
       .mutation(async ({ input }) => {
         const id = await this.issuesService.remove(input.id);
         return { id };
-      })
+      }),
   });
 }

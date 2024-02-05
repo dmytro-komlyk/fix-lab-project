@@ -1,8 +1,9 @@
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import type { outputArticleSchema } from '@server/domain/articles/schemas/article.schema'
+import type { outputArticleSchema as IArticle } from '@server/domain/articles/schemas/article.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
+import { auth } from '@admin/app/(utils)/authOptions'
 import PreviewArticlePage from '../(components)/PreviewArticlePage'
 
 interface IArticleAdminProps {
@@ -14,9 +15,12 @@ interface IArticleAdminProps {
 export const dynamic = 'force-dynamic'
 
 const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
-  const articleData = (await serverClient.articles.getBySlugArticle({
+  const session = await auth()
+  const user = session?.user ? session.user : null
+
+  const articleData = (await serverClient({ user }).articles.getBySlugArticle({
     slug: params.article,
-  })) as outputArticleSchema
+  })) as IArticle
 
   return (
     <main>

@@ -30,13 +30,14 @@ const SelectImage = ({
         listboxProps={{
           itemClasses: {
             base: [
+              'bg-default-200',
               'rounded-md',
               'text-default-500',
               'transition-opacity',
               'data-[hover=true]:text-foreground',
-              'data-[hover=true]:bg-default-400',
-              'dark:data-[hover=true]:bg-default-100',
-              'data-[selectable=true]:focus:bg-default-200',
+              'data-[hover=true]:bg-default-600',
+              'dark:data-[hover=true]:bg-default-50',
+              'data-[selectable=true]:focus:bg-default-50',
               'data-[pressed=true]:opacity-70',
               'data-[focus-visible=true]:ring-default-500',
             ],
@@ -60,28 +61,28 @@ const SelectImage = ({
             <div key={item.key} className='flex items-center gap-2'>
               <Avatar
                 alt={item.data?.alt}
-                className='flex-shrink-0'
+                className='flex-shrink-0 bg-transparent overflow-visible'
                 size='sm'
                 src={`${SERVER_URL}/${item.data?.file.path}`}
               />
               <div className='flex flex-col'>
-                <span>{item.data?.alt}</span>
+                <span className='text-white-dis'>{item.data?.alt}</span>
               </div>
             </div>
           ))
         }}
       >
         {icon => (
-          <SelectItem key={icon.id}>
+          <SelectItem key={icon.id} textValue=''>
             <div className='flex gap-2 items-center'>
               <Avatar
                 alt={icon.alt}
-                className='flex-shrink-0'
+                className='flex-shrink-0 bg-transparent overflow-visible'
                 size='sm'
                 src={`${SERVER_URL}/${icon.file.path}`}
               />
               <div className='flex flex-col'>
-                <span className='text-small'>{icon.alt}</span>
+                <span className='text-small text-white-dis'>{icon.alt}</span>
               </div>
             </div>
           </SelectItem>

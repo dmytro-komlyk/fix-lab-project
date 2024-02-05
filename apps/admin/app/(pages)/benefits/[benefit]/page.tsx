@@ -27,8 +27,8 @@ const BenefitPage: React.FC<IBenefitAdminProps> = async ({ params }) => {
   return (
     <main>
       <section className='flex min-h-[100vh] w-full bg-footer-gradient-linear-blue py-[60px]'>
-        <div className='container  relative flex flex-col  px-8 '>
-          <div className='z-[1] mb-8 flex items-center gap-1'>
+        <div className='container relative flex flex-col gap-y-6 px-8'>
+          <div className='z-[1] flex items-center gap-1'>
             <Link
               className='flex items-center gap-1 text-base font-[400] text-[#3EB9F0] transition-opacity  hover:opacity-70 focus:opacity-70'
               href='/benefits'
@@ -40,7 +40,7 @@ const BenefitPage: React.FC<IBenefitAdminProps> = async ({ params }) => {
               {benefitData.title}
             </p>
           </div>
-          <h2 className='mb-6 font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '>
+          <h2 className='self-center font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '>
             {benefitData.title}
           </h2>
           <EditBenefitForm benefitData={benefitData} />

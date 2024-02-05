@@ -112,7 +112,11 @@ const AddBenefitForm = () => {
                 className='flex w-[400px] flex-col gap-6 items-center justify-center text-white-dis'
               >
                 <div className='flex flex-col gap-4 items-center w-full'>
-                  <FieldFileUpload name='file' isRequired={false} />
+                  <FieldFileUpload
+                    name='file'
+                    initSrc={null}
+                    size={{ width: 150, height: 150 }}
+                  />
                   <p className='text-white-dis'>або</p>
                   {icons.isSuccess && (
                     <SelectImage
@@ -127,18 +131,15 @@ const AddBenefitForm = () => {
                   {({ meta, field }: any) => (
                     <Input
                       type='text'
-                      isInvalid={meta.touched && meta.error}
+                      label='Заголовок'
+                      labelPlacement='inside'
+                      variant='bordered'
+                      isInvalid={meta.touched && meta.error ? true : false}
                       errorMessage={meta.touched && meta.error && meta.error}
-                      placeholder='Заголовок'
                       classNames={{
-                        input: [
-                          'font-base',
-                          'h-[45px]',
-                          'w-full',
-                          'indent-3',
-                          'text-md',
-                          'text-black-dis',
-                        ],
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
+                        inputWrapper: ['bg-white-dis'],
                       }}
                       {...field}
                     />

@@ -2,57 +2,72 @@
 
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import toast from 'react-hot-toast'
-import * as Yup from 'yup'
 
 import { SERVER_URL } from '@admin/app/(lib)/constants'
 import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
-import { Card, CardBody, CardHeader, Input, Textarea } from '@nextui-org/react'
-import type { outputArticleSchema as IArticle } from '@server/domain/articles/schemas/article.schema'
+import { Card, CardBody, CardHeader, Input, Tab, Tabs } from '@nextui-org/react'
+import { outputBenefitSchema } from '@server/domain/benefits/schemas/benefit.schema'
+import {
+  createIssueSchema,
+  outputIssueSchema,
+} from '@server/domain/issues/schemas/issue.schema'
 import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
-import AddImagesSection from '../../(components)/AddImagesSection'
+import { useState } from 'react'
+import * as Yup from 'yup'
 import CustomAddContent from '../../(components)/CustomAddContent'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SendButton from '../../(components)/SendButton'
+import ListBoxBenefits from './ListBoxBenefits'
 
-const EditArticleSection = ({ articleData }: { articleData: IArticle }) => {
+const EditIssuesForm = ({
+  issueData,
+  benefitsData,
+}: {
+  issueData: outputIssueSchema
+  benefitsData: outputBenefitSchema[]
+}) => {
   const router = useRouter()
-  const { updatedAt, createdAt, ...restArticledata } = articleData
-  const article = trpc.articles.getByIdArticle.useQuery(
-    { id: articleData.id },
-    { initialData: restArticledata },
-  )
-  const images = trpc.images.getAllBlogPictures.useQuery(undefined)
-  const [contentArticleBlog, setContentArticleBlog] = useState<string>(
-    article.data.text,
-  )
 
-  const updateArticle = trpc.articles.updateArticle.useMutation({
+  const issue = trpc.issues.getByIdIssue.useQuery(
+    { id: issueData.id },
+    { initialData: issueData },
+  )
+  const benefits = trpc.benefits.getAllBenefits.useQuery(undefined, {
+    initialData: benefitsData,
+  })
+
+  const [selectedTab, setSelectedTab] = useState<any>('issue-info')
+  const [listBenefits, setListBenefits] = useState<string[]>(
+    issue.data.benefits_ids,
+  )
+  const [contentInfoIssue, setContentInfoIssue] = useState<string>(
+    issue.data.info,
+  )
+  const [contentDescriptionIssue, setContentDescriptionIssue] =
+    useState<string>(issue.data.description)
+
+  const updateIssue = trpc.issues.updateIssue.useMutation({
     onSuccess: () => {
-      toast.success(`Оновлення збережено!`, {
+      toast.success(`Послугу оновлено!`, {
         style: {
           borderRadius: '10px',
           background: 'grey',
           color: '#fff',
         },
       })
-      router.push('/articles')
+      router.push('/issues')
       router.refresh()
     },
 
-    onError: async () => {
-      toast.error(`Виникла помилка при додаванні...`, {
+    onError: () => {
+      toast.error(`Виникла помилка при оновленні...`, {
         style: {
           borderRadius: '10px',
           background: 'red',
           color: '#fff',
         },
       })
-    },
-
-    onSettled: () => {
-      article.refetch()
     },
   })
 
@@ -62,18 +77,21 @@ const EditArticleSection = ({ articleData }: { articleData: IArticle }) => {
   ) => {
     setSubmitting(true)
     const { file, ...restValues } = values
-    const articleValues = {
+
+    const issueValues = {
       slug: restValues.slug,
+      price: restValues.price,
       title: restValues.title,
-      preview: restValues.preview,
-      text: contentArticleBlog,
+      info: contentInfoIssue,
+      description: contentDescriptionIssue,
       metadata: {
         title: restValues.seoTitle,
         description: restValues.seoDescription,
         keywords: restValues.seoKeywords,
       },
-    }
-    console.log(file, articleValues)
+      benefits_ids: Array.from(listBenefits),
+    } as createIssueSchema
+
     try {
       if (file) {
         const uploadResponse = await uploadImg({
@@ -82,18 +100,14 @@ const EditArticleSection = ({ articleData }: { articleData: IArticle }) => {
           type: 'picture',
         })
         if (uploadResponse.status === 201) {
-          await updateArticle.mutateAsync({
-            ...articleValues,
-            id: article.data.id,
+          await updateIssue.mutateAsync({
+            ...issue.data,
+            ...issueValues,
             image_id: uploadResponse.data.id,
           })
         }
       } else {
-        await updateArticle.mutateAsync({
-          ...articleValues,
-          id: article.data.id,
-          image_id: article.data.image_id,
-        })
+        await updateIssue.mutateAsync({ ...issue.data, ...issueValues })
       }
     } catch (err) {
       // need added toast show errors
@@ -106,21 +120,21 @@ const EditArticleSection = ({ articleData }: { articleData: IArticle }) => {
     <div className='flex flex-auto flex-col items-center justify-center gap-4'>
       <Formik
         initialValues={{
-          seoTitle: article.data.metadata.title,
-          seoDescription: article.data.metadata.description,
-          seoKeywords: article.data.metadata.keywords,
-          slug: article.data.slug,
-          title: article.data.title,
-          preview: article.data.preview,
+          seoTitle: issue.data.metadata.title,
+          seoDescription: issue.data.metadata.description,
+          seoKeywords: issue.data.metadata.keywords,
+          title: issue.data.title,
+          price: issue.data.price,
+          slug: issue.data.slug,
           file: null,
         }}
         validationSchema={Yup.object({
           seoTitle: Yup.string().min(1).required('Введіть заголовок'),
           seoDescription: Yup.string().min(1).required('Введіть опис'),
           seoKeywords: Yup.string().min(1).required('Введіть ключі'),
-          slug: Yup.string().min(3).required('Введіть ЧПУ'),
           title: Yup.string().min(1).required('Введіть заголовок'),
-          preview: Yup.string().min(1).required('Введіть опис'),
+          price: Yup.string().min(1).required('Введіть вартість'),
+          slug: Yup.string().min(3).required('Введіть ЧПУ'),
         })}
         onSubmit={handleSubmit}
       >
@@ -209,6 +223,24 @@ const EditArticleSection = ({ articleData }: { articleData: IArticle }) => {
                   />
                 )}
               </Field>
+              <Field name='price'>
+                {({ meta, field }: any) => (
+                  <Input
+                    type='text'
+                    label='Вартість послуги'
+                    labelPlacement='inside'
+                    variant='bordered'
+                    isInvalid={meta.touched && meta.error ? true : false}
+                    errorMessage={meta.touched && meta.error && meta.error}
+                    classNames={{
+                      label: ['font-base', 'text-md', 'text-black-dis'],
+                      input: ['font-base', 'text-md', 'text-black-dis'],
+                      inputWrapper: ['bg-white-dis'],
+                    }}
+                    {...field}
+                  />
+                )}
+              </Field>
               <Field name='title'>
                 {({ meta, field }: any) => (
                   <Input
@@ -228,45 +260,59 @@ const EditArticleSection = ({ articleData }: { articleData: IArticle }) => {
                 )}
               </Field>
             </div>
-            <div className='order-3 w-[45%]'>
-              <Field name='preview'>
-                {({ meta, field }: any) => (
-                  <Textarea
-                    type='text'
-                    label='Опис'
-                    labelPlacement='inside'
-                    variant='bordered'
-                    minRows={6}
-                    isInvalid={meta.touched && meta.error ? true : false}
-                    errorMessage={meta.touched && meta.error && meta.error}
-                    classNames={{
-                      label: ['font-base', 'text-md', 'text-black-dis'],
-                      input: ['font-base', 'text-md', 'text-black-dis'],
-                      inputWrapper: ['bg-white-dis'],
-                    }}
-                    {...field}
-                  />
-                )}
-              </Field>
+            <div className='order-3 w-[45%] flex justify-center'>
+              <ListBoxBenefits
+                items={benefits.data}
+                listBenefits={listBenefits}
+                setListBenefits={setListBenefits}
+              />
             </div>
             <div className='order-4 w-[45%]'>
               <FieldFileUpload
                 name='file'
-                initSrc={`${SERVER_URL}/${article.data.image.file.path}`}
-                size={{ width: 400, height: 200 }}
+                initSrc={`${SERVER_URL}/${issue.data.image.file.path}`}
+                size={{ width: 400, height: 300 }}
               />
             </div>
-            {images.data && (
-              <div className='order-5 w-[92%]'>
-                <AddImagesSection allImagesData={images.data} />
-              </div>
-            )}
-            <div className='order-6 w-[92%]'>
-              <CustomAddContent
-                id='add-article-blog-content'
-                setContent={setContentArticleBlog}
-                content={contentArticleBlog}
-              />
+            <div className='order-6 w-[92%] h-[500px]'>
+              <Card className='max-w-full w-full h-full'>
+                <CardBody className='overflow-hidden'>
+                  <Tabs
+                    fullWidth
+                    size='md'
+                    aria-label=''
+                    color='primary'
+                    selectedKey={selectedTab}
+                    onSelectionChange={setSelectedTab}
+                    classNames={{
+                      panel: 'h-full',
+                    }}
+                  >
+                    <Tab
+                      key='issue-info'
+                      title='Додати інформація про послугу'
+                      className='flex justify-around overflow-hidden'
+                    >
+                      <CustomAddContent
+                        id='add-issue-info-content'
+                        setContent={setContentInfoIssue}
+                        content={contentInfoIssue}
+                      />
+                    </Tab>
+                    <Tab
+                      key='issue-description'
+                      title='Додати детальний опис послуги'
+                      className='flex justify-around overflow-hidden'
+                    >
+                      <CustomAddContent
+                        id='add-issue-description-content'
+                        setContent={setContentDescriptionIssue}
+                        content={contentDescriptionIssue}
+                      />
+                    </Tab>
+                  </Tabs>
+                </CardBody>
+              </Card>
             </div>
             <div className='order-last'>
               <SendButton
@@ -282,4 +328,4 @@ const EditArticleSection = ({ articleData }: { articleData: IArticle }) => {
   )
 }
 
-export default EditArticleSection
+export default EditIssuesForm
