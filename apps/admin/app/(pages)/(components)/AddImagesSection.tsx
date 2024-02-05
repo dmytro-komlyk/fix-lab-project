@@ -1,9 +1,15 @@
 'use client'
 
 import { SERVER_URL } from '@admin/app/(lib)/constants'
-import { Accordion, AccordionItem, Button } from '@nextui-org/react'
+import {
+  Accordion,
+  AccordionItem,
+  Button,
+  Image,
+  Tooltip,
+} from '@nextui-org/react'
 import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
-import Image from 'next/image'
+import NextImage from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
@@ -13,20 +19,53 @@ import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
-import { Form, Formik, FormikHelpers, FormikProps } from 'formik'
+import { trpc } from '@admin/app/(utils)/trpc/client'
+import { FaFileUpload } from 'react-icons/fa'
+import { MdCancel } from 'react-icons/md'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import FieldFileUpload from './FieldFileUpload'
 
 const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
   const router = useRouter()
 
-  const [altImage, setAltImage] = useState<string | ''>('')
-  const [selectedImage, setSelectedImage] = useState<File | null>(null)
-  const [contentImage, setContentImage] = useState<string | ArrayBuffer | null>(
-    null,
-  )
+  const images = trpc.images.getAllBlogPictures.useQuery(undefined, {
+    initialData: allImagesData,
+  })
+
+  const [newImage, setNewImage] = useState<string | null>(null)
+  const [isUploading, setIsUploading] = useState<boolean>(false)
+  const [fieldValue, setFieldValue] = useState<File | null>(null)
+
+  const convertToBase64 = (file: any) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader()
+      fileReader.readAsDataURL(file)
+      fileReader.onload = () => {
+        resolve(fileReader.result)
+      }
+      fileReader.onerror = error => {
+        reject(error)
+      }
+    })
+  }
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.files && e.currentTarget.files.length > 0) {
+      const file = e.currentTarget.files[0]
+
+      if (file) {
+        const base64 = await convertToBase64(file)
+        setNewImage(base64 as string)
+        setFieldValue(file)
+      } else {
+        // toast.error('Image size must be of 2MB or less')
+      }
+    } else {
+      setNewImage(null)
+      setFieldValue(null)
+    }
+  }
 
   const handleCopyLink = (url: string) => {
     navigator.clipboard.writeText(url)
@@ -39,66 +78,41 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
     })
   }
 
-  // const handleImageUpload = async (e: any) => {
-  //   e.preventDefault()
-
-  //   try {
-  //     if (selectedImage && altImage) {
-  //       const response = await uploadImg({
-  //         fileInput: selectedImage,
-  //         alt: altImage,
-  //         type: 'picture',
-  //       })
-  //       if (response.status === 201) {
-  //         setAltImage('')
-  //         setContentImage(null)
-  //         setSelectedImage(null)
-  //         router.refresh()
-  //       }
-  //     } else {
-  //       toast.error(`Додайте зображення і опис...`, {
-  //         style: {
-  //           borderRadius: '10px',
-  //           background: 'grey',
-  //           color: '#fff',
-  //         },
-  //       })
-  //     }
-  //   } catch (error) {
-  //     toast.error(`Помилка завантаження...`, {
-  //       style: {
-  //         borderRadius: '10px',
-  //         background: 'red',
-  //         color: '#fff',
-  //       },
-  //     })
-  //     throw new Error('Error uploading image')
-  //   }
-  // }
-
-  const handleSubmit = async (
-    values: any,
-    { setSubmitting, resetForm }: FormikHelpers<any>,
-  ) => {
-    setSubmitting(true)
-    console.log('+')
+  const handleUploadImage = async (e: any) => {
+    e.preventDefault()
+    setIsUploading(true)
     try {
-      const uploadResponse = await uploadImg({
-        fileInput: values.file,
-        alt: values.file.name.split('.')[0],
-        type: 'picture',
-      })
-      if (uploadResponse.status === 201) {
-        //         setAltImage('')
-        //         setContentImage(null)
-        //         setSelectedImage(null)
-        //         router.refresh()
+      if (fieldValue) {
+        const uploadResponse = await uploadImg({
+          fileInput: fieldValue,
+          alt: 'test',
+          type: 'blog',
+        })
+        if (uploadResponse.status === 201) {
+          setNewImage(null)
+          setFieldValue(null)
+          toast.success('Зображення завантажено', {
+            style: {
+              borderRadius: '10px',
+              background: 'grey',
+              color: '#fff',
+            },
+          })
+          images.refetch()
+          router.refresh()
+        }
       }
     } catch (err) {
-      // need added toast show errors
-      console.log(err)
+      toast.error(`Помилка завантаження...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+      throw new Error('Error uploading image')
     }
-    setSubmitting(false)
+    setIsUploading(false)
   }
 
   const reversedImagesData: IImage[] = [...allImagesData].reverse()
@@ -113,101 +127,128 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
         textValue='1'
         key='1'
         startContent={<IoMdAddCircle size='1em' color='#fff' fill='#fff' />}
-        className='flex flex-col'
+        classNames={{
+          content: 'flex flex-col justify-center gap-y-4 py-3 items-center',
+        }}
         title={
-          <span className='bg-top- text-center font-exo_2 text-xl font-bold text-white-dis'>
+          <span className='text-center font-exo_2 text-xl font-bold text-white-dis'>
             Додати зображення для редактора
           </span>
         }
       >
-        {/* <div> */}
-        <Formik
-          initialValues={{
-            file: null,
+        <div
+          className={`relative flex flex-col items-center text-center gap-4 border rounded-xl ${newImage ? 'p-0' : 'pb-4'}`}
+          style={{
+            width: '100%',
+            maxWidth: '400px',
+            height: '200px',
           }}
-          // validationSchema={{}}
-          onSubmit={handleSubmit}
         >
-          {(props: FormikProps<any>) => (
-            <Form
-              onSubmit={props.handleSubmit}
-              className='flex flex-col flex-wrap w-full gap-4 items-center justify-center text-white-dis'
-            >
-              <div className='w-full'>
-                <FieldFileUpload
-                  name='file'
-                  initSrc={null}
-                  size={{ width: 450, height: 250 }}
-                />
-              </div>
-
+          {!newImage ? (
+            <div className={`flex w-full h-full justify-center items-center`}>
+              <p>НЕМАЄ ЗОБРАЖЕННЯ</p>
+            </div>
+          ) : (
+            <div className='flex w-full h-full'>
+              <Image
+                as={NextImage}
+                classNames={{ img: 'h-full' }}
+                src={newImage}
+                width={400}
+                height={200}
+                alt='Uploaded Image'
+              />
               <Button
                 isIconOnly
-                type='submit'
-                isLoading={props.isSubmitting}
-                disabled={props.isValid}
-                aria-label='Upload image'
-                className='bg-transparent text-white-dis'
-                onClick={() => console.log('error')}
+                className='absolute top-[-1em] right-[-2em] h-fit bg-transperent transition-colors [&>svg]:fill-[red] [&>svg]:hover:fill-[#3a0000] [&>svg]:focus:fill-[#3a0000]'
+                onClick={async () => {
+                  setNewImage(null)
+                }}
               >
-                <CiSaveDown2 size='3em' />
+                <MdCancel size='1.5em' />
               </Button>
-            </Form>
+            </div>
           )}
-        </Formik>
-        {/* </div> */}
-        <Swiper
-          grabCursor
-          initialSlide={1}
-          centeredSlides
-          navigation
-          pagination={{
-            clickable: true,
-            dynamicBullets: true,
-          }}
-          breakpoints={{
-            640: {
-              slidesPerView: 1,
-            },
-            768: {
-              slidesPerView: 3,
-            },
-            1024: {
-              slidesPerView: 3,
-              spaceBetween: 10,
-            },
-            1560: {
-              slidesPerView: 7,
-              spaceBetween: 20,
-            },
-          }}
-          modules={[Navigation, Pagination]}
+          <Tooltip showArrow={true} content='Вибрати файл'>
+            <label
+              className={`${newImage ? 'hidden' : 'flex'} relative cursor-pointer bg-transparent transition-colors [&>svg]:hover:fill-mid-blue [&>svg]:focus:fill-mid-blue`}
+            >
+              <FaFileUpload size='2em' className='fill-[white]' />
+              <input
+                className='hidden'
+                type='file'
+                accept='image/*'
+                onChange={handleImageChange}
+              />
+            </label>
+          </Tooltip>
+        </div>
+
+        <Button
+          isLoading={isUploading}
+          isIconOnly
+          aria-label='Upload image'
+          className='mx-auto my-0 bg-transparent text-white-dis'
+          onClick={handleUploadImage}
         >
-          {reversedImagesData.map((item: IImage) => {
-            return (
-              <SwiperSlide key={item.id} className='!flex'>
-                <div className='relative my-6 mb-10 flex justify-center bg-modal-overlay'>
-                  <Image
-                    className='h-[140px] max-w-[280px] object-contain object-center opacity-100 '
-                    alt={item.alt}
-                    src={`${SERVER_URL}/${item.file.path}`}
-                    width={320}
-                    height={240}
-                  />
-                  <button
-                    type='button'
-                    className='absolute right-0 top-0 rounded-bl-xl bg-black-dis p-2 font-exo_2 text-sm text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
-                    onClick={() =>
-                      handleCopyLink(`${SERVER_URL}/${item.file.path}`)
-                    }
-                  >
-                    Копіювати посилання
-                  </button>
-                </div>
-              </SwiperSlide>
-            )
-          })}
-        </Swiper>
+          <CiSaveDown2 size='3em' />
+        </Button>
+        {images.data.length ? (
+          <Swiper
+            grabCursor
+            initialSlide={1}
+            centeredSlides
+            navigation
+            pagination={{
+              clickable: true,
+              dynamicBullets: true,
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 3,
+              },
+              1024: {
+                slidesPerView: 3,
+                spaceBetween: 10,
+              },
+              1560: {
+                slidesPerView: 7,
+                spaceBetween: 20,
+              },
+            }}
+            modules={[Navigation, Pagination]}
+          >
+            {reversedImagesData.map((item: IImage) => {
+              return (
+                <SwiperSlide key={item.id} className='!flex'>
+                  <div className='relative my-6 mb-10 flex justify-center bg-modal-overlay'>
+                    <Image
+                      className='h-[140px] max-w-[280px] object-contain object-center opacity-100 '
+                      alt={item.alt}
+                      src={`${SERVER_URL}/${item.file.path}`}
+                      width={320}
+                      height={240}
+                    />
+                    <Button
+                      type='button'
+                      className='z-10 absolute right-0 top-0 rounded-bl-xl bg-black-dis p-2 font-exo_2 text-sm text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
+                      onClick={() =>
+                        handleCopyLink(`${SERVER_URL}/${item.file.path}`)
+                      }
+                    >
+                      Копіювати посилання
+                    </Button>
+                  </div>
+                </SwiperSlide>
+              )
+            })}
+          </Swiper>
+        ) : (
+          <>Зображення відсутні</>
+        )}
       </AccordionItem>
     </Accordion>
   )
