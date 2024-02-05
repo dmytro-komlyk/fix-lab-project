@@ -101,9 +101,7 @@ const SignIn = () => {
                   classNames={{
                     label: ['text-white'],
                     input: ['text-white'],
-                    inputWrapper: [
-                      'group-data-[focus=true]:border-default-200',
-                    ],
+                    inputWrapper: ['group-data-[focus=true]:border-mid-green'],
                   }}
                   endContent={
                     <HiMail

@@ -4,16 +4,14 @@ import { trpc } from '@admin/app/(utils)/trpc/client'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 
-import { SERVER_URL } from '@admin/app/(lib)/constants'
 import { Input } from '@nextui-org/react'
 import type { outputContactSchema as IContact } from '@server/domain/contacts/schemas/contact.schema'
 import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
 import { useCallback } from 'react'
 import * as Yup from 'yup'
-import FieldFileUpload from '../../(components)/FieldFileUpload'
+import SendButton from '../../(components)/SendButton'
 
 const EditContactForm = ({ contactData }: { contactData: IContact }) => {
-  // const [selectedImage, setSelectedImage] = useState<File | null>(null)
   // const [newImage, setNewImage] = useState<string | ArrayBuffer | null>(null)
   const router = useRouter()
 
@@ -21,6 +19,10 @@ const EditContactForm = ({ contactData }: { contactData: IContact }) => {
     { id: contactData.id },
     { initialData: contactData },
   )
+  // const [selectedImage, setSelectedImage] = useState<File | null>(null)
+
+  // const images = trpc.images.getAllImages.useQuery(undefined)
+
   const updateContact = trpc.contacts.updateContact.useMutation({
     onSuccess: () => {
       toast.success(`Оновлення збережено!`, {
@@ -41,11 +43,49 @@ const EditContactForm = ({ contactData }: { contactData: IContact }) => {
         },
       })
     },
+    onSettled: () => {
+      contact.refetch()
+    },
   })
-
+  console.log(contact.data, 'contact')
   const handleSubmit = useCallback(
     async (values: any, { setSubmitting }: FormikHelpers<any>) => {
       setSubmitting(true)
+      const { id, image_id, googleMapLink, googlePluginLink } = contact.data
+      const {
+        address,
+        area,
+        comment,
+        file,
+        phones,
+        subways,
+        workingDate,
+        workingTime,
+      } = values
+      console.log(values, 'values')
+      const dataToUpdate = {
+        address,
+        area,
+        comment,
+        googleMapLink,
+        googlePluginLink,
+        id,
+        image_id,
+        file,
+        phones,
+        subways,
+        workingDate,
+        workingTime,
+      }
+      console.log(dataToUpdate, 'dataUpdate')
+      try {
+        await updateContact.mutateAsync({
+          ...dataToUpdate,
+        })
+      } catch (err) {
+        console.log(err)
+      }
+      setSubmitting(false)
     },
     [],
   )
@@ -140,7 +180,7 @@ const EditContactForm = ({ contactData }: { contactData: IContact }) => {
   // }
 
   return (
-    <div className='flex flex-col items-center justify-center gap-[50px]'>
+    <div className='flex flex-col items-center justify-center gap-10'>
       <Formik
         initialValues={{
           file: contact.data.image.file,
@@ -151,38 +191,38 @@ const EditContactForm = ({ contactData }: { contactData: IContact }) => {
           phones: contact.data.phones,
           workingTime: contact.data.workingTime,
           workingDate: contact.data.workingDate,
-          googleMapLink: contact.data.googleMapLink,
-          googlePluginLink: contact.data.googlePluginLink,
         }}
         // NEED ADD VALIDATTION
-        validationSchema={Yup.object({
-          area: Yup.string(),
-          address: Yup.string(),
-          comment: Yup.string(),
-          subways: Yup.string(),
-          phones: Yup.string(),
-          workingTime: Yup.string(),
-          workingDate: Yup.string(),
-          googleMapLink: Yup.string(),
-          googlePluginLink: Yup.string(),
+        validationSchema={Yup.object().shape({
+          area: Yup.string().required('Будь ласка, заповніть поле'),
+          address: Yup.string().required('Будь ласка, заповніть поле'),
+          subways: Yup.array()
+            .of(Yup.string())
+            .ensure()
+            .required('Будь ласка, заповніть поле'),
+          phones: Yup.array()
+            .of(Yup.string())
+            .ensure()
+            .required('Будь ласка, заповніть поле'),
+          workingTime: Yup.string().required('Будь ласка, заповніть поле'),
+          workingDate: Yup.string().required('Будь ласка, заповніть поле'),
         })}
         onSubmit={handleSubmit}
       >
         {(props: FormikProps<any>) => (
           <Form
             onSubmit={props.handleSubmit}
-            className='flex w-full flex-wrap items-end justify-evenly gap-3 text-white-dis'
+            className='flex w-full flex-wrap justify-center items-end gap-8 text-white-dis'
           >
-            <FieldFileUpload
-              name='file'
-              initSrc={`${SERVER_URL}/${contact.data.image.file.path}`}
-            />
+            {/* <div className='flex flex-col gap-4 items-center w-full mb-[50px]'>
+              <FieldFileUpload name='file' isRequired={false} />
+            </div> */}
             <Field name='area'>
               {({ meta, field }: any) => (
                 <Input
                   type='text'
-                  // isInvalid={meta.touched && meta.error}
-                  // errorMessage={meta.touched && meta.error && meta.error}
+                  isInvalid={meta.touched && meta.error}
+                  errorMessage={meta.touched && meta.error && meta.error}
                   placeholder='Район'
                   classNames={{
                     input: [
@@ -202,9 +242,9 @@ const EditContactForm = ({ contactData }: { contactData: IContact }) => {
               {({ meta, field }: any) => (
                 <Input
                   type='text'
-                  // isInvalid={meta.touched && meta.error}
-                  // errorMessage={meta.touched && meta.error && meta.error}
-                  placeholder='Адрес'
+                  isInvalid={meta.touched && meta.error}
+                  errorMessage={meta.touched && meta.error && meta.error}
+                  placeholder='Адреса'
                   classNames={{
                     input: [
                       'font-base',
@@ -223,8 +263,8 @@ const EditContactForm = ({ contactData }: { contactData: IContact }) => {
               {({ meta, field }: any) => (
                 <Input
                   type='text'
-                  // isInvalid={meta.touched && meta.error}
-                  // errorMessage={meta.touched && meta.error && meta.error}
+                  isInvalid={meta.touched && meta.error}
+                  errorMessage={meta.touched && meta.error && meta.error}
                   placeholder='Коментар'
                   classNames={{
                     input: [
@@ -244,8 +284,8 @@ const EditContactForm = ({ contactData }: { contactData: IContact }) => {
               {({ meta, field }: any) => (
                 <Input
                   type='text'
-                  // isInvalid={meta.touched && meta.error}
-                  // errorMessage={meta.touched && meta.error && meta.error}
+                  isInvalid={meta.touched && meta.error}
+                  errorMessage={meta.touched && meta.error && meta.error}
                   placeholder='Станції метро'
                   classNames={{
                     input: [
@@ -265,8 +305,8 @@ const EditContactForm = ({ contactData }: { contactData: IContact }) => {
               {({ meta, field }: any) => (
                 <Input
                   type='text'
-                  // isInvalid={meta.touched && meta.error}
-                  // errorMessage={meta.touched && meta.error && meta.error}
+                  isInvalid={meta.touched && meta.error}
+                  errorMessage={meta.touched && meta.error && meta.error}
                   placeholder='Телефон'
                   classNames={{
                     input: [
@@ -282,6 +322,49 @@ const EditContactForm = ({ contactData }: { contactData: IContact }) => {
                 />
               )}
             </Field>
+            <Field name='workingTime'>
+              {({ meta, field }: any) => (
+                <Input
+                  type='text'
+                  isInvalid={meta.touched && meta.error}
+                  errorMessage={meta.touched && meta.error && meta.error}
+                  placeholder='Час роботи'
+                  classNames={{
+                    input: [
+                      'font-base',
+                      'h-[45px]',
+                      'w-full',
+                      'indent-3',
+                      'text-md',
+                      'text-black-dis',
+                    ],
+                  }}
+                  {...field}
+                />
+              )}
+            </Field>
+            <Field name='workingDate'>
+              {({ meta, field }: any) => (
+                <Input
+                  type='text'
+                  isInvalid={meta.touched && meta.error}
+                  errorMessage={meta.touched && meta.error && meta.error}
+                  placeholder='Дні коли ми працюємо'
+                  classNames={{
+                    input: [
+                      'font-base',
+                      'h-[45px]',
+                      'w-full',
+                      'indent-3',
+                      'text-md',
+                      'text-black-dis',
+                    ],
+                  }}
+                  {...field}
+                />
+              )}
+            </Field>
+            <SendButton type='submit' handleSubmit={handleSubmit} />
           </Form>
         )}
       </Formik>
@@ -289,7 +372,7 @@ const EditContactForm = ({ contactData }: { contactData: IContact }) => {
         <div className='flex w-[400px] flex-col gap-2'>
           <div className='relative'>
             {!newImage ? (
-              <Image
+              <Image      
                 className='h-[240px] w-[320px] object-cover object-center'
                 src={`${SERVER_URL}/${contactData.image.file.path}`}
                 width={300}
@@ -416,8 +499,7 @@ const EditContactForm = ({ contactData }: { contactData: IContact }) => {
             />
           </label>
         </div>
-      </form>
-      <SendButton handleSubmit={handleSubmit} /> */}
+      </form> */}
     </div>
   )
 }

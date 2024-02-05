@@ -20,7 +20,7 @@ const RemoveBrand = ({ item }: { item: IBrand }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const removeBrand = trpc.brands.removeBrand.useMutation({
-    onSuccess: async () => {
+    onSuccess: () => {
       toast.success(`Бренд видалено!`, {
         style: {
           borderRadius: '10px',
@@ -28,6 +28,7 @@ const RemoveBrand = ({ item }: { item: IBrand }) => {
           color: '#fff',
         },
       })
+      setIsOpen(false)
       router.refresh()
     },
 
@@ -42,18 +43,20 @@ const RemoveBrand = ({ item }: { item: IBrand }) => {
     },
   })
 
-  const handleDeleteBrand = async (benefitId: string) => {
-    await removeBrand.mutateAsync({ id: benefitId })
+  const handleDeleteBrand = async (brandId: string) => {
+    console.log(brandId)
+    await removeBrand.mutateAsync({ id: brandId })
   }
 
   return (
     <Popover
       placement='right'
+      showArrow={true}
       isOpen={isOpen}
       onOpenChange={open => setIsOpen(open)}
     >
       <PopoverTrigger>
-        <Button isIconOnly aria-label='Delete brand' className='bg-transparent'>
+        <Button isIconOnly aria-label='Delete brand'>
           <MdDelete
             className='transition-colors hover:fill-[red] focus:fill-[red]'
             size='2em'
@@ -64,13 +67,13 @@ const RemoveBrand = ({ item }: { item: IBrand }) => {
         <ButtonGroup>
           <Button
             className='transition-colors [&>svg]:hover:fill-[green] [&>svg]:focus:fill-[green]'
-            onClick={() => handleDeleteBrand(item.id)}
+            onPress={() => handleDeleteBrand(item.id)}
           >
             <FaCheck size='2em' />
           </Button>
           <Button
             className='transition-colors [&>svg]:hover:fill-[red] [&>svg]:focus:fill-[red]'
-            onClick={() => setIsOpen(false)}
+            onPress={() => setIsOpen(false)}
           >
             <MdCancel size='2em' />
           </Button>

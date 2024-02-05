@@ -9,7 +9,7 @@ const Dashboard = async () => {
   const session = await auth()
 
   return (
-    <div className='fixed left-0 flex h-[100vh] w-[400px] shrink flex-col justify-between  bg-[#09338F] pt-12'>
+    <div className='fixed left-0 flex h-[100vh] w-[350px] shrink flex-col justify-between  bg-[#09338F] pt-12'>
       <div className='relative ml-8 mr-2 flex flex-col'>
         <Link
           href='/'
@@ -105,7 +105,9 @@ const Dashboard = async () => {
           </Link>
         </div>
       ) : (
-        <ExitButton />
+        <div className='m-4 flex justify-center'>
+          <ExitButton />
+        </div>
       )}
     </div>
   )

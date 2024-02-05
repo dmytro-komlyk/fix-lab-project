@@ -59,7 +59,6 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
     setSubmitting(true)
 
     try {
-      console.log(values, selectedIcon)
       if (selectedIcon) {
         await updateBenefit.mutateAsync({
           ...benefit.data,

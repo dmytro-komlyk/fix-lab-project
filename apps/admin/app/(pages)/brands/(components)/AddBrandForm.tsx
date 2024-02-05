@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
 import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
 import { useCallback, useState } from 'react'
@@ -20,11 +21,11 @@ const AddBrandForm = ({ allPicturesData }: { allPicturesData: IImage[] }) => {
   const router = useRouter()
   const icons = trpc.images.getAllIcons.useQuery(undefined)
   const [selectedIcon, setSelectIcon] = useState<string | null>(null)
+  const [brandArticle, setBrandArticle] = useState<string>('')
   const images = trpc.images.getAllPictures.useQuery(undefined, {
     initialData: allPicturesData,
   })
-
-  const [brandArticle, setBrandArticle] = useState<string>('')
+  // const [selectedKeys, setSelectedKeys] = useState(new Set(['1']))
 
   const createBrand = trpc.brands.createBrand.useMutation({
     onSuccess: () => {
@@ -38,7 +39,7 @@ const AddBrandForm = ({ allPicturesData }: { allPicturesData: IImage[] }) => {
       router.refresh()
     },
     onError: () => {
-      toast.error(`Виникла помилка при додаванні...`, {
+      toast.error(`Виникла помилка при додаванні`, {
         style: {
           borderRadius: '10px',
           background: 'red',
@@ -52,6 +53,7 @@ const AddBrandForm = ({ allPicturesData }: { allPicturesData: IImage[] }) => {
     async (values: any, { setSubmitting, resetForm }: FormikHelpers<any>) => {
       setSubmitting(true)
       const { file, title, metaTitle, metaDescription, metaKeywords } = values
+      console.log(values, 'values')
       const dataToUpdate = {
         slug: title,
         title,
@@ -62,46 +64,53 @@ const AddBrandForm = ({ allPicturesData }: { allPicturesData: IImage[] }) => {
         },
         article: brandArticle,
       }
-      console.log(dataToUpdate, file)
+      console.log(dataToUpdate)
+      try {
+        if (file) {
+          const uploadResponse = await uploadImg({
+            fileInput: file,
+            alt: file.name.split('.')[0],
+            type: 'icon',
+          })
 
-      // try {
-      //   if (values.file.name) {
-      //     const uploadResponse = await uploadImg({
-      //       fileInput: file,
-      //       alt: file.name.split('.')[0],
-      //       type: 'icon',
-      //     })
-      //     if (uploadResponse.status === 201) {
-      //       await updateBrand.mutateAsync({
-      //         ...dataToUpdate,
-      //         icon_id: uploadResponse.data.id,
-      //       })
-      //     }
-      //   } else {
-      //     await updateBrand.mutateAsync({
-      //       ...dataToUpdate,
-      //     })
-      //   }
-      // } catch (err) {
-      //   console.log(err)
-      // }
-      setSubmitting(false)
+          if (uploadResponse.status === 201) {
+            await createBrand.mutateAsync({
+              icon_id: uploadResponse.data.id,
+              ...dataToUpdate,
+            })
+            resetForm()
+          }
+        } else if (selectedIcon) {
+          await createBrand.mutateAsync({
+            icon_id: selectedIcon,
+            ...dataToUpdate,
+          })
+          resetForm()
+        }
+        // setSelectedKeys(null)
+        setSubmitting(false)
+      } catch (err) {
+        console.error(err)
+        setSubmitting(false)
+      }
     },
-    [],
+    [createBrand, uploadImg, brandArticle],
   )
 
   return (
     <Accordion
       itemClasses={{ base: 'border-white-dis ' }}
       variant='bordered'
-      className=' shadow-2xl'
+      // selectedKeys={selectedKeys}
+      // onSelectionChange={setSelectedKeys}
+      className='shadow-2xl'
     >
       <AccordionItem
         textValue='1'
         key='1'
         startContent={<IoMdAddCircle size={40} color='#fff' fill='#fff' />}
         title={
-          <span className='bg-top- text-center font-exo_2 text-2xl font-bold text-white-dis'>
+          <span className='text-center font-exo_2 text-2xl font-bold text-white-dis'>
             Додати бренд
           </span>
         }
@@ -116,102 +125,118 @@ const AddBrandForm = ({ allPicturesData }: { allPicturesData: IImage[] }) => {
               metaDescription: '',
             }}
             validationSchema={Yup.object({
-              title: Yup.string()
-                .min(3, 'Must be 3 characters or more')
-                .required('Please enter your title'),
+              title: Yup.string().required('Будь ласка, заповніть поле'),
+              metaTitle: Yup.string().required('Будь ласка, заповніть поле'),
+              metaKeywords: Yup.string().required('Будь ласка, заповніть поле'),
+              metaDescription: Yup.string().required(
+                'Будь ласка, заповніть поле',
+              ),
+              // brandArticle: Yup.string().required('Будь ласка, заповніть поле'),
             })}
             onSubmit={handleSubmit}
           >
             {(props: FormikProps<any>) => (
               <Form
                 onSubmit={props.handleSubmit}
-                className='flex mx-auto my-0 flex-col items-center justify-center gap-3 text-white-dis '
+                className='flex flex-col mx-auto my-0 items-center justify-center gap-12 text-white-dis '
               >
-                <div className='w-6/12'>
-                  <p className='text-center font-exo_2 text-xl text-white-dis'>
-                    Іконка(.svg)
-                  </p>
-                  <FieldFileUpload name='file' isRequired={false} />
-                  <p className='text-white-dis'>або</p>
-                  {icons.isSuccess && (
-                    <SelectImage
-                      icons={icons.data}
-                      setSelect={setSelectIcon}
-                      defaultSelectedKeys={selectedIcon ? [selectedIcon] : null}
-                    />
-                  )}
-                </div>
-                <div className='flex flex-col w-6/12'>
-                  <p className='text-center font-exo_2 text-xl text-white-dis'>
-                    Seo
-                  </p>
-                  <div className='flex flex-col gap-4'>
-                    <Field name='metaTitle'>
-                      {({ meta, field }: any) => (
-                        <Input
-                          type='text'
-                          // isInvalid={meta.touched && meta.error}
-                          // errorMessage={meta.touched && meta.error && meta.error}
-                          placeholder='Seo title'
-                          classNames={{
-                            input: [
-                              'font-base',
-                              'h-[45px]',
-                              'w-full',
-                              'indent-3',
-                              'text-md',
-                              'text-black-dis',
-                            ],
-                          }}
-                          {...field}
-                        />
-                      )}
-                    </Field>
-                    <Field name='metaKeywords'>
-                      {({ meta, field }: any) => (
-                        <Input
-                          type='text'
-                          // isInvalid={meta.touched && meta.error}
-                          // errorMessage={meta.touched && meta.error && meta.error}
-                          placeholder='Seo keywords'
-                          classNames={{
-                            input: [
-                              'font-base',
-                              'h-[45px]',
-                              'w-full',
-                              'indent-3',
-                              'text-md',
-                              'text-black-dis',
-                            ],
-                          }}
-                          {...field}
-                        />
-                      )}
-                    </Field>
-                    <Field name='metaDescription'>
-                      {({ meta, field }: any) => (
-                        <Input
-                          type='text'
-                          // isInvalid={meta.touched && meta.error}
-                          // errorMessage={meta.touched && meta.error && meta.error}
-                          placeholder='Seo description'
-                          classNames={{
-                            input: [
-                              'font-base',
-                              'h-[45px]',
-                              'w-full',
-                              'indent-3',
-                              'text-md',
-                              'text-black-dis',
-                            ],
-                          }}
-                          {...field}
-                        />
-                      )}
-                    </Field>
+                <div className='flex w-full gap-8 justify-between'>
+                  <div className='flex items-center flex-col gap-8 w-6/12'>
+                    <p className='text-center font-exo_2 text-2xl text-white-dis'>
+                      Іконка( .svg )
+                    </p>
+                    <FieldFileUpload name='file' isRequired={false} />
+                    <p className='text-mid-blue text-center'>
+                      додайте зображення або оберіть з вже завантаженних
+                    </p>
+                    {icons.isSuccess && (
+                      <SelectImage
+                        icons={icons.data}
+                        setSelect={setSelectIcon}
+                        defaultSelectedKeys={
+                          selectedIcon ? [selectedIcon] : null
+                        }
+                      />
+                    )}
+                  </div>
+                  <div className='flex justify-between flex-col w-6/12'>
+                    <p className='text-center font-exo_2 text-2xl text-white-dis'>
+                      Seo
+                    </p>
+                    <div className='flex flex-col gap-4'>
+                      <Field name='metaTitle'>
+                        {({ meta, field }: any) => (
+                          <Input
+                            type='text'
+                            isInvalid={meta.touched && meta.error}
+                            errorMessage={
+                              meta.touched && meta.error && meta.error
+                            }
+                            placeholder='Seo title'
+                            classNames={{
+                              input: [
+                                'font-base',
+                                'h-[45px]',
+                                'w-full',
+                                'indent-3',
+                                'text-md',
+                                'text-black-dis',
+                              ],
+                            }}
+                            {...field}
+                          />
+                        )}
+                      </Field>
+                      <Field name='metaKeywords'>
+                        {({ meta, field }: any) => (
+                          <Input
+                            type='text'
+                            isInvalid={meta.touched && meta.error}
+                            errorMessage={
+                              meta.touched && meta.error && meta.error
+                            }
+                            placeholder='Seo keywords'
+                            classNames={{
+                              input: [
+                                'font-base',
+                                'h-[45px]',
+                                'w-full',
+                                'indent-3',
+                                'text-md',
+                                'text-black-dis',
+                              ],
+                            }}
+                            {...field}
+                          />
+                        )}
+                      </Field>
+                      <Field name='metaDescription'>
+                        {({ meta, field }: any) => (
+                          <Input
+                            type='text'
+                            isInvalid={meta.touched && meta.error}
+                            errorMessage={
+                              meta.touched && meta.error && meta.error
+                            }
+                            placeholder='Seo description'
+                            classNames={{
+                              input: [
+                                'font-base',
+                                'h-[45px]',
+                                'w-full',
+                                'indent-3',
+                                'text-md',
+                                'text-black-dis',
+                              ],
+                            }}
+                            {...field}
+                          />
+                        )}
+                      </Field>
+                    </div>
                   </div>
                 </div>
-                <div className='w-full'>
+                <div className='flex flex-col w-full gap-3'>
                   <p className='text-center font-exo_2 text-xl text-white-dis'>
                     Заголовок
                   </p>

@@ -58,7 +58,9 @@ const FieldFileUpload = ({
             <div className='flex flex-col items-center gap-4'>
               {!newImage ? (
                 <div className='flex h-[100px] w-full items-center justify-center'>
-                  <p>НЕМАЄ ЗОБРАЖЕННЯ</p>
+                  <p className='text-xl font-bold text-mid-green'>
+                    НЕМАЄ ЗОБРАЖЕННЯ
+                  </p>
                 </div>
               ) : (
                 <div className='relative flex'>

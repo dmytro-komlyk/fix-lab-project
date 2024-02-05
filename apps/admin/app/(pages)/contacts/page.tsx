@@ -11,15 +11,9 @@ const ContactsPage = async () => {
   const session = await auth()
   const user = session?.user ? session.user : null
   const contactsData = (await serverClient({
-    user: {
-      id: 'string',
-      email: 'string',
-      name: 'string',
-      accessToken: 'string',
-      accessTokenExpires: 0,
-    },
+    user,
   }).contacts.getAllContacts()) as IContact[]
-
+  console.log(contactsData)
   return (
     <main className='flex flex-auto'>
       <section className='flex h-[100vh] w-full bg-footer-gradient-linear-blue py-[60px]'>
