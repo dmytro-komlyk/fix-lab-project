@@ -1,9 +1,10 @@
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import type { outputArticleSchema } from '@server/domain/articles/schemas/article.schema'
-import type { imageSchema } from '@server/domain/images/schemas/image.schema'
+import type { outputArticleSchema as IArticle } from '@server/domain/articles/schemas/article.schema'
+import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
+import { auth } from '@admin/app/(utils)/authOptions'
 import EditArticleSection from '../../(components)/EditArticleSection'
 
 interface IArticleAdminProps {
@@ -15,11 +16,15 @@ interface IArticleAdminProps {
 export const dynamic = 'force-dynamic'
 
 const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
-  const articleData = (await serverClient.articles.getBySlugArticle({
+  const session = await auth()
+  const user = session?.user ? session.user : null
+
+  const articleData = (await serverClient({ user }).articles.getBySlugArticle({
     slug: params.article,
-  })) as outputArticleSchema
-  const allImagesData =
-    (await serverClient.images.getAllImages()) as imageSchema[]
+  })) as IArticle
+  const allImagesData = (await serverClient({
+    user,
+  }).images.getAllImages()) as IImage[]
 
   return (
     <main>
@@ -41,10 +46,7 @@ const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
             {articleData?.title}
           </h2>
           {articleData ? (
-            <EditArticleSection
-              articleData={articleData}
-              allImagesData={allImagesData}
-            />
+            <EditArticleSection articleData={articleData} />
           ) : (
             <p>No article</p>
           )}
