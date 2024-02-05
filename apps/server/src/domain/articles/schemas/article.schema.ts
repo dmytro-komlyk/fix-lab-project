@@ -12,7 +12,7 @@ export const createArticleSchema = z.object({
   metadata: MetaSchema,
   image_id: z.string(),
   createdAt: z.date().optional(),
-  updatedAt: z.date().optional()
+  updatedAt: z.date().optional(),
 });
 
 export const updateArticleSchema = z.object({
@@ -25,13 +25,13 @@ export const updateArticleSchema = z.object({
   metadata: MetaSchema,
   image_id: z.string(),
   createdAt: z.date().optional(),
-  updatedAt: z.date().optional()
+  updatedAt: z.date().optional(),
 });
 
 export const paginationArticleSchema = z.object({
   page: z.number().optional(),
   limit: z.number().optional(),
-  sort: z.string().optional()
+  sort: z.string().optional(),
 });
 
 export const outputArticleSchema = z.object({
@@ -45,7 +45,7 @@ export const outputArticleSchema = z.object({
   image_id: z.string(),
   image: imageSchema,
   createdAt: z.date().optional(),
-  updatedAt: z.date().optional()
+  updatedAt: z.date().optional(),
 });
 
 export const outputArticleWithPaginationSchema = z.object({
@@ -54,7 +54,7 @@ export const outputArticleWithPaginationSchema = z.object({
   totalPages: z.number(),
   rangeStart: z.number(),
   rangeEnd: z.number(),
-  items: z.array(outputArticleSchema)
+  items: z.array(outputArticleSchema),
 });
 
 export type createArticleSchema = z.TypeOf<typeof createArticleSchema>;
