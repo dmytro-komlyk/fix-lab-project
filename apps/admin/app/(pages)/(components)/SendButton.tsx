@@ -13,18 +13,6 @@ const SendButton: React.FC<SendButtonProps> = ({
   isLoading,
   disabled,
 }) => {
-  // const handleButtonClick = async (e: React.FormEvent<HTMLButtonElement>) => {
-  //   // Handle common click logic if needed
-  //   if (handleClick) {
-  //     handleClick(e as React.MouseEvent<HTMLButtonElement, MouseEvent>)
-  //   }
-
-  //   // Handle submit logic if needed
-  //   if (handleSubmit) {
-  //     await handleSubmit(e)
-  //   }
-  // }
-
   return (
     <Button
       type={type}

@@ -21,6 +21,7 @@ import * as Yup from 'yup'
 import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { createIssueSchema } from '@server/domain/issues/schemas/issue.schema'
 import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
+import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomAddContent from '../../(components)/CustomAddContent'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SendButton from '../../(components)/SendButton'
@@ -35,6 +36,7 @@ const AddIssueInfoSection = ({
   const benefits = trpc.benefits.getAllBenefits.useQuery(undefined, {
     initialData: benefitsData,
   })
+  const images = trpc.images.getAllPictures.useQuery(undefined)
   const [selectedTab, setSelectedTab] = useState<any>('issue-info')
   const [listBenefits, setListBenefits] = useState<string[]>([])
   const [contentInfoIssue, setContentInfoIssue] = useState<string>('')
@@ -275,9 +277,14 @@ const AddIssueInfoSection = ({
                 <FieldFileUpload
                   name='file'
                   initSrc={null}
-                  size={{ width: 450, height: 300 }}
+                  size={{ width: 400, height: 300 }}
                 />
               </div>
+              {images.data && (
+                <div className='order-5 w-[92%]'>
+                  <AddImagesSection allImagesData={images.data} />
+                </div>
+              )}
               <div className='order-6 w-[92%] h-[500px]'>
                 <Card className='max-w-full w-full h-full'>
                   <CardBody className='overflow-hidden'>

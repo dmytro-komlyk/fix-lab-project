@@ -1,7 +1,7 @@
 'use client'
 
 import { SERVER_URL } from '@admin/app/(lib)/constants'
-import { Accordion, AccordionItem, Button, Input } from '@nextui-org/react'
+import { Accordion, AccordionItem, Button } from '@nextui-org/react'
 import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -11,9 +11,9 @@ import { CiSaveDown2 } from 'react-icons/ci'
 import { IoMdAddCircle } from 'react-icons/io'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import * as Yup from 'yup'
 
-import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
+import { Form, Formik, FormikHelpers, FormikProps } from 'formik'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -81,7 +81,19 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
     { setSubmitting, resetForm }: FormikHelpers<any>,
   ) => {
     setSubmitting(true)
+    console.log('+')
     try {
+      const uploadResponse = await uploadImg({
+        fileInput: values.file,
+        alt: values.file.name.split('.')[0],
+        type: 'picture',
+      })
+      if (uploadResponse.status === 201) {
+        //         setAltImage('')
+        //         setContentImage(null)
+        //         setSelectedImage(null)
+        //         router.refresh()
+      }
     } catch (err) {
       // need added toast show errors
       console.log(err)
@@ -108,16 +120,12 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
           </span>
         }
       >
+        {/* <div> */}
         <Formik
           initialValues={{
             file: null,
-            alt: '',
           }}
-          validationSchema={Yup.object({
-            alt: Yup.string()
-              .min(3, 'Має бути 3 або більше символів')
-              .required('Введіть опис'),
-          })}
+          // validationSchema={{}}
           onSubmit={handleSubmit}
         >
           {(props: FormikProps<any>) => (
@@ -125,46 +133,29 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
               onSubmit={props.handleSubmit}
               className='flex flex-col flex-wrap w-full gap-4 items-center justify-center text-white-dis'
             >
-              <FieldFileUpload
-                name='file'
-                size={{ width: 250, height: 250 }}
-                isRequired={false}
-              />
-              <Field name='alt'>
-                {({ meta, field }: any) => (
-                  <Input
-                    type='text'
-                    isInvalid={meta.touched && meta.error}
-                    errorMessage={meta.touched && meta.error && meta.error}
-                    placeholder='alt'
-                    classNames={{
-                      input: [
-                        'font-base',
-                        'h-[25px]',
-                        'w-[100px]',
-                        'indent-3',
-                        'text-md',
-                        'text-black-dis',
-                      ],
-                    }}
-                    {...field}
-                  />
-                )}
-              </Field>
+              <div className='w-full'>
+                <FieldFileUpload
+                  name='file'
+                  initSrc={null}
+                  size={{ width: 450, height: 250 }}
+                />
+              </div>
+
               <Button
                 isIconOnly
                 type='submit'
-                // isLoading={isLoading}
-                // disabled={disabled}
+                isLoading={props.isSubmitting}
+                disabled={props.isValid}
                 aria-label='Upload image'
                 className='bg-transparent text-white-dis'
+                onClick={() => console.log('error')}
               >
                 <CiSaveDown2 size='3em' />
               </Button>
             </Form>
           )}
         </Formik>
-
+        {/* </div> */}
         <Swiper
           grabCursor
           initialSlide={1}

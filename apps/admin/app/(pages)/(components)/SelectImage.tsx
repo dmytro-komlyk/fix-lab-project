@@ -73,7 +73,7 @@ const SelectImage = ({
         }}
       >
         {icon => (
-          <SelectItem key={icon.id}>
+          <SelectItem key={icon.id} textValue=''>
             <div className='flex gap-2 items-center'>
               <Avatar
                 alt={icon.alt}
