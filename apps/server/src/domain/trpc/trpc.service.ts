@@ -13,7 +13,7 @@ export class TrpcService {
   decodeAndVerifyJwtToken = async (token: string) => {
     try {
       const decodedToken = await this.jwt.verifyAsync(token, {
-        secret: process.env.JWT_SECRET_KEY,
+        secret: process.env.JWT_ACCESS_TOKEN_KEY,
       });
 
       const user = this.prisma.user.findUnique({
