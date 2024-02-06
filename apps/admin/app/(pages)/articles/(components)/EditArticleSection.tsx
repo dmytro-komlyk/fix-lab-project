@@ -73,7 +73,6 @@ const EditArticleSection = ({ articleData }: { articleData: IArticle }) => {
         keywords: restValues.seoKeywords,
       },
     }
-    console.log(file, articleValues)
     try {
       if (file) {
         const uploadResponse = await uploadImg({
