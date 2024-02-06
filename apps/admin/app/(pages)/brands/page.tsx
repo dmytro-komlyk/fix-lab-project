@@ -18,12 +18,17 @@ const BrandsPage = async () => {
   const allPicturesData = (await serverClient({
     user,
   }).images.getAllPictures()) as IImage[]
-
+  const allIconsData = (await serverClient({
+    user,
+  }).images.getAllIcons()) as IImage[]
   return (
     <main>
       <section className='flex min-h-[100vh] w-full bg-footer-gradient-linear-blue py-[60px]'>
         <div className='container relative flex flex-1 flex-col gap-8 px-8'>
-          <AddBrandForm allPicturesData={allPicturesData} />
+          <AddBrandForm
+            allIconsData={allIconsData}
+            allPicturesData={allPicturesData}
+          />
           {brandsData.length ? (
             <BrandsList brandsData={brandsData} />
           ) : (

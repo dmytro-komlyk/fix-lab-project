@@ -24,6 +24,9 @@ const BrandPage: React.FC<IContactAdminProps> = async ({ params }) => {
   }).brands.getBySlugBrand({
     slug: params.brand,
   })) as IBrand
+  const allIconsData = (await serverClient({
+    user,
+  }).images.getAllIcons()) as IImage[]
   const allPicturesData = (await serverClient({
     user,
   }).images.getAllPictures()) as IImage[]
@@ -47,6 +50,7 @@ const BrandPage: React.FC<IContactAdminProps> = async ({ params }) => {
             {brandData.title}
           </h2>
           <EditBrandForm
+            allIconsData={allIconsData}
             allPicturesData={allPicturesData}
             brandData={brandData}
           />
