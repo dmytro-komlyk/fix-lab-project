@@ -37,22 +37,6 @@ const SignIn = () => {
           })
         }
       } catch (error) {
-        // toast.custom(t => (
-        //   <div
-        //     className={`${
-        //       t.visible ? 'animate-enter' : 'animate-leave'
-        //     } max-w-md w-full bg-white items-center shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-        //   >
-        //     <div className='flex-1 w-0 p-4'>
-        //       <div className='flex items-center'>
-        //         <p>
-        //           Помилка авторизації, перевірте правильність вводу пошти та
-        //           пароля
-        //         </p>
-        //       </div>
-        //     </div>
-        //   </div>
-        // ))
         toast.error(
           `Помилка авторизації, перевірте правильність вводу пошти та пароля`,
           {
