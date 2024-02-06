@@ -1,5 +1,5 @@
 import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
-import type { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
+import { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BiMap } from 'react-icons/bi'
@@ -13,6 +13,7 @@ const ContactsSection = ({
     ReturnType<(typeof serverClient)['contacts']['getAllPublishedContacts']>
   >
 }) => {
+  console.log(contactsData)
   return (
     <section className=' overflow-hidden  bg-white-dis  pb-[102px] pt-[163px] max-md:pb-14 max-md:pt-[120px]'>
       <div className='container relative flex flex-col xl:p-0 '>
@@ -28,20 +29,20 @@ const ContactsSection = ({
             Контакти
           </p>
         </div>
-        <h2 className='mb-[39px] font-exo_2 text-2xl font-bold text-dark-blue max-lg:text-xl max-lg:font-semibold max-md:mb-[47px]  xl:leading-[57px]'>
+        <h2 className='mb-[40px] font-exo_2 text-2xl font-bold text-dark-blue max-lg:text-xl max-lg:font-semibold max-md:mb-[47px]  xl:leading-[57px]'>
           Контакти
         </h2>
-        <div className='flex items-start justify-between max-lg:flex-wrap max-lg:gap-[61px]'>
-          <div className='flex max-w-[342px] flex-col'>
-            <div className='mb-[45px] flex items-center gap-2 max-lg:mb-[26px]'>
-              <BiMap color='#04268B' size={24} />
-              <p className='font-exo_2 text-xl font-semibold tracking-[0.45px] text-dark-blue  max-lg:text-lg '>
-                Приїхати до нас
-              </p>
-            </div>
-            <div className='flex flex-col gap-14 max-lg:gap-6'>
-              {contactsData.map((item: outputContactSchema) => {
-                return (
+        <div className='flex flex-col gap-12'>
+          {contactsData.map((item: outputContactSchema) => {
+            return (
+              <div className='flex flex-col items-start justify-between lg:flex-row sm:gap-8'>
+                <div className='flex flex-col w-[400px]'>
+                  <div className='mb-[45px] flex items-center gap-2 max-lg:mb-[26px]'>
+                    <BiMap color='#04268B' size={24} />
+                    <p className='font-exo_2 text-xl font-semibold tracking-[0.45px] text-dark-blue  max-lg:text-lg '>
+                      Приїхати до нас
+                    </p>
+                  </div>
                   <div key={item.id} className='flex flex-col gap-[20px] '>
                     <div className=''>
                       <p className='font-semibold text-black-dis '>
@@ -77,7 +78,7 @@ const ContactsSection = ({
                             height={16}
                             alt='Kyiv metro logo'
                           />
-                          <p className='tracking-[0.45px]'>{item.subways[0]}</p>
+                          <p className='tracking-[0.45px]'>{item.subways}</p>
                         </>
                       )}
                     </div>
@@ -91,33 +92,29 @@ const ContactsSection = ({
                       </a>
                     ))}
                   </div>
-                )
-              })}
-            </div>
-          </div>
-          <div className='max-w-[200px]'>
-            <div className='mb-[45px] flex  items-center gap-2 max-lg:mb-8 max-md:mb-[30px]'>
-              <TbClockHour9 color='#04268B' size={24} />
-              <p className='font-exo_2 text-xl  font-semibold text-dark-blue max-lg:text-lg  max-md:tracking-[0.45px]'>
-                Режим роботи
-              </p>
-            </div>
-            <div className='flex flex-col gap-[18px]'>
-              <p className='tracking-[0.45px]'>
-                {contactsData[0]?.workingTime}
-              </p>
-              <p className='tracking-[0.45px]'>
-                {contactsData[0]?.workingDate}
-              </p>
-            </div>
-          </div>
-          <iframe
-            className='flex h-[400px] w-[628px] rounded-2xl object-cover max-xl:w-[400px] max-lg:w-full max-md:h-[228px] max-md:w-full'
-            src={contactsData[0]?.googlePluginLink}
-            width='628'
-            height='400'
-            title='FixLab maps'
-          />
+                </div>
+                <div className='flex flex-col w-[400px]'>
+                  <div className='mb-[45px] flex  items-center gap-2 max-lg:mb-8 max-md:mb-[30px]'>
+                    <TbClockHour9 color='#04268B' size={24} />
+                    <p className='font-exo_2 text-xl  font-semibold text-dark-blue max-lg:text-lg  max-md:tracking-[0.45px]'>
+                      Режим роботи
+                    </p>
+                  </div>
+                  <div className='flex flex-col gap-[18px]'>
+                    <p className='tracking-[0.45px]'>{item?.workingTime}</p>
+                    <p className='tracking-[0.45px]'>{item?.workingDate}</p>
+                  </div>
+                </div>
+                <iframe
+                  className='flex h-[300px] w-[400px] rounded-2xl object-cover max-xl:w-[400px] max-lg:w-full max-md:h-[228px] max-md:w-full'
+                  src={item.googlePluginLink}
+                  width='628'
+                  height='400'
+                  title='FixLab maps'
+                />
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>

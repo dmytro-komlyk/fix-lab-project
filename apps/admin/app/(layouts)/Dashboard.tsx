@@ -111,7 +111,9 @@ const Dashboard = async () => {
           </Link>
         </div>
       ) : (
-        <ExitButton />
+        <div className='m-4 flex justify-center'>
+          <ExitButton />
+        </div>
       )}
     </div>
   )
