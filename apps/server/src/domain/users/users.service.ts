@@ -26,6 +26,7 @@ export class UserService {
       data: {
         ...data,
         password: await hash(data.password, 10),
+        token: '',
         accessToken: '',
         accessTokenExpires: 0,
         refreshToken: '',
