@@ -4,7 +4,7 @@ import { Button, Input } from '@nextui-org/react'
 import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import { FiLogIn } from 'react-icons/fi'
@@ -12,47 +12,44 @@ import { HiMail } from 'react-icons/hi'
 import { object, string } from 'yup'
 
 const SignIn = () => {
-  const [isLoading, setLoading] = useState<boolean>(false)
   const [isVisiblePassword, setIsVisiblePassword] = useState(false)
   const toggleVisibilityPassword = () =>
     setIsVisiblePassword(!isVisiblePassword)
 
-  const handleSubmit = useCallback(
-    async (values: any, { setSubmitting }: FormikHelpers<any>) => {
-      setSubmitting(true)
-      setLoading(true)
-      try {
-        const res = await signIn('credentials', {
-          login: values.login,
-          password: values.password,
-          callbackUrl: '/',
-        })
-        if (res && !res.error) {
-          throw toast.success(`Вітаємо в FixLab Admin Panel!`, {
-            style: {
-              borderRadius: '10px',
-              background: 'grey',
-              color: '#fff',
-            },
-          })
-        }
-      } catch (error) {
-        toast.error(
-          `Помилка авторизації, перевірте правильність вводу пошти та пароля`,
-          {
-            style: {
-              borderRadius: '10px',
-              background: 'grey',
-              color: '#fff',
-            },
+  const handleSubmit = async (
+    values: any,
+    { setSubmitting }: FormikHelpers<any>,
+  ) => {
+    setSubmitting(true)
+    try {
+      const res = await signIn('credentials', {
+        login: values.login,
+        password: values.password,
+        callbackUrl: '/',
+      })
+      if (res && !res.error) {
+        throw toast.success(`Вітаємо в FixLab Admin Panel!`, {
+          style: {
+            borderRadius: '10px',
+            background: 'grey',
+            color: '#fff',
           },
-        )
+        })
       }
-      setSubmitting(false)
-      setLoading(false)
-    },
-    [],
-  )
+    } catch (error) {
+      toast.error(
+        `Помилка авторизації, перевірте правильність вводу пошти та пароля`,
+        {
+          style: {
+            borderRadius: '10px',
+            background: 'grey',
+            color: '#fff',
+          },
+        },
+      )
+    }
+    setSubmitting(false)
+  }
 
   return (
     <div className='flex flex-col items-center justify-center gap-8'>
@@ -137,7 +134,8 @@ const SignIn = () => {
             </Field>
             <Button
               type='submit'
-              isLoading={isLoading}
+              disabled={!props.isValid}
+              isLoading={props.isSubmitting}
               className='group flex h-[65px] w-[320px] justify-center rounded-2xl bg-mid-green text-center font-exo_2 text-xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
             >
               Увійти

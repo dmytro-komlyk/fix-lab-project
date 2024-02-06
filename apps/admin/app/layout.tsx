@@ -53,7 +53,7 @@ export default async function RootLayout({
         <Providers session={session}>
           <div className='flex'>
             <Dashboard />
-            <div className='h-[100vh] w-full pl-[350px]'>{children}</div>
+            <div className='h-[100vh] w-full pl-[400px]'>{children}</div>
           </div>
         </Providers>
       </body>

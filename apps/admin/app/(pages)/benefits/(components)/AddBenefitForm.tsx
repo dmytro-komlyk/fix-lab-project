@@ -20,9 +20,11 @@ const FieldFileUpload = dynamic(
 
 const SelectImage = dynamic(() => import('../../(components)/SelectImage'))
 
-const AddBenefitForm = () => {
+const AddBenefitForm = ({ iconsData }: any) => {
   const router = useRouter()
-  const icons = trpc.images.getAllIcons.useQuery(undefined)
+  const icons = trpc.images.getAllIcons.useQuery(undefined, {
+    initialData: iconsData,
+  })
   const [selectedIcon, setSelectIcon] = useState<string | null>(null)
 
   const createBenefit = trpc.benefits.createBenefit.useMutation({
@@ -60,17 +62,21 @@ const AddBenefitForm = () => {
         })
         resetForm()
       } else {
-        const uploadResponse = await uploadImg({
-          fileInput: values.file,
-          alt: values.file.name.split('.')[0],
-          type: 'icon',
-        })
-        if (uploadResponse.status === 201) {
-          await createBenefit.mutateAsync({
-            icon_id: uploadResponse.data.id,
-            title: values.title,
+        if (values.file) {
+          const uploadResponse = await uploadImg({
+            fileInput: values.file,
+            alt: values.file.name.split('.')[0],
+            type: 'icon',
           })
-          resetForm()
+          if (uploadResponse.status === 201) {
+            await createBenefit.mutateAsync({
+              icon_id: uploadResponse.data.id,
+              title: values.title,
+            })
+            resetForm()
+          }
+        } else {
+          // added validate empty image
         }
       }
     } catch (err) {

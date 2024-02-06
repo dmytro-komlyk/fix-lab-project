@@ -27,7 +27,9 @@ import SendButton from '../../(components)/SendButton'
 const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
   const router = useRouter()
 
-  const images = trpc.images.getAllBlogPictures.useQuery(undefined)
+  const images = trpc.images.getAllBlogPictures.useQuery(undefined, {
+    initialData: allImagesData,
+  })
   const [contentArticleBlog, setContentArticleBlog] = useState<string>('')
 
   const createArticle = trpc.articles.createArticle.useMutation({

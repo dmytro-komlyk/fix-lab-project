@@ -120,21 +120,29 @@ const EditGadgetForm = ({
       issues_ids: groupSelectedIssues,
     } as createGadgetSchema
     try {
-      if (file) {
-        const uploadResponse = await uploadImg({
-          fileInput: file,
-          alt: file.name.split('.')[0],
-          type: 'icon',
+      if (selectedIcon) {
+        await updateGadget.mutateAsync({
+          ...gadget.data,
+          ...gadgetValues,
+          icon_id: selectedIcon,
         })
-        if (uploadResponse.status === 201) {
-          await updateGadget.mutateAsync({
-            ...gadget.data,
-            ...gadgetValues,
-            icon_id: uploadResponse.data.id,
-          })
-        }
       } else {
-        await updateGadget.mutateAsync({ ...gadget.data, ...gadgetValues })
+        if (file) {
+          const uploadResponse = await uploadImg({
+            fileInput: file,
+            alt: file.name.split('.')[0],
+            type: 'icon',
+          })
+          if (uploadResponse.status === 201) {
+            await updateGadget.mutateAsync({
+              ...gadget.data,
+              ...gadgetValues,
+              icon_id: uploadResponse.data.id,
+            })
+          }
+        } else {
+          // added validate empty image
+        }
       }
     } catch (err) {
       // need added toast show errors

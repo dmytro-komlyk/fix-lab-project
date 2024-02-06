@@ -66,7 +66,7 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
           title: values.title,
         })
       } else {
-        if (values.file.name) {
+        if (values.file) {
           const uploadResponse = await uploadImg({
             fileInput: values.file,
             alt: values.file.name.split('.')[0],
@@ -80,10 +80,7 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
             })
           }
         } else {
-          await updateBenefit.mutateAsync({
-            ...benefit.data,
-            title: values.title,
-          })
+          // added validate empty image
         }
       }
     } catch (err) {

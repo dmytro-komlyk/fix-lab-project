@@ -18,7 +18,7 @@ export default async function ArticlesPage() {
   }).articles.getAllArticles()) as IArticle[]
   const allImagesData = (await serverClient({
     user,
-  }).images.getAllImages()) as IImage[]
+  }).images.getAllBlogPictures()) as IImage[]
 
   return (
     <main>
