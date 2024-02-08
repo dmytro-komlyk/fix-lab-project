@@ -3,7 +3,17 @@ import handlebars from 'handlebars';
 import nodemailer from 'nodemailer';
 import path from 'path';
 
-export const sendEmail = async ({ email, subject, payload, template }: any) => {
+export const sendEmail = async ({
+  email,
+  subject,
+  payload,
+  template,
+}: {
+  email: string;
+  subject: string;
+  payload: object;
+  template: string;
+}): Promise<void> => {
   try {
     // create reusable transporter object using the default SMTP transport
     const transport = {
@@ -15,7 +25,7 @@ export const sendEmail = async ({ email, subject, payload, template }: any) => {
       },
     };
     const transporter = nodemailer.createTransport(transport);
-    transporter.verify((error, success) => {
+    transporter.verify((error) => {
       if (error) {
         console.log(error);
         throw error;
@@ -39,7 +49,6 @@ export const sendEmail = async ({ email, subject, payload, template }: any) => {
     console.log('Message sent: %s', info.messageId);
   } catch (error) {
     console.log(error);
-    return error;
   }
 };
 
