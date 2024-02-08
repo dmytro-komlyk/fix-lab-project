@@ -13,7 +13,6 @@ const ContactsSection = ({
     ReturnType<(typeof serverClient)['contacts']['getAllPublishedContacts']>
   >
 }) => {
-  console.log(contactsData)
   return (
     <section className=' overflow-hidden  bg-white-dis  pb-[102px] pt-[163px] max-md:pb-14 max-md:pt-[120px]'>
       <div className='container relative flex flex-col xl:p-0 '>
@@ -35,7 +34,10 @@ const ContactsSection = ({
         <div className='flex flex-col gap-12'>
           {contactsData.map((item: outputContactSchema) => {
             return (
-              <div className='flex flex-col items-start justify-between lg:flex-row sm:gap-8'>
+              <div
+                key={item.id}
+                className='flex flex-col items-start justify-between lg:flex-row sm:gap-8'
+              >
                 <div className='flex flex-col w-[400px]'>
                   <div className='mb-[45px] flex items-center gap-2 max-lg:mb-[26px]'>
                     <BiMap color='#04268B' size={24} />
