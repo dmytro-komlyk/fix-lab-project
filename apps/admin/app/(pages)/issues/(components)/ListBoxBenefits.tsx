@@ -30,7 +30,7 @@ const ListBoxBenefits = ({
     return (
       <ScrollShadow
         hideScrollBar
-        className='w-full flex py-0.5 px-2 gap-1'
+        className='flex w-full gap-1 px-2 py-0.5'
         orientation='horizontal'
       >
         {arrayValues.map(value => (
@@ -43,10 +43,10 @@ const ListBoxBenefits = ({
         ))}
       </ScrollShadow>
     )
-  }, [arrayValues.length])
+  }, [arrayValues, items])
 
   return (
-    <div className='w-full border-small px-1 py-2 rounded-xl border-default-200'>
+    <div className='w-full rounded-xl border-small border-default-200 px-1 py-2'>
       <Listbox
         topContent={topContent}
         classNames={{
@@ -62,7 +62,7 @@ const ListBoxBenefits = ({
       >
         {item => (
           <ListboxItem key={item.id} textValue={item.title}>
-            <div className='flex gap-2 items-center'>
+            <div className='flex items-center gap-2'>
               <Avatar
                 alt={item.icon.alt}
                 classNames={{

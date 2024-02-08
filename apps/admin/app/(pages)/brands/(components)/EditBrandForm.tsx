@@ -1,16 +1,17 @@
 'use client'
 
-import { trpc } from '@admin/app/(utils)/trpc/client'
-import { useRouter } from 'next/navigation'
-import toast from 'react-hot-toast'
-
 import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
+import { trpc } from '@admin/app/(utils)/trpc/client'
 import { Card, CardBody, CardHeader, Input } from '@nextui-org/react'
-import { outputBrandSchema as IBrand } from '@server/domain/brands/schemas/brand.schema'
-import { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
-import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
+import type { outputBrandSchema as IBrand } from '@server/domain/brands/schemas/brand.schema'
+import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
+import type { FormikHelpers, FormikProps } from 'formik'
+import { Field, Form, Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import * as Yup from 'yup'
+
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
@@ -91,25 +92,23 @@ const EditBrandForm = ({
           ...dataToUpdate,
           icon_id: selectedIcon,
         })
-      } else {
-        if (file) {
-          const uploadResponse = await uploadImg({
-            fileInput: file,
-            alt: values.file.name.split('.')[0],
-            type: 'icon',
+      } else if (file) {
+        const uploadResponse = await uploadImg({
+          fileInput: file,
+          alt: values.file.name.split('.')[0],
+          type: 'icon',
+        })
+        if (uploadResponse.status === 201) {
+          await updateBrand.mutateAsync({
+            ...dataToUpdate,
+            icon_id: uploadResponse.data.id,
           })
-          if (uploadResponse.status === 201) {
-            await updateBrand.mutateAsync({
-              ...dataToUpdate,
-              icon_id: uploadResponse.data.id,
-            })
-          }
-        } else {
-          // added validate empty image
         }
+      } else {
+        // add validate empty image
       }
     } catch (err) {
-      console.log(err)
+      // add show error
     }
     setSubmitting(false)
   }
@@ -134,9 +133,9 @@ const EditBrandForm = ({
       {(props: FormikProps<any>) => (
         <Form
           onSubmit={props.handleSubmit}
-          className='flex flex-wrap w-full gap-x-8 gap-y-12 py-6 items-center justify-center text-white-dis'
+          className='flex w-full flex-wrap items-center justify-center gap-x-8 gap-y-12 py-6 text-white-dis'
         >
-          <Card className='order-2 flex flex-col w-[45%] h-72 !bg-[#09338F]'>
+          <Card className='order-2 flex h-72 w-[45%] flex-col !bg-[#09338F]'>
             <CardHeader className='flex flex-col !items-center'>
               <h3 className='text-lg text-white-dis'>СЕО налаштування</h3>
             </CardHeader>
@@ -148,7 +147,7 @@ const EditBrandForm = ({
                     label='Title'
                     labelPlacement='inside'
                     variant='bordered'
-                    isInvalid={meta.touched && meta.error ? true : false}
+                    isInvalid={!!(meta.touched && meta.error)}
                     errorMessage={meta.touched && meta.error}
                     classNames={{
                       label: ['font-base', 'text-md', 'text-black-dis'],
@@ -166,7 +165,7 @@ const EditBrandForm = ({
                     label='Description'
                     labelPlacement='inside'
                     variant='bordered'
-                    isInvalid={meta.touched && meta.error ? true : false}
+                    isInvalid={!!(meta.touched && meta.error)}
                     errorMessage={meta.touched && meta.error && meta.error}
                     classNames={{
                       label: ['font-base', 'text-md', 'text-black-dis'],
@@ -184,7 +183,7 @@ const EditBrandForm = ({
                     label='Keywords'
                     labelPlacement='inside'
                     variant='bordered'
-                    isInvalid={meta.touched && meta.error ? true : false}
+                    isInvalid={!!(meta.touched && meta.error)}
                     errorMessage={meta.touched && meta.error && meta.error}
                     classNames={{
                       label: ['font-base', 'text-md', 'text-black-dis'],
@@ -197,7 +196,7 @@ const EditBrandForm = ({
               </Field>
             </CardBody>
           </Card>
-          <div className='order-1 flex flex-col items-center justify-end gap-4 w-[45%] h-72'>
+          <div className='order-1 flex h-72 w-[45%] flex-col items-center justify-end gap-4'>
             <FieldFileUpload
               name='file'
               initSrc={null}
@@ -211,7 +210,7 @@ const EditBrandForm = ({
                 defaultSelectedKeys={selectedIcon ? [selectedIcon] : null}
               />
             )}
-            <div className='text-danger'></div>
+            <div className='text-danger' />
           </div>
           <div className='order-3 w-[92%]'>
             <Field name='title'>
@@ -221,7 +220,7 @@ const EditBrandForm = ({
                   label='Заголовок'
                   labelPlacement='inside'
                   variant='bordered'
-                  isInvalid={meta.touched && meta.error ? true : false}
+                  isInvalid={!!(meta.touched && meta.error)}
                   errorMessage={meta.touched && meta.error && meta.error}
                   classNames={{
                     label: ['font-base', 'text-md', 'text-black-dis'],
@@ -247,7 +246,7 @@ const EditBrandForm = ({
           </div>
           <div className='order-last'>
             <SendButton
-              type={'submit'}
+              type='submit'
               disabled={!props.isValid}
               isLoading={props.isSubmitting}
             />

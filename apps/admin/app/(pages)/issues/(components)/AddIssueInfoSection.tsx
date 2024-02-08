@@ -1,5 +1,6 @@
 'use client'
 
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import {
   Accordion,
@@ -12,15 +13,15 @@ import {
   Tabs,
 } from '@nextui-org/react'
 import type { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
+import type { createIssueSchema } from '@server/domain/issues/schemas/issue.schema'
+import type { FormikHelpers, FormikProps } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 import * as Yup from 'yup'
 
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
-import { createIssueSchema } from '@server/domain/issues/schemas/issue.schema'
-import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomAddContent from '../../(components)/CustomAddContent'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
@@ -103,7 +104,6 @@ const AddIssueInfoSection = ({
       }
     } catch (err) {
       // need added toast show errors
-      console.log(err)
     }
     setSubmitting(false)
   }
@@ -147,9 +147,9 @@ const AddIssueInfoSection = ({
           {(props: FormikProps<any>) => (
             <Form
               onSubmit={props.handleSubmit}
-              className='flex flex-wrap w-full gap-x-8 gap-y-12 py-6 items-center justify-center text-white-dis'
+              className='flex w-full flex-wrap items-center justify-center gap-x-8 gap-y-12 py-6 text-white-dis'
             >
-              <Card className='order-2 flex flex-col w-[45%] h-72 !bg-[#09338F]'>
+              <Card className='order-2 flex h-72 w-[45%] flex-col !bg-[#09338F]'>
                 <CardHeader className='flex flex-col !items-center'>
                   <h3 className='text-lg text-white-dis'>СЕО налаштування</h3>
                 </CardHeader>
@@ -161,7 +161,7 @@ const AddIssueInfoSection = ({
                         label='Title'
                         labelPlacement='inside'
                         variant='bordered'
-                        isInvalid={meta.touched && meta.error ? true : false}
+                        isInvalid={!!(meta.touched && meta.error)}
                         errorMessage={meta.touched && meta.error}
                         classNames={{
                           label: ['font-base', 'text-md', 'text-black-dis'],
@@ -179,7 +179,7 @@ const AddIssueInfoSection = ({
                         label='Description'
                         labelPlacement='inside'
                         variant='bordered'
-                        isInvalid={meta.touched && meta.error ? true : false}
+                        isInvalid={!!(meta.touched && meta.error)}
                         errorMessage={meta.touched && meta.error && meta.error}
                         classNames={{
                           label: ['font-base', 'text-md', 'text-black-dis'],
@@ -197,7 +197,7 @@ const AddIssueInfoSection = ({
                         label='Keywords'
                         labelPlacement='inside'
                         variant='bordered'
-                        isInvalid={meta.touched && meta.error ? true : false}
+                        isInvalid={!!(meta.touched && meta.error)}
                         errorMessage={meta.touched && meta.error && meta.error}
                         classNames={{
                           label: ['font-base', 'text-md', 'text-black-dis'],
@@ -210,7 +210,7 @@ const AddIssueInfoSection = ({
                   </Field>
                 </CardBody>
               </Card>
-              <div className='order-1 flex flex-col justify-end gap-4 w-[45%] h-72'>
+              <div className='order-1 flex h-72 w-[45%] flex-col justify-end gap-4'>
                 <Field name='slug'>
                   {({ meta, field }: any) => (
                     <Input
@@ -218,7 +218,7 @@ const AddIssueInfoSection = ({
                       label='ЧПУ(slug)'
                       labelPlacement='inside'
                       variant='bordered'
-                      isInvalid={meta.touched && meta.error ? true : false}
+                      isInvalid={!!(meta.touched && meta.error)}
                       errorMessage={meta.touched && meta.error && meta.error}
                       classNames={{
                         label: ['font-base', 'text-md', 'text-black-dis'],
@@ -236,7 +236,7 @@ const AddIssueInfoSection = ({
                       label='Вартість послуги'
                       labelPlacement='inside'
                       variant='bordered'
-                      isInvalid={meta.touched && meta.error ? true : false}
+                      isInvalid={!!(meta.touched && meta.error)}
                       errorMessage={meta.touched && meta.error && meta.error}
                       classNames={{
                         label: ['font-base', 'text-md', 'text-black-dis'],
@@ -254,7 +254,7 @@ const AddIssueInfoSection = ({
                       label='Заголовок'
                       labelPlacement='inside'
                       variant='bordered'
-                      isInvalid={meta.touched && meta.error ? true : false}
+                      isInvalid={!!(meta.touched && meta.error)}
                       errorMessage={meta.touched && meta.error && meta.error}
                       classNames={{
                         label: ['font-base', 'text-md', 'text-black-dis'],
@@ -266,7 +266,7 @@ const AddIssueInfoSection = ({
                   )}
                 </Field>
               </div>
-              <div className='order-3 w-[45%] flex justify-center'>
+              <div className='order-3 flex w-[45%] justify-center'>
                 <ListBoxBenefits
                   items={benefits.data}
                   listBenefits={listBenefits}
@@ -285,8 +285,8 @@ const AddIssueInfoSection = ({
                   <AddImagesSection allImagesData={images.data} />
                 </div>
               )}
-              <div className='order-6 w-[92%] h-[500px]'>
-                <Card className='max-w-full w-full h-full'>
+              <div className='order-6 h-[500px] w-[92%]'>
+                <Card className='size-full max-w-full'>
                   <CardBody className='overflow-hidden'>
                     <Tabs
                       fullWidth
@@ -327,7 +327,7 @@ const AddIssueInfoSection = ({
               </div>
               <div className='order-last'>
                 <SendButton
-                  type={'submit'}
+                  type='submit'
                   disabled={!props.isValid}
                   isLoading={props.isSubmitting}
                 />

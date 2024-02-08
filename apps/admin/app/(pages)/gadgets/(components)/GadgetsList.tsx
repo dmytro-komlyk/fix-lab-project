@@ -18,7 +18,7 @@ export const GadgetsList = ({ gadgetsData }: { gadgetsData: IGadget[] }) => {
             radius='lg'
             key={item.id}
             isPressable
-            isHoverable={true}
+            isHoverable
             classNames={{
               base: 'h-[200px] w-[200px] p-4 justify-between bg-card-repair-gradient',
             }}

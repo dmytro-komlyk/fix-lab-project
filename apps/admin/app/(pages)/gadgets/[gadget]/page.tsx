@@ -1,12 +1,12 @@
+import { auth } from '@admin/app/(utils)/next-auth/auth'
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import type { outputBrandSchema as IBrand } from '@server/domain/brands/schemas/brand.schema'
 import type { outputGadgetSchema as IGadget } from '@server/domain/gadgets/schemas/gadget.schema'
+import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
 import type { outputIssueSchema as IIssue } from '@server/domain/issues/schemas/issue.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { auth } from '@admin/app/(utils)/authOptions'
-import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
 import EditGadgetForm from '../(components)/EditGadgetForm '
 
 interface IContactAdminProps {
@@ -34,7 +34,7 @@ const GadgetPage: React.FC<IContactAdminProps> = async ({ params }) => {
     user,
   }).images.getAllIcons()) as IImage[]
   return (
-    <main className='flex flex-auto h-full'>
+    <main className='flex h-full flex-auto'>
       <section className='w-full overflow-y-auto bg-footer-gradient-linear-blue  py-[60px]'>
         <div className='relative flex flex-col px-8'>
           <div className=' flex items-center gap-1 self-start'>

@@ -2,11 +2,13 @@
 
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { Input } from '@nextui-org/react'
-import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
+import type { FormikHelpers, FormikProps } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { HiMail } from 'react-icons/hi'
 import { object, string } from 'yup'
+
 import SendButton from '../../(components)/SendButton'
 // import { ThreeCircles } from 'react-loader-spinner'
 
@@ -73,7 +75,7 @@ const ForgotPassword = () => {
         {(props: FormikProps<any>) => (
           <Form
             onSubmit={props.handleSubmit}
-            className='flex flex-col items-center flex-wrap justify-center gap-6 w-full'
+            className='flex w-full flex-col flex-wrap items-center justify-center gap-6'
           >
             <Field name='email'>
               {({ meta, field }: any) => (
@@ -93,7 +95,7 @@ const ForgotPassword = () => {
                   endContent={
                     <HiMail
                       size={45}
-                      className='flex items-center text-mid-green p-2'
+                      className='flex items-center p-2 text-mid-green'
                     />
                   }
                   {...field}
@@ -101,7 +103,7 @@ const ForgotPassword = () => {
               )}
             </Field>
             <SendButton
-              type={'submit'}
+              type='submit'
               disabled={!props.isValid}
               isLoading={props.isSubmitting}
             />

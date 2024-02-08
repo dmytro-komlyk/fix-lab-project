@@ -50,7 +50,7 @@ const RemoveIssue = ({ item }: { item: IIssue }) => {
   return (
     <Popover
       placement='right'
-      showArrow={true}
+      showArrow
       isOpen={isOpen}
       onOpenChange={open => setIsOpen(open)}
     >

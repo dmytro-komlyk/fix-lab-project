@@ -1,10 +1,12 @@
-import { auth } from '@admin/app/(utils)/authOptions'
-import Image from 'next/image'
+import { auth } from '@admin/app/(utils)/next-auth/auth'
 // import Link from 'next/link'
 import { Link } from '@nextui-org/react'
+import Image from 'next/image'
 import { HiLockClosed } from 'react-icons/hi'
 
 import ExitButton from './ExitButton'
+
+export const dynamic = 'force-dynamic'
 
 const Dashboard = async () => {
   const session = await auth()

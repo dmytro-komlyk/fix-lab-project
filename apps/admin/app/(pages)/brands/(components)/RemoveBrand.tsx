@@ -44,14 +44,13 @@ const RemoveBrand = ({ item }: { item: IBrand }) => {
   })
 
   const handleDeleteBrand = async (brandId: string) => {
-    console.log(brandId)
     await removeBrand.mutateAsync({ id: brandId })
   }
 
   return (
     <Popover
       placement='right'
-      showArrow={true}
+      showArrow
       isOpen={isOpen}
       onOpenChange={open => setIsOpen(open)}
     >

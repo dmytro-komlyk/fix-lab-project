@@ -1,11 +1,11 @@
 'use client'
 
+import { SERVER_TRPC_URL } from '@admin/app/(lib)/constants'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { httpBatchLink } from '@trpc/client'
+import type { Session } from 'next-auth'
 import React, { useState } from 'react'
 
-import { SERVER_TRPC_URL } from '@admin/app/(lib)/constants'
-import { Session } from 'next-auth'
 import { trpc } from './client'
 
 export function TrpcProvider({

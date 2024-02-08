@@ -1,10 +1,10 @@
+import { auth } from '@admin/app/(utils)/next-auth/auth'
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import type { outputContactSchema as IContact } from '@server/domain/contacts/schemas/contact.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { auth } from '@admin/app/(utils)/authOptions'
-import EditContactForm from '../(components)/EditContactForm '
+import EditContactForm from '../(components)/EditContactForm'
 
 interface IContactAdminProps {
   params: {
@@ -20,10 +20,9 @@ const ContactPage: React.FC<IContactAdminProps> = async ({ params }) => {
   const contactData = (await serverClient({ user }).contacts.getByIdContact({
     id: params.contact,
   })) as IContact
-
   return (
     <main className='flex h-full flex-auto'>
-      <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>
+      <section className='w-full overflow-y-scroll  bg-footer-gradient-linear-blue  py-[60px]'>
         <div className='container  relative flex flex-col px-8'>
           <div className='z-[1] mb-8 flex items-center gap-1'>
             <Link

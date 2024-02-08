@@ -1,10 +1,10 @@
+import { auth } from '@admin/app/(utils)/next-auth/auth'
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import type { outputBenefitSchema } from '@server/domain/benefits/schemas/benefit.schema'
 import type { outputIssueSchema } from '@server/domain/issues/schemas/issue.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { auth } from '@admin/app/(utils)/authOptions'
 import EditIssuesForm from '../(components)/EditIssueForm'
 
 interface IIssueAdminProps {
@@ -27,7 +27,7 @@ const IssuePage: React.FC<IIssueAdminProps> = async ({ params }) => {
   }).benefits.getAllBenefits()) as outputBenefitSchema[]
 
   return (
-    <main className='flex flex-auto h-full'>
+    <main className='flex h-full flex-auto'>
       <section className='w-full overflow-y-auto bg-footer-gradient-linear-blue py-[60px]'>
         <div className='container relative flex flex-col px-8'>
           <div className='z-[1] mb-8 flex items-center gap-1'>

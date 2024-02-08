@@ -8,6 +8,8 @@ interface IResetPasswordPageProps {
   }
 }
 
+export const dynamic = 'force-dynamic'
+
 const ResetPasswordPage: React.FC<IResetPasswordPageProps> = ({
   searchParams,
 }) => {

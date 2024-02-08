@@ -1,8 +1,8 @@
+import { Button, ButtonGroup, Card, CardBody } from '@nextui-org/react'
+import type { outputBrandSchema as IBrand } from '@server/domain/brands/schemas/brand.schema'
 import Link from 'next/link'
 import { FaEdit } from 'react-icons/fa'
 
-import { Button, ButtonGroup, Card, CardBody } from '@nextui-org/react'
-import { outputBrandSchema as IBrand } from '@server/domain/brands/schemas/brand.schema'
 import RemoveBrand from './RemoveBrand'
 
 const BrandsList = ({ brandsData }: { brandsData: IBrand[] }) => {
@@ -16,7 +16,7 @@ const BrandsList = ({ brandsData }: { brandsData: IBrand[] }) => {
               shadow='sm'
               className='group border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl'
             >
-              <CardBody className='flex flex-row gap-6 items-center overflow-visible py-2 px-4'>
+              <CardBody className='flex flex-row items-center gap-6 overflow-visible px-4 py-2'>
                 <h3 className='font-semibold text-dark-blue md:text-base xl:text-xl'>
                   {item.title}
                 </h3>

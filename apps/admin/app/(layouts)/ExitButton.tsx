@@ -13,7 +13,7 @@ const ExitButton = () => {
     try {
       await signOut({ callbackUrl: '/authentication/signin' })
     } catch (error) {
-      console.log(error)
+      // added show error
     }
     setLoading(false)
   }

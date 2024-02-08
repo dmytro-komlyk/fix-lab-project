@@ -1,8 +1,8 @@
+import { auth } from '@admin/app/(utils)/next-auth/auth'
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
+import type { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
 import type { outputIssueSchema as IIssue } from '@server/domain/issues/schemas/issue.schema'
 
-import { auth } from '@admin/app/(utils)/authOptions'
-import type { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
 import EmptySection from '../(components)/EmptySection'
 import AddIssueInfoSection from './(components)/AddIssueInfoSection'
 import IssuesList from './(components)/IssuesList'

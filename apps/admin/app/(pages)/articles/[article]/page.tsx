@@ -1,10 +1,8 @@
+import { auth } from '@admin/app/(utils)/next-auth/auth'
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import type { outputArticleSchema as IArticle } from '@server/domain/articles/schemas/article.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
-
-import { auth } from '@admin/app/(utils)/authOptions'
-import PreviewArticlePage from '../(components)/PreviewArticlePage'
 
 interface IArticleAdminProps {
   params: {
@@ -38,7 +36,7 @@ const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
               {articleData?.title}
             </p>
           </div>
-          <PreviewArticlePage articleData={articleData} />
+          {/* <PreviewArticlePage articleData={articleData} /> */}
         </div>
       </section>
     </main>

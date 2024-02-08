@@ -1,5 +1,7 @@
 import SignIn from '../(components)/SignIn'
 
+export const dynamic = 'force-dynamic'
+
 const SignInPage = () => {
   return (
     <main className='flex h-full flex-auto'>

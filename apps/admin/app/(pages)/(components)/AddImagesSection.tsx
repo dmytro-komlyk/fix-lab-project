@@ -1,6 +1,12 @@
 'use client'
 
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+
 import { SERVER_URL } from '@admin/app/(lib)/constants'
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
+import { trpc } from '@admin/app/(utils)/trpc/client'
 import {
   Accordion,
   AccordionItem,
@@ -14,17 +20,11 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { CiSaveDown2 } from 'react-icons/ci'
+import { FaFileUpload } from 'react-icons/fa'
 import { IoMdAddCircle } from 'react-icons/io'
+import { MdCancel } from 'react-icons/md'
 import { Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
-import { trpc } from '@admin/app/(utils)/trpc/client'
-import { FaFileUpload } from 'react-icons/fa'
-import { MdCancel } from 'react-icons/md'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
 
 const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
   const router = useRouter()
@@ -137,7 +137,7 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
         }
       >
         <div
-          className={`relative flex flex-col items-center text-center gap-4 border rounded-xl ${newImage ? 'p-0' : 'pb-4'}`}
+          className={`relative flex flex-col items-center gap-4 rounded-xl border text-center ${newImage ? 'p-0' : 'pb-4'}`}
           style={{
             width: '100%',
             maxWidth: '400px',
@@ -145,11 +145,11 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
           }}
         >
           {!newImage ? (
-            <div className={`flex w-full h-full justify-center items-center`}>
+            <div className='flex size-full items-center justify-center'>
               <p>НЕМАЄ ЗОБРАЖЕННЯ</p>
             </div>
           ) : (
-            <div className='flex w-full h-full'>
+            <div className='flex size-full'>
               <Image
                 as={NextImage}
                 classNames={{ img: 'h-full' }}
@@ -160,7 +160,7 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
               />
               <Button
                 isIconOnly
-                className='absolute top-[-1em] right-[-2em] h-fit bg-transperent transition-colors [&>svg]:fill-[red] [&>svg]:hover:fill-[#3a0000] [&>svg]:focus:fill-[#3a0000]'
+                className='bg-transperent absolute right-[-2em] top-[-1em] h-fit transition-colors [&>svg]:fill-[red] [&>svg]:hover:fill-[#3a0000] [&>svg]:focus:fill-[#3a0000]'
                 onClick={async () => {
                   setNewImage(null)
                 }}
@@ -169,12 +169,14 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
               </Button>
             </div>
           )}
-          <Tooltip showArrow={true} content='Вибрати файл'>
+          <Tooltip showArrow content='Вибрати файл'>
             <label
+              htmlFor='fileInput'
               className={`${newImage ? 'hidden' : 'flex'} relative cursor-pointer bg-transparent transition-colors [&>svg]:hover:fill-mid-blue [&>svg]:focus:fill-mid-blue`}
             >
               <FaFileUpload size='2em' className='fill-[white]' />
               <input
+                id='fileInput'
                 className='hidden'
                 type='file'
                 accept='image/*'
@@ -234,7 +236,7 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
                     />
                     <Button
                       type='button'
-                      className='z-10 absolute right-0 top-0 rounded-bl-xl bg-black-dis p-2 font-exo_2 text-sm text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
+                      className='absolute right-0 top-0 z-10 rounded-bl-xl bg-black-dis p-2 font-exo_2 text-sm text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
                       onClick={() =>
                         handleCopyLink(`${SERVER_URL}/${item.file.path}`)
                       }

@@ -1,8 +1,8 @@
+import { auth } from '@admin/app/(utils)/next-auth/auth'
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import type { outputBrandSchema as IBrand } from '@server/domain/brands/schemas/brand.schema'
 import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
 
-import { auth } from '@admin/app/(utils)/authOptions'
 import EmptySection from '../(components)/EmptySection'
 import AddBrandForm from './(components)/AddBrandForm'
 import BrandsList from './(components)/BrandsList'

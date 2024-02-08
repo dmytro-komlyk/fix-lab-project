@@ -1,5 +1,7 @@
 import SignUp from '../(components)/SignUp'
 
+export const dynamic = 'force-dynamic'
+
 const SignUpPage = () => {
   return (
     <main className='flex h-full flex-auto'>

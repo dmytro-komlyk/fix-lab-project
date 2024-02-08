@@ -1,9 +1,10 @@
 'use client'
 
 import { Button, Input } from '@nextui-org/react'
-import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
-import { signIn } from 'next-auth/react'
+import type { FormikHelpers, FormikProps } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import Link from 'next/link'
+import { signIn } from 'next-auth/react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
@@ -28,7 +29,7 @@ const SignIn = () => {
         callbackUrl: '/',
       })
       if (res && !res.error) {
-        throw toast.success(`Вітаємо в FixLab Admin Panel!`, {
+        toast.success(`Вітаємо в FixLab Admin Panel!`, {
           style: {
             borderRadius: '10px',
             background: 'grey',
@@ -69,7 +70,7 @@ const SignIn = () => {
         {(props: FormikProps<any>) => (
           <Form
             onSubmit={props.handleSubmit}
-            className='flex flex-col items-center flex-wrap justify-center gap-6'
+            className='flex flex-col flex-wrap items-center justify-center gap-6'
           >
             <Field name='login'>
               {({ meta, field }: any) => (
@@ -87,7 +88,7 @@ const SignIn = () => {
                   endContent={
                     <HiMail
                       size={45}
-                      className='flex items-center text-mid-green p-2'
+                      className='flex items-center p-2 text-mid-green'
                     />
                   }
                   {...field}
@@ -123,7 +124,7 @@ const SignIn = () => {
                       ) : (
                         <AiFillEye
                           size={45}
-                          className='flex text-mid-green p-2'
+                          className='flex p-2 text-mid-green'
                         />
                       )}
                     </button>

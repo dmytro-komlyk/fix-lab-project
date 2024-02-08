@@ -1,5 +1,6 @@
 'use client'
 
+import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import {
   Accordion,
@@ -10,15 +11,15 @@ import {
   Input,
   Textarea,
 } from '@nextui-org/react'
+import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
+import type { FormikHelpers, FormikProps } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
-
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
-import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
-import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
-import { useState } from 'react'
 import * as Yup from 'yup'
+
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomAddContent from '../../(components)/CustomAddContent'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
@@ -87,7 +88,6 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
       }
     } catch (err) {
       // need added toast show errors
-      console.log(err)
     }
     setSubmitting(false)
   }
@@ -131,9 +131,9 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
           {(props: FormikProps<any>) => (
             <Form
               onSubmit={props.handleSubmit}
-              className='flex flex-wrap w-full gap-x-8 gap-y-12 py-6 items-center justify-center text-white-dis'
+              className='flex w-full flex-wrap items-center justify-center gap-x-8 gap-y-12 py-6 text-white-dis'
             >
-              <Card className='order-2 flex flex-col w-[45%] h-72 !bg-[#09338F]'>
+              <Card className='order-2 flex h-72 w-[45%] flex-col !bg-[#09338F]'>
                 <CardHeader className='flex flex-col !items-center'>
                   <h3 className='text-lg text-white-dis'>СЕО налаштування</h3>
                 </CardHeader>
@@ -145,7 +145,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
                         label='Title'
                         labelPlacement='inside'
                         variant='bordered'
-                        isInvalid={meta.touched && meta.error ? true : false}
+                        isInvalid={!!(meta.touched && meta.error)}
                         errorMessage={meta.touched && meta.error}
                         classNames={{
                           label: ['font-base', 'text-md', 'text-black-dis'],
@@ -163,7 +163,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
                         label='Description'
                         labelPlacement='inside'
                         variant='bordered'
-                        isInvalid={meta.touched && meta.error ? true : false}
+                        isInvalid={!!(meta.touched && meta.error)}
                         errorMessage={meta.touched && meta.error && meta.error}
                         classNames={{
                           label: ['font-base', 'text-md', 'text-black-dis'],
@@ -181,7 +181,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
                         label='Keywords'
                         labelPlacement='inside'
                         variant='bordered'
-                        isInvalid={meta.touched && meta.error ? true : false}
+                        isInvalid={!!(meta.touched && meta.error)}
                         errorMessage={meta.touched && meta.error && meta.error}
                         classNames={{
                           label: ['font-base', 'text-md', 'text-black-dis'],
@@ -194,7 +194,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
                   </Field>
                 </CardBody>
               </Card>
-              <div className='order-1 flex flex-col justify-end gap-4 w-[45%] h-72'>
+              <div className='order-1 flex h-72 w-[45%] flex-col justify-end gap-4'>
                 <Field name='slug'>
                   {({ meta, field }: any) => (
                     <Input
@@ -202,7 +202,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
                       label='ЧПУ(slug)'
                       labelPlacement='inside'
                       variant='bordered'
-                      isInvalid={meta.touched && meta.error ? true : false}
+                      isInvalid={!!(meta.touched && meta.error)}
                       errorMessage={meta.touched && meta.error && meta.error}
                       classNames={{
                         label: ['font-base', 'text-md', 'text-black-dis'],
@@ -220,7 +220,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
                       label='Заголовок'
                       labelPlacement='inside'
                       variant='bordered'
-                      isInvalid={meta.touched && meta.error ? true : false}
+                      isInvalid={!!(meta.touched && meta.error)}
                       errorMessage={meta.touched && meta.error && meta.error}
                       classNames={{
                         label: ['font-base', 'text-md', 'text-black-dis'],
@@ -241,7 +241,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
                       labelPlacement='inside'
                       variant='bordered'
                       minRows={6}
-                      isInvalid={meta.touched && meta.error ? true : false}
+                      isInvalid={!!(meta.touched && meta.error)}
                       errorMessage={meta.touched && meta.error && meta.error}
                       classNames={{
                         label: ['font-base', 'text-md', 'text-black-dis'],
@@ -274,7 +274,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
               </div>
               <div className='order-last'>
                 <SendButton
-                  type={'submit'}
+                  type='submit'
                   disabled={!props.isValid}
                   isLoading={props.isSubmitting}
                 />

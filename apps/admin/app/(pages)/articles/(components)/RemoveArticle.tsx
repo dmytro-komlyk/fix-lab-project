@@ -50,7 +50,7 @@ const RemoveArticle = ({ item }: { item: IArticle }) => {
   return (
     <Popover
       placement='right'
-      showArrow={true}
+      showArrow
       isOpen={isOpen}
       onOpenChange={open => setIsOpen(open)}
     >

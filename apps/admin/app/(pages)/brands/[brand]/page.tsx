@@ -1,11 +1,11 @@
+import { auth } from '@admin/app/(utils)/next-auth/auth'
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import type { outputBrandSchema as IBrand } from '@server/domain/brands/schemas/brand.schema'
 import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { auth } from '@admin/app/(utils)/authOptions'
-import EditBrandForm from '../(components)/EditBrandForm '
+import EditBrandForm from '../(components)/EditBrandForm'
 
 interface IContactAdminProps {
   params: {

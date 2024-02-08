@@ -1,10 +1,10 @@
+import { auth } from '@admin/app/(utils)/next-auth/auth'
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import type { outputBenefitSchema } from '@server/domain/benefits/schemas/benefit.schema'
+import type { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { auth } from '@admin/app/(utils)/authOptions'
-import EditBenefitForm from '../(components)/EditBenefitForm '
+import EditBenefitForm from '../(components)/EditBenefitForm'
 
 interface IBenefitAdminProps {
   params: {
@@ -22,7 +22,7 @@ const BenefitPage: React.FC<IBenefitAdminProps> = async ({ params }) => {
     user,
   }).benefits.getByIdBenefit({
     id: params.benefit,
-  })) as outputBenefitSchema
+  })) as IBenefit
 
   return (
     <main>

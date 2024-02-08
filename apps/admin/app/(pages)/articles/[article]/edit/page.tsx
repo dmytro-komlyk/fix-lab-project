@@ -1,10 +1,10 @@
+import { auth } from '@admin/app/(utils)/next-auth/auth'
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import type { outputArticleSchema as IArticle } from '@server/domain/articles/schemas/article.schema'
 import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { auth } from '@admin/app/(utils)/authOptions'
 import EditArticleSection from '../../(components)/EditArticleSection'
 
 interface IArticleAdminProps {
@@ -22,9 +22,9 @@ const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
   const articleData = (await serverClient({ user }).articles.getBySlugArticle({
     slug: params.article,
   })) as IArticle
-  const allImagesData = (await serverClient({
+  const imagesData = (await serverClient({
     user,
-  }).images.getAllImages()) as IImage[]
+  }).images.getAllBlogPictures()) as IImage[]
 
   return (
     <main>
@@ -46,7 +46,10 @@ const ArticlePage: React.FC<IArticleAdminProps> = async ({ params }) => {
             {articleData?.title}
           </h2>
           {articleData ? (
-            <EditArticleSection articleData={articleData} />
+            <EditArticleSection
+              imagesData={imagesData}
+              articleData={articleData}
+            />
           ) : (
             <p>No article</p>
           )}

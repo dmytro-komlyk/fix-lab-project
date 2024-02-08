@@ -1,8 +1,8 @@
+import { Button, ButtonGroup, Card, CardBody } from '@nextui-org/react'
+import type { outputArticleSchema as IArticle } from '@server/domain/articles/schemas/article.schema'
 import Link from 'next/link'
 import { FaEdit } from 'react-icons/fa'
 
-import { Button, ButtonGroup, Card, CardBody } from '@nextui-org/react'
-import type { outputArticleSchema as IArticle } from '@server/domain/articles/schemas/article.schema'
 import RemoveArticle from './RemoveArticle'
 
 const ArticlesList = ({ articlesData }: { articlesData: IArticle[] }) => {
@@ -16,7 +16,7 @@ const ArticlesList = ({ articlesData }: { articlesData: IArticle[] }) => {
               className='group border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl'
               shadow='sm'
             >
-              <CardBody className='flex flex-row gap-6 items-center overflow-visible py-2 px-4'>
+              <CardBody className='flex flex-row items-center gap-6 overflow-visible px-4 py-2'>
                 <h3 className='font-semibold text-dark-blue md:text-lg xl:text-xl'>
                   {item.title}
                 </h3>

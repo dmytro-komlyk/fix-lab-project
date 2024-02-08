@@ -2,14 +2,15 @@
 
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { Input } from '@nextui-org/react'
-import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
+import type { FormikHelpers, FormikProps } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import { object, ref, string } from 'yup'
+
 import SendButton from '../../(components)/SendButton'
-// import { ThreeCircles } from 'react-loader-spinner'
 
 interface IResetPasswordProps {
   searchParams: {
@@ -66,7 +67,7 @@ const ResetPassword = ({ searchParams }: IResetPasswordProps) => {
         token: searchParams.token,
       })
     } catch (error) {
-      console.log(error)
+      // added show error
     }
     setSubmitting(false)
   }
@@ -92,7 +93,7 @@ const ResetPassword = ({ searchParams }: IResetPasswordProps) => {
         {(props: FormikProps<any>) => (
           <Form
             onSubmit={props.handleSubmit}
-            className='flex flex-col items-center flex-wrap justify-center gap-6 w-full'
+            className='flex w-full flex-col flex-wrap items-center justify-center gap-6'
           >
             <Field name='password'>
               {({ meta, field }: any) => (
@@ -123,7 +124,7 @@ const ResetPassword = ({ searchParams }: IResetPasswordProps) => {
                       ) : (
                         <AiFillEye
                           size={45}
-                          className='flex text-mid-green p-2'
+                          className='flex p-2 text-mid-green'
                         />
                       )}
                     </button>
@@ -161,7 +162,7 @@ const ResetPassword = ({ searchParams }: IResetPasswordProps) => {
                       ) : (
                         <AiFillEye
                           size={45}
-                          className='flex text-mid-green p-2'
+                          className='flex p-2 text-mid-green'
                         />
                       )}
                     </button>
@@ -171,7 +172,7 @@ const ResetPassword = ({ searchParams }: IResetPasswordProps) => {
               )}
             </Field>
             <SendButton
-              type={'submit'}
+              type='submit'
               disabled={!props.isValid}
               isLoading={props.isSubmitting}
             />

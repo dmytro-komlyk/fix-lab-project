@@ -19,9 +19,7 @@ const FieldFileUpload = ({
     height: number
   }
 }) => {
-  const [newImage, setNewImage] = useState<string | null>(
-    initSrc ? initSrc : null,
-  )
+  const [newImage, setNewImage] = useState<string | null>(initSrc || null)
 
   const convertToBase64 = (file: any) => {
     return new Promise((resolve, reject) => {
@@ -63,7 +61,7 @@ const FieldFileUpload = ({
           const { setFieldValue } = form
           return (
             <div
-              className={`relative flex flex-col items-center text-center gap-4 border rounded-xl ${newImage ? 'p-0' : 'pb-4'}`}
+              className={`relative flex flex-col items-center gap-4 rounded-xl border-2 border-dashed text-center ${newImage ? 'p-0' : 'pb-4'}`}
               style={{
                 width: '100%',
                 maxWidth: `${String(size.width)}px`,
@@ -71,13 +69,11 @@ const FieldFileUpload = ({
               }}
             >
               {!newImage ? (
-                <div
-                  className={`flex w-full h-full justify-center items-center`}
-                >
+                <div className='flex size-full items-center justify-center'>
                   <p>НЕМАЄ ЗОБРАЖЕННЯ</p>
                 </div>
               ) : (
-                <div className='flex w-full h-full'>
+                <div className='flex size-full'>
                   <Image
                     as={NextImage}
                     classNames={{ img: 'h-full' }}
@@ -88,7 +84,7 @@ const FieldFileUpload = ({
                   />
                   <Button
                     isIconOnly
-                    className='absolute top-[-1em] right-[-2em] h-fit bg-transperent transition-colors [&>svg]:fill-[red] [&>svg]:hover:fill-[#3a0000] [&>svg]:focus:fill-[#3a0000]'
+                    className='bg-transperent absolute right-[-2em] top-[-1em] h-fit transition-colors [&>svg]:fill-[red] [&>svg]:hover:fill-[#3a0000] [&>svg]:focus:fill-[#3a0000]'
                     onClick={async () => {
                       setNewImage(null)
                       setFieldValue(name, null)
@@ -98,12 +94,14 @@ const FieldFileUpload = ({
                   </Button>
                 </div>
               )}
-              <Tooltip showArrow={true} content='Вибрати файл'>
+              <Tooltip showArrow content='Вибрати файл'>
                 <label
+                  htmlFor='fileUpload'
                   className={`${newImage ? 'hidden' : 'flex'} relative cursor-pointer bg-transparent transition-colors [&>svg]:hover:fill-mid-blue [&>svg]:focus:fill-mid-blue`}
                 >
                   <FaFileUpload size='2em' className='fill-[white]' />
                   <input
+                    id='fileUpload'
                     name={name}
                     className='hidden'
                     type='file'
@@ -116,7 +114,7 @@ const FieldFileUpload = ({
           )
         }}
       </Field>
-      <div className='text-danger'></div>
+      <div className='text-danger' />
     </div>
   )
 }
