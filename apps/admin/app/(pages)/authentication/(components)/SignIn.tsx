@@ -1,10 +1,11 @@
 'use client'
 
 import { Button, Input } from '@nextui-org/react'
-import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
-import { signIn } from 'next-auth/react'
+import type { FormikHelpers, FormikProps } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import Link from 'next/link'
-import { useCallback, useState } from 'react'
+import { signIn } from 'next-auth/react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import { FiLogIn } from 'react-icons/fi'
@@ -12,63 +13,44 @@ import { HiMail } from 'react-icons/hi'
 import { object, string } from 'yup'
 
 const SignIn = () => {
-  const [isLoading, setLoading] = useState<boolean>(false)
   const [isVisiblePassword, setIsVisiblePassword] = useState(false)
   const toggleVisibilityPassword = () =>
     setIsVisiblePassword(!isVisiblePassword)
 
-  const handleSubmit = useCallback(
-    async (values: any, { setSubmitting }: FormikHelpers<any>) => {
-      setSubmitting(true)
-      setLoading(true)
-      try {
-        const res = await signIn('credentials', {
-          login: values.login,
-          password: values.password,
-          callbackUrl: '/',
-        })
-        if (res && !res.error) {
-          throw toast.success(`Вітаємо в FixLab Admin Panel!`, {
-            style: {
-              borderRadius: '10px',
-              background: 'grey',
-              color: '#fff',
-            },
-          })
-        }
-      } catch (error) {
-        // toast.custom(t => (
-        //   <div
-        //     className={`${
-        //       t.visible ? 'animate-enter' : 'animate-leave'
-        //     } max-w-md w-full bg-white items-center shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-        //   >
-        //     <div className='flex-1 w-0 p-4'>
-        //       <div className='flex items-center'>
-        //         <p>
-        //           Помилка авторизації, перевірте правильність вводу пошти та
-        //           пароля
-        //         </p>
-        //       </div>
-        //     </div>
-        //   </div>
-        // ))
-        toast.error(
-          `Помилка авторизації, перевірте правильність вводу пошти та пароля`,
-          {
-            style: {
-              borderRadius: '10px',
-              background: 'grey',
-              color: '#fff',
-            },
+  const handleSubmit = async (
+    values: any,
+    { setSubmitting }: FormikHelpers<any>,
+  ) => {
+    setSubmitting(true)
+    try {
+      const res = await signIn('credentials', {
+        login: values.login,
+        password: values.password,
+        callbackUrl: '/',
+      })
+      if (res && !res.error) {
+        toast.success(`Вітаємо в FixLab Admin Panel!`, {
+          style: {
+            borderRadius: '10px',
+            background: 'grey',
+            color: '#fff',
           },
-        )
+        })
       }
-      setSubmitting(false)
-      setLoading(false)
-    },
-    [],
-  )
+    } catch (error) {
+      toast.error(
+        `Помилка авторизації, перевірте правильність вводу пошти та пароля`,
+        {
+          style: {
+            borderRadius: '10px',
+            background: 'grey',
+            color: '#fff',
+          },
+        },
+      )
+    }
+    setSubmitting(false)
+  }
 
   return (
     <div className='flex flex-col items-center justify-center gap-8'>
@@ -88,7 +70,7 @@ const SignIn = () => {
         {(props: FormikProps<any>) => (
           <Form
             onSubmit={props.handleSubmit}
-            className='flex flex-col items-center flex-wrap justify-center gap-6'
+            className='flex flex-col flex-wrap items-center justify-center gap-6'
           >
             <Field name='login'>
               {({ meta, field }: any) => (
@@ -101,14 +83,12 @@ const SignIn = () => {
                   classNames={{
                     label: ['text-white'],
                     input: ['text-white'],
-                    inputWrapper: [
-                      'group-data-[focus=true]:border-default-200',
-                    ],
+                    inputWrapper: ['group-data-[focus=true]:border-mid-green'],
                   }}
                   endContent={
                     <HiMail
                       size={45}
-                      className='flex items-center text-mid-green p-2'
+                      className='flex items-center p-2 text-mid-green'
                     />
                   }
                   {...field}
@@ -144,7 +124,7 @@ const SignIn = () => {
                       ) : (
                         <AiFillEye
                           size={45}
-                          className='flex text-mid-green p-2'
+                          className='flex p-2 text-mid-green'
                         />
                       )}
                     </button>
@@ -155,7 +135,8 @@ const SignIn = () => {
             </Field>
             <Button
               type='submit'
-              isLoading={isLoading}
+              disabled={!props.isValid}
+              isLoading={props.isSubmitting}
               className='group flex h-[65px] w-[320px] justify-center rounded-2xl bg-mid-green text-center font-exo_2 text-xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
             >
               Увійти

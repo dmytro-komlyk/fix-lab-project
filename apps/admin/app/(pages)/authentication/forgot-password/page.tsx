@@ -1,5 +1,7 @@
 import ForgotPassword from '../(components)/ForgotPassword'
 
+export const dynamic = 'force-dynamic'
+
 const ForgotPasswordPage = () => {
   return (
     <main className='flex h-full flex-auto'>

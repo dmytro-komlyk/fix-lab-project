@@ -1,6 +1,7 @@
 import { INestApplication, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
+import express from 'express';
 import { OpenAPIV3 } from 'openapi-types';
 import swaggerUi from 'swagger-ui-express';
 import { generateOpenApiDocument } from 'trpc-openapi';
@@ -13,7 +14,6 @@ import { GadgetsRouter } from '../gadgets/gadgets.router';
 import { ImagesRouter } from '../images/images.router';
 import { IssuesRouter } from '../issues/issues.router';
 
-import express from 'express';
 import { ArticlesService } from '../articles/articles.service';
 import { AuthRouter } from '../auth/auth.router';
 import { AuthService } from '../auth/auth.service';

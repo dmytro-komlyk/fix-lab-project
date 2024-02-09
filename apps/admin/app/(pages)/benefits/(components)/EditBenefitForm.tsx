@@ -1,15 +1,16 @@
 'use client'
 
 import { trpc } from '@admin/app/(utils)/trpc/client'
-import toast from 'react-hot-toast'
-
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
+import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import { Input } from '@nextui-org/react'
-import { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
-import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
+import type { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
+import type { FormikHelpers, FormikProps } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import * as Yup from 'yup'
+
 import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SelectImage from '../../(components)/SelectImage'
 import SendButton from '../../(components)/SendButton'
@@ -59,36 +60,30 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
     setSubmitting(true)
 
     try {
-      console.log(values, selectedIcon)
       if (selectedIcon) {
         await updateBenefit.mutateAsync({
           ...benefit.data,
           icon_id: selectedIcon,
           title: values.title,
         })
-      } else {
-        if (values.file.name) {
-          const uploadResponse = await uploadImg({
-            fileInput: values.file,
-            alt: values.file.name.split('.')[0],
-            type: 'icon',
-          })
-          if (uploadResponse.status === 201) {
-            await updateBenefit.mutateAsync({
-              ...benefit.data,
-              icon_id: uploadResponse.data.id,
-              title: values.title,
-            })
-          }
-        } else {
+      } else if (values.file) {
+        const uploadResponse = await uploadImg({
+          fileInput: values.file,
+          alt: values.file.name.split('.')[0],
+          type: 'icon',
+        })
+        if (uploadResponse.status === 201) {
           await updateBenefit.mutateAsync({
             ...benefit.data,
+            icon_id: uploadResponse.data.id,
             title: values.title,
           })
         }
+      } else {
+        // added validate empty image
       }
     } catch (err) {
-      console.log(err)
+      // added show error
     }
     setSubmitting(false)
   }
@@ -109,10 +104,14 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
       {(props: FormikProps<any>) => (
         <Form
           onSubmit={props.handleSubmit}
-          className='flex w-[400px] mx-auto my-0 flex-col items-center justify-center gap-6 text-white-dis '
+          className='mx-auto my-0 flex w-[400px] flex-col items-center justify-center gap-6 text-white-dis '
         >
-          <div className='flex flex-col gap-4 items-center w-full'>
-            <FieldFileUpload name='file' isRequired={false} />
+          <div className='flex w-full flex-col items-center gap-4'>
+            <FieldFileUpload
+              name='file'
+              initSrc={null}
+              size={{ width: 150, height: 150 }}
+            />
             <p className='text-white-dis'>або</p>
             {icons.isSuccess && (
               <SelectImage
@@ -121,7 +120,7 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
                 defaultSelectedKeys={selectedIcon ? [selectedIcon] : null}
               />
             )}
-            <div className='text-danger'></div>
+            <div className='text-danger' />
           </div>
           <Field name='title'>
             {({ meta, field }: any) => (
@@ -146,7 +145,7 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
           </Field>
 
           <SendButton
-            type={'submit'}
+            type='submit'
             disabled={!props.isValid}
             isLoading={props.isSubmitting}
           />

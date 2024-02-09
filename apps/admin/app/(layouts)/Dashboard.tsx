@@ -1,16 +1,18 @@
-import { auth } from '@admin/app/(utils)/authOptions'
-import Image from 'next/image'
+import { auth } from '@admin/app/(utils)/next-auth/auth'
 // import Link from 'next/link'
 import { Link } from '@nextui-org/react'
+import Image from 'next/image'
 import { HiLockClosed } from 'react-icons/hi'
 
 import ExitButton from './ExitButton'
+
+export const dynamic = 'force-dynamic'
 
 const Dashboard = async () => {
   const session = await auth()
 
   return (
-    <div className='fixed left-0 flex h-[100vh] w-[400px] shrink flex-col justify-between  bg-[#09338F] pt-12'>
+    <div className='fixed left-0 flex h-[100vh] w-[400px] shrink flex-col justify-between bg-[#09338F] pt-12'>
       <div className='relative ml-8 mr-2 flex flex-col'>
         <Link
           href='/'
@@ -31,32 +33,26 @@ const Dashboard = async () => {
               <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/articles'
-                  isDisabled
                   className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
                 >
                   Блог
                 </Link>
-                <HiLockClosed size={30} color='#fff' />
               </li>
               <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/gadgets'
-                  isDisabled
                   className='font-exo_2 text-2xl  font-bold text-white-dis max-lg:text-xl '
                 >
                   Гаджети
                 </Link>
-                <HiLockClosed size={30} color='#fff' />
               </li>
               <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/issues'
-                  isDisabled
                   className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Послуги
                 </Link>
-                <HiLockClosed size={30} color='#fff' />
               </li>
               <li className='flex items-center justify-between gap-2'>
                 <Link
@@ -69,23 +65,19 @@ const Dashboard = async () => {
               <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/brands'
-                  isDisabled
                   className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Бренди
                 </Link>
-                <HiLockClosed size={30} color='#fff' />
               </li>
 
               <li className='flex items-center justify-between gap-2'>
                 <Link
                   href='/contacts'
-                  isDisabled
                   className='font-exo_2 text-2xl font-bold text-white-dis max-lg:text-xl '
                 >
                   Контакти
                 </Link>
-                <HiLockClosed size={30} color='#fff' />
               </li>
               <li className='flex items-center justify-between gap-2 opacity-70'>
                 <Link
@@ -117,7 +109,9 @@ const Dashboard = async () => {
           </Link>
         </div>
       ) : (
-        <ExitButton />
+        <div className='m-4 flex justify-center'>
+          <ExitButton />
+        </div>
       )}
     </div>
   )

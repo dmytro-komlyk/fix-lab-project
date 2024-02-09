@@ -47,8 +47,8 @@ import { TrpcService } from './trpc.service';
     UserRouter,
     AuthService,
     AuthRouter,
-    JwtService
+    JwtService,
   ],
-  exports: [TrpcService]
+  exports: [TrpcService],
 })
 export class TrpcModule {}

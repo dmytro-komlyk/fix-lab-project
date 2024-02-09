@@ -8,14 +8,14 @@ import { GadgetsService } from './gadgets.service';
 import {
   createGadgetSchema,
   outputGadgetSchema,
-  updateGadgetSchema
+  updateGadgetSchema,
 } from './schemas/gadget.schema';
 
 @Injectable()
 export class GadgetsRouter {
   constructor(
     private readonly trpc: TrpcService,
-    private readonly gadgetsService: GadgetsService
+    private readonly gadgetsService: GadgetsService,
   ) {}
 
   gadgetsRouter = this.trpc.router({
@@ -25,8 +25,8 @@ export class GadgetsRouter {
           method: 'GET',
           path: '/getAllGadgets',
           tags: ['gadgets'],
-          summary: 'Read all gadgets'
-        }
+          summary: 'Read all gadgets',
+        },
       })
       .input(z.void())
       .output(z.array(outputGadgetSchema))
@@ -39,8 +39,8 @@ export class GadgetsRouter {
           method: 'GET',
           path: '/getAllPublishedGadgets',
           tags: ['gadgets'],
-          summary: 'Read all published gadgets'
-        }
+          summary: 'Read all published gadgets',
+        },
       })
       .input(z.void())
       .output(z.array(outputGadgetSchema))
@@ -53,12 +53,12 @@ export class GadgetsRouter {
           method: 'GET',
           path: '/getByIdGadget',
           tags: ['gadgets'],
-          summary: 'Read a gadget by id'
-        }
+          summary: 'Read a gadget by id',
+        },
       })
       .input(z.object({ id: z.string() }))
       .output(outputGadgetSchema)
-      .mutation(async ({ input }) => {
+      .query(async ({ input }) => {
         return await this.gadgetsService.findById(input.id);
       }),
     getBySlugGadget: this.trpc.procedure
@@ -67,8 +67,8 @@ export class GadgetsRouter {
           method: 'GET',
           path: '/getBySlugGadget',
           tags: ['gadgets'],
-          summary: 'Read a gadget by slug'
-        }
+          summary: 'Read a gadget by slug',
+        },
       })
       .input(z.object({ slug: z.string() }))
       .output(outputGadgetSchema)
@@ -81,8 +81,8 @@ export class GadgetsRouter {
           method: 'POST',
           path: '/createGadget',
           tags: ['gadgets'],
-          summary: 'Create a new gadget'
-        }
+          summary: 'Create a new gadget',
+        },
       })
       .input(createGadgetSchema)
       .output(outputGadgetSchema)
@@ -95,13 +95,13 @@ export class GadgetsRouter {
           method: 'POST',
           path: '/updateGadget',
           tags: ['gadgets'],
-          summary: 'Update gadget'
-        }
+          summary: 'Update gadget',
+        },
       })
       .input(updateGadgetSchema)
       .output(outputGadgetSchema)
       .mutation(async ({ input }) => {
         return await this.gadgetsService.update(input);
-      })
+      }),
   });
 }

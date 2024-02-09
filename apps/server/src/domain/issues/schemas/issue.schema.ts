@@ -12,9 +12,9 @@ export const createIssueSchema = z.object({
   description: z.string(),
   price: z.string().min(1),
   metadata: MetaSchema,
-  gadgets_ids: z.array(z.string()),
+  gadgets_ids: z.array(z.string()).default([]),
   image_id: z.string(),
-  benefits_ids: z.array(z.string())
+  benefits_ids: z.array(z.string()).default([]),
 });
 
 export const updateIssueSchema = z.object({
@@ -28,7 +28,7 @@ export const updateIssueSchema = z.object({
   metadata: MetaSchema,
   gadgets_ids: z.array(z.string()),
   image_id: z.string(),
-  benefits_ids: z.array(z.string())
+  benefits_ids: z.array(z.string()),
 });
 
 export const outputIssueSchema = z.object({
@@ -44,7 +44,7 @@ export const outputIssueSchema = z.object({
   benefits: z.array(outputBenefitSchema),
   gadgets_ids: z.array(z.string()),
   image_id: z.string(),
-  benefits_ids: z.array(z.string())
+  benefits_ids: z.array(z.string()),
 });
 
 export type createIssueSchema = z.TypeOf<typeof createIssueSchema>;

@@ -49,13 +49,17 @@ jobs:
           push: true
           tags: |
             ghcr.io/iryna-gry/prod-fixlab-client:latest
+          build-args: |
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
 
       - name: "Build Admin"
         if: contains(github.event.pull_request.labels.*.name, 'frontend-admin')
         uses: docker/build-push-action@v4
         with:
-          target: production
+          target: runner
           file: ./apps/admin/Dockerfile
           push: true
           tags: |
             ghcr.io/iryna-gry/prod-fixlab-admin:latest
+          build-args: |
+            DATABASE_URL=${{ secrets.DATABASE_URL }}

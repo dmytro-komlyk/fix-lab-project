@@ -2,9 +2,10 @@
 
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { Button, Input } from '@nextui-org/react'
-import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
+import type { FormikHelpers, FormikProps } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 import { FaUserAlt } from 'react-icons/fa'
@@ -35,33 +36,30 @@ const SignUp = () => {
       })
     },
   })
-  const handleSubmit = useCallback(
-    async (values: any, { setSubmitting }: FormikHelpers<any>) => {
-      setLoading(true)
-      setSubmitting(true)
-      const { passwordConfirmation, ...regData } = values
-      try {
-        const createdUser = await createUser.mutateAsync(regData)
-        if (createdUser) {
-          router.push('/authentication/signin')
-        }
-      } catch (error) {
-        toast.error(
-          `Помилка авторизації!!! Перевірте дані логіну чи паролю...`,
-          {
-            style: {
-              borderRadius: '10px',
-              background: 'grey',
-              color: '#fff',
-            },
-          },
-        )
+  const handleSubmit = async (
+    values: any,
+    { setSubmitting }: FormikHelpers<any>,
+  ) => {
+    setLoading(true)
+    setSubmitting(true)
+    const { passwordConfirmation, ...regData } = values
+    try {
+      const createdUser = await createUser.mutateAsync(regData)
+      if (createdUser) {
+        router.push('/authentication/signin')
       }
-      setLoading(false)
-      setSubmitting(false)
-    },
-    [],
-  )
+    } catch (error) {
+      toast.error(`Помилка авторизації!!! Перевірте дані логіну чи паролю...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
+    }
+    setLoading(false)
+    setSubmitting(false)
+  }
 
   return (
     <div className='flex flex-col items-center justify-center gap-8'>
@@ -114,7 +112,7 @@ const SignUp = () => {
                   errorMessage={meta.touched && meta.error && meta.error}
                   label="Ім'я"
                   endContent={
-                    <FaUserAlt size={45} className='flex text-mid-green p-2' />
+                    <FaUserAlt size={45} className='flex p-2 text-mid-green' />
                   }
                   {...field}
                 />
@@ -138,7 +136,7 @@ const SignUp = () => {
                   endContent={
                     <HiMail
                       size={45}
-                      className='flex items-center text-mid-green p-2'
+                      className='flex items-center p-2 text-mid-green'
                     />
                   }
                   {...field}
@@ -174,7 +172,7 @@ const SignUp = () => {
                       ) : (
                         <AiFillEye
                           size={45}
-                          className='flex text-mid-green p-2'
+                          className='flex p-2 text-mid-green'
                         />
                       )}
                     </button>
@@ -212,7 +210,7 @@ const SignUp = () => {
                       ) : (
                         <AiFillEye
                           size={45}
-                          className='flex text-mid-green p-2'
+                          className='flex p-2 text-mid-green'
                         />
                       )}
                     </button>

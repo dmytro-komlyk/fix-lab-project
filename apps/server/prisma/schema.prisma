@@ -95,7 +95,7 @@ model Gadget {
   icon            Image          @relation(fields: [icon_id], references: [id], name: "gadget_icon")
   icon_id         String         @db.ObjectId
   brands          Brand[]        @relation(fields: [brands_ids], references: [id], name: "gadgets_brands")
-  brands_ids       String[]      @db.ObjectId
+  brands_ids      String[]       @db.ObjectId
   gallery         Image[]        @relation(fields: [gallery_ids], references: [id], name: "gadget_gallery")
   gallery_ids     String[]       @db.ObjectId
   issues          Issue[]        @relation(fields: [issues_ids], references: [id], name: "gadgets_issues")
@@ -147,9 +147,20 @@ model User {
   name                 String         @unique
   email                String         @unique
   password             String
+  token                String
   accessToken          String         
   accessTokenExpires   Int
   refreshToken         String
   
   @@map("users")
+}
+
+model Token {
+  id                   String         @id @default(auto()) @map("_id") @db.ObjectId
+  user_id              String         @db.ObjectId
+  token                String
+
+  createdAt            DateTime       @default(now())
+
+  @@map("tokens")
 }

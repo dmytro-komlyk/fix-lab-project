@@ -13,7 +13,7 @@ export class TrpcService {
   decodeAndVerifyJwtToken = async (token: string) => {
     try {
       const decodedToken = await this.jwt.verifyAsync(token, {
-        secret: process.env.JWT_SECRET_KEY,
+        secret: process.env.JWT_ACCESS_TOKEN_KEY,
       });
 
       const user = this.prisma.user.findUnique({
@@ -33,7 +33,6 @@ export class TrpcService {
   };
 
   getUserFromHeader = async (req: any): Promise<User | null> => {
-    console.log(req.headers);
     if (req.headers.authorization) {
       const user = await this.decodeAndVerifyJwtToken(
         req.headers.authorization.split(' ')[1],

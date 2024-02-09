@@ -1,11 +1,11 @@
+import { auth } from '@admin/app/(utils)/next-auth/auth'
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import type { outputBrandSchema as IBrand } from '@server/domain/brands/schemas/brand.schema'
 import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { auth } from '@admin/app/(utils)/authOptions'
-import EditBrandForm from '../(components)/EditBrandForm '
+import EditBrandForm from '../(components)/EditBrandForm'
 
 interface IContactAdminProps {
   params: {
@@ -24,6 +24,9 @@ const BrandPage: React.FC<IContactAdminProps> = async ({ params }) => {
   }).brands.getBySlugBrand({
     slug: params.brand,
   })) as IBrand
+  const allIconsData = (await serverClient({
+    user,
+  }).images.getAllIcons()) as IImage[]
   const allPicturesData = (await serverClient({
     user,
   }).images.getAllPictures()) as IImage[]
@@ -47,6 +50,7 @@ const BrandPage: React.FC<IContactAdminProps> = async ({ params }) => {
             {brandData.title}
           </h2>
           <EditBrandForm
+            allIconsData={allIconsData}
             allPicturesData={allPicturesData}
             brandData={brandData}
           />

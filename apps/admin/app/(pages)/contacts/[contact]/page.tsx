@@ -1,10 +1,10 @@
+import { auth } from '@admin/app/(utils)/next-auth/auth'
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import type { outputContactSchema as IContact } from '@server/domain/contacts/schemas/contact.schema'
 import Link from 'next/link'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 
-import { auth } from '@admin/app/(utils)/authOptions'
-import EditContactForm from '../(components)/EditContactForm '
+import EditContactForm from '../(components)/EditContactForm'
 
 interface IContactAdminProps {
   params: {
@@ -17,21 +17,12 @@ export const dynamic = 'force-dynamic'
 const ContactPage: React.FC<IContactAdminProps> = async ({ params }) => {
   const session = await auth()
   const user = session?.user ? session.user : null
-  const contactData = (await serverClient({
-    user: {
-      id: 'string',
-      email: 'string',
-      name: 'string',
-      accessToken: 'string',
-      accessTokenExpires: 0,
-    },
-  }).contacts.getByIdContact({
+  const contactData = (await serverClient({ user }).contacts.getByIdContact({
     id: params.contact,
   })) as IContact
-
   return (
-    <main className='flex flex-auto h-full'>
-      <section className=' w-full overflow-hidden  bg-footer-gradient-linear-blue  py-[60px]'>
+    <main className='flex h-full flex-auto'>
+      <section className='w-full overflow-y-scroll  bg-footer-gradient-linear-blue  py-[60px]'>
         <div className='container  relative flex flex-col px-8'>
           <div className='z-[1] mb-8 flex items-center gap-1'>
             <Link

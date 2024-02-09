@@ -8,6 +8,6 @@ import { AuthService } from './auth.service';
 @Module({
   imports: [PrismaModule],
   providers: [AuthService, AuthRouter, UserService, TrpcService],
-  exports: [AuthService]
+  exports: [AuthService],
 })
 export class AuthModule {}

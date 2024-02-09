@@ -1,102 +1,42 @@
 'use client'
 
-import useLocalStorage from '@admin/app/(hooks)/useLocalStorage '
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
+import { SERVER_URL } from '@admin/app/(lib)/constants'
 import { trpc } from '@admin/app/(utils)/trpc/client'
-import type { serverClient } from '@admin/app/(utils)/trpc/serverClient'
-import Image from 'next/image'
+import { uploadImg } from '@admin/app/api/service/image/uploadImg'
+import { Card, CardBody, CardHeader, Input, Textarea } from '@nextui-org/react'
+import type { outputArticleSchema as IArticle } from '@server/domain/articles/schemas/article.schema'
+import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
+import type { FormikHelpers, FormikProps } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import * as Yup from 'yup'
 
 import AddImagesSection from '../../(components)/AddImagesSection'
-import CustomEditor from '../../(components)/CustomEditor'
+import CustomAddContent from '../../(components)/CustomAddContent'
+import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SendButton from '../../(components)/SendButton'
 
 const EditArticleSection = ({
   articleData,
-  allImagesData,
+  imagesData,
 }: {
-  articleData: Awaited<
-    ReturnType<(typeof serverClient)['articles']['getBySlugArticle']>
-  >
-  allImagesData: Awaited<
-    ReturnType<(typeof serverClient)['images']['getAllImages']>
-  >
+  articleData: IArticle
+  imagesData: IImage[]
 }) => {
   const router = useRouter()
-  const [newArticleData, setNewArticleData] = useLocalStorage(
-    `editNewArticleData${articleData.id}`,
-    { ...articleData },
+  const { updatedAt, createdAt, ...restArticledata } = articleData
+  const article = trpc.articles.getByIdArticle.useQuery(
+    { id: articleData.id },
+    { initialData: restArticledata },
   )
-  const [selectedImage, setSelectedImage] = useState<File | null>(null)
-  const [newImage, setNewImage] = useState<string | ArrayBuffer | null>(null)
-  const [newArticle, setNewArticle] = useLocalStorage<string | ''>(
-    `editNewArticle${articleData.id}`,
-    articleData.text || '',
+  const images = trpc.images.getAllBlogPictures.useQuery(undefined, {
+    initialData: imagesData,
+  })
+  const [contentArticleBlog, setContentArticleBlog] = useState<string>(
+    article.data.text,
   )
-  const [altImage, setAltImage] = useLocalStorage<string | ''>(
-    `editNewImageAlt${articleData.id}`,
-    '',
-  )
-
-  const clearState = () => {
-    setNewArticleData({ ...newArticleData })
-    if (selectedImage) {
-      setSelectedImage(null)
-    }
-    setNewImage(null)
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-
-    if (name === 'metadata') {
-      const metadataField = e.target.getAttribute('data-metadata-field')
-
-      if (metadataField) {
-        setNewArticleData({
-          ...newArticleData,
-          metadata: {
-            ...newArticleData.metadata,
-            [metadataField]: value,
-          },
-        })
-      }
-    } else {
-      setNewArticleData({ ...newArticleData, [name]: value })
-    }
-  }
-
-  const handleImageUpload = async () => {
-    try {
-      if (selectedImage && altImage) {
-        const response = await uploadImg({
-          fileInput: selectedImage,
-          alt: altImage,
-          type: articleData.image.type || 'picture',
-        })
-        return response
-      }
-      toast.error(`Відсутнє зображення, або його опис...`, {
-        style: {
-          borderRadius: '10px',
-          background: 'red',
-          color: '#fff',
-        },
-      })
-      return null
-    } catch (error) {
-      toast.error(`Помилка завантаження зображення...`, {
-        style: {
-          borderRadius: '10px',
-          background: 'red',
-          color: '#fff',
-        },
-      })
-      throw new Error('Error uploading image')
-    }
-  }
 
   const updateArticle = trpc.articles.updateArticle.useMutation({
     onSuccess: () => {
@@ -107,12 +47,12 @@ const EditArticleSection = ({
           color: '#fff',
         },
       })
-      clearState()
+      router.push('/articles')
       router.refresh()
     },
 
     onError: async () => {
-      toast.error(`Помилка при оновленні`, {
+      toast.error(`Виникла помилка при додаванні...`, {
         style: {
           borderRadius: '10px',
           background: 'red',
@@ -120,229 +60,232 @@ const EditArticleSection = ({
         },
       })
     },
+
+    onSettled: () => {
+      article.refetch()
+    },
   })
 
-  const deleteImage = trpc.images.removeImage.useMutation()
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-    if (
-      !(
-        newArticleData.title &&
-        newArticleData.slug &&
-        newArticleData.preview &&
-        newArticleData.image.id &&
-        newArticleData.text &&
-        newArticleData.metadata.description &&
-        newArticleData.metadata.keywords &&
-        newArticleData.metadata.title
-      )
-    ) {
-      toast.error(`Всі поля повинні бути заповнені...`, {
-        style: {
-          borderRadius: '10px',
-          background: 'red',
-          color: '#fff',
-        },
-      })
-    } else if (selectedImage) {
-      const uploadResponse = await handleImageUpload()
-
-      if (uploadResponse?.data.id) {
-        await updateArticle.mutateAsync({
-          isActive: true,
-          id: newArticleData.id,
-          slug: newArticleData.slug,
-          title: newArticleData.title,
-          text: newArticleData.text,
-          image_id: uploadResponse.data.id,
-          preview: newArticleData.preview,
-          metadata: {
-            title: newArticleData.metadata.title,
-            description: newArticleData.metadata.title,
-            keywords: newArticleData.metadata.title,
-          },
-        })
-        await deleteImage.mutateAsync(articleData.image.id)
-      } else {
-        await deleteImage.mutateAsync(uploadResponse?.data.id)
-        toast.error(`Помилка оновлення статті...`, {
-          style: {
-            borderRadius: '10px',
-            background: 'red',
-            color: '#fff',
-          },
-        })
-      }
-    } else {
-      updateArticle.mutate({
-        isActive: true,
-        id: newArticleData.id,
-        slug: newArticleData.slug,
-        title: newArticleData.title,
-        text: newArticleData.text,
-        image_id: articleData.image.id,
-        preview: newArticleData.preview,
-        metadata: {
-          title: newArticleData.metadata.title,
-          description: newArticleData.metadata.title,
-          keywords: newArticleData.metadata.title,
-        },
-      })
+  const handleSubmit = async (
+    values: any,
+    { setSubmitting }: FormikHelpers<any>,
+  ) => {
+    setSubmitting(true)
+    const { file, ...restValues } = values
+    const articleValues = {
+      slug: restValues.slug,
+      title: restValues.title,
+      preview: restValues.preview,
+      text: contentArticleBlog,
+      metadata: {
+        title: restValues.seoTitle,
+        description: restValues.seoDescription,
+        keywords: restValues.seoKeywords,
+      },
     }
-  }
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.currentTarget.files && e.currentTarget.files.length > 0) {
-      const file = e.currentTarget.files[0]
-
+    try {
       if (file) {
-        setSelectedImage(file)
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          setNewImage(reader.result as string | ArrayBuffer | null)
+        const uploadResponse = await uploadImg({
+          fileInput: file,
+          alt: file.name.split('.')[0],
+          type: 'picture',
+        })
+        if (uploadResponse.status === 201) {
+          await updateArticle.mutateAsync({
+            ...articleValues,
+            id: article.data.id,
+            image_id: uploadResponse.data.id,
+          })
         }
-
-        reader.readAsDataURL(file)
+      } else {
+        await updateArticle.mutateAsync({
+          ...articleValues,
+          id: article.data.id,
+          image_id: article.data.image_id,
+        })
       }
+    } catch (err) {
+      // need added toast show errors
     }
+    setSubmitting(false)
   }
 
   return (
-    <div className='flex w-full flex-col items-center justify-center gap-[60px] '>
-      <form className='flex w-full flex-col items-end justify-evenly gap-3 text-white-dis '>
-        <div className='flex w-full items-start justify-between'>
-          <div className='flex w-[500px] flex-col gap-3'>
-            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
-              Зображення
-            </p>
-            <div className='relative'>
-              {!newImage ? (
-                <Image
-                  className='h-auto w-[500px]  object-center'
-                  src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/public/pictures/${articleData.image.file.filename}`}
-                  width={400}
-                  height={100}
-                  alt={articleData.image.alt}
-                />
-              ) : (
-                <div>
-                  <Image
-                    className='h-auto w-[500px] object-center'
-                    src={typeof newImage === 'string' ? newImage : ''}
-                    width={400}
-                    height={100}
-                    alt={articleData.title}
+    <div className='flex flex-auto flex-col items-center justify-center gap-4'>
+      <Formik
+        initialValues={{
+          seoTitle: article.data.metadata.title,
+          seoDescription: article.data.metadata.description,
+          seoKeywords: article.data.metadata.keywords,
+          slug: article.data.slug,
+          title: article.data.title,
+          preview: article.data.preview,
+          file: null,
+        }}
+        validationSchema={Yup.object({
+          seoTitle: Yup.string().min(1).required('Введіть заголовок'),
+          seoDescription: Yup.string().min(1).required('Введіть опис'),
+          seoKeywords: Yup.string().min(1).required('Введіть ключі'),
+          slug: Yup.string().min(3).required('Введіть ЧПУ'),
+          title: Yup.string().min(1).required('Введіть заголовок'),
+          preview: Yup.string().min(1).required('Введіть опис'),
+        })}
+        onSubmit={handleSubmit}
+      >
+        {(props: FormikProps<any>) => (
+          <Form
+            onSubmit={props.handleSubmit}
+            className='flex w-full flex-wrap items-center justify-center gap-x-8 gap-y-12 py-6 text-white-dis'
+          >
+            <Card className='order-2 flex h-72 w-[45%] flex-col !bg-[#09338F]'>
+              <CardHeader className='flex flex-col !items-center'>
+                <h3 className='text-lg text-white-dis'>СЕО налаштування</h3>
+              </CardHeader>
+              <CardBody className='gap-y-5'>
+                <Field name='seoTitle'>
+                  {({ meta, field }: any) => (
+                    <Input
+                      type='text'
+                      label='Title'
+                      labelPlacement='inside'
+                      variant='bordered'
+                      isInvalid={!!(meta.touched && meta.error)}
+                      errorMessage={meta.touched && meta.error}
+                      classNames={{
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
+                        inputWrapper: ['bg-white-dis'],
+                      }}
+                      {...field}
+                    />
+                  )}
+                </Field>
+                <Field name='seoDescription'>
+                  {({ meta, field }: any) => (
+                    <Input
+                      type='text'
+                      label='Description'
+                      labelPlacement='inside'
+                      variant='bordered'
+                      isInvalid={!!(meta.touched && meta.error)}
+                      errorMessage={meta.touched && meta.error && meta.error}
+                      classNames={{
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
+                        inputWrapper: ['bg-white-dis'],
+                      }}
+                      {...field}
+                    />
+                  )}
+                </Field>
+                <Field name='seoKeywords'>
+                  {({ meta, field }: any) => (
+                    <Input
+                      type='text'
+                      label='Keywords'
+                      labelPlacement='inside'
+                      variant='bordered'
+                      isInvalid={!!(meta.touched && meta.error)}
+                      errorMessage={meta.touched && meta.error && meta.error}
+                      classNames={{
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
+                        inputWrapper: ['bg-white-dis'],
+                      }}
+                      {...field}
+                    />
+                  )}
+                </Field>
+              </CardBody>
+            </Card>
+            <div className='order-1 flex h-72 w-[45%] flex-col justify-end gap-4'>
+              <Field name='slug'>
+                {({ meta, field }: any) => (
+                  <Input
+                    type='text'
+                    label='ЧПУ(slug)'
+                    labelPlacement='inside'
+                    variant='bordered'
+                    isInvalid={!!(meta.touched && meta.error)}
+                    errorMessage={meta.touched && meta.error && meta.error}
+                    classNames={{
+                      label: ['font-base', 'text-md', 'text-black-dis'],
+                      input: ['font-base', 'text-md', 'text-black-dis'],
+                      inputWrapper: ['bg-white-dis'],
+                    }}
+                    {...field}
                   />
-                </div>
-              )}
+                )}
+              </Field>
+              <Field name='title'>
+                {({ meta, field }: any) => (
+                  <Input
+                    type='text'
+                    label='Заголовок'
+                    labelPlacement='inside'
+                    variant='bordered'
+                    isInvalid={!!(meta.touched && meta.error)}
+                    errorMessage={meta.touched && meta.error && meta.error}
+                    classNames={{
+                      label: ['font-base', 'text-md', 'text-black-dis'],
+                      input: ['font-base', 'text-md', 'text-black-dis'],
+                      inputWrapper: ['bg-white-dis'],
+                    }}
+                    {...field}
+                  />
+                )}
+              </Field>
             </div>
-            <input
-              className=' text-white-dis'
-              id='image'
-              type='file'
-              accept='image/*'
-              onChange={handleImageChange}
-            />
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-              Опис зображення(alt)
-              <input
-                required
-                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                type='text'
-                name='altImage'
-                value={altImage}
-                onChange={e => {
-                  setAltImage(e.target.value)
-                }}
+            <div className='order-3 w-[45%]'>
+              <Field name='preview'>
+                {({ meta, field }: any) => (
+                  <Textarea
+                    type='text'
+                    label='Опис'
+                    labelPlacement='inside'
+                    variant='bordered'
+                    minRows={6}
+                    isInvalid={!!(meta.touched && meta.error)}
+                    errorMessage={meta.touched && meta.error && meta.error}
+                    classNames={{
+                      label: ['font-base', 'text-md', 'text-black-dis'],
+                      input: ['font-base', 'text-md', 'text-black-dis'],
+                      inputWrapper: ['bg-white-dis'],
+                    }}
+                    {...field}
+                  />
+                )}
+              </Field>
+            </div>
+            <div className='order-4 w-[45%]'>
+              <FieldFileUpload
+                name='file'
+                initSrc={`${SERVER_URL}/${article.data.image.file.path}`}
+                size={{ width: 400, height: 200 }}
               />
-            </label>
-          </div>
-          <div className='flex w-[400px] flex-col'>
-            <p className=' bold mt-2 text-center font-exo_2 text-xl'>
-              SEO налаштування
-            </p>
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-              Seo title
-              <input
-                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                type='text'
-                name='metadata'
-                data-metadata-field='title'
-                value={newArticleData.metadata.title || ''}
-                onChange={handleInputChange}
+            </div>
+            {images.data && (
+              <div className='order-5 w-[92%]'>
+                <AddImagesSection allImagesData={images.data} />
+              </div>
+            )}
+            <div className='order-6 w-[92%]'>
+              <CustomAddContent
+                id='add-article-blog-content'
+                setContent={setContentArticleBlog}
+                content={contentArticleBlog}
               />
-            </label>
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-              Seo description
-              <input
-                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                type='text'
-                name='metadata'
-                data-metadata-field='description'
-                value={newArticleData.metadata.description || ''}
-                onChange={handleInputChange}
+            </div>
+            <div className='order-last'>
+              <SendButton
+                type='submit'
+                disabled={!props.isValid}
+                isLoading={props.isSubmitting}
               />
-            </label>
-            <label className='flex  flex-col items-start gap-1 text-center font-exo_2 text-xl'>
-              Seo keywords
-              <input
-                className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-                type='text'
-                name='metadata'
-                data-metadata-field='keywords'
-                value={newArticleData.metadata.keywords || ''}
-                onChange={handleInputChange}
-              />
-            </label>
-          </div>
-        </div>
-        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
-          Заголовок
-          <input
-            required
-            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-            type='text'
-            name='title'
-            value={newArticleData.title || ''}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
-          Slug(url сторінки)
-          <input
-            required
-            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-            type='text'
-            name='slug'
-            value={newArticleData.slug || ''}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label className='flex w-full  flex-col gap-1 text-center font-exo_2 text-xl'>
-          Опис статті
-          <input
-            required
-            className='font-base h-[45px] w-full indent-3 text-md text-black-dis'
-            type='text'
-            name='preview'
-            value={newArticleData.preview || ''}
-            onChange={handleInputChange}
-          />
-        </label>
-      </form>
-      <div className='w-full'>
-        <AddImagesSection allImagesData={allImagesData} />
-      </div>
-      <div className='flex w-full flex-col  gap-2 '>
-        <p className='text-center font-exo_2 text-xl text-white-dis'>Стаття</p>
-        <CustomEditor
-          id='edit-article-content'
-          setContent={setNewArticle}
-          content={newArticle}
-        />
-      </div>
-      <SendButton handleSubmit={handleSubmit} />
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   )
 }

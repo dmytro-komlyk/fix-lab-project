@@ -8,7 +8,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@nextui-org/react'
-import { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
+import type { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
@@ -50,7 +50,7 @@ const RemoveBenefit = ({ item }: { item: IBenefit }) => {
   return (
     <Popover
       placement='right'
-      showArrow={true}
+      showArrow
       isOpen={isOpen}
       onOpenChange={open => setIsOpen(open)}
     >

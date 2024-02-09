@@ -19,9 +19,7 @@ const SelectImage = ({
         items={icons}
         label='Виберіть завантажену іконку'
         variant='bordered'
-        defaultSelectedKeys={
-          defaultSelectedKeys ? defaultSelectedKeys : undefined
-        }
+        defaultSelectedKeys={defaultSelectedKeys || undefined}
         classNames={{
           label: 'group-data-[filled=true]:-translate-y-5',
           trigger: 'min-h-unit-16',
@@ -61,28 +59,28 @@ const SelectImage = ({
             <div key={item.key} className='flex items-center gap-2'>
               <Avatar
                 alt={item.data?.alt}
-                className='flex-shrink-0'
+                className='shrink-0 overflow-visible bg-transparent'
                 size='sm'
                 src={`${SERVER_URL}/${item.data?.file.path}`}
               />
               <div className='flex flex-col'>
-                <span>{item.data?.alt}</span>
+                <span className='text-white-dis'>{item.data?.alt}</span>
               </div>
             </div>
           ))
         }}
       >
         {icon => (
-          <SelectItem key={icon.id}>
-            <div className='flex gap-2 items-center'>
+          <SelectItem key={icon.id} textValue=''>
+            <div className='flex items-center gap-2'>
               <Avatar
                 alt={icon.alt}
-                className='flex-shrink-0'
+                className='shrink-0 overflow-visible bg-transparent'
                 size='sm'
                 src={`${SERVER_URL}/${icon.file.path}`}
               />
               <div className='flex flex-col'>
-                <span className='text-small'>{icon.alt}</span>
+                <span className='text-small text-white-dis'>{icon.alt}</span>
               </div>
             </div>
           </SelectItem>

@@ -15,6 +15,7 @@ export const outputUserSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
   password: z.string().min(1),
+  token: z.string().min(1),
   accessToken: z.string().min(1),
   accessTokenExpires: z.number().min(1),
   refreshToken: z.string().min(1),

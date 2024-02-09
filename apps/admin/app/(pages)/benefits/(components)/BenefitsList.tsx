@@ -9,12 +9,13 @@ import {
 } from '@nextui-org/react'
 import type { outputBenefitSchema as IBenefit } from '@server/domain/benefits/schemas/benefit.schema'
 import { FaEdit } from 'react-icons/fa'
+
 import RemoveBenefit from './RemoveBenefit'
 
 const BenefitsList = ({ benefitsData }: { benefitsData: IBenefit[] }) => {
   return (
     <div className=' flex flex-col items-center justify-center gap-8 pb-12'>
-      <div className=' flex w-full flex-col items-center justify-center gap-8'>
+      <div className='flex w-full flex-col items-center justify-center gap-8'>
         <ul className='flex w-full flex-col gap-4 shadow-2xl'>
           {benefitsData.map((item: IBenefit) => (
             <Card
@@ -22,10 +23,10 @@ const BenefitsList = ({ benefitsData }: { benefitsData: IBenefit[] }) => {
               className='group border-b-[0.5px] border-dark-blue bg-white-dis opacity-60 transition-opacity duration-300 first:rounded-t-xl last:rounded-b-xl'
               shadow='sm'
             >
-              <CardBody className='flex flex-row gap-6 items-center overflow-visible py-2 px-4'>
+              <CardBody className='flex flex-row items-center gap-6 overflow-visible px-4 py-2'>
                 <Image
                   alt='Icon benefit'
-                  className='object-cover rounded-xl'
+                  className='rounded-xl object-cover'
                   src={`${SERVER_URL}/${item.icon.file.path}`}
                   width={50}
                 />

@@ -43,6 +43,7 @@ const Index = async ({ params }: IndexProps) => {
   const brandData = (await serverClient.brands.getBySlugBrand({
     slug: params.brand,
   })) as outputBrandSchema
+  console.log(brandData)
   return (
     <main className='h-full flex-auto'>
       <BrandsSection

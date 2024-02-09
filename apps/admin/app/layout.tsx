@@ -1,10 +1,11 @@
+import './globals.css'
+
 import type { Metadata } from 'next'
 import { Exo_2, Gugi, Inter, Manrope } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
-import './globals.css'
 
 import Dashboard from './(layouts)/Dashboard'
-import { auth } from './(utils)/authOptions'
+import { auth } from './(utils)/next-auth/auth'
 import { Providers } from './providers'
 
 const inter = Inter({
@@ -37,6 +38,8 @@ export const metadata: Metadata = {
   description: 'FixLab - мережа студій ремонту твоєї техніки',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function RootLayout({
   children,
 }: {
@@ -48,7 +51,7 @@ export default async function RootLayout({
       lang='en'
       className={`light ${inter.variable} ${manrope.variable} ${exo2.variable} ${gugi.variable} h-full`}
     >
-      <body suppressHydrationWarning={true} className='h-[100vh]'>
+      <body suppressHydrationWarning className='h-[100vh]'>
         <Toaster />
         <Providers session={session}>
           <div className='flex'>

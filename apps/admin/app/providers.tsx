@@ -1,10 +1,10 @@
 'use client'
 
 import { NextUIProvider } from '@nextui-org/system'
+import type { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 import React from 'react'
 
-import { Session } from 'next-auth'
 import { TrpcProvider } from './(utils)/trpc/Provider'
 
 const Providers = ({

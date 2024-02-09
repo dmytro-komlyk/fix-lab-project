@@ -89,54 +89,50 @@ services:
     links:
       - mongo
 
-  # admin:
-  #   build:
-  #     context: .
-  #     target: runner
-  #     dockerfile: ./apps/admin/Dockerfile
-  #   container_name: admin
-  #   restart: unless-stopped
-  #   stdin_open: true
-  #   tty: true
-  #   env_file: ./apps/admin/.env.example
-  #   environment:
-  #     - NODE_ENV=production
-  #     - DATABASE_USERNAME=
-  #     - DATABASE_PASSWORD=
-  #   volumes:
-  #     - ./apps/admin/public:/app/apps/admin/public
-  #   ports:
-  #     - "30002:3002"
-  #   networks:
-  #     - client
-  #     - backend
+  admin:
+    build:
+      context: .
+      target: runner
+      dockerfile: ./apps/admin/Dockerfile
+      args:
+        DATABASE_URL: #Add URL
+    container_name: admin
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    env_file: ./apps/admin/.env.docker.local
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./apps/admin/public:/app/apps/admin/public
+      - /app/node_modules
+      - /app/apps/admin/node_modules
+    ports:
+      - "30002:3002"
+    networks:
+      - client
+      - backend
 
   client:
     build:
       context: .
       target: runner
       dockerfile: ./apps/client/Dockerfile
+      args:
+        DATABASE_URL: #Add URL
     container_name: client
     restart: unless-stopped
-    env_file: ./apps/client/.env.docker
     stdin_open: true
     tty: true
+    env_file: ./apps/client/.env.docker.local
+    environment:
+      - NODE_ENV=production
     volumes:
       - ./apps/client/public:/app/apps/client/public
       - /app/node_modules
       - /app/apps/client/node_modules
-    environment:
-      - NODE_ENV=production
-      - DATABASE_USERNAME=
-      - DATABASE_PASSWORD=
-      - DATABASE_NAME=
-      - DATABASE_URL=
-      - NEXT_PUBLIC_TELEGRAM_TOKEN=
-      - NEXT_PUBLIC_TELEGRAM_CHAT_ID=
-      - NEXT_PUBLIC_TWANK_PROPERTY_ID=
-      - NEXT_PUBLIC_TWANK_WIDGET_ID=
     ports:
-      - "3001:3001"
+      - "30001:3001"
     networks:
       - client
       - backend
