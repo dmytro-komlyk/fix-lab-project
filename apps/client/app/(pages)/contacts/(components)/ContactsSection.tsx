@@ -1,5 +1,5 @@
 import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
-import { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
+import type { outputContactSchema as IContact } from '@server/domain/contacts/schemas/contact.schema'
 import Image from 'next/image'
 import Link from 'next/link'
 import { BiMap } from 'react-icons/bi'
@@ -32,7 +32,7 @@ const ContactsSection = ({
           Контакти
         </h2>
         <div className='flex flex-col gap-12'>
-          {contactsData.map((item: outputContactSchema) => {
+          {contactsData.map((item: IContact) => {
             return (
               <div
                 key={item.id}

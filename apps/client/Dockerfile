@@ -33,6 +33,8 @@ COPY --from=dependencies /app/apps/server/node_modules ./apps/server/node_module
 COPY ${SERVICE_PATH}/.env.docker.local.example ./${SERVICE_PATH}/.env.local
 
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_SHARP_PATH=/tmp/node_modules/sharp
+
 RUN pnpm db:generate 
 RUN pnpm build:${PACKAGE_NAME}
 
