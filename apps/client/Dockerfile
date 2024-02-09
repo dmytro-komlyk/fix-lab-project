@@ -49,6 +49,8 @@ RUN adduser --system --uid 1001 nextjs
 
 USER nextjs
 
+COPY --from=builder --chown=nextjs:nodejs /app/${SERVICE_PATH}/public ./${SERVICE_PATH}/public
+
 COPY --from=builder --chown=nextjs:nodejs /app/${SERVICE_PATH}/start.sh ./${SERVICE_PATH}/start.sh
 COPY --from=builder --chown=nextjs:nodejs /app/${SERVICE_PATH}/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/${SERVICE_PATH}/.next/static ./${SERVICE_PATH}/.next/static
