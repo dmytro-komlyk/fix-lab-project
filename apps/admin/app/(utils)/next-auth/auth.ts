@@ -1,20 +1,17 @@
-import { SERVER_API_URL } from '@admin/app/(lib)/constants'
-// import { PrismaAdapter } from '@auth/prisma-adapter'
-// import { PrismaClient } from '@prisma/client'
+import { SERVER_TRPC_URL } from '@admin/app/(lib)/constants'
 import { expiresInToMilliseconds } from '@server/helpers/time-converted.helper'
 import type { Session, User } from 'next-auth'
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-// const prisma = new PrismaClient()
-
 export const authOptions: any = {
   debug: true,
-  // adapter: PrismaAdapter(prisma),
+  trustHost: true,
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    error: '../authentication/signin',
-    signIn: '../authentication/signin',
-    newUser: '../authentication/signup',
+    // error: '/authentication/signin',
+    signIn: '/authentication/signin',
+    newUser: '/authentication/signup',
   },
   providers: [
     CredentialsProvider({
@@ -29,7 +26,7 @@ export const authOptions: any = {
       },
       async authorize(credentials): Promise<User | null> {
         try {
-          const response = await fetch(`${SERVER_API_URL}/trpc/auth.login`, {
+          const response = await fetch(`${SERVER_TRPC_URL}/auth.login`, {
             method: 'POST',
             body: JSON.stringify({
               email: credentials.login,
@@ -39,11 +36,12 @@ export const authOptions: any = {
               'Content-Type': 'application/json',
             },
           })
-          const {
-            result: { data: user },
-          } = await response.json()
-          return user
+          const { error, result } = await response.json()
+          if (!error) return result.data
+          throw error
         } catch (error) {
+          console.log('catch', error)
+          // need add toast show error
           return null
         }
       },

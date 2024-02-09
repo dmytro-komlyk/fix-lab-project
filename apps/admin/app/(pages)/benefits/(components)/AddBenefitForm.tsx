@@ -1,7 +1,7 @@
 'use client'
 
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
+import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import { Accordion, AccordionItem, Input } from '@nextui-org/react'
 import type { FormikHelpers, FormikProps } from 'formik'
 import { Field, Form, Formik } from 'formik'

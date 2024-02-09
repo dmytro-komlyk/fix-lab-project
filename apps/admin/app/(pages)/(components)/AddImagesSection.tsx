@@ -5,8 +5,8 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
 import { SERVER_URL } from '@admin/app/(lib)/constants'
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
+import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import {
   Accordion,
   AccordionItem,

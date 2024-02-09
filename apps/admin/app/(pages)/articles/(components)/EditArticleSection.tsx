@@ -1,8 +1,8 @@
 'use client'
 
 import { SERVER_URL } from '@admin/app/(lib)/constants'
-import { uploadImg } from '@admin/app/(server)/api/service/image/uploadImg'
 import { trpc } from '@admin/app/(utils)/trpc/client'
+import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import { Card, CardBody, CardHeader, Input, Textarea } from '@nextui-org/react'
 import type { outputArticleSchema as IArticle } from '@server/domain/articles/schemas/article.schema'
 import type { imageSchema as IImage } from '@server/domain/images/schemas/image.schema'
