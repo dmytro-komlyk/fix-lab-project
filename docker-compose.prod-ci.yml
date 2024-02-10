@@ -1,7 +1,11 @@
 version: "3.8"
 services:
   mongo:
-    image: mongo:6.0
+    build:
+      target: mongo
+      dockerfile: ./database/Dockerfile
+      args:
+        MONGO_VERSION: 6
     container_name: mongo
     environment:
       - MONGO_INITDB_ROOT_USERNAME=
@@ -13,6 +17,7 @@ services:
       - INIT_REPL_CMD=3
     volumes:
       - ./database/data:/data/db
+      - ./database/conf/mongod.conf.orig:/etc/mongod.conf
     ports:
       - 27017:27017
     networks:
@@ -34,19 +39,26 @@ services:
       timeout: 2s
       retries: 20
 
+  mongo-seed:
+    build:
+      context: .
+      target: mongo-seed
+      dockerfile: ./database/Dockerfile
+      args:
+        MONGO_VERSION: 6
+    container_name: mongo-seed
+    networks:
+      - backend
+    depends_on:
+      - mongo
+
   server:
     image: ghcr.io/iryna-gry/prod-fixlab-server:latest
     container_name: server
     restart: unless-stopped
-    env_file: ./server/.env.docker
+    env_file: ./server/.env
     environment:
       - NODE_ENV=production
-      - DATABASE_USERNAME=
-      - DATABASE_PASSWORD=
-      - DATABASE_NAME=
-      - DATABASE_URL=
-      - JWT_SECRET_KEY=
-      - JWT_REFRESH_TOKEN_KEY=
     volumes:
       - ./server/public/:/app/server/public
     ports:
@@ -59,22 +71,29 @@ services:
     links:
       - mongo
 
-  client:
-    image: ghcr.io/iryna-gry/prod-fixlab-client:latest
-    container_name: client
+  admin:
+    image: ghcr.io/iryna-gry/prod-fixlab-admin:latest
+    container_name: admin
     restart: unless-stopped
-    env_file: ./client/.env.docker
+    env_file: ./admin/.env.docker.local
     stdin_open: true
     tty: true
     environment:
       - NODE_ENV=production
-      - DATABASE_USERNAME=
-      - DATABASE_PASSWORD=
-      - DATABASE_NAME=
-      - NEXT_PUBLIC_TELEGRAM_TOKEN=
-      - NEXT_PUBLIC_TELEGRAM_CHAT_ID=
-      - NEXT_PUBLIC_TWANK_PROPERTY_ID=
-      - NEXT_PUBLIC_TWANK_WIDGET_ID=
+    ports:
+      - "30002:3002"
+    networks:
+      - client
+
+  client:
+    image: ghcr.io/iryna-gry/prod-fixlab-client:latest
+    container_name: client
+    restart: unless-stopped
+    env_file: ./client/.env.docker.local
+    stdin_open: true
+    tty: true
+    environment:
+      - NODE_ENV=production
     ports:
       - "30001:3001"
     networks:
