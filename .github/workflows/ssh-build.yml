@@ -39,13 +39,6 @@ jobs:
           push: true
           tags: |
             ghcr.io/iryna-gry/prod-fixlab-server:latest
-          build-args: |
-            DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}
-            DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
-            DATABASE_NAME=${{ secrets.DATABASE_NAME }}
-            JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
-            JWT_ACCESS_TOKEN_KEY=${{ secrets.JWT_ACCESS_TOKEN_KEY }}
-            JWT_REFRESH_TOKEN_KEY=${{ secrets.JWT_REFRESH_TOKEN_KEY }}
 
       - name: "Build Client"
         if: contains(github.event.pull_request.labels.*.name, 'frontend-client')
@@ -58,13 +51,6 @@ jobs:
             ghcr.io/iryna-gry/prod-fixlab-client:latest
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
-            DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}
-            DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
-            DATABASE_NAME=${{ secrets.DATABASE_NAME }}
-            NEXT_PUBLIC_TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
-            NEXT_PUBLIC_TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}
-            NEXT_PUBLIC_TWANK_PROPERTY_ID=${{ secrets.TWANK_PROPERTY_ID }}
-            NEXT_PUBLIC_TWANK_WIDGET_ID=${{ secrets.TWANK_WIDGET_ID }}
 
       - name: "Build Admin"
         if: contains(github.event.pull_request.labels.*.name, 'frontend-admin')
@@ -77,7 +63,3 @@ jobs:
             ghcr.io/iryna-gry/prod-fixlab-admin:latest
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
-            DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}
-            DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
-            DATABASE_NAME=${{ secrets.DATABASE_NAME }}
-            NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
