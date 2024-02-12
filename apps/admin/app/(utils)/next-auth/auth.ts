@@ -1,4 +1,4 @@
-import { SERVER_TRPC_URL } from '@admin/app/(lib)/constants'
+import { DOCKER_SERVICE_URL } from '@admin/app/(lib)/constants'
 import { expiresInToMilliseconds } from '@server/helpers/time-converted.helper'
 import type { Session, User } from 'next-auth'
 import NextAuth from 'next-auth'
@@ -9,8 +9,7 @@ export const authOptions: any = {
   trustHost: true,
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    // error: '/authentication/signin',
-    signIn: '/authentication/signin',
+    signIn: `/authentication/signin`,
     newUser: '/authentication/signup',
   },
   providers: [
@@ -26,16 +25,19 @@ export const authOptions: any = {
       },
       async authorize(credentials): Promise<User | null> {
         try {
-          const response = await fetch(`${SERVER_TRPC_URL}/auth.login`, {
-            method: 'POST',
-            body: JSON.stringify({
-              email: credentials.login,
-              password: credentials.password,
-            }),
-            headers: {
-              'Content-Type': 'application/json',
+          const response = await fetch(
+            `${DOCKER_SERVICE_URL}/api/trpc/auth.login`,
+            {
+              method: 'POST',
+              body: JSON.stringify({
+                email: credentials.login,
+                password: credentials.password,
+              }),
+              headers: {
+                'Content-Type': 'application/json',
+              },
             },
-          })
+          )
           const { error, result } = await response.json()
           if (!error) return result.data
           throw error

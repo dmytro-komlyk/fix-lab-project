@@ -10,7 +10,7 @@ const nextConfig = {
     return config
   },
   images: {
-    domains: ['95.217.34.212'],
+    domains: ['localhost'],
     contentDispositionType: 'attachment',
     unoptimized: true,
   },
