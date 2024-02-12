@@ -168,7 +168,7 @@ const IssueSection = ({
                     width={737}
                     height={360}
                     alt={singleIssueData?.image.alt}
-                    priority
+                    unoptimized
                   />
                 </div>
                 <div className='mb-[68px] flex flex-col max-md:w-[360px]'>

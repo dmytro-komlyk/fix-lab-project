@@ -20,7 +20,7 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml package.json .npmrc ./
 COPY ${SERVICE_PATH}/package.json ./${SERVICE_PATH}/package.json
 COPY ${SERVER_SERVICE_PATH}/package.json ./${SERVER_SERVICE_PATH}/package.json
 COPY ${SERVICE_PATH}/next.config.js ./${SERVICE_PATH}/next.config.js
-# --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
+RUN npm install -g --arch=x64 --platform=linux --libc=glibc sharp@0.33.0-rc.2
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter ${PACKAGE_NAME}
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter ${SERVER_PACKAGE_NAME}
 
@@ -33,7 +33,7 @@ COPY --from=dependencies /app/apps/server/node_modules ./apps/server/node_module
 COPY ${SERVICE_PATH}/.env.docker.local.example ./${SERVICE_PATH}/.env.local
 
 ENV NEXT_TELEMETRY_DISABLED 1
-ENV NEXT_SHARP_PATH=/tmp/node_modules/sharp
+ENV NEXT_SHARP_PATH=/app/${SERVICE_PATH}/node_modules/sharp
 
 RUN pnpm db:generate 
 RUN pnpm build:${PACKAGE_NAME}
@@ -51,6 +51,7 @@ USER nextjs
 
 COPY --from=builder --chown=nextjs:nodejs /app/${SERVICE_PATH}/public ./${SERVICE_PATH}/public
 
+COPY --from=builder --chown=nextjs:nodejs /app/${SERVICE_PATH}/next.config.js ./${SERVICE_PATH}/next.config.js
 COPY --from=builder --chown=nextjs:nodejs /app/${SERVICE_PATH}/start.sh ./${SERVICE_PATH}/start.sh
 COPY --from=builder --chown=nextjs:nodejs /app/${SERVICE_PATH}/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/${SERVICE_PATH}/.next/static ./${SERVICE_PATH}/.next/static
@@ -58,8 +59,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/${SERVICE_PATH}/.env.local ./${SE
 
 WORKDIR /app/${SERVICE_PATH}
 
-ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED 1
 ENV DATABASE_URL=${DATABASE_URL}
 
 USER nextjs
