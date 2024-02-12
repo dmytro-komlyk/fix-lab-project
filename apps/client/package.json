@@ -47,7 +47,7 @@
     "react-spinners": "^0.13.8",
     "remark-gfm": "^4.0.0",
     "server": "^1.0.0",
-    "sharp": "^0.33.2",
+    "sharp": "0.33.2-rc.1",
     "superjson": "^2.2.1",
     "swiper": "^10.0.4",
     "tinymce": "^6.6.2",

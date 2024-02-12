@@ -50,6 +50,7 @@ const MainBlogSection = ({
                       width={410}
                       height={278}
                       alt={post.image.alt}
+                      unoptimized
                     />
                     <div className='flex h-[237px] flex-col justify-between gap-[16px]  px-6 pb-4 pt-[30px] leading-7'>
                       <h2 className='line-clamp-3 font-exo_2 text-xl font-semibold'>

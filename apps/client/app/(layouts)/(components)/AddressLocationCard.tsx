@@ -66,6 +66,7 @@ export const AddressLocationCard = ({
             alt={item.image.alt}
             width={600}
             height={546}
+            unoptimized
           />
         )}
       </Link>
