@@ -55,66 +55,69 @@ const FieldFileUpload = ({
   }
 
   return (
-    <div className='flex flex-col items-center'>
+    <div className='flex flex-col gap-1'>
       <Field name={name}>
-        {({ form }: any) => {
+        {({ form, meta }: any) => {
           const { setFieldValue } = form
+
           return (
-            <div
-              className={`relative flex flex-col items-center gap-4 rounded-xl border-2 border-dashed text-center ${newImage ? 'p-0' : 'pb-4'}`}
-              style={{
-                width: '100%',
-                maxWidth: `${String(size.width)}px`,
-                height: `${String(size.height)}px`,
-              }}
-            >
-              {!newImage ? (
-                <div className='flex size-full items-center justify-center'>
-                  <p>НЕМАЄ ЗОБРАЖЕННЯ</p>
-                </div>
-              ) : (
-                <div className='flex size-full'>
-                  <Image
-                    as={NextImage}
-                    classNames={{ img: 'h-full' }}
-                    src={newImage}
-                    width={size.width}
-                    height={size.height}
-                    alt='Uploaded Image'
-                  />
-                  <Button
-                    isIconOnly
-                    className='bg-transperent absolute right-[-2em] top-[-1em] h-fit transition-colors [&>svg]:fill-[red] [&>svg]:hover:fill-[#3a0000] [&>svg]:focus:fill-[#3a0000]'
-                    onClick={async () => {
-                      setNewImage(null)
-                      setFieldValue(name, null)
-                    }}
+            <>
+              <div
+                className={`${meta.error && 'border-danger'} relative flex flex-col items-center gap-4 rounded-xl border-2 border-dashed ${newImage ? 'p-0' : 'pb-4'}`}
+                style={{
+                  width: '100%',
+                  maxWidth: `${String(size.width)}px`,
+                  height: `${String(size.height)}px`,
+                }}
+              >
+                {!newImage ? (
+                  <div className='flex size-full items-center justify-center'>
+                    <p className='text-center'>НЕМАЄ ЗОБРАЖЕННЯ</p>
+                  </div>
+                ) : (
+                  <div className='flex size-full'>
+                    <Image
+                      as={NextImage}
+                      classNames={{ img: 'h-full' }}
+                      src={newImage}
+                      width={size.width}
+                      height={size.height}
+                      alt='Uploaded Image'
+                    />
+                    <Button
+                      isIconOnly
+                      className='bg-transperent absolute right-[-2em] top-[-1em] h-fit transition-colors [&>svg]:fill-[red] [&>svg]:hover:fill-[#3a0000] [&>svg]:focus:fill-[#3a0000]'
+                      onClick={async () => {
+                        setNewImage(null)
+                        setFieldValue(name, null)
+                      }}
+                    >
+                      <MdCancel size='1.5em' />
+                    </Button>
+                  </div>
+                )}
+                <Tooltip showArrow content='Вибрати файл'>
+                  <label
+                    htmlFor='fileUpload'
+                    className={`${newImage ? 'hidden' : 'flex'} relative cursor-pointer bg-transparent transition-colors [&>svg]:hover:fill-mid-blue [&>svg]:focus:fill-mid-blue`}
                   >
-                    <MdCancel size='1.5em' />
-                  </Button>
-                </div>
-              )}
-              <Tooltip showArrow content='Вибрати файл'>
-                <label
-                  htmlFor='fileUpload'
-                  className={`${newImage ? 'hidden' : 'flex'} relative cursor-pointer bg-transparent transition-colors [&>svg]:hover:fill-mid-blue [&>svg]:focus:fill-mid-blue`}
-                >
-                  <FaFileUpload size='2em' className='fill-[white]' />
-                  <input
-                    id='fileUpload'
-                    name={name}
-                    className='hidden'
-                    type='file'
-                    accept='image/*'
-                    onChange={e => handleImageChange(e, setFieldValue)}
-                  />
-                </label>
-              </Tooltip>
-            </div>
+                    <FaFileUpload size='2em' className='fill-[white]' />
+                    <input
+                      id='fileUpload'
+                      name={name}
+                      className='hidden'
+                      type='file'
+                      accept='image/*'
+                      onChange={e => handleImageChange(e, setFieldValue)}
+                    />
+                  </label>
+                </Tooltip>
+              </div>
+              {<div className='text-small text-danger'>{meta.error}</div>}
+            </>
           )
         }}
       </Field>
-      <div className='text-danger' />
     </div>
   )
 }
