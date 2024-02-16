@@ -9,12 +9,11 @@ import type { imageSchema as IImage } from '@server/domain/images/schemas/image.
 import type { FormikHelpers, FormikProps } from 'formik'
 import { Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import toast from 'react-hot-toast'
 import * as Yup from 'yup'
 
 import AddImagesSection from '../../(components)/AddImagesSection'
-import CustomAddContent from '../../(components)/CustomAddContent'
+import CustomEditor from '../../(components)/CustomEditor'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SendButton from '../../(components)/SendButton'
 
@@ -34,9 +33,6 @@ const EditArticleSection = ({
   const images = trpc.images.getAllBlogPictures.useQuery(undefined, {
     initialData: imagesData,
   })
-  const [contentArticleBlog, setContentArticleBlog] = useState<string>(
-    article.data.text,
-  )
 
   const updateArticle = trpc.articles.updateArticle.useMutation({
     onSuccess: () => {
@@ -76,7 +72,7 @@ const EditArticleSection = ({
       slug: restValues.slug,
       title: restValues.title,
       preview: restValues.preview,
-      text: contentArticleBlog,
+      text: restValues.editor,
       metadata: {
         title: restValues.seoTitle,
         description: restValues.seoDescription,
@@ -84,7 +80,7 @@ const EditArticleSection = ({
       },
     }
     try {
-      if (file) {
+      if (file && typeof file !== 'string') {
         const uploadResponse = await uploadImg({
           fileInput: file,
           alt: file.name.split('.')[0],
@@ -120,7 +116,8 @@ const EditArticleSection = ({
           slug: article.data.slug,
           title: article.data.title,
           preview: article.data.preview,
-          file: null,
+          file: article.data.image.id,
+          editor: article.data.text,
         }}
         validationSchema={Yup.object({
           seoTitle: Yup.string().min(1).required('Введіть заголовок'),
@@ -129,6 +126,8 @@ const EditArticleSection = ({
           slug: Yup.string().min(3).required('Введіть ЧПУ'),
           title: Yup.string().min(1).required('Введіть заголовок'),
           preview: Yup.string().min(1).required('Введіть опис'),
+          file: Yup.mixed().required('Додайте зображення'),
+          editor: Yup.string().min(1).required('Введіть контент'),
         })}
         onSubmit={handleSubmit}
       >
@@ -270,11 +269,7 @@ const EditArticleSection = ({
               </div>
             )}
             <div className='order-6 w-[92%]'>
-              <CustomAddContent
-                id='add-article-blog-content'
-                setContent={setContentArticleBlog}
-                content={contentArticleBlog}
-              />
+              <CustomEditor id='add-article-blog-content' name='editor' />
             </div>
             <div className='order-last'>
               <SendButton
