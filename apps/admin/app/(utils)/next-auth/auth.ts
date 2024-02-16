@@ -1,4 +1,4 @@
-import { DOCKER_SERVICE_URL } from '@admin/app/(lib)/constants'
+import { DOCKER_SERVICE_URL, SERVER_URL } from '@admin/app/(lib)/constants'
 import { expiresInToMilliseconds } from '@server/helpers/time-converted.helper'
 import type { Session, User } from 'next-auth'
 import NextAuth from 'next-auth'
@@ -9,7 +9,7 @@ export const authOptions: any = {
   trustHost: true,
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: `/authentication/signin`,
+    signIn: '/authentication/signin',
     newUser: '/authentication/signup',
   },
   providers: [
@@ -26,7 +26,7 @@ export const authOptions: any = {
       async authorize(credentials): Promise<User | null> {
         try {
           const response = await fetch(
-            `${DOCKER_SERVICE_URL}/api/trpc/auth.login`,
+            `${process.env.NODE_ENV === 'production' ? DOCKER_SERVICE_URL : SERVER_URL}/api/trpc/auth.login`,
             {
               method: 'POST',
               body: JSON.stringify({

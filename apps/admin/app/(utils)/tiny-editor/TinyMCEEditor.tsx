@@ -1,5 +1,3 @@
-/* eslint-disable no-multi-str */
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Editor } from '@tinymce/tinymce-react'
 
 interface TinyMCEEditorProps {
@@ -18,7 +16,7 @@ const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
       value={value}
       onEditorChange={onChange}
       id={id}
-      apiKey='hw5vdm4narvqegl42egpgk1ld9n2tkjarnwjf85dwh65u5ew'
+      apiKey={process.env.NEXT_PUBLIC_TINY_API_KEY}
       init={{
         language: 'uk',
         skin: 'oxide',
