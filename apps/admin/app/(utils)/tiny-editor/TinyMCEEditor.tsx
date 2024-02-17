@@ -1,5 +1,3 @@
-/* eslint-disable no-multi-str */
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Editor } from '@tinymce/tinymce-react'
 
 interface TinyMCEEditorProps {
@@ -18,7 +16,7 @@ const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
       value={value}
       onEditorChange={onChange}
       id={id}
-      apiKey='hw5vdm4narvqegl42egpgk1ld9n2tkjarnwjf85dwh65u5ew'
+      apiKey={process.env.NEXT_PUBLIC_TINY_API_KEY}
       init={{
         language: 'uk',
         skin: 'oxide',
@@ -29,14 +27,9 @@ const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
         convert_urls: false,
         entity_encoding: 'raw',
         plugins:
-          'advlist autolink lists link image charmap preview anchor \
-                        searchreplace visualblocks code fullscreen table emoticons nonbreaking \
-                        insertdatetime media table code help wordcount',
+          'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen table emoticons nonbreaking insertdatetime media table code help wordcount',
         toolbar:
-          'undo redo | styles | bold italic forecolor backcolor | \
-                        alignleft aligncenter alignright alignjustify | \
-                        media table emoticons visualblocks code|\
-                        nonbreaking bullist numlist outdent indent | removeformat | help',
+          'undo redo | styles | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | media table emoticons visualblocks code | nonbreaking bullist numlist outdent indent | removeformat | help',
         style_formats: [
           {
             title: 'Headings',

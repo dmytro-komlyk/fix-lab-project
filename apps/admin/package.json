@@ -39,7 +39,6 @@
     "formik": "^2.4.5",
     "formik-persist-values": "^1.4.1",
     "framer-motion": "^10.18.0",
-    "html-react-parser": "^4.2.6",
     "keen-slider": "^6.8.6",
     "markdown-it": "^13.0.1",
     "nanoid": "^4.0.2",

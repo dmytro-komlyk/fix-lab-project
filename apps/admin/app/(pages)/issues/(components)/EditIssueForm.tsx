@@ -16,7 +16,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import * as Yup from 'yup'
 
-import CustomAddContent from '../../(components)/CustomAddContent'
+import CustomEditor from '../../(components)/CustomEditor'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SendButton from '../../(components)/SendButton'
 import ListBoxBenefits from './ListBoxBenefits'
@@ -42,11 +42,8 @@ const EditIssuesForm = ({
   const [listBenefits, setListBenefits] = useState<string[]>(
     issue.data.benefits_ids,
   )
-  const [contentInfoIssue, setContentInfoIssue] = useState<string>(
-    issue.data.info,
-  )
-  const [contentDescriptionIssue, setContentDescriptionIssue] =
-    useState<string>(issue.data.description)
+  const [contentInfoIssue] = useState<string>(issue.data.info)
+  const [contentDescriptionIssue] = useState<string>(issue.data.description)
 
   const updateIssue = trpc.issues.updateIssue.useMutation({
     onSuccess: () => {
@@ -293,21 +290,16 @@ const EditIssuesForm = ({
                       title='Додати інформація про послугу'
                       className='flex justify-around overflow-hidden'
                     >
-                      <CustomAddContent
-                        id='add-issue-info-content'
-                        setContent={setContentInfoIssue}
-                        content={contentInfoIssue}
-                      />
+                      <CustomEditor id='add-issue-info-content' name='info' />
                     </Tab>
                     <Tab
                       key='issue-description'
                       title='Додати детальний опис послуги'
                       className='flex justify-around overflow-hidden'
                     >
-                      <CustomAddContent
+                      <CustomEditor
                         id='add-issue-description-content'
-                        setContent={setContentDescriptionIssue}
-                        content={contentDescriptionIssue}
+                        name='description'
                       />
                     </Tab>
                   </Tabs>

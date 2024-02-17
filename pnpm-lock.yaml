@@ -74,9 +74,6 @@ importers:
       framer-motion:
         specifier: ^10.18.0
         version: 10.18.0(react-dom@18.2.0)(react@18.2.0)
-      html-react-parser:
-        specifier: ^4.2.6
-        version: 4.2.10(react@18.2.0)
       keen-slider:
         specifier: ^6.8.6
         version: 6.8.6
@@ -6566,7 +6563,7 @@ packages:
       aggregate-error: 3.1.0
       fs-extra: 11.2.0
       lodash: 4.17.21
-      semantic-release: 19.0.5(encoding@0.1.13)
+      semantic-release: 19.0.5
     dev: true
 
   /@semantic-release/commit-analyzer@9.0.2(semantic-release@19.0.5):
@@ -6582,7 +6579,7 @@ packages:
       import-from: 4.0.0
       lodash: 4.17.21
       micromatch: 4.0.5
-      semantic-release: 19.0.5(encoding@0.1.13)
+      semantic-release: 19.0.5
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -6606,7 +6603,7 @@ packages:
       lodash: 4.17.21
       micromatch: 4.0.5
       p-reduce: 2.1.0
-      semantic-release: 19.0.5(encoding@0.1.13)
+      semantic-release: 19.0.5
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -6686,7 +6683,7 @@ packages:
       rc: 1.2.8
       read-pkg: 5.2.0
       registry-auth-token: 5.0.2
-      semantic-release: 19.0.5(encoding@0.1.13)
+      semantic-release: 19.0.5
       semver: 7.6.0
       tempy: 1.0.1
     dev: true
@@ -6707,7 +6704,7 @@ packages:
       into-stream: 6.0.0
       lodash: 4.17.21
       read-pkg-up: 7.0.1
-      semantic-release: 19.0.5(encoding@0.1.13)
+      semantic-release: 19.0.5
     transitivePeerDependencies:
       - supports-color
     dev: true

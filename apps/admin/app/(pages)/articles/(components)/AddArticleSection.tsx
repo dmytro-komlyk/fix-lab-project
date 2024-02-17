@@ -15,13 +15,12 @@ import type { imageSchema as IImage } from '@server/domain/images/schemas/image.
 import type { FormikHelpers, FormikProps } from 'formik'
 import { Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 import * as Yup from 'yup'
 
 import AddImagesSection from '../../(components)/AddImagesSection'
-import CustomAddContent from '../../(components)/CustomAddContent'
+import CustomEditor from '../../(components)/CustomEditor'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SendButton from '../../(components)/SendButton'
 
@@ -31,7 +30,6 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
   const images = trpc.images.getAllBlogPictures.useQuery(undefined, {
     initialData: allImagesData,
   })
-  const [contentArticleBlog, setContentArticleBlog] = useState<string>('')
 
   const createArticle = trpc.articles.createArticle.useMutation({
     onSuccess: () => {
@@ -65,7 +63,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
       slug: restValues.slug,
       title: restValues.title,
       preview: restValues.preview,
-      text: contentArticleBlog,
+      text: restValues.editor,
       metadata: {
         title: restValues.seoTitle,
         description: restValues.seoDescription,
@@ -84,7 +82,6 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
           image_id: uploadResponse.data.id,
         })
         resetForm()
-        setContentArticleBlog('')
       }
     } catch (err) {
       // need added toast show errors
@@ -117,6 +114,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
             title: '',
             preview: '',
             file: null,
+            editor: '',
           }}
           validationSchema={Yup.object({
             seoTitle: Yup.string().min(1).required('Введіть заголовок'),
@@ -125,6 +123,8 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
             slug: Yup.string().min(3).required('Введіть ЧПУ'),
             title: Yup.string().min(1).required('Введіть заголовок'),
             preview: Yup.string().min(1).required('Введіть опис'),
+            file: Yup.mixed().required('Додайте зображення'),
+            editor: Yup.string().min(1).required('Введіть контент'),
           })}
           onSubmit={handleSubmit}
         >
@@ -266,11 +266,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
                 </div>
               )}
               <div className='order-6 w-[92%]'>
-                <CustomAddContent
-                  id='add-article-blog-content'
-                  setContent={setContentArticleBlog}
-                  content={contentArticleBlog}
-                />
+                <CustomEditor id='add-article-blog-content' name='editor' />
               </div>
               <div className='order-last'>
                 <SendButton
