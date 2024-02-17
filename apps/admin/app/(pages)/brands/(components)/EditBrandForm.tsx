@@ -41,7 +41,7 @@ const EditBrandForm = ({
   const [selectedIcon, setSelectIcon] = useState<string | null>(
     brand.data.icon_id,
   )
-  const [brandArticle, setBrandArticle] = useState<string>(brand.data.article)
+  const [brandArticle] = useState<string>(brand.data.article)
 
   const updateBrand = trpc.brands.updateBrand.useMutation({
     onSuccess: () => {
@@ -238,11 +238,7 @@ const EditBrandForm = ({
             </div>
           )}
           <div className='order-5 w-[92%]'>
-            <CustomEditor
-              id='edit-brand-article-content'
-              setContent={setBrandArticle}
-              content={brandArticle}
-            />
+            <CustomEditor id='edit-brand-article-content' name='article' />
           </div>
           <div className='order-last'>
             <SendButton

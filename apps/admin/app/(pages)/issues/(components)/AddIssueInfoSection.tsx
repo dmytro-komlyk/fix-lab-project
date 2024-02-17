@@ -23,7 +23,7 @@ import { IoMdAddCircle } from 'react-icons/io'
 import * as Yup from 'yup'
 
 import AddImagesSection from '../../(components)/AddImagesSection'
-import CustomAddContent from '../../(components)/CustomAddContent'
+import CustomEditor from '../../(components)/CustomEditor'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SendButton from '../../(components)/SendButton'
 import ListBoxBenefits from './ListBoxBenefits'
@@ -133,6 +133,8 @@ const AddIssueInfoSection = ({
             price: '',
             slug: '',
             file: null,
+            info: '',
+            description: '',
           }}
           validationSchema={Yup.object({
             seoTitle: Yup.string().min(1).required('Введіть заголовок'),
@@ -141,6 +143,9 @@ const AddIssueInfoSection = ({
             title: Yup.string().min(1).required('Введіть заголовок'),
             price: Yup.string().min(1).required('Введіть вартість'),
             slug: Yup.string().min(3).required('Введіть ЧПУ'),
+            file: Yup.mixed().required('Додайте зображення'),
+            info: Yup.string().min(1).required('Введіть контент'),
+            description: Yup.string().min(1).required('Введіть контент'),
           })}
           onSubmit={handleSubmit}
         >
@@ -304,21 +309,16 @@ const AddIssueInfoSection = ({
                         title='Додати інформація про послугу'
                         className='flex justify-around overflow-hidden'
                       >
-                        <CustomAddContent
-                          id='add-issue-info-content'
-                          setContent={setContentInfoIssue}
-                          content={contentInfoIssue}
-                        />
+                        <CustomEditor id='add-issue-info-content' name='info' />
                       </Tab>
                       <Tab
                         key='issue-description'
                         title='Додати детальний опис послуги'
                         className='flex justify-around overflow-hidden'
                       >
-                        <CustomAddContent
+                        <CustomEditor
                           id='add-issue-description-content'
-                          setContent={setContentDescriptionIssue}
-                          content={contentDescriptionIssue}
+                          name='description'
                         />
                       </Tab>
                     </Tabs>

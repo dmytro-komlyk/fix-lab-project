@@ -113,7 +113,7 @@ const FieldFileUpload = ({
                   </label>
                 </Tooltip>
               </div>
-              {<div className='text-small text-danger'>{meta.error}</div>}
+              <div className='text-small text-danger'>{meta.error}</div>
             </>
           )
         }}
