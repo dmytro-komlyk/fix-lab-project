@@ -65,6 +65,9 @@ const EditIssuesForm = ({
         },
       })
     },
+    onSettled: () => {
+      issue.refetch()
+    },
   })
 
   const handleSubmit = async (

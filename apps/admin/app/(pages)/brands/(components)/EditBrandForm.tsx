@@ -71,7 +71,7 @@ const EditBrandForm = ({
 
   const handleSubmit = async (
     values: any,
-    { setSubmitting, resetForm }: FormikHelpers<any>,
+    { setSubmitting }: FormikHelpers<any>,
   ) => {
     setSubmitting(true)
     const { file, title, seoTitle, seoDescription, seoKeywords, article } =
@@ -93,7 +93,6 @@ const EditBrandForm = ({
           ...dataToUpdate,
           icon_id: selectedIcon,
         })
-        resetForm()
       } else if (file) {
         const uploadResponse = await uploadImg({
           fileInput: file,
@@ -105,13 +104,18 @@ const EditBrandForm = ({
             ...dataToUpdate,
             icon_id: uploadResponse.data.id,
           })
-          resetForm()
         }
       } else {
         setErrorImage('Додайте зображення')
       }
     } catch (err) {
-      // add show error
+      toast.error(`Виникла помилка при додаванні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
     }
     setSubmitting(false)
   }
