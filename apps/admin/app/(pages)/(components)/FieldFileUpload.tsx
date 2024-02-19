@@ -66,7 +66,7 @@ const FieldFileUpload = ({
           return (
             <>
               <div
-                className={`${meta.error ? 'border-danger' : ''} py-3 relative flex flex-col items-center gap-4 rounded-xl border-2 border-dashed ${newImage ? 'p-0' : 'pb-4'}`}
+                className={`${meta.error ? 'border-danger ' : ''}${!newImage ? 'py-3 ' : ''}relative flex flex-col items-center gap-4 rounded-xl border-2 border-dashed ${newImage ? 'p-0' : 'pb-4'}`}
                 style={{
                   width: '100%',
                   maxWidth: `${String(size.width)}px`,

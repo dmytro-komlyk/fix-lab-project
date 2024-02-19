@@ -72,7 +72,7 @@ const EditArticleSection = ({
       slug: restValues.slug,
       title: restValues.title,
       preview: restValues.preview,
-      text: restValues.editor,
+      text: restValues.content,
       metadata: {
         title: restValues.seoTitle,
         description: restValues.seoDescription,
@@ -101,7 +101,14 @@ const EditArticleSection = ({
         })
       }
     } catch (err) {
-      // need added toast show errors
+      console.log(err)
+      toast.error(`Виникла помилка при додаванні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
     }
     setSubmitting(false)
   }
@@ -117,7 +124,7 @@ const EditArticleSection = ({
           title: article.data.title,
           preview: article.data.preview,
           file: article.data.image.id,
-          editor: article.data.text,
+          content: article.data.text,
         }}
         validationSchema={Yup.object({
           seoTitle: Yup.string().min(1).required('Введіть заголовок'),
@@ -127,7 +134,7 @@ const EditArticleSection = ({
           title: Yup.string().min(1).required('Введіть заголовок'),
           preview: Yup.string().min(1).required('Введіть опис'),
           file: Yup.mixed().required('Додайте зображення'),
-          editor: Yup.string().min(1).required('Введіть контент'),
+          content: Yup.string().min(1).required('Введіть контент'),
         })}
         onSubmit={handleSubmit}
       >
@@ -259,6 +266,7 @@ const EditArticleSection = ({
             <div className='order-4 w-[45%]'>
               <FieldFileUpload
                 name='file'
+                acceptTypes={['png', 'jpg']}
                 initSrc={`${SERVER_URL}/${article.data.image.file.path}`}
                 size={{ width: 400, height: 200 }}
               />
@@ -269,7 +277,7 @@ const EditArticleSection = ({
               </div>
             )}
             <div className='order-6 w-[92%]'>
-              <CustomEditor id='add-article-blog-content' name='editor' />
+              <CustomEditor id='add-article-blog-content' name='content' />
             </div>
             <div className='order-last'>
               <SendButton

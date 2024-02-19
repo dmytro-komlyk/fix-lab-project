@@ -63,7 +63,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
       slug: restValues.slug,
       title: restValues.title,
       preview: restValues.preview,
-      text: restValues.editor,
+      text: restValues.content,
       metadata: {
         title: restValues.seoTitle,
         description: restValues.seoDescription,
@@ -84,7 +84,13 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
         resetForm()
       }
     } catch (err) {
-      // need added toast show errors
+      toast.error(`Виникла помилка при додаванні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
     }
     setSubmitting(false)
   }
@@ -114,7 +120,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
             title: '',
             preview: '',
             file: null,
-            editor: '',
+            content: '',
           }}
           validationSchema={Yup.object({
             seoTitle: Yup.string().min(1).required('Введіть заголовок'),
@@ -124,7 +130,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
             title: Yup.string().min(1).required('Введіть заголовок'),
             preview: Yup.string().min(1).required('Введіть опис'),
             file: Yup.mixed().required('Додайте зображення'),
-            editor: Yup.string().min(1).required('Введіть контент'),
+            content: Yup.string().min(1).required('Введіть контент'),
           })}
           onSubmit={handleSubmit}
         >
@@ -256,6 +262,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
               <div className='order-4 w-[45%]'>
                 <FieldFileUpload
                   name='file'
+                  acceptTypes={['png', 'jpg']}
                   initSrc={null}
                   size={{ width: 400, height: 200 }}
                 />
@@ -266,7 +273,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
                 </div>
               )}
               <div className='order-6 w-[92%]'>
-                <CustomEditor id='add-article-blog-content' name='editor' />
+                <CustomEditor id='add-article-blog-content' name='content' />
               </div>
               <div className='order-last'>
                 <SendButton
