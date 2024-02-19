@@ -41,7 +41,7 @@ const EditBrandForm = ({
   const [selectedIcon, setSelectIcon] = useState<string | null>(
     brand.data.icon_id,
   )
-  const [brandArticle] = useState<string>(brand.data.article)
+  const [errorImage, setErrorImage] = useState<string | null>(null)
 
   const updateBrand = trpc.brands.updateBrand.useMutation({
     onSuccess: () => {
@@ -71,10 +71,11 @@ const EditBrandForm = ({
 
   const handleSubmit = async (
     values: any,
-    { setSubmitting }: FormikHelpers<any>,
+    { setSubmitting, resetForm }: FormikHelpers<any>,
   ) => {
     setSubmitting(true)
-    const { file, title, seoTitle, seoDescription, seoKeywords } = values
+    const { file, title, seoTitle, seoDescription, seoKeywords, article } =
+      values
     const dataToUpdate = {
       ...brand.data,
       title,
@@ -83,7 +84,7 @@ const EditBrandForm = ({
         description: seoDescription,
         keywords: seoKeywords,
       },
-      article: brandArticle,
+      article,
     }
 
     try {
@@ -92,6 +93,7 @@ const EditBrandForm = ({
           ...dataToUpdate,
           icon_id: selectedIcon,
         })
+        resetForm()
       } else if (file) {
         const uploadResponse = await uploadImg({
           fileInput: file,
@@ -103,9 +105,10 @@ const EditBrandForm = ({
             ...dataToUpdate,
             icon_id: uploadResponse.data.id,
           })
+          resetForm()
         }
       } else {
-        // add validate empty image
+        setErrorImage('Додайте зображення')
       }
     } catch (err) {
       // add show error
@@ -121,12 +124,14 @@ const EditBrandForm = ({
         seoTitle: brand.data.metadata.title,
         seoDescription: brand.data.metadata.description,
         seoKeywords: brand.data.metadata.keywords,
+        article: brand.data.article,
       }}
       validationSchema={Yup.object({
         title: Yup.string().min(1).required('Введіть заголовок'),
         seoTitle: Yup.string().min(1).required('Введіть заголовок'),
         seoDescription: Yup.string().min(1).required('Введіть опис'),
         seoKeywords: Yup.string().min(1).required('Введіть ключі'),
+        article: Yup.string().min(1).required('Введіть контент'),
       })}
       onSubmit={handleSubmit}
     >
@@ -199,6 +204,7 @@ const EditBrandForm = ({
           <div className='order-1 flex h-72 w-[45%] flex-col items-center justify-end gap-4'>
             <FieldFileUpload
               name='file'
+              acceptTypes={['svg+xml']}
               initSrc={null}
               size={{ width: 150, height: 150 }}
             />
@@ -210,7 +216,9 @@ const EditBrandForm = ({
                 defaultSelectedKeys={selectedIcon ? [selectedIcon] : null}
               />
             )}
-            <div className='text-danger' />
+            <div className='text-danger'>
+              {props.values.file || selectedIcon ? '' : errorImage}
+            </div>
           </div>
           <div className='order-3 w-[92%]'>
             <Field name='title'>

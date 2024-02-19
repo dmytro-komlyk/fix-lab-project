@@ -40,7 +40,7 @@ const AddBrandForm = ({
     initialData: allPicturesData,
   })
   const [selectedIcon, setSelectIcon] = useState<string | null>(null)
-  const [brandArticle, setBrandArticle] = useState<string>('')
+  const [errorImage, setErrorImage] = useState<string | null>(null)
 
   const createBrand = trpc.brands.createBrand.useMutation({
     onSuccess: () => {
@@ -69,7 +69,8 @@ const AddBrandForm = ({
     { setSubmitting, resetForm }: FormikHelpers<any>,
   ) => {
     setSubmitting(true)
-    const { file, title, seoTitle, seoDescription, seoKeywords } = values
+    const { file, title, seoTitle, seoDescription, seoKeywords, article } =
+      values
 
     const newData = {
       slug: title,
@@ -79,7 +80,7 @@ const AddBrandForm = ({
         description: seoDescription,
         keywords: seoKeywords,
       },
-      article: brandArticle,
+      article,
     }
 
     try {
@@ -89,8 +90,7 @@ const AddBrandForm = ({
           ...newData,
         })
         resetForm()
-        setBrandArticle('')
-      } else {
+      } else if (file) {
         const uploadResponse = await uploadImg({
           fileInput: file,
           alt: file.name.split('.')[0],
@@ -102,11 +102,18 @@ const AddBrandForm = ({
             ...newData,
           })
           resetForm()
-          setBrandArticle('')
         }
+      } else {
+        setErrorImage('Додайте зображення')
       }
     } catch (err) {
-      // need added toast show errors
+      toast.error(`Виникла помилка при додаванні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
     }
     setSubmitting(false)
   }
@@ -134,12 +141,14 @@ const AddBrandForm = ({
             seoTitle: '',
             seoDescription: '',
             seoKeywords: '',
+            article: '',
           }}
           validationSchema={Yup.object({
             title: Yup.string().min(1).required('Введіть заголовок'),
             seoTitle: Yup.string().min(1).required('Введіть заголовок'),
             seoDescription: Yup.string().min(1).required('Введіть опис'),
             seoKeywords: Yup.string().min(1).required('Введіть ключі'),
+            article: Yup.string().min(1).required('Введіть контент'),
           })}
           onSubmit={handleSubmit}
         >
@@ -212,6 +221,7 @@ const AddBrandForm = ({
               <div className='order-1 flex h-72 w-[45%] flex-col items-center justify-end gap-4'>
                 <FieldFileUpload
                   name='file'
+                  acceptTypes={['svg+xml']}
                   initSrc={null}
                   size={{ width: 150, height: 150 }}
                 />
@@ -223,25 +233,24 @@ const AddBrandForm = ({
                     defaultSelectedKeys={selectedIcon ? [selectedIcon] : null}
                   />
                 )}
-                <div className='text-danger' />
+                <div className='text-danger'>
+                  {props.values.file || selectedIcon ? '' : errorImage}
+                </div>
               </div>
               <div className='order-3 w-[92%]'>
                 <Field name='title'>
                   {({ meta, field }: any) => (
                     <Input
                       type='text'
-                      isInvalid={meta.touched && meta.error}
+                      label='Заголовок'
+                      labelPlacement='inside'
+                      variant='bordered'
+                      isInvalid={!!(meta.touched && meta.error)}
                       errorMessage={meta.touched && meta.error && meta.error}
-                      placeholder='Заголовок'
                       classNames={{
-                        input: [
-                          'font-base',
-                          'h-[45px]',
-                          'w-full',
-                          'indent-3',
-                          'text-md',
-                          'text-black-dis',
-                        ],
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
+                        inputWrapper: ['bg-white-dis'],
                       }}
                       {...field}
                     />
