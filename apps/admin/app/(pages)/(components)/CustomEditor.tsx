@@ -29,7 +29,7 @@ const CustomEditor: React.FC<CustomEditorProps> = ({ id, name }) => {
                 }
               />
             </div>
-            {meta.error && <span className='text-danger'>Введіть контент</span>}
+            <span className='text-danger'>{meta.error}</span>
           </>
         )
       }}

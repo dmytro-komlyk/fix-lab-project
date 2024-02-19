@@ -26,6 +26,7 @@ const AddBenefitForm = ({ iconsData }: any) => {
     initialData: iconsData,
   })
   const [selectedIcon, setSelectIcon] = useState<string | null>(null)
+  const [errorImage, setErrorImage] = useState<string | null>(null)
 
   const createBenefit = trpc.benefits.createBenefit.useMutation({
     onSuccess: () => {
@@ -75,10 +76,16 @@ const AddBenefitForm = ({ iconsData }: any) => {
           resetForm()
         }
       } else {
-        // added validate empty image
+        setErrorImage('Додайте зображення')
       }
     } catch (err) {
-      // need added toast show errors
+      toast.error(`Виникла помилка при додаванні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
     }
     setSubmitting(false)
   }
@@ -109,53 +116,61 @@ const AddBenefitForm = ({ iconsData }: any) => {
             })}
             onSubmit={handleSubmit}
           >
-            {(props: FormikProps<any>) => (
-              <Form
-                onSubmit={props.handleSubmit}
-                className='flex w-[400px] flex-col items-center justify-center gap-6 text-white-dis'
-              >
-                <div className='flex w-full flex-col items-center gap-4'>
-                  <FieldFileUpload
-                    name='file'
-                    initSrc={null}
-                    size={{ width: 150, height: 150 }}
-                  />
-                  <p className='text-white-dis'>або</p>
-                  {icons.isSuccess && (
-                    <SelectImage
-                      icons={icons.data}
-                      setSelect={setSelectIcon}
-                      defaultSelectedKeys={selectedIcon ? [selectedIcon] : null}
+            {(props: FormikProps<any>) => {
+              console.log(props.values.file)
+              return (
+                <Form
+                  onSubmit={props.handleSubmit}
+                  className='flex w-[400px] flex-col items-center justify-center gap-6 text-white-dis'
+                >
+                  <div className='flex w-full flex-col items-center gap-4'>
+                    <FieldFileUpload
+                      name='file'
+                      acceptTypes={['svg+xml']}
+                      initSrc={null}
+                      size={{ width: 150, height: 150 }}
                     />
-                  )}
-                  <div className='text-danger' />
-                </div>
-                <Field name='title'>
-                  {({ meta, field }: any) => (
-                    <Input
-                      type='text'
-                      label='Заголовок'
-                      labelPlacement='inside'
-                      variant='bordered'
-                      isInvalid={!!(meta.touched && meta.error)}
-                      errorMessage={meta.touched && meta.error && meta.error}
-                      classNames={{
-                        label: ['font-base', 'text-md', 'text-black-dis'],
-                        input: ['font-base', 'text-md', 'text-black-dis'],
-                        inputWrapper: ['bg-white-dis'],
-                      }}
-                      {...field}
-                    />
-                  )}
-                </Field>
+                    <p className='text-white-dis'>або</p>
+                    {icons.isSuccess && (
+                      <SelectImage
+                        icons={icons.data}
+                        setSelect={setSelectIcon}
+                        defaultSelectedKeys={
+                          selectedIcon ? [selectedIcon] : null
+                        }
+                      />
+                    )}
+                    <div className='text-danger'>
+                      {props.values.file || selectedIcon ? '' : errorImage}
+                    </div>
+                  </div>
+                  <Field name='title'>
+                    {({ meta, field }: any) => (
+                      <Input
+                        type='text'
+                        label='Заголовок'
+                        labelPlacement='inside'
+                        variant='bordered'
+                        isInvalid={!!(meta.touched && meta.error)}
+                        errorMessage={meta.touched && meta.error && meta.error}
+                        classNames={{
+                          label: ['font-base', 'text-md', 'text-black-dis'],
+                          input: ['font-base', 'text-md', 'text-black-dis'],
+                          inputWrapper: ['bg-white-dis'],
+                        }}
+                        {...field}
+                      />
+                    )}
+                  </Field>
 
-                <SendButton
-                  type='submit'
-                  disabled={!props.isValid}
-                  isLoading={props.isSubmitting}
-                />
-              </Form>
-            )}
+                  <SendButton
+                    type='submit'
+                    disabled={!props.isValid}
+                    isLoading={props.isSubmitting}
+                  />
+                </Form>
+              )
+            }}
           </Formik>
         </div>
       </AccordionItem>

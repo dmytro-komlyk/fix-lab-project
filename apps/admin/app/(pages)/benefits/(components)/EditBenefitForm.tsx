@@ -25,6 +25,7 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
   const [selectedIcon, setSelectIcon] = useState<string | null>(
     benefit.data.icon_id as string,
   )
+  const [errorImage, setErrorImage] = useState<string | null>(null)
   const icons = trpc.images.getAllIcons.useQuery(undefined)
 
   const updateBenefit = trpc.benefits.updateBenefit.useMutation({
@@ -58,7 +59,7 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
     { setSubmitting }: FormikHelpers<any>,
   ) => {
     setSubmitting(true)
-
+    console.log(selectedIcon, values.file)
     try {
       if (selectedIcon) {
         await updateBenefit.mutateAsync({
@@ -80,10 +81,16 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
           })
         }
       } else {
-        // added validate empty image
+        setErrorImage('Додайте зображення')
       }
     } catch (err) {
-      // added show error
+      toast.error(`Виникла помилка при додаванні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
     }
     setSubmitting(false)
   }
@@ -92,7 +99,7 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
     <Formik
       initialValues={{
         title: benefit.data.title,
-        file: benefit.data.icon.file,
+        file: null,
       }}
       validationSchema={Yup.object({
         title: Yup.string()
@@ -109,6 +116,7 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
           <div className='flex w-full flex-col items-center gap-4'>
             <FieldFileUpload
               name='file'
+              acceptTypes={['svg+xml']}
               initSrc={null}
               size={{ width: 150, height: 150 }}
             />
@@ -120,7 +128,9 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
                 defaultSelectedKeys={selectedIcon ? [selectedIcon] : null}
               />
             )}
-            <div className='text-danger' />
+            <div className='text-danger'>
+              {props.values.file || selectedIcon ? '' : errorImage}
+            </div>
           </div>
           <Field name='title'>
             {({ meta, field }: any) => (

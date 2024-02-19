@@ -99,17 +99,21 @@ const ResetPassword = ({ searchParams }: IResetPasswordProps) => {
               {({ meta, field }: any) => (
                 <Input
                   type={isVisiblePassword ? 'text' : 'password'}
-                  isInvalid={meta.touched && meta.error}
+                  isInvalid={!!(meta.touched && meta.error)}
                   errorMessage={meta.touched && meta.error && meta.error}
                   classNames={{
-                    label: ['text-white'],
-                    input: ['text-white'],
-                    inputWrapper: [
-                      'group-data-[focus=true]:border-default-200',
+                    label: [
+                      'font-base',
+                      'text-md',
+                      'text-white-dis',
+                      'group-data-[filled-within=true]:text-mid-blue',
                     ],
+                    input: ['font-base', 'text-md', 'text-white-dis'],
+                    inputWrapper: ['group-data-[focus=true]:border-mid-green'],
                   }}
                   variant='bordered'
                   label='Введіть новий пароль'
+                  labelPlacement='inside'
                   endContent={
                     <button
                       className='focus:outline-none'
@@ -137,17 +141,21 @@ const ResetPassword = ({ searchParams }: IResetPasswordProps) => {
               {({ meta, field }: any) => (
                 <Input
                   type={isVisiblePasswordConfirm ? 'text' : 'password'}
-                  isInvalid={meta.touched && meta.error}
+                  isInvalid={!!(meta.touched && meta.error)}
                   errorMessage={meta.touched && meta.error && meta.error}
                   classNames={{
-                    label: ['text-white'],
-                    input: ['text-white'],
-                    inputWrapper: [
-                      'group-data-[focus=true]:border-default-200',
+                    label: [
+                      'font-base',
+                      'text-md',
+                      'text-white-dis',
+                      'group-data-[filled-within=true]:text-mid-blue',
                     ],
+                    input: ['font-base', 'text-md', 'text-white-dis'],
+                    inputWrapper: ['group-data-[focus=true]:border-mid-green'],
                   }}
                   variant='bordered'
                   label='Підтвердіть новий пароль'
+                  labelPlacement='inside'
                   endContent={
                     <button
                       className='focus:outline-none'

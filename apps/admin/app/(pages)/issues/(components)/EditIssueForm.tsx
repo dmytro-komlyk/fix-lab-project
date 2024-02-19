@@ -42,8 +42,6 @@ const EditIssuesForm = ({
   const [listBenefits, setListBenefits] = useState<string[]>(
     issue.data.benefits_ids,
   )
-  const [contentInfoIssue] = useState<string>(issue.data.info)
-  const [contentDescriptionIssue] = useState<string>(issue.data.description)
 
   const updateIssue = trpc.issues.updateIssue.useMutation({
     onSuccess: () => {
@@ -67,6 +65,9 @@ const EditIssuesForm = ({
         },
       })
     },
+    onSettled: () => {
+      issue.refetch()
+    },
   })
 
   const handleSubmit = async (
@@ -80,8 +81,8 @@ const EditIssuesForm = ({
       slug: restValues.slug,
       price: restValues.price,
       title: restValues.title,
-      info: contentInfoIssue,
-      description: contentDescriptionIssue,
+      info: restValues.info,
+      description: restValues.description,
       metadata: {
         title: restValues.seoTitle,
         description: restValues.seoDescription,
@@ -108,7 +109,13 @@ const EditIssuesForm = ({
         await updateIssue.mutateAsync({ ...issue.data, ...issueValues })
       }
     } catch (err) {
-      // need added toast show errors
+      toast.error(`Виникла помилка при додаванні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
     }
     setSubmitting(false)
   }
@@ -124,6 +131,8 @@ const EditIssuesForm = ({
           price: issue.data.price,
           slug: issue.data.slug,
           file: null,
+          info: issue.data.info,
+          description: issue.data.description,
         }}
         validationSchema={Yup.object({
           seoTitle: Yup.string().min(1).required('Введіть заголовок'),
@@ -132,6 +141,8 @@ const EditIssuesForm = ({
           title: Yup.string().min(1).required('Введіть заголовок'),
           price: Yup.string().min(1).required('Введіть вартість'),
           slug: Yup.string().min(3).required('Введіть ЧПУ'),
+          info: Yup.string().min(1).required('Введіть контент'),
+          description: Yup.string().min(1).required('Введіть контент'),
         })}
         onSubmit={handleSubmit}
       >
@@ -267,6 +278,7 @@ const EditIssuesForm = ({
             <div className='order-4 w-[45%]'>
               <FieldFileUpload
                 name='file'
+                acceptTypes={['png', 'jpg']}
                 initSrc={`${SERVER_URL}/${issue.data.image.file.path}`}
                 size={{ width: 400, height: 300 }}
               />
@@ -282,7 +294,7 @@ const EditIssuesForm = ({
                     selectedKey={selectedTab}
                     onSelectionChange={setSelectedTab}
                     classNames={{
-                      panel: 'h-full',
+                      panel: 'h-full flex-col',
                     }}
                   >
                     <Tab

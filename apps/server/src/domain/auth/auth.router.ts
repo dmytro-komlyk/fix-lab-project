@@ -29,14 +29,11 @@ export class AuthRouter {
         },
       })
       .input(signUpSchema)
-      .output(outputAuthSchema)
+      .output(z.void())
       .mutation(async ({ input }) => {
+        await this.authService.isExistAdmin();
         const newUser = await this.usersService.create({ ...input });
-        const user = await this.authService.signUp(newUser);
-        return await this.authService.login({
-          email: user.email,
-          password: input.password,
-        });
+        await this.authService.signUp(newUser);
       }),
     login: this.trpc.procedure
       .meta({

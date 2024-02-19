@@ -9,10 +9,12 @@ import { MdCancel } from 'react-icons/md'
 
 const FieldFileUpload = ({
   name,
+  acceptTypes,
   initSrc,
   size,
 }: {
   name: string
+  acceptTypes: string[]
   initSrc: string | null
   size: {
     width: number
@@ -20,6 +22,7 @@ const FieldFileUpload = ({
   }
 }) => {
   const [newImage, setNewImage] = useState<string | null>(initSrc || null)
+  const acceptImageTypes = acceptTypes.map(type => `image/${type}`).join(',')
 
   const convertToBase64 = (file: any) => {
     return new Promise((resolve, reject) => {
@@ -63,7 +66,7 @@ const FieldFileUpload = ({
           return (
             <>
               <div
-                className={`${meta.error && 'border-danger'} relative flex flex-col items-center gap-4 rounded-xl border-2 border-dashed ${newImage ? 'p-0' : 'pb-4'}`}
+                className={`${meta.error ? 'border-danger ' : ''}${!newImage ? 'py-3 ' : ''}relative flex flex-col items-center gap-4 rounded-xl border-2 border-dashed ${newImage ? 'p-0' : 'pb-4'}`}
                 style={{
                   width: '100%',
                   maxWidth: `${String(size.width)}px`,
@@ -99,7 +102,7 @@ const FieldFileUpload = ({
                 <Tooltip showArrow content='Вибрати файл'>
                   <label
                     htmlFor='fileUpload'
-                    className={`${newImage ? 'hidden' : 'flex'} relative cursor-pointer bg-transparent transition-colors [&>svg]:hover:fill-mid-blue [&>svg]:focus:fill-mid-blue`}
+                    className={`${newImage ? 'hidden' : 'flex flex-col'} relative cursor-pointer items-center gap-1 bg-transparent transition-colors [&>svg]:hover:fill-mid-blue [&>svg]:focus:fill-mid-blue`}
                   >
                     <FaFileUpload size='2em' className='fill-[white]' />
                     <input
@@ -107,9 +110,10 @@ const FieldFileUpload = ({
                       name={name}
                       className='hidden'
                       type='file'
-                      accept='image/*'
+                      accept={acceptImageTypes}
                       onChange={e => handleImageChange(e, setFieldValue)}
                     />
+                    <span>{`(${acceptTypes.join(', ')})`}</span>
                   </label>
                 </Tooltip>
               </div>

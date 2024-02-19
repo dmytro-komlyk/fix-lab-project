@@ -1,16 +1,14 @@
 'use client'
 
 import { trpc } from '@admin/app/(utils)/trpc/client'
-import { Input } from '@nextui-org/react'
+import { Button, Input } from '@nextui-org/react'
 import type { FormikHelpers, FormikProps } from 'formik'
 import { Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { HiMail } from 'react-icons/hi'
+import { IoMdSend } from 'react-icons/io'
 import { object, string } from 'yup'
-
-import SendButton from '../../(components)/SendButton'
-// import { ThreeCircles } from 'react-loader-spinner'
 
 const ForgotPassword = () => {
   const router = useRouter()
@@ -83,14 +81,18 @@ const ForgotPassword = () => {
                   type='email'
                   variant='bordered'
                   label='Введіть пошту'
-                  isInvalid={meta.touched && meta.error}
-                  errorMessage={meta.touched && meta.error ? meta.error : null}
+                  labelPlacement='inside'
+                  isInvalid={!!(meta.touched && meta.error)}
+                  errorMessage={meta.touched && meta.error && meta.error}
                   classNames={{
-                    label: ['text-white'],
-                    input: ['text-white'],
-                    inputWrapper: [
-                      'group-data-[focus=true]:border-default-200',
+                    label: [
+                      'font-base',
+                      'text-md',
+                      'text-white-dis',
+                      'group-data-[filled-within=true]:text-mid-blue',
                     ],
+                    input: ['font-base', 'text-md', 'text-white-dis'],
+                    inputWrapper: ['group-data-[focus=true]:border-mid-green'],
                   }}
                   endContent={
                     <HiMail
@@ -102,11 +104,15 @@ const ForgotPassword = () => {
                 />
               )}
             </Field>
-            <SendButton
+            <Button
               type='submit'
               disabled={!props.isValid}
               isLoading={props.isSubmitting}
-            />
+              className='group flex h-[65px] w-[320px] justify-center rounded-2xl bg-mid-green text-center font-exo_2 text-xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
+            >
+              Відправити запит
+              <IoMdSend className='text-xl' />
+            </Button>
           </Form>
         )}
       </Formik>

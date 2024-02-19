@@ -9,6 +9,7 @@ export const authOptions: any = {
   trustHost: true,
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
+    error: '/authentication/signin',
     signIn: '/authentication/signin',
     newUser: '/authentication/signup',
   },
@@ -23,29 +24,25 @@ export const authOptions: any = {
         },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials): Promise<User | null> {
-        try {
-          const response = await fetch(
-            `${process.env.NODE_ENV === 'production' ? DOCKER_SERVICE_URL : SERVER_URL}/api/trpc/auth.login`,
-            {
-              method: 'POST',
-              body: JSON.stringify({
-                email: credentials.login,
-                password: credentials.password,
-              }),
-              headers: {
-                'Content-Type': 'application/json',
-              },
+      async authorize(credentials): Promise<any> {
+        const response = await fetch(
+          `${process.env.NODE_ENV === 'production' ? DOCKER_SERVICE_URL : SERVER_URL}/api/trpc/auth.login`,
+          {
+            method: 'POST',
+            body: JSON.stringify({
+              email: credentials.login,
+              password: credentials.password,
+            }),
+            headers: {
+              'Content-Type': 'application/json',
             },
-          )
-          const { error, result } = await response.json()
-          if (!error) return result.data
-          throw error
-        } catch (error) {
-          console.log('catch', error)
-          // need add toast show error
-          return null
+          },
+        )
+        const parsedResponse = await response.json()
+        if (response.status === 200) {
+          return parsedResponse.result.data
         }
+        return null
       },
     }),
   ],

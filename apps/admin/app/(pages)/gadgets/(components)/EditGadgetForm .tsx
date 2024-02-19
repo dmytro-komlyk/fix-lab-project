@@ -56,6 +56,7 @@ const EditGadgetForm = ({
   const [selectedIcon, setSelectIcon] = useState<string | null>(
     gadget.data.icon_id,
   )
+  const [errorImage, setErrorImage] = useState<string | null>(null)
   const [selectedTab, setSelectedTab] = useState<any>('brands')
   const [groupSelectedBrands, setGroupSelectedBrands] = useState<any>(
     gadget.data.brands_ids,
@@ -141,10 +142,16 @@ const EditGadgetForm = ({
           })
         }
       } else {
-        // added validate empty image
+        setErrorImage('Додайте зображення')
       }
     } catch (err) {
-      // need added toast show errors
+      toast.error(`Виникла помилка при додаванні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
     }
     setSubmitting(false)
   }
@@ -240,6 +247,7 @@ const EditGadgetForm = ({
             <div className='order-1 flex h-72 w-[45%] flex-col items-center justify-end gap-4'>
               <FieldFileUpload
                 name='file'
+                acceptTypes={['svg+xml']}
                 initSrc={null}
                 size={{ width: 150, height: 150 }}
               />
@@ -251,7 +259,9 @@ const EditGadgetForm = ({
                   defaultSelectedKeys={selectedIcon ? [selectedIcon] : null}
                 />
               )}
-              <div className='text-danger' />
+              <div className='text-danger'>
+                {props.values.file || selectedIcon ? '' : errorImage}
+              </div>
             </div>
             <div className='order-3 flex h-full w-[45%] flex-col justify-end gap-5'>
               <Field name='slug'>
@@ -308,9 +318,6 @@ const EditGadgetForm = ({
                   />
                 )}
               </Field>
-            </div>
-            <div className='order-3 flex h-full w-[45%] flex-col justify-end gap-4 text-center'>
-              NEED ADDED FILE UPLOAD COMPONENT
             </div>
             <div className='order-5 flex h-[500px] w-[92%] flex-col justify-end gap-4'>
               <Card className='size-full max-w-full'>
