@@ -22,6 +22,7 @@ const ExitButton = () => {
     <Button
       type='submit'
       isLoading={isLoading}
+      disabled={isLoading}
       onClick={() => handleLogOut()}
       className='group flex h-[65px] w-[320px] justify-center rounded-2xl bg-mid-green text-center font-exo_2 text-xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
     >
