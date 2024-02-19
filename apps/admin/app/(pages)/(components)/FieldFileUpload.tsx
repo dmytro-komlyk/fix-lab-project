@@ -102,7 +102,7 @@ const FieldFileUpload = ({
                 <Tooltip showArrow content='Вибрати файл'>
                   <label
                     htmlFor='fileUpload'
-                    className={`${newImage ? 'hidden' : 'flex flex-col'} gap-1 items-center relative cursor-pointer bg-transparent transition-colors [&>svg]:hover:fill-mid-blue [&>svg]:focus:fill-mid-blue`}
+                    className={`${newImage ? 'hidden' : 'flex flex-col'} relative cursor-pointer items-center gap-1 bg-transparent transition-colors [&>svg]:hover:fill-mid-blue [&>svg]:focus:fill-mid-blue`}
                   >
                     <FaFileUpload size='2em' className='fill-[white]' />
                     <input

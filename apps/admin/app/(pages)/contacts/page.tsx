@@ -1,6 +1,7 @@
 import { auth } from '@admin/app/(utils)/next-auth/auth'
 import { serverClient } from '@admin/app/(utils)/trpc/serverClient'
 import type { outputContactSchema as IContact } from '@server/domain/contacts/schemas/contact.schema'
+
 import { ContactsList } from './(components)/ContactsList'
 
 export const dynamic = 'force-dynamic'

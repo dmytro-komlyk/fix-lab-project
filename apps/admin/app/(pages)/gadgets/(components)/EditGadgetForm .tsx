@@ -319,7 +319,6 @@ const EditGadgetForm = ({
                 )}
               </Field>
             </div>
-            <div className='order-3 flex h-full w-[45%] flex-col justify-end gap-4 text-center'></div>
             <div className='order-5 flex h-[500px] w-[92%] flex-col justify-end gap-4'>
               <Card className='size-full max-w-full'>
                 <CardBody className='overflow-hidden'>
