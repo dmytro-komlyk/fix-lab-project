@@ -16,7 +16,7 @@ import { PREFIX, PUBLIC_FOLDER } from '@constants/routes.constants';
 
   app.enableCors({
     origin: '*',
-    methods: 'GET, PUT, POST, PATCH, DELETE, OPTIONS',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     allowedHeaders: ['Authorization', 'Content-Type', 'Accept', 'Range'],
     exposedHeaders: 'Content-Range',
