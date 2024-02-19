@@ -40,9 +40,6 @@ const AddIssueInfoSection = ({
   const images = trpc.images.getAllPictures.useQuery(undefined)
   const [selectedTab, setSelectedTab] = useState<any>('issue-info')
   const [listBenefits, setListBenefits] = useState<string[]>([])
-  const [contentInfoIssue, setContentInfoIssue] = useState<string>('')
-  const [contentDescriptionIssue, setContentDescriptionIssue] =
-    useState<string>('')
 
   const createIssue = trpc.issues.createIssue.useMutation({
     onSuccess: () => {
@@ -76,8 +73,8 @@ const AddIssueInfoSection = ({
       slug: restValues.slug,
       price: restValues.price,
       title: restValues.title,
-      info: contentInfoIssue,
-      description: contentDescriptionIssue,
+      info: restValues.info,
+      description: restValues.description,
       metadata: {
         title: restValues.seoTitle,
         description: restValues.seoDescription,
@@ -99,11 +96,15 @@ const AddIssueInfoSection = ({
         })
         resetForm()
         setListBenefits([])
-        setContentInfoIssue('')
-        setContentDescriptionIssue('')
       }
     } catch (err) {
-      // need added toast show errors
+      toast.error(`Виникла помилка при додаванні...`, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
     }
     setSubmitting(false)
   }
@@ -281,6 +282,7 @@ const AddIssueInfoSection = ({
               <div className='order-4 w-[45%]'>
                 <FieldFileUpload
                   name='file'
+                  acceptTypes={['png', 'jpg']}
                   initSrc={null}
                   size={{ width: 400, height: 300 }}
                 />
@@ -301,7 +303,7 @@ const AddIssueInfoSection = ({
                       selectedKey={selectedTab}
                       onSelectionChange={setSelectedTab}
                       classNames={{
-                        panel: 'h-full',
+                        panel: 'h-full flex-col',
                       }}
                     >
                       <Tab
