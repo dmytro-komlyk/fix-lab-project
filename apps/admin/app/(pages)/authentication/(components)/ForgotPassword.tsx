@@ -10,7 +10,6 @@ import { HiMail } from 'react-icons/hi'
 import { object, string } from 'yup'
 
 import SendButton from '../../(components)/SendButton'
-// import { ThreeCircles } from 'react-loader-spinner'
 
 const ForgotPassword = () => {
   const router = useRouter()

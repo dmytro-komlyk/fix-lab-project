@@ -12,7 +12,7 @@ export class UserRouter {
   ) {}
 
   usersRouter = this.trpc.router({
-    getByIdUser: this.trpc.procedure
+    getByIdUser: this.trpc.protectedProcedure
       .meta({
         openapi: {
           method: 'GET',
@@ -26,7 +26,7 @@ export class UserRouter {
       .query(async ({ input }) => {
         return await this.usersService.findById(input.id);
       }),
-    getByEmailUser: this.trpc.procedure
+    getByEmailUser: this.trpc.protectedProcedure
       .meta({
         openapi: {
           method: 'GET',

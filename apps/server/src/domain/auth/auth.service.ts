@@ -17,6 +17,16 @@ import {
 export class AuthService {
   constructor(private prisma: PrismaService, private jwt: JwtService) {}
 
+  async isExistAdmin(): Promise<void> {
+    const users = await this.prisma.user.findMany();
+    if (users.length > 0) {
+      throw new TRPCError({
+        message: 'Вже є зареєстрований адмін',
+        code: 'NOT_FOUND',
+      });
+    }
+  }
+
   async login(data: loginSchema): Promise<outputAuthSchema> {
     const { id, ...userData } = await this.validateUser(data);
 

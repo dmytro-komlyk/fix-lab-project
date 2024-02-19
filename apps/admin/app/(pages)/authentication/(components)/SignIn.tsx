@@ -3,8 +3,9 @@
 import { Button, Input } from '@nextui-org/react'
 import type { FormikHelpers, FormikProps } from 'formik'
 import { Field, Form, Formik } from 'formik'
-import Link from 'next/link'
 import { signIn } from 'next-auth/react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
@@ -13,6 +14,7 @@ import { HiMail } from 'react-icons/hi'
 import { object, string } from 'yup'
 
 const SignIn = () => {
+  const router = useRouter()
   const [isVisiblePassword, setIsVisiblePassword] = useState(false)
   const toggleVisibilityPassword = () =>
     setIsVisiblePassword(!isVisiblePassword)
@@ -26,7 +28,7 @@ const SignIn = () => {
       const res = await signIn('credentials', {
         login: values.login,
         password: values.password,
-        callbackUrl: '/',
+        redirect: false,
       })
       if (res && !res.error) {
         toast.success(`Вітаємо в FixLab Admin Panel!`, {
@@ -36,18 +38,21 @@ const SignIn = () => {
             color: '#fff',
           },
         })
+        router.push('/')
+        router.refresh()
+      } else {
+        throw new Error(
+          'Помилка авторизації, перевірте правильність вводу пошти та пароля',
+        )
       }
-    } catch (error) {
-      toast.error(
-        `Помилка авторизації, перевірте правильність вводу пошти та пароля`,
-        {
-          style: {
-            borderRadius: '10px',
-            background: 'grey',
-            color: '#fff',
-          },
+    } catch (error: any) {
+      toast.error(error.message, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
         },
-      )
+      })
     }
     setSubmitting(false)
   }
@@ -78,11 +83,17 @@ const SignIn = () => {
                   type='email'
                   variant='bordered'
                   label='Введіть пошту'
-                  isInvalid={meta.touched && meta.error}
-                  errorMessage={meta.touched && meta.error ? meta.error : null}
+                  labelPlacement='inside'
+                  isInvalid={!!(meta.touched && meta.error)}
+                  errorMessage={meta.touched && meta.error && meta.error}
                   classNames={{
-                    label: ['text-white'],
-                    input: ['text-white'],
+                    label: [
+                      'font-base',
+                      'text-md',
+                      'text-white-dis',
+                      'group-data-[filled-within=true]:text-mid-blue',
+                    ],
+                    input: ['font-base', 'text-md', 'text-white-dis'],
                     inputWrapper: ['group-data-[focus=true]:border-mid-green'],
                   }}
                   endContent={
@@ -100,15 +111,19 @@ const SignIn = () => {
                 <Input
                   type={isVisiblePassword ? 'text' : 'password'}
                   variant='bordered'
-                  isInvalid={meta.touched && meta.error}
-                  errorMessage={meta.touched && meta.error}
+                  isInvalid={!!(meta.touched && meta.error)}
+                  errorMessage={meta.touched && meta.error && meta.error}
                   label='Введіть пароль'
+                  labelPlacement='inside'
                   classNames={{
-                    label: ['text-white'],
-                    input: ['text-white'],
-                    inputWrapper: [
-                      'group-data-[focus=true]:border-default-200',
+                    label: [
+                      'font-base',
+                      'text-md',
+                      'text-white-dis',
+                      'group-data-[filled-within=true]:text-mid-blue',
                     ],
+                    input: ['font-base', 'text-md', 'text-white-dis'],
+                    inputWrapper: ['group-data-[focus=true]:border-mid-green'],
                   }}
                   endContent={
                     <button

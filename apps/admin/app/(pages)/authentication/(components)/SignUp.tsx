@@ -15,7 +15,6 @@ import { object, ref, string } from 'yup'
 const SignUp = () => {
   const router = useRouter()
 
-  const [isLoading, setLoading] = useState<boolean>(false)
   const [isVisiblePassword, setIsVisiblePassword] = useState<boolean>(false)
   const [isVisiblePasswordConfirm, setIsVisiblePasswordConfirm] =
     useState<boolean>(false)
@@ -34,30 +33,27 @@ const SignUp = () => {
           color: '#fff',
         },
       })
+      router.push('/authentication/signin')
+    },
+    onError: error => {
+      toast.error(error.message, {
+        style: {
+          borderRadius: '10px',
+          background: 'red',
+          color: '#fff',
+        },
+      })
+      router.push('/authentication/signin')
     },
   })
+
   const handleSubmit = async (
     values: any,
     { setSubmitting }: FormikHelpers<any>,
   ) => {
-    setLoading(true)
     setSubmitting(true)
     const { passwordConfirmation, ...regData } = values
-    try {
-      const createdUser = await createUser.mutateAsync(regData)
-      if (createdUser) {
-        router.push('/authentication/signin')
-      }
-    } catch (error) {
-      toast.error(`Помилка авторизації!!! Перевірте дані логіну чи паролю...`, {
-        style: {
-          borderRadius: '10px',
-          background: 'grey',
-          color: '#fff',
-        },
-      })
-    }
-    setLoading(false)
+    await createUser.mutateAsync(regData)
     setSubmitting(false)
   }
 
@@ -100,17 +96,21 @@ const SignUp = () => {
               {({ meta, field }: any) => (
                 <Input
                   type='text'
-                  classNames={{
-                    label: ['text-white'],
-                    input: ['text-white'],
-                    inputWrapper: [
-                      'group-data-[focus=true]:border-default-200',
-                    ],
-                  }}
                   variant='bordered'
-                  isInvalid={meta.touched && meta.error}
-                  errorMessage={meta.touched && meta.error && meta.error}
                   label="Ім'я"
+                  labelPlacement='inside'
+                  isInvalid={!!(meta.touched && meta.error)}
+                  errorMessage={meta.touched && meta.error && meta.error}
+                  classNames={{
+                    label: [
+                      'font-base',
+                      'text-md',
+                      'text-white-dis',
+                      'group-data-[filled-within=true]:text-mid-blue',
+                    ],
+                    input: ['font-base', 'text-md', 'text-white-dis'],
+                    inputWrapper: ['group-data-[focus=true]:border-mid-green'],
+                  }}
                   endContent={
                     <FaUserAlt size={45} className='flex p-2 text-mid-green' />
                   }
@@ -124,14 +124,18 @@ const SignUp = () => {
                   type='email'
                   variant='bordered'
                   label='Введіть пошту'
-                  isInvalid={meta.touched && meta.error}
-                  errorMessage={meta.touched && meta.error ? meta.error : null}
+                  labelPlacement='inside'
+                  isInvalid={!!(meta.touched && meta.error)}
+                  errorMessage={meta.touched && meta.error && meta.error}
                   classNames={{
-                    label: ['text-white'],
-                    input: ['text-white'],
-                    inputWrapper: [
-                      'group-data-[focus=true]:border-default-200',
+                    label: [
+                      'font-base',
+                      'text-md',
+                      'text-white-dis',
+                      'group-data-[filled-within=true]:text-mid-blue',
                     ],
+                    input: ['font-base', 'text-md', 'text-white-dis'],
+                    inputWrapper: ['group-data-[focus=true]:border-mid-green'],
                   }}
                   endContent={
                     <HiMail
@@ -147,17 +151,21 @@ const SignUp = () => {
               {({ meta, field }: any) => (
                 <Input
                   type={isVisiblePassword ? 'text' : 'password'}
-                  isInvalid={meta.touched && meta.error}
+                  isInvalid={!!(meta.touched && meta.error)}
                   errorMessage={meta.touched && meta.error && meta.error}
                   classNames={{
-                    label: ['text-white'],
-                    input: ['text-white'],
-                    inputWrapper: [
-                      'group-data-[focus=true]:border-default-200',
+                    label: [
+                      'font-base',
+                      'text-md',
+                      'text-white-dis',
+                      'group-data-[filled-within=true]:text-mid-blue',
                     ],
+                    input: ['font-base', 'text-md', 'text-white-dis'],
+                    inputWrapper: ['group-data-[focus=true]:border-mid-green'],
                   }}
                   variant='bordered'
                   label='Введіть пароль'
+                  labelPlacement='inside'
                   endContent={
                     <button
                       className='focus:outline-none'
@@ -185,17 +193,21 @@ const SignUp = () => {
               {({ meta, field }: any) => (
                 <Input
                   type={isVisiblePasswordConfirm ? 'text' : 'password'}
-                  isInvalid={meta.touched && meta.error}
-                  errorMessage={meta.touched && meta.error && meta.error}
-                  classNames={{
-                    label: ['text-white'],
-                    input: ['text-white'],
-                    inputWrapper: [
-                      'group-data-[focus=true]:border-default-200',
-                    ],
-                  }}
                   variant='bordered'
                   label='Підтвердити пароль'
+                  labelPlacement='inside'
+                  isInvalid={!!(meta.touched && meta.error)}
+                  errorMessage={meta.touched && meta.error && meta.error}
+                  classNames={{
+                    label: [
+                      'font-base',
+                      'text-md',
+                      'text-white-dis',
+                      'group-data-[filled-within=true]:text-mid-blue',
+                    ],
+                    input: ['font-base', 'text-md', 'text-white-dis'],
+                    inputWrapper: ['group-data-[focus=true]:border-mid-green'],
+                  }}
                   endContent={
                     <button
                       className='focus:outline-none'
@@ -221,7 +233,8 @@ const SignUp = () => {
             </Field>
             <Button
               type='submit'
-              isLoading={isLoading}
+              disabled={!props.isValid}
+              isLoading={props.isSubmitting}
               className='group flex h-[65px] w-[320px] justify-center rounded-2xl bg-mid-green text-center font-exo_2 text-xl font-bold text-white-dis  transition-colors hover:bg-mid-blue  focus:bg-mid-blue'
             >
               Зареєструвати
