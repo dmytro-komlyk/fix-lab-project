@@ -67,15 +67,19 @@ const AddImagesSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
     }
   }
 
-  const handleCopyLink = (url: string) => {
-    navigator.clipboard.writeText(url)
-    toast.success(`Посилання скопійовано!`, {
-      style: {
-        borderRadius: '10px',
-        background: 'grey',
-        color: '#fff',
-      },
-    })
+  const handleCopyLink = async (url: string) => {
+    try {
+      await navigator.clipboard.writeText(url)
+      toast.success('Посилання скопійовано!', {
+        style: {
+          borderRadius: '10px',
+          background: 'grey',
+          color: '#fff',
+        },
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   const handleUploadImage = async (e: any) => {
