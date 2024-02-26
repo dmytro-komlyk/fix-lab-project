@@ -53,7 +53,7 @@ services:
       - mongo
 
   server:
-    image: ghcr.io/iryna-gry/prod-fixlab-server:latest
+    image: ghcr.io/dmytro-komlyk/prod-fixlab-server:latest
     container_name: server
     restart: unless-stopped
     env_file: ./server/.env
@@ -62,7 +62,7 @@ services:
     volumes:
       - ./server/public/:/app/server/public
     ports:
-      - 30000:3000
+      - 3000:3000
     networks:
       - client
       - backend
@@ -72,7 +72,7 @@ services:
       - mongo
 
   admin:
-    image: ghcr.io/iryna-gry/prod-fixlab-admin:latest
+    image: ghcr.io/dmytro-komlyk/prod-fixlab-admin:latest
     container_name: admin
     restart: unless-stopped
     env_file: ./admin/.env.docker.local
@@ -81,12 +81,12 @@ services:
     environment:
       - NODE_ENV=production
     ports:
-      - "30002:3002"
+      - "3002:3002"
     networks:
       - client
 
   client:
-    image: ghcr.io/iryna-gry/prod-fixlab-client:latest
+    image: ghcr.io/dmytro-komlyk/prod-fixlab-client:latest
     container_name: client
     restart: unless-stopped
     env_file: ./client/.env.docker.local
@@ -95,7 +95,7 @@ services:
     environment:
       - NODE_ENV=production
     ports:
-      - "30001:3001"
+      - "3001:3001"
     networks:
       - client
 
