@@ -38,7 +38,7 @@ jobs:
           file: ./apps/server/Dockerfile
           push: true
           tags: |
-            ghcr.io/iryna-gry/prod-fixlab-server:latest
+            ghcr.io/dmytro-komlyk/prod-fixlab-server:latest
 
       - name: "Build Client"
         if: contains(github.event.pull_request.labels.*.name, 'frontend-client')
@@ -48,7 +48,7 @@ jobs:
           file: ./apps/client/Dockerfile
           push: true
           tags: |
-            ghcr.io/iryna-gry/prod-fixlab-client:latest
+            ghcr.io/dmytro-komlyk/prod-fixlab-client:latest
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
 
@@ -60,6 +60,6 @@ jobs:
           file: ./apps/admin/Dockerfile
           push: true
           tags: |
-            ghcr.io/iryna-gry/prod-fixlab-admin:latest
+            ghcr.io/dmytro-komlyk/prod-fixlab-admin:latest
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
