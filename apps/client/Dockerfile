@@ -1,5 +1,4 @@
 ARG NODE_VERSION=18
-ARG APP_HOST
 ARG DATABASE_URL
 
 FROM --platform=linux/amd64 node:${NODE_VERSION}-alpine3.17 as base
@@ -35,7 +34,6 @@ COPY ${SERVICE_PATH}/.env.docker.local.example ./${SERVICE_PATH}/.env.local
 
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NEXT_SHARP_PATH=/app/${SERVICE_PATH}/node_modules/sharp
-ENV NEXT_PUBLIC_APP_HOST=${APP_HOST}
 
 RUN pnpm db:generate 
 RUN pnpm build:${PACKAGE_NAME}
@@ -64,7 +62,6 @@ WORKDIR /app/${SERVICE_PATH}
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV DATABASE_URL=${DATABASE_URL}
-ENV NEXT_PUBLIC_APP_HOST=${APP_HOST}
 
 USER nextjs
 
