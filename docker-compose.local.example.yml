@@ -2,6 +2,7 @@ version: "3.8"
 services:
   mongo:
     build:
+      target: mongo
       dockerfile: ./apps/database/Dockerfile
       args:
         MONGO_VERSION: 6
@@ -16,6 +17,7 @@ services:
       - INIT_REPL_CMD=3
     volumes:
       - ./apps/database/data:/data/db
+      - ./apps/database/conf/mongod.conf.orig:/etc/mongod.conf
     ports:
       - 27018:27018
     networks:
@@ -34,29 +36,10 @@ services:
           "db.adminCommand('ping').ok",
         ]
       interval: 5s
-      timeout: 2s
-      retries: 20
-
-  # prisma-studio:
-  #   build:
-  #     context: .
-  #     target: prisma-runner
-  #     dockerfile: ./apps/server/Dockerfile
-  #   container_name: prisma-studio
-  #   restart: unless-stopped
-  #   env_file: ./apps/server/.env.docker
-  #   environment:
-  #     - DATABASE_USERNAME=
-  #     - DATABASE_PASSWORD=
-  #     - DATABASE_NAME=
-  #   ports:
-  #     - 5555:5555
-  #   networks:
-  #     - backend
-  #   depends_on:
-  #     - mongo
-  #   links:
-  #     - mongo
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
 
   server:
     build:
