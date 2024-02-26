@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-            cd fix-lab
+            cd app
             echo ${{ secrets.REGISTRY_TOKEN  }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
             if [[ "${{ contains(github.event.pull_request.labels.*.name, 'backend') }}" == "true" ]]; then
