@@ -34,7 +34,7 @@ COPY --from=dependencies /app/apps/server/node_modules ./apps/server/node_module
 COPY ${SERVICE_PATH}/.env.docker.local.example ./${SERVICE_PATH}/.env.local
 
 ENV NEXT_TELEMETRY_DISABLED 1
-ENV APP_HOST=${APP_HOST}
+ENV NEXT_PUBLIC_APP_HOST=${APP_HOST}
 
 RUN pnpm db:generate 
 RUN pnpm build:${PACKAGE_NAME}
@@ -62,7 +62,7 @@ WORKDIR /app/${SERVICE_PATH}
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV=production
 ENV DATABASE_URL=${DATABASE_URL}
-ENV APP_HOST=${APP_HOST}
+ENV NEXT_PUBLIC_APP_HOST=${APP_HOST}
 
 USER nextjs
 
