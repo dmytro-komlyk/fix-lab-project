@@ -2,7 +2,6 @@
 node_modules
 .pnp
 .pnp.js
-.yarn/install-state.gz
 
 # misc
 .DS_Store
@@ -11,7 +10,6 @@ node_modules
 # Database
 data
 seed
-.vercel
 
 # Docker
 docker-compose.local.yml
