@@ -1,4 +1,5 @@
 ARG NODE_VERSION=18
+ARG APP_HOST
 
 FROM --platform=linux/amd64 node:${NODE_VERSION}-alpine3.17 as base
 
@@ -28,6 +29,7 @@ COPY --from=dependencies /app/${SERVICE_PATH}/node_modules ./${SERVICE_PATH}/nod
 COPY ${SERVICE_PATH}/.env.docker.example ./${SERVICE_PATH}/.env
 
 ENV NODE_ENV production
+ENV APP_HOST=${APP_HOST}
 
 RUN pnpm db:generate
 RUN pnpm build:server
@@ -47,6 +49,7 @@ WORKDIR /app/${SERVICE_PATH}
 USER node
 
 ENV NODE_ENV=production
+ENV APP_HOST=${APP_HOST}
 ENV PORT 3000
 ENV HOSTNAME 0.0.0.0
 EXPOSE 3000

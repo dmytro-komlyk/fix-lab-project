@@ -36,8 +36,10 @@ services:
           "db.adminCommand('ping').ok",
         ]
       interval: 5s
-      timeout: 2s
-      retries: 20
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
 
   mongo-seed:
     build:

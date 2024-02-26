@@ -1,4 +1,5 @@
 ARG NODE_VERSION=18
+ARG APP_HOST
 ARG DATABASE_URL
 
 FROM --platform=linux/amd64 node:${NODE_VERSION}-alpine3.17 as base
@@ -34,6 +35,7 @@ COPY ${SERVICE_PATH}/.env.docker.local.example ./${SERVICE_PATH}/.env.local
 
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NEXT_SHARP_PATH=/app/${SERVICE_PATH}/node_modules/sharp
+ENV APP_HOST=${APP_HOST}
 
 RUN pnpm db:generate 
 RUN pnpm build:${PACKAGE_NAME}

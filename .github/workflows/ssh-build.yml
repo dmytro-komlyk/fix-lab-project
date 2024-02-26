@@ -39,6 +39,8 @@ jobs:
           push: true
           tags: |
             ghcr.io/dmytro-komlyk/prod-fixlab-server:latest
+          build-args: |
+            APP_HOST=${{ secrets.SERVER_HOST }}
 
       - name: "Build Client"
         if: contains(github.event.pull_request.labels.*.name, 'frontend-client')
@@ -51,6 +53,7 @@ jobs:
             ghcr.io/dmytro-komlyk/prod-fixlab-client:latest
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
+            APP_HOST=${{ secrets.SERVER_HOST }}
 
       - name: "Build Admin"
         if: contains(github.event.pull_request.labels.*.name, 'frontend-admin')
@@ -63,3 +66,4 @@ jobs:
             ghcr.io/dmytro-komlyk/prod-fixlab-admin:latest
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
+            APP_HOST=${{ secrets.SERVER_HOST }}
