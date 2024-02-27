@@ -31,6 +31,7 @@ import toast from 'react-hot-toast'
 import { FaExchangeAlt } from 'react-icons/fa'
 import * as Yup from 'yup'
 
+import { createSlug } from '@admin/app/(utils)/createSlug'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SelectImage from '../../(components)/SelectImage'
 import SendButton from '../../(components)/SendButton'
@@ -110,7 +111,7 @@ const EditGadgetForm = ({
     setSubmitting(true)
     const { file, ...restValues } = values
     const gadgetValues = {
-      slug: restValues.slug,
+      slug: createSlug(restValues.title),
       title: restValues.title,
       description: restValues.description,
       metadata: {
@@ -174,7 +175,6 @@ const EditGadgetForm = ({
           seoKeywords: Yup.string().min(1).required('Введіть ключі'),
           title: Yup.string().min(1).required('Введіть заголовок'),
           description: Yup.string().min(1).required('Введіть опис'),
-          slug: Yup.string().min(3).required('Введіть ЧПУ'),
         })}
         onSubmit={handleSubmit}
       >
@@ -267,6 +267,7 @@ const EditGadgetForm = ({
               <Field name='slug'>
                 {({ meta, field }: any) => (
                   <Input
+                    isDisabled
                     type='text'
                     label='ЧПУ(slug)'
                     labelPlacement='inside'

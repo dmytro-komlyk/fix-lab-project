@@ -16,6 +16,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import * as Yup from 'yup'
 
+import { createSlug } from '@admin/app/(utils)/createSlug'
 import CustomEditor from '../../(components)/CustomEditor'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SendButton from '../../(components)/SendButton'
@@ -78,7 +79,7 @@ const EditIssuesForm = ({
     const { file, ...restValues } = values
 
     const issueValues = {
-      slug: restValues.slug,
+      slug: createSlug(restValues.title),
       price: restValues.price,
       title: restValues.title,
       info: restValues.info,
@@ -140,7 +141,6 @@ const EditIssuesForm = ({
           seoKeywords: Yup.string().min(1).required('Введіть ключі'),
           title: Yup.string().min(1).required('Введіть заголовок'),
           price: Yup.string().min(1).required('Введіть вартість'),
-          slug: Yup.string().min(3).required('Введіть ЧПУ'),
           info: Yup.string().min(1).required('Введіть контент'),
           description: Yup.string().min(1).required('Введіть контент'),
         })}
@@ -216,6 +216,7 @@ const EditIssuesForm = ({
               <Field name='slug'>
                 {({ meta, field }: any) => (
                   <Input
+                    isDisabled
                     type='text'
                     label='ЧПУ(slug)'
                     labelPlacement='inside'

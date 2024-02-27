@@ -22,6 +22,7 @@ import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 import * as Yup from 'yup'
 
+import { createSlug } from '@admin/app/(utils)/createSlug'
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
@@ -70,7 +71,7 @@ const AddIssueInfoSection = ({
     setSubmitting(true)
     const { file, ...restValues } = values
     const issueValues = {
-      slug: restValues.slug,
+      slug: createSlug(restValues.title),
       price: restValues.price,
       title: restValues.title,
       info: restValues.info,
@@ -132,7 +133,6 @@ const AddIssueInfoSection = ({
             seoKeywords: '',
             title: '',
             price: '',
-            slug: '',
             file: null,
             info: '',
             description: '',
@@ -143,7 +143,6 @@ const AddIssueInfoSection = ({
             seoKeywords: Yup.string().min(1).required('Введіть ключі'),
             title: Yup.string().min(1).required('Введіть заголовок'),
             price: Yup.string().min(1).required('Введіть вартість'),
-            slug: Yup.string().min(3).required('Введіть ЧПУ'),
             file: Yup.mixed().required('Додайте зображення'),
             info: Yup.string().min(1).required('Введіть контент'),
             description: Yup.string().min(1).required('Введіть контент'),
@@ -217,24 +216,6 @@ const AddIssueInfoSection = ({
                 </CardBody>
               </Card>
               <div className='order-1 flex h-72 w-[45%] flex-col justify-end gap-4'>
-                <Field name='slug'>
-                  {({ meta, field }: any) => (
-                    <Input
-                      type='text'
-                      label='ЧПУ(slug)'
-                      labelPlacement='inside'
-                      variant='bordered'
-                      isInvalid={!!(meta.touched && meta.error)}
-                      errorMessage={meta.touched && meta.error && meta.error}
-                      classNames={{
-                        label: ['font-base', 'text-md', 'text-black-dis'],
-                        input: ['font-base', 'text-md', 'text-black-dis'],
-                        inputWrapper: ['bg-white-dis'],
-                      }}
-                      {...field}
-                    />
-                  )}
-                </Field>
                 <Field name='price'>
                   {({ meta, field }: any) => (
                     <Input
