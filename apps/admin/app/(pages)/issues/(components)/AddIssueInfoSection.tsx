@@ -1,5 +1,6 @@
 'use client'
 
+import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import {
@@ -22,7 +23,6 @@ import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 import * as Yup from 'yup'
 
-import { createSlug } from '@admin/app/(utils)/createSlug'
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import FieldFileUpload from '../../(components)/FieldFileUpload'

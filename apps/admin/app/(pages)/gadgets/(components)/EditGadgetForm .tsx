@@ -1,6 +1,7 @@
 'use client'
 
 import { SERVER_URL } from '@admin/app/(lib)/constants'
+import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import {
@@ -31,7 +32,6 @@ import toast from 'react-hot-toast'
 import { FaExchangeAlt } from 'react-icons/fa'
 import * as Yup from 'yup'
 
-import { createSlug } from '@admin/app/(utils)/createSlug'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SelectImage from '../../(components)/SelectImage'
 import SendButton from '../../(components)/SendButton'

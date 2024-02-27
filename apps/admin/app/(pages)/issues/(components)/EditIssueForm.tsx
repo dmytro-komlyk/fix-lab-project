@@ -1,6 +1,7 @@
 'use client'
 
 import { SERVER_URL } from '@admin/app/(lib)/constants'
+import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import { Card, CardBody, CardHeader, Input, Tab, Tabs } from '@nextui-org/react'
@@ -16,7 +17,6 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import * as Yup from 'yup'
 
-import { createSlug } from '@admin/app/(utils)/createSlug'
 import CustomEditor from '../../(components)/CustomEditor'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
 import SendButton from '../../(components)/SendButton'
