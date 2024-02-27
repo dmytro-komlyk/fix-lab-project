@@ -1,6 +1,5 @@
 'use client'
 
-import { TWANK_PROPERTY_ID, TWANK_WIDGET_ID } from '@client/app/(lib)/constants'
 import TawkMessengerReact from '@tawk.to/tawk-messenger-react'
 import { useRef } from 'react'
 
@@ -10,8 +9,8 @@ function TawkChat(): JSX.Element {
   return (
     <div className='App'>
       <TawkMessengerReact
-        propertyId={TWANK_PROPERTY_ID}
-        widgetId={TWANK_WIDGET_ID}
+        propertyId='654b827af2439e1631ed1982'
+        widgetId='1henfbbhh'
         ref={tawkMessengerRef}
       />
     </div>
