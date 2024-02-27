@@ -101,7 +101,6 @@ const EditArticleSection = ({
         })
       }
     } catch (err) {
-      console.log(err)
       toast.error(`Виникла помилка при додаванні...`, {
         style: {
           borderRadius: '10px',
@@ -130,7 +129,6 @@ const EditArticleSection = ({
           seoTitle: Yup.string().min(1).required('Введіть заголовок'),
           seoDescription: Yup.string().min(1).required('Введіть опис'),
           seoKeywords: Yup.string().min(1).required('Введіть ключі'),
-          slug: Yup.string().min(3).required('Введіть ЧПУ'),
           title: Yup.string().min(1).required('Введіть заголовок'),
           preview: Yup.string().min(1).required('Введіть опис'),
           file: Yup.mixed().required('Додайте зображення'),
@@ -208,6 +206,7 @@ const EditArticleSection = ({
               <Field name='slug'>
                 {({ meta, field }: any) => (
                   <Input
+                    isDisabled
                     type='text'
                     label='ЧПУ(slug)'
                     labelPlacement='inside'
