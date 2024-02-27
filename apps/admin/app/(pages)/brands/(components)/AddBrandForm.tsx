@@ -19,6 +19,7 @@ import toast from 'react-hot-toast'
 import { IoMdAddCircle } from 'react-icons/io'
 import * as Yup from 'yup'
 
+import { createSlug } from '@admin/app/(utils)/createSlug'
 import AddImagesSection from '../../(components)/AddImagesSection'
 import CustomEditor from '../../(components)/CustomEditor'
 import FieldFileUpload from '../../(components)/FieldFileUpload'
@@ -73,7 +74,7 @@ const AddBrandForm = ({
       values
 
     const newData = {
-      slug: title,
+      slug: createSlug(title),
       title,
       metadata: {
         title: seoTitle,
