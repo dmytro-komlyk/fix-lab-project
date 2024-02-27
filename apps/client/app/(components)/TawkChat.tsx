@@ -2,6 +2,7 @@
 
 import TawkMessengerReact from '@tawk.to/tawk-messenger-react'
 import { useRef } from 'react'
+import { TWANK_PROPERTY_ID, TWANK_WIDGET_ID } from '../(lib)/constants'
 
 function TawkChat(): JSX.Element {
   const tawkMessengerRef = useRef<any>()
@@ -9,8 +10,8 @@ function TawkChat(): JSX.Element {
   return (
     <div className='App'>
       <TawkMessengerReact
-        propertyId={process.env.NEXT_PUBLIC_TWANK_PROPERTY_ID}
-        widgetId={process.env.NEXT_PUBLIC_TWANK_WIDGET_ID}
+        propertyId={TWANK_PROPERTY_ID}
+        widgetId={TWANK_WIDGET_ID}
         ref={tawkMessengerRef}
       />
     </div>
