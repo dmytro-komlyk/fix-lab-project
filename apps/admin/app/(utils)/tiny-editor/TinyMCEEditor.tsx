@@ -16,7 +16,7 @@ const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
       value={value}
       onEditorChange={onChange}
       id={id}
-      apiKey='7uicez0c1m320gtjw6b888lk6mfv7q854nbk2vcp2eg0fag3'
+      apiKey='9r20v2xm7wgvyig8pxzk65b9k7a6r2ntescpvmiqhdtidh5n'
       init={{
         language: 'uk',
         skin: 'oxide',
