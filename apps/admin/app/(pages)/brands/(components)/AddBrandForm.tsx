@@ -1,5 +1,6 @@
 'use client'
 
+import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import {
@@ -73,7 +74,7 @@ const AddBrandForm = ({
       values
 
     const newData = {
-      slug: title,
+      slug: createSlug(title),
       title,
       metadata: {
         title: seoTitle,

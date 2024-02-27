@@ -1,5 +1,6 @@
 'use client'
 
+import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import { Card, CardBody, CardHeader, Input } from '@nextui-org/react'
@@ -78,6 +79,7 @@ const EditBrandForm = ({
       values
     const dataToUpdate = {
       ...brand.data,
+      slug: createSlug(title),
       title,
       metadata: {
         title: seoTitle,
@@ -125,6 +127,7 @@ const EditBrandForm = ({
       initialValues={{
         file: null,
         title: brand.data.title,
+        slug: brand.data.slug,
         seoTitle: brand.data.metadata.title,
         seoDescription: brand.data.metadata.description,
         seoKeywords: brand.data.metadata.keywords,
@@ -224,7 +227,26 @@ const EditBrandForm = ({
               {props.values.file || selectedIcon ? '' : errorImage}
             </div>
           </div>
-          <div className='order-3 w-[92%]'>
+          <div className='order-3 flex w-[92%] flex-col gap-4'>
+            <Field name='slug'>
+              {({ meta, field }: any) => (
+                <Input
+                  isDisabled
+                  type='text'
+                  label='ЧПУ(slug)'
+                  labelPlacement='inside'
+                  variant='bordered'
+                  isInvalid={!!(meta.touched && meta.error)}
+                  errorMessage={meta.touched && meta.error && meta.error}
+                  classNames={{
+                    label: ['font-base', 'text-md', 'text-black-dis'],
+                    input: ['font-base', 'text-md', 'text-black-dis'],
+                    inputWrapper: ['bg-white-dis'],
+                  }}
+                  {...field}
+                />
+              )}
+            </Field>
             <Field name='title'>
               {({ meta, field }: any) => (
                 <Input
