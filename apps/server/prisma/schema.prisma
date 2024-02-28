@@ -89,6 +89,7 @@ model Contact {
 
 model Gadget {
   id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  order           String
   slug            String         @unique(map: "slug_1")
   title           String
   description     String
