@@ -1,6 +1,6 @@
 'use client'
 
-import RenderMarkdown from '@client/app/(components)/RenderMarkdown'
+import ParserValueEditor from '@client/app/(components)/ParserValueEditor'
 import Button from '@client/app/(layouts)/(components)/Button'
 import CallUsCard from '@client/app/(layouts)/(components)/CallUsCard'
 import { SERVER_URL } from '@client/app/(lib)/constants'
@@ -155,12 +155,12 @@ const BrandsSection = ({
                       : 'hidden'
                   }`}
                 >
-                  <RenderMarkdown markdown={item.article} />
+                  <ParserValueEditor value={item.article} />
                 </div>
               ))}
               {isBrandPage === 'brands' && (
                 <div className='flex w-[852px] max-xl:max-w-[852px] '>
-                  <RenderMarkdown markdown={gadgetData?.brands[0]?.article} />
+                  <ParserValueEditor value={gadgetData?.brands[0]?.article} />
                 </div>
               )}
             </div>

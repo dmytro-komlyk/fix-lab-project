@@ -1,6 +1,6 @@
 'use client'
 
-import RenderMarkdown from '@client/app/(components)/RenderMarkdown'
+import ParserValueEditor from '@client/app/(components)/ParserValueEditor'
 import Button from '@client/app/(layouts)/(components)/Button'
 import { SERVER_URL } from '@client/app/(lib)/constants'
 import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
@@ -79,7 +79,7 @@ const SingleArticlePage = ({
             />
           )}
           <div className='mb-[104px] max-md:mb-[56px]'>
-            <RenderMarkdown markdown={articleData.text} />
+            <ParserValueEditor value={articleData.text} />
           </div>
           <div className='flex w-full justify-between gap-6 max-md:hidden'>
             <div className='w-[410px]'>

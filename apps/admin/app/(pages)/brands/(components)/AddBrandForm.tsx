@@ -264,7 +264,13 @@ const AddBrandForm = ({
                 </div>
               )}
               <div className='order-5 w-[92%]'>
-                <CustomEditor id='edit-brand-article-content' name='article' />
+                <CustomEditor
+                  id='edit-brand-article-content'
+                  name='article'
+                  styles={{
+                    body: 'background-color:#FFFFFF',
+                  }}
+                />
               </div>
               <div className='order-last'>
                 <SendButton

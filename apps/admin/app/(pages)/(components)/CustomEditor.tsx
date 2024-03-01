@@ -7,11 +7,15 @@ import React from 'react'
 interface CustomEditorProps {
   id: string
   name: string
+  styles: {
+    body: string
+  }
 }
-const CustomEditor: React.FC<CustomEditorProps> = ({ id, name }) => {
+const CustomEditor: React.FC<CustomEditorProps> = ({ id, name, styles }) => {
   const handleEditorChange = (newContent: string, setFieldValue: any) => {
     setFieldValue(name, newContent)
   }
+
   return (
     <Field name={name}>
       {({ field, form, meta }: any) => {
@@ -19,7 +23,7 @@ const CustomEditor: React.FC<CustomEditorProps> = ({ id, name }) => {
         return (
           <>
             <div
-              className={`${meta.error && '[&>.tox-tinymce]:border-danger'}`}
+              className={`${meta.error ? '[&>.tox-tinymce]:border-danger' : ''}`}
             >
               <TinyMCEEditor
                 id={id}
@@ -27,6 +31,7 @@ const CustomEditor: React.FC<CustomEditorProps> = ({ id, name }) => {
                 onChange={newContent =>
                   handleEditorChange(newContent, setFieldValue)
                 }
+                styles={styles}
               />
             </div>
             <span className='text-danger'>{meta.error}</span>
