@@ -54,6 +54,17 @@ services:
     depends_on:
       - mongo
 
+  app:
+    image: "jc21/nginx-proxy-manager:latest"
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+
   server:
     image: ghcr.io/dmytro-komlyk/prod-fixlab-server:latest
     container_name: server
