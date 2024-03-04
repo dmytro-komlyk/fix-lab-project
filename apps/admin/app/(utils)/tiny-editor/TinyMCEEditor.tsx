@@ -1,5 +1,5 @@
 import { Editor } from '@tinymce/tinymce-react'
-import React, { useRef } from 'react'
+import React from 'react'
 
 interface TinyMCEEditorProps {
   id: string
@@ -16,13 +16,10 @@ const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
   id,
   styles,
 }) => {
-  const editorRef = useRef(null) as any
-
   return (
     <Editor
       value={value}
       onEditorChange={onChange}
-      onInit={editor => (editorRef.current = editor)}
       id={id}
       apiKey='9r20v2xm7wgvyig8pxzk65b9k7a6r2ntescpvmiqhdtidh5n'
       init={{
