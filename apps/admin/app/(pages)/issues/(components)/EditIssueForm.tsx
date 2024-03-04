@@ -303,7 +303,13 @@ const EditIssuesForm = ({
                       title='Додати інформація про послугу'
                       className='flex justify-around overflow-hidden'
                     >
-                      <CustomEditor id='add-issue-info-content' name='info' />
+                      <CustomEditor
+                        id='add-issue-info-content'
+                        name='info'
+                        styles={{
+                          body: 'background-color:#082a93',
+                        }}
+                      />
                     </Tab>
                     <Tab
                       key='issue-description'
@@ -313,6 +319,9 @@ const EditIssuesForm = ({
                       <CustomEditor
                         id='add-issue-description-content'
                         name='description'
+                        styles={{
+                          body: 'background-color:#082a93',
+                        }}
                       />
                     </Tab>
                   </Tabs>

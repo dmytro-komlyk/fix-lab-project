@@ -1,6 +1,6 @@
 'use client'
 
-import RenderMarkdown from '@client/app/(components)/RenderMarkdown'
+import ParserValueEditor from '@client/app/(components)/ParserValueEditor'
 import Button from '@client/app/(layouts)/(components)/Button'
 import CallUsCard from '@client/app/(layouts)/(components)/CallUsCard'
 import { SERVER_URL } from '@client/app/(lib)/constants'
@@ -138,7 +138,7 @@ const BrandsSection = ({
           <h1 className='mb-[25px] font-exo_2 text-2xl font-bold text-black-dis max-md:mb-[2px] max-md:mt-[16px] max-md:text-[23px] max-md:leading-[30px] max-md:tracking-[0.3px] lg:leading-[1.2px] xl:tracking-[1.9px]'>
             Бренди {gadgetText}, які ремонтуємо у сервісному центрі FixLab
           </h1>
-          <div className='container mb-[56px] p-0'>
+          <div className='container mb-[56px] p-0 overflow-hidden'>
             <BrandsSlider
               gadgetDataInit={gadgetData}
               brandDataInit={brandData}
@@ -151,16 +151,16 @@ const BrandsSection = ({
                   key={item.id}
                   className={`${
                     brandPath === item.slug
-                      ? 'flex   w-[852px] max-xl:max-w-[852px]'
+                      ? 'w-[852px] max-xl:max-w-[852px]'
                       : 'hidden'
                   }`}
                 >
-                  <RenderMarkdown markdown={item.article} />
+                  <ParserValueEditor value={item.article} />
                 </div>
               ))}
               {isBrandPage === 'brands' && (
                 <div className='flex w-[852px] max-xl:max-w-[852px] '>
-                  <RenderMarkdown markdown={gadgetData?.brands[0]?.article} />
+                  <ParserValueEditor value={gadgetData?.brands[0]?.article} />
                 </div>
               )}
             </div>

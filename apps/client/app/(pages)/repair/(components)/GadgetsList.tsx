@@ -1,5 +1,6 @@
 import { SERVER_URL } from '@client/app/(lib)/constants'
 import type { serverClient } from '@client/app/(utils)/trpc/serverClient'
+import type { outputGadgetSchema as IGadget } from '@server/domain/gadgets/schemas/gadget.schema'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -12,9 +13,9 @@ export const GadgetsList = ({
 }) => {
   return (
     <ul className='z-2 flex flex-wrap justify-center gap-2 max-xl:max-w-full xl:w-[954px] xl:gap-6'>
-      {/* any as IGadget = ? */}
-      {gadgetsData.map((item: any) => {
-        return (
+      {gadgetsData
+        .sort((a, b) => Number(a.order) - Number(b.order))
+        .map((item: IGadget) => (
           <li
             key={item.id}
             className='group h-[261px] w-[302px] rounded-2xl bg-card-repair-gradient  md:w-[calc((100%-10px)/2)] xl:w-[calc((100%-48px)/3)]'
@@ -43,8 +44,7 @@ export const GadgetsList = ({
               </div>
             </Link>
           </li>
-        )
-      })}
+        ))}
     </ul>
   )
 }

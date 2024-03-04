@@ -254,7 +254,13 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
                 </div>
               )}
               <div className='order-6 w-[92%]'>
-                <CustomEditor id='add-article-blog-content' name='content' />
+                <CustomEditor
+                  id='add-article-blog-content'
+                  name='content'
+                  styles={{
+                    body: 'background-color:#FFFFFF',
+                  }}
+                />
               </div>
               <div className='order-last'>
                 <SendButton

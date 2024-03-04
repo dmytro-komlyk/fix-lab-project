@@ -6,6 +6,7 @@ import { imageSchema } from '../../images/schemas/image.schema';
 import { outputIssueSchema } from '../../issues/schemas/issue.schema';
 
 export const createGadgetSchema = z.object({
+  order: z.string().min(1),
   slug: z.string().min(1).trim().toLowerCase(),
   isActive: z.boolean().default(false),
   title: z.string().min(1),
@@ -14,11 +15,12 @@ export const createGadgetSchema = z.object({
   icon_id: z.string(),
   gallery_ids: z.array(z.string()),
   brands_ids: z.array(z.string()),
-  issues_ids: z.array(z.string())
+  issues_ids: z.array(z.string()),
 });
 
 export const updateGadgetSchema = z.object({
   id: z.string(),
+  order: z.string().min(1),
   slug: z.string().min(1).trim().toLowerCase(),
   isActive: z.boolean().default(false),
   title: z.string().min(1),
@@ -27,11 +29,12 @@ export const updateGadgetSchema = z.object({
   icon_id: z.string(),
   gallery_ids: z.array(z.string()),
   brands_ids: z.array(z.string()),
-  issues_ids: z.array(z.string())
+  issues_ids: z.array(z.string()),
 });
 
 export const outputGadgetSchema = z.object({
   id: z.string(),
+  order: z.string().min(1),
   slug: z.string().min(1).trim().toLowerCase(),
   isActive: z.boolean().default(false),
   title: z.string().min(1),
@@ -44,7 +47,7 @@ export const outputGadgetSchema = z.object({
   issues: z.array(outputIssueSchema),
   gallery_ids: z.array(z.string()),
   brands_ids: z.array(z.string()),
-  issues_ids: z.array(z.string())
+  issues_ids: z.array(z.string()),
 });
 
 export type createGadgetSchema = z.TypeOf<typeof createGadgetSchema>;

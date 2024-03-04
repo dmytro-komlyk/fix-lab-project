@@ -1,6 +1,6 @@
 'use client'
 
-import RenderMarkdownLight from '@client/app/(components)/RenderMarkdownLight'
+import ParserValueEditor from '@client/app/(components)/ParserValueEditor'
 import Button from '@client/app/(layouts)/(components)/Button'
 import CallUsCard from '@client/app/(layouts)/(components)/CallUsCard'
 import CostRepairModal from '@client/app/(layouts)/(components)/CostRepairModal'
@@ -149,7 +149,7 @@ const IssueSection = ({
                     </div>
                   )}
                   <div className='mb-14'>
-                    <RenderMarkdownLight markdown={singleIssueData.info} />
+                    <ParserValueEditor value={singleIssueData.info} />
                   </div>
                   <Button
                     text='Миттєва консультація'
@@ -172,7 +172,7 @@ const IssueSection = ({
                   />
                 </div>
                 <div className='mb-[68px] flex flex-col max-md:w-[360px]'>
-                  <RenderMarkdownLight markdown={singleIssueData.description} />
+                  <ParserValueEditor value={singleIssueData.description} />
                 </div>
                 <div className='flex flex-col'>
                   {singleGadgetData.brands.length > 0 && (
