@@ -1,7 +1,6 @@
 'use client'
 
 import { SERVER_URL } from '@admin/app/(lib)/constants'
-import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import { Card, CardBody, CardHeader, Input, Tab, Tabs } from '@nextui-org/react'
@@ -79,7 +78,7 @@ const EditIssuesForm = ({
     const { file, ...restValues } = values
 
     const issueValues = {
-      slug: createSlug(restValues.title),
+      slug: restValues.slug,
       price: restValues.price,
       title: restValues.title,
       info: restValues.info,
@@ -139,6 +138,7 @@ const EditIssuesForm = ({
           seoTitle: Yup.string().min(1).required('Введіть заголовок'),
           seoDescription: Yup.string().min(1).required('Введіть опис'),
           seoKeywords: Yup.string().min(1).required('Введіть ключі'),
+          slug: Yup.string().min(3).required('Введіть ЧПУ'),
           title: Yup.string().min(1).required('Введіть заголовок'),
           price: Yup.string().min(1).required('Введіть вартість'),
           info: Yup.string().min(1).required('Введіть контент'),
@@ -216,7 +216,6 @@ const EditIssuesForm = ({
               <Field name='slug'>
                 {({ meta, field }: any) => (
                   <Input
-                    isDisabled
                     type='text'
                     label='ЧПУ(slug)'
                     labelPlacement='inside'

@@ -1,6 +1,5 @@
 'use client'
 
-import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import {
@@ -61,7 +60,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
     setSubmitting(true)
     const { file, ...restValues } = values
     const articleValues = {
-      slug: createSlug(restValues.title),
+      slug: restValues.slug,
       title: restValues.title,
       preview: restValues.preview,
       text: restValues.content,
@@ -117,6 +116,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
             seoTitle: '',
             seoDescription: '',
             seoKeywords: '',
+            slug: '',
             title: '',
             preview: '',
             file: null,
@@ -126,6 +126,7 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
             seoTitle: Yup.string().min(1).required('Введіть заголовок'),
             seoDescription: Yup.string().min(1).required('Введіть опис'),
             seoKeywords: Yup.string().min(1).required('Введіть ключі'),
+            slug: Yup.string().min(3).required('Введіть ЧПУ'),
             title: Yup.string().min(1).required('Введіть заголовок'),
             preview: Yup.string().min(1).required('Введіть опис'),
             file: Yup.mixed().required('Додайте зображення'),
@@ -200,6 +201,24 @@ const AddArticleSection = ({ allImagesData }: { allImagesData: IImage[] }) => {
                 </CardBody>
               </Card>
               <div className='order-1 flex h-72 w-[45%] flex-col justify-end gap-4'>
+                <Field name='slug'>
+                  {({ meta, field }: any) => (
+                    <Input
+                      type='text'
+                      label='ЧПУ(slug)'
+                      labelPlacement='inside'
+                      variant='bordered'
+                      isInvalid={!!(meta.touched && meta.error)}
+                      errorMessage={meta.touched && meta.error && meta.error}
+                      classNames={{
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
+                        inputWrapper: ['bg-white-dis'],
+                      }}
+                      {...field}
+                    />
+                  )}
+                </Field>
                 <Field name='title'>
                   {({ meta, field }: any) => (
                     <Input

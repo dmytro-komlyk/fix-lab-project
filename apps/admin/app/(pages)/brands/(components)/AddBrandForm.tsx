@@ -1,6 +1,5 @@
 'use client'
 
-import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import {
@@ -70,11 +69,18 @@ const AddBrandForm = ({
     { setSubmitting, resetForm }: FormikHelpers<any>,
   ) => {
     setSubmitting(true)
-    const { file, title, seoTitle, seoDescription, seoKeywords, article } =
-      values
+    const {
+      slug,
+      file,
+      title,
+      seoTitle,
+      seoDescription,
+      seoKeywords,
+      article,
+    } = values
 
     const newData = {
-      slug: createSlug(title),
+      slug,
       title,
       metadata: {
         title: seoTitle,
@@ -137,18 +143,20 @@ const AddBrandForm = ({
       >
         <Formik
           initialValues={{
-            file: null,
-            title: '',
             seoTitle: '',
             seoDescription: '',
             seoKeywords: '',
+            file: null,
+            slug: '',
+            title: '',
             article: '',
           }}
           validationSchema={Yup.object({
-            title: Yup.string().min(1).required('Введіть заголовок'),
             seoTitle: Yup.string().min(1).required('Введіть заголовок'),
             seoDescription: Yup.string().min(1).required('Введіть опис'),
             seoKeywords: Yup.string().min(1).required('Введіть ключі'),
+            slug: Yup.string().min(3).required('Введіть ЧПУ'),
+            title: Yup.string().min(1).required('Введіть заголовок'),
             article: Yup.string().min(1).required('Введіть контент'),
           })}
           onSubmit={handleSubmit}
@@ -238,7 +246,25 @@ const AddBrandForm = ({
                   {props.values.file || selectedIcon ? '' : errorImage}
                 </div>
               </div>
-              <div className='order-3 w-[92%]'>
+              <div className='order-3 w-[92%] flex flex-col gap-y-6'>
+                <Field name='slug'>
+                  {({ meta, field }: any) => (
+                    <Input
+                      type='text'
+                      label='ЧПУ(slug)'
+                      labelPlacement='inside'
+                      variant='bordered'
+                      isInvalid={!!(meta.touched && meta.error)}
+                      errorMessage={meta.touched && meta.error && meta.error}
+                      classNames={{
+                        label: ['font-base', 'text-md', 'text-black-dis'],
+                        input: ['font-base', 'text-md', 'text-black-dis'],
+                        inputWrapper: ['bg-white-dis'],
+                      }}
+                      {...field}
+                    />
+                  )}
+                </Field>
                 <Field name='title'>
                   {({ meta, field }: any) => (
                     <Input

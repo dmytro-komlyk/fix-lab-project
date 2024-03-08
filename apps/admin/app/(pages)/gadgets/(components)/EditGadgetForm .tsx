@@ -1,7 +1,6 @@
 'use client'
 
 import { SERVER_URL } from '@admin/app/(lib)/constants'
-import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import {
@@ -111,7 +110,7 @@ const EditGadgetForm = ({
     setSubmitting(true)
     const { file, ...restValues } = values
     const gadgetValues = {
-      slug: createSlug(restValues.title),
+      slug: restValues.slug,
       title: restValues.title,
       description: restValues.description,
       metadata: {
@@ -173,6 +172,7 @@ const EditGadgetForm = ({
           seoTitle: Yup.string().min(1).required('Введіть заголовок'),
           seoDescription: Yup.string().min(1).required('Введіть опис'),
           seoKeywords: Yup.string().min(1).required('Введіть ключі'),
+          slug: Yup.string().min(3).required('Введіть ЧПУ'),
           title: Yup.string().min(1).required('Введіть заголовок'),
           description: Yup.string().min(1).required('Введіть опис'),
         })}
@@ -267,7 +267,6 @@ const EditGadgetForm = ({
               <Field name='slug'>
                 {({ meta, field }: any) => (
                   <Input
-                    isDisabled
                     type='text'
                     label='ЧПУ(slug)'
                     labelPlacement='inside'
