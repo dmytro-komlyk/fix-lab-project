@@ -30,7 +30,7 @@ const MainBlogSection = ({
           </Link>
           <Link
             className='flex items-center text-base font-[400] text-mid-blue transition-opacity  hover:opacity-70 focus:opacity-70'
-            href='/blog'
+            href='/novosti'
           >
             <p className='text-base font-[400] text-mid-blue opacity-70'>
               Блог
@@ -42,7 +42,7 @@ const MainBlogSection = ({
           {postsDataInit.items.map((post: outputArticleSchema) => {
             return (
               <li data-aos='zoom-in' key={post.id}>
-                <Link href={`/blog/${currentPage}/${post.slug}`}>
+                <Link href={`/novosti/${post.slug}`}>
                   <div className='flex h-[515px] max-w-[410px] flex-col rounded-2xl bg-blue-crayola transition-transform duration-300 hover:scale-[1.03]  focus:scale-[1.03] xl:w-[410px]'>
                     <Image
                       className='max-h-[278px] min-h-[278px] rounded-t-2xl object-cover'

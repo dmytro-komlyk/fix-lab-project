@@ -21,7 +21,7 @@ const SuccessSubmitBanner = dynamic(
 )
 
 const gadgetsSinglePageRegex = /^\/repair\/([^/]+)\/?$/
-const blogIdRegex = /^\/blog\/(\d+)\/?$/
+const blogIdRegex = /^\/novosti\/(\d+)\/?$/
 const issueSinglePageRegex = /^\/repair\/([^/]+)\/([^/]+)\/?$/
 
 export const Header = ({
@@ -130,7 +130,7 @@ export const Header = ({
         isScrolled && ' bg-[#04268B]'
       } ${
         pathname === '/' ||
-        pathname === '/blog' ||
+        pathname === '/novosti' ||
         pathname === '/corporate' ||
         blogIdRegex.test(pathname) ||
         issueSinglePageRegex.test(pathname) ||
@@ -262,9 +262,11 @@ export const Header = ({
             </li>
             <li>
               <Link
-                href='/blog'
+                href='/novosti'
                 className={`${
-                  pathname === '/blog' ? 'text-light-green' : 'text-white-dis'
+                  pathname === '/novosti'
+                    ? 'text-light-green'
+                    : 'text-white-dis'
                 } text-base  font-semibold transition-opacity hover:opacity-80  focus:opacity-80`}
               >
                 Блог

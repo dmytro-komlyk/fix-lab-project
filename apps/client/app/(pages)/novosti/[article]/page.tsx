@@ -3,7 +3,7 @@ import type { outputArticleSchema } from '@server/domain/articles/schemas/articl
 import type { outputContactSchema } from '@server/domain/contacts/schemas/contact.schema'
 import type { Metadata } from 'next'
 
-import SingleArticlePage from '../../(components)/SingleArticlePage'
+import SingleArticlePage from '../(components)/SingleArticlePage'
 
 export const dynamic = 'force-dynamic'
 
