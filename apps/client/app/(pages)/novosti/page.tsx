@@ -35,7 +35,7 @@ interface IBlogProps {
 export default async function Blog({ searchParams }: IBlogProps) {
   const page = searchParams.page ? Number(searchParams.page) : 1
   const postsData = (await serverClient.articles.getByPaginationArticles({
-    page: page,
+    page,
     sort: 'desc',
     limit: 9,
   })) as outputArticleWithPaginationSchema
