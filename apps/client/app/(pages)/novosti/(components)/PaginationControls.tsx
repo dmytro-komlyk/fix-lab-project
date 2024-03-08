@@ -21,7 +21,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   return (
     <div className='flex items-center space-x-8 lg:ml-auto'>
       {currentPage - 1 >= 1 && (
-        <Link passHref href={`/blog/${currentPage - 1}`}>
+        <Link passHref href={`/novosti?page=${currentPage - 1}`}>
           <BsArrowLeftCircle
             size={20}
             className='transition-all hover:scale-110 hover:opacity-80 focus:scale-110 focus:opacity-80'
@@ -35,7 +35,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
           <Link
             passHref
             key={page}
-            href={`/blog/${page}`}
+            href={`/novosti?page=${page}`}
             className={
               page === currentPage
                 ? 'text-md font-bold text-white-dis transition-all hover:scale-110 hover:opacity-80 focus:scale-110 focus:opacity-80'
@@ -48,7 +48,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
       })}
 
       {currentPage + 1 <= totalPages && (
-        <Link href={`/blog/${currentPage + 1}`} passHref>
+        <Link href={`/novosti?page=${currentPage + 1}`} passHref>
           <BsArrowLeftCircle
             className='rotate-180 transition-all hover:scale-110 hover:opacity-80 focus:scale-110 focus:opacity-80'
             size={20}

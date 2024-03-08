@@ -2,7 +2,7 @@ import { serverClient } from '@client/app/(utils)/trpc/serverClient'
 import type { outputArticleWithPaginationSchema } from '@server/domain/articles/schemas/article.schema'
 import type { Metadata } from 'next'
 
-import MainBlogSection from '../(components)/MainBlogSection'
+import MainBlogSection from './(components)/MainBlogSection'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,17 +27,21 @@ export const metadata: Metadata = {
     'FixLab блог',
   ],
 }
-export default async function Blog({ params }: { params: { page: string } }) {
-  const currentPage = typeof params.page === 'string' ? Number(params.page) : 1
+
+interface IBlogProps {
+  searchParams: { page: number | undefined }
+}
+
+export default async function Blog({ searchParams }: IBlogProps) {
+  const page = searchParams.page ? Number(searchParams.page) : 1
   const postsData = (await serverClient.articles.getByPaginationArticles({
-    page: currentPage,
+    page,
     sort: 'desc',
     limit: 9,
   })) as outputArticleWithPaginationSchema
-
   return (
     <main className='flex-auto'>
-      <MainBlogSection postsDataInit={postsData} currentPage={currentPage} />
+      <MainBlogSection postsDataInit={postsData} currentPage={page} />
     </main>
   )
 }

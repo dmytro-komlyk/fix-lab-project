@@ -1,6 +1,5 @@
 'use client'
 
-import { createSlug } from '@admin/app/(utils)/createSlug'
 import { trpc } from '@admin/app/(utils)/trpc/client'
 import { uploadImg } from '@admin/app/api/service/image/uploadImg'
 import { Card, CardBody, CardHeader, Input } from '@nextui-org/react'
@@ -75,11 +74,18 @@ const EditBrandForm = ({
     { setSubmitting }: FormikHelpers<any>,
   ) => {
     setSubmitting(true)
-    const { file, title, seoTitle, seoDescription, seoKeywords, article } =
-      values
+    const {
+      slug,
+      file,
+      title,
+      seoTitle,
+      seoDescription,
+      seoKeywords,
+      article,
+    } = values
     const dataToUpdate = {
       ...brand.data,
-      slug: createSlug(title),
+      slug,
       title,
       metadata: {
         title: seoTitle,
@@ -134,10 +140,11 @@ const EditBrandForm = ({
         article: brand.data.article,
       }}
       validationSchema={Yup.object({
-        title: Yup.string().min(1).required('Введіть заголовок'),
         seoTitle: Yup.string().min(1).required('Введіть заголовок'),
         seoDescription: Yup.string().min(1).required('Введіть опис'),
         seoKeywords: Yup.string().min(1).required('Введіть ключі'),
+        slug: Yup.string().min(3).required('Введіть ЧПУ'),
+        title: Yup.string().min(1).required('Введіть заголовок'),
         article: Yup.string().min(1).required('Введіть контент'),
       })}
       onSubmit={handleSubmit}
@@ -227,11 +234,10 @@ const EditBrandForm = ({
               {props.values.file || selectedIcon ? '' : errorImage}
             </div>
           </div>
-          <div className='order-3 flex w-[92%] flex-col gap-4'>
+          <div className='order-3 flex w-[92%] flex-col gap-y-6'>
             <Field name='slug'>
               {({ meta, field }: any) => (
                 <Input
-                  isDisabled
                   type='text'
                   label='ЧПУ(slug)'
                   labelPlacement='inside'

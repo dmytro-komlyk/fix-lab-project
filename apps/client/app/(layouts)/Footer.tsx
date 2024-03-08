@@ -163,7 +163,7 @@ export const Footer = ({
             </li>
             <li>
               <Link
-                href='/blog'
+                href='/novosti'
                 className='text-base font-semibold text-white-dis  transition-opacity hover:opacity-80  focus:opacity-80'
               >
                 Блог

@@ -105,10 +105,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             </li>
             <li>
               <Link
-                href='/blog'
+                href='/novosti'
                 onClick={toggleMobileMenu}
                 className={`font-exo_2 ${
-                  pathname === '/blog' ? ' text-light-green' : 'text-white-dis'
+                  pathname === '/novosti'
+                    ? ' text-light-green'
+                    : 'text-white-dis'
                 } text-xl font-semibold  transition-opacity hover:opacity-80  focus:opacity-80`}
               >
                 Блог

@@ -10,7 +10,7 @@ import {
   outputArticleSchema,
   outputArticleWithPaginationSchema,
   paginationArticleSchema,
-  updateArticleSchema
+  updateArticleSchema,
 } from './schemas/article.schema';
 
 @Injectable()
@@ -20,14 +20,14 @@ export class ArticlesService {
   public async findAll(): Promise<outputArticleSchema[]> {
     return await this.prisma.article.findMany({
       include: {
-        image: true
-      }
+        image: true,
+      },
     });
   }
 
   public async findWithPagination({
     page = 1,
-    limit = 1000000
+    limit = 1000000,
   }: paginationArticleSchema): Promise<outputArticleWithPaginationSchema> {
     const result = {
       itemsCount: 0,
@@ -35,7 +35,7 @@ export class ArticlesService {
       totalPages: 0,
       rangeStart: 0,
       rangeEnd: 0,
-      items: [] as (Article & { image: Image })[]
+      items: [] as (Article & { image: Image })[],
     };
 
     const totalArticles = await this.prisma.article.findMany();
@@ -48,14 +48,16 @@ export class ArticlesService {
       take: limit,
       skip: limit * (page - 1),
       include: {
-        image: true
-      }
+        image: true,
+      },
     });
 
     result.items = articles;
     result.itemsCount = articles.length;
     result.rangeStart = articles.length ? limit * (page - 1) : 0;
-    result.rangeEnd = articles.length ? result.rangeStart + result.itemsCount : 0;
+    result.rangeEnd = articles.length
+      ? result.rangeStart + result.itemsCount
+      : 0;
 
     return result;
   }
@@ -63,16 +65,16 @@ export class ArticlesService {
   public async findBySlug(query: string): Promise<outputArticleSchema> {
     const article = await this.prisma.article.findUnique({
       where: {
-        slug: query
+        slug: query,
       },
       include: {
-        image: true
-      }
+        image: true,
+      },
     });
     if (!article) {
       throw new TRPCError({
         message: `Article with slug "${query}" was not found`,
-        code: 'NOT_FOUND'
+        code: 'NOT_FOUND',
       });
     }
 
@@ -82,17 +84,17 @@ export class ArticlesService {
   public async findById(id: string): Promise<outputArticleSchema> {
     const article = await this.prisma.article.findUnique({
       where: {
-        id
+        id,
       },
       include: {
-        image: true
-      }
+        image: true,
+      },
     });
 
     if (!article) {
       throw new TRPCError({
         message: `Article with ID "${id}" was not found`,
-        code: 'NOT_FOUND'
+        code: 'NOT_FOUND',
       });
     }
 
@@ -102,19 +104,19 @@ export class ArticlesService {
   public async create(dto: createArticleSchema): Promise<outputArticleSchema> {
     const foundArticle = await this.prisma.article.findUnique({
       where: {
-        slug: dto.slug
-      }
+        slug: dto.slug,
+      },
     });
 
     if (foundArticle) {
       throw new TRPCError({
         message: `Article with slug "${dto.slug}" already exists`,
-        code: 'FORBIDDEN'
+        code: 'FORBIDDEN',
       });
     }
 
     const createdArticle = await this.prisma.article.create({
-      data: dto
+      data: dto,
     });
     const article = await this.findById(createdArticle.id);
 
@@ -128,26 +130,28 @@ export class ArticlesService {
     if (!article) {
       throw new TRPCError({
         message: `Article with ID ${id} was not found`,
-        code: 'NOT_FOUND'
+        code: 'NOT_FOUND',
       });
     }
 
     const updatedArticle = await this.prisma.article.update({
       where: { id },
       data: newData,
-      include: { image: true }
+      include: { image: true },
     });
 
     return updatedArticle;
   }
 
   public async remove(id: string): Promise<string> {
-    const article = await this.prisma.article.delete({ where: { id } }).catch(() => {
-      throw new TRPCError({
-        message: `Article with ID ${id} was not found`,
-        code: 'NOT_FOUND'
+    const article = await this.prisma.article
+      .delete({ where: { id } })
+      .catch(() => {
+        throw new TRPCError({
+          message: `Article with ID ${id} was not found`,
+          code: 'NOT_FOUND',
+        });
       });
-    });
 
     return article.id;
   }

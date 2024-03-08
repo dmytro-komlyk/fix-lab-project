@@ -56,7 +56,7 @@ const SingleArticlePage = ({
           </Link>
           <Link
             className='flex items-center text-base font-[400] text-dark-blue transition-opacity  hover:opacity-70 focus:opacity-70'
-            href='/blog'
+            href='/novosti'
           >
             <p> Блог</p> <MdKeyboardArrowRight size={25} />
           </Link>
@@ -71,7 +71,7 @@ const SingleArticlePage = ({
           </h2>
           {articleData.image && (
             <Image
-              className='mb-[56px] min-h-[245px] w-full  object-cover md:max-h-[480px]'
+              className='mb-[56px] min-h-[245px] w-full object-cover md:max-h-[480px] rounded-2xl'
               src={`${SERVER_URL}/${articleData.image.file.path}`}
               width={924}
               height={480}

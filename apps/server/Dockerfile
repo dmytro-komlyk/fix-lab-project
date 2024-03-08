@@ -40,6 +40,7 @@ FROM base as runner
 COPY --chown=node:node --from=builder /prod/${PACKAGE_NAME} /app/${SERVICE_PATH}
 COPY --chown=node:node --from=builder /app/${SERVICE_PATH}/.env /app/${SERVICE_PATH}/.env
 COPY --chown=node:node --from=builder /app/${SERVICE_PATH}/dist /app/${SERVICE_PATH}/dist
+
 WORKDIR /app
 COPY tsconfig.json ./tsconfig.json
 
