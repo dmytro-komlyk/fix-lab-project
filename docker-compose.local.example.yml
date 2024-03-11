@@ -43,14 +43,17 @@ services:
 
   app:
     image: "jc21/nginx-proxy-manager:latest"
+    container_name: nginx
     restart: unless-stopped
     ports:
       - "80:80"
       - "81:81"
       - "443:443"
     volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      - ./nginx/data:/data
+      - ./nginx/letsencrypt:/etc/letsencrypt
+    networks:
+      - backend
 
   server:
     build:
@@ -70,6 +73,7 @@ services:
       - JWT_REFRESH_TOKEN_KEY=
     volumes:
       - ./apps/server/public:/app/apps/server/public
+      - ./nginx/data:/app/nginx/data
       - /app/node_modules
       - /app/apps/server/node_modules
 

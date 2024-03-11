@@ -12,4 +12,5 @@ data
 seed
 
 # Docker
+nginx
 docker-compose.local.yml
