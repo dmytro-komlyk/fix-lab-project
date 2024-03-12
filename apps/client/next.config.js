@@ -12,7 +12,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: '185.65.244.84',
+        port: '3000',
       },
     ],
     formats: ['image/avif', 'image/webp'],
