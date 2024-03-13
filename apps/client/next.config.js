@@ -9,7 +9,6 @@ const nextConfig = {
     return config
   },
   images: {
-    // domains: ['localhost', '185.65.244.84', 'fixlab.pp.ua'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -18,7 +17,7 @@ const nextConfig = {
         pathname: '/public/**',
       },
     ],
-    // formats: ['image/avif', 'image/webp'],
+    formats: ['image/avif', 'image/webp'],
   },
   output: 'standalone',
 }

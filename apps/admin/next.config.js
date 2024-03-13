@@ -10,7 +10,7 @@ const nextConfig = {
     return config
   },
   images: {
-    domains: ['185.65.244.84'],
+    domains: ['server.admin.pp.ua'],
     contentDispositionType: 'attachment',
     unoptimized: true,
   },
