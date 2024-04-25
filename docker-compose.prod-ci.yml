@@ -76,7 +76,6 @@ services:
       - NODE_ENV=production
     volumes:
       - ./server/public/:/app/server/public
-      - ./nginx/data:/app/nginx/data
     ports:
       - 3000:3000
     networks:
