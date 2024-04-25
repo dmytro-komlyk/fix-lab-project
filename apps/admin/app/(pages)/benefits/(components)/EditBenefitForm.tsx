@@ -59,7 +59,6 @@ const EditBenefitForm = ({ benefitData }: { benefitData: IBenefit }) => {
     { setSubmitting }: FormikHelpers<any>,
   ) => {
     setSubmitting(true)
-    console.log(selectedIcon, values.file)
     try {
       if (selectedIcon) {
         await updateBenefit.mutateAsync({

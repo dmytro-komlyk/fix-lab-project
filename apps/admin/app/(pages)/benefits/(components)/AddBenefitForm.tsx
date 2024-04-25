@@ -117,7 +117,6 @@ const AddBenefitForm = ({ iconsData }: any) => {
             onSubmit={handleSubmit}
           >
             {(props: FormikProps<any>) => {
-              console.log(props.values.file)
               return (
                 <Form
                   onSubmit={props.handleSubmit}
