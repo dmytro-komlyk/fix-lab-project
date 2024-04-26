@@ -51,15 +51,3 @@ export const sendEmail = async ({
     console.log(error);
   }
 };
-
-/*
-Example:
-sendEmail(
-  "youremail@gmail.com,
-  "Email subject",
-  { name: "Eze" },
-  "./templates/layouts/main.handlebars"
-);
-*/
-
-// module.exports = sendEmail;

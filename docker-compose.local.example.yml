@@ -65,22 +65,13 @@ services:
     env_file: ./apps/server/.env.docker
     environment:
       - NODE_ENV=production
-      - DATABASE_USERNAME=
-      - DATABASE_PASSWORD=
-      - DATABASE_NAME=
-      - DATABASE_URL=
-      - JWT_SECRET_KEY=
-      - JWT_REFRESH_TOKEN_KEY=
     volumes:
       - ./apps/server/public:/app/apps/server/public
-      - ./nginx/data:/app/nginx/data
       - /app/node_modules
       - /app/apps/server/node_modules
-
     ports:
       - 30000:3000
     networks:
-      - client
       - backend
     depends_on:
       - mongo
